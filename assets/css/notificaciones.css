@@ -1,0 +1,74 @@
+/* Contenedor de notificaciones */
+.notifications-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-left: 1rem;
+}
+
+/* Botón de campana */
+#notifications {
+    background: transparent;
+    border: none;
+    color: #fff; /* letras blancas sobre top-bar oscuro */
+    font-size: 1.2rem;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Contador */
+.notification-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff3b30; /* rojo típico de alertas */
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 50%;
+}
+
+/* Dropdown */
+.notifications-dropdown {
+    display: none; /* por defecto oculto */
+    position: absolute;
+    right: 0;
+    top: 120%;
+    width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+/* Lista de notificaciones */
+.notifications-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.notifications-dropdown li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.notifications-dropdown li:last-child {
+    border-bottom: none;
+}
+
+.notifications-dropdown li.empty {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+/* Hover */
+.notifications-dropdown li:hover {
+    background: #f0f0f0;
+    cursor: pointer;
+}

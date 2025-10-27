@@ -1,0 +1,328 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* Cabecera fija */
+
+.top-bar {
+  background-color: #2943b9;
+  padding: 12px 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.top-bar .left-links {
+  display: flex;
+  align-items: center;
+  gap: 40px; /* espacio entre logo y menú */
+}
+
+.top-bar .logo a {
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Links en fila */
+.top-bar .nav-links {
+  display: flex;
+  gap: 25px; /* siguen uno al lado del otro */
+}
+
+.top-bar .nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover de los links */
+.top-bar .nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffd700;
+  text-decoration: none;
+}
+
+/* Link activo - queda fijo al hacer click */
+.top-bar .nav-links a.active {
+  background-color: rgba(255, 255, 255, 0.2); /* blanco semi-transparente */
+  color: #fff;
+  font-weight: bold;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* sombra sutil */
+}
+
+
+.top-bar .right-links {
+  display: flex;
+  gap: 20px;
+}
+
+.top-bar .right-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.top-bar .right-links a:hover {
+  text-decoration: underline;
+  color: #ffd700; /* opcional: mismo efecto */
+}
+
+
+/* ========================= */
+/* Compensar cabecera fija    */
+/* ========================= */
+.content {
+  padding-top: 100px; /* suficiente espacio para la cabecera fija */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+/* Hero del hotel */
+.hotel-hero {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+
+.hotel-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6);
+}
+
+.hotel-hero .overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+}
+
+.hotel-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.hotel-hero p {
+  font-size: 1.2rem;
+}
+
+/* Sección principal de información */
+.hotel-main.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hotel-main .info {
+  flex: 2 1 600px;
+}
+
+.hotel-main .info h2,
+.hotel-main .info h3 {
+  color: #2943b9;
+}
+
+.hotel-main .info h2 {
+  margin-bottom: 15px;
+}
+
+.hotel-main .info h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.hotel-main .info p {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.hotel-main .info ul.servicios {
+  list-style: none;
+}
+
+.hotel-main .info ul.servicios li {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.hotel-main .info ul.servicios li i {
+  color: #2943b9;
+  margin-right: 8px;
+}
+
+/* Card de reserva */
+.reserva-card {
+  flex: 1 1 250px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  height: fit-content;
+}
+
+.reserva-card h3 {
+  margin-bottom: 15px;
+}
+
+.reserva-card p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.reserva-card strong {
+  font-size: 20px;
+  color: #2943b9;
+}
+
+.reserva-card .btn {
+  display: inline-block;
+  background-color: #2943b9;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.reserva-card .btn:hover {
+  background-color: #1f33a0;
+}
+
+/* Carrusel de fotos adicionales */
+.hotel-fotos h2 {
+  text-align: center;
+  color: #2943b9;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.carrusel-fotos {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+}
+
+.carrusel-fotos::-webkit-scrollbar {
+  height: 8px;
+}
+
+.carrusel-fotos::-webkit-scrollbar-thumb {
+  background-color: #2943b9;
+  border-radius: 4px;
+}
+
+.foto-item {
+  min-width: 250px;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.foto-item img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Botón de reservar ahora */
+.hotel-ver-habitaciones {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.hotel-ver-habitaciones .btn-reservar {
+  display: inline-block;
+  background-color: #ff5a5f;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 15px 30px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.hotel-ver-habitaciones .btn-reservar:hover {
+  background-color: #e04848;
+  transform: translateY(-3px);
+}
+
+.hotel-ver-habitaciones .btn-reservar:active {
+  transform: translateY(0);
+}
+
+/* Mapa */
+.hotel-mapa.container {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hotel-mapa h2 {
+  color: #2943b9;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.hotel-mapa iframe {
+  border-radius: 12px;
+  border: 0;
+  width: 100%;
+  height: 350px;
+}
+
+/* Footer */
+footer {
+  background-color: #2943b9;
+  color: white;
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 40px;
+}
+
+footer p {
+  margin: 0;
+  font-size: 0.9em;
+}

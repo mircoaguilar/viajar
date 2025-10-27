@@ -1,0 +1,332 @@
+/* Inicio bloque panel y formularios */
+.panel {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  padding: 22px;
+  margin: 18px 0;
+}
+
+/* Títulos dentro del panel */
+.panel h2 {
+  margin-bottom: 14px;
+  color: #1f2a44;
+  font-size: 1.4rem;
+}
+
+/* Grid general */
+.grid {
+  display: grid;
+  gap: 14px;
+}
+
+/* Grid de 2 columnas */
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Grid de 3 columnas */
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Etiquetas de formulario */
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+  color: #35476b;
+}
+
+/* Inputs, selects y textarea */
+input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d5d9e2;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+/* Focus */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #2943b9;
+  box-shadow: 0 0 5px rgba(41,67,185,0.3);
+  outline: none;
+}
+
+/* Textarea mínimo y redimensionable */
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* Botones principales */
+.btn {
+  display: inline-block;
+  background: #2943b9;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Hover */
+.btn:hover {
+  background: #1f357f;
+}
+
+/* Botones secundarios */
+.btn.secondary {
+  background: #eef2ff;
+  color: #2943b9;
+}
+
+/* Hover botón secundario */
+.btn.secondary:hover {
+  background: #d9e0ff;
+}
+
+/* Contenedor de acciones (botones) */
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+/* Tablas */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background: #fff;
+  border: 1px solid #e6e9f2;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Celdas de tablas */
+.table th,
+.table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef1f7;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+/* Encabezados de tabla */
+.table th {
+  background: #f7f8fc;
+  color: #47536b;
+  font-weight: 700;
+}
+
+/* Texto de ayuda */
+.hint {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+/* Mensajes de error */
+.error-msg {
+  color: #d9534f;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  display: block;
+}
+
+.input-error {
+  border-color: #d9534f !important;
+  background: #fff6f6;
+}
+
+/* Previsualización de imágenes */
+.preview-container {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.preview-container img {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  max-height: 100px;
+  object-fit: cover;
+}
+
+/* Contadores de caracteres */
+.char-count {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #666;
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding: 16px;
+    margin: 12px 0;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+
+/* ... (Tus estilos existentes) ... */
+
+/* Estilos para el Modal/Popup de Confirmación */
+
+/* 1. Overlay (Fondo oscuro) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Oscurece el fondo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegura que esté por encima de todos los elementos */
+}
+
+/* 2. Contenido del Modal (La caja blanca) */
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-content h3 {
+    color: #2943b9; /* Color primario */
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.modal-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+
+
+
+
+/* esto es de carga de stock*/
+
+#custom-alert {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 9999;
+}
+#custom-alert > div {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 300px;
+}
+#custom-alert p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+
+
+
+/* bloque de transporte */
+/* Error de campos */
+.is-invalid {
+  border-color: #d9534f !important;
+  background: #fff6f6;
+}
+
+.error {
+  color: #d9534f;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* Contenedor de alerta de formulario (dinámico) */
+#form-alert {
+  display: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+/* Modal/Alerta flotante para confirmación de guardado */
+#custom-alert {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+#custom-alert > div {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 300px;
+}
+
+#custom-alert p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+#custom-alert button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #2943b9;
+  color: #fff;
+  font-weight: 700;
+}
+
+#custom-alert button:hover {
+  background: #1f357f;
+}
+
+

@@ -1,0 +1,214 @@
+.top-bar {
+    background-color: #2943b9;
+    padding: 12px 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px; /* altura fija */
+    z-index: 100;
+}
+
+.top-bar .left-links,
+.top-bar .right-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.top-bar .logo a {
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Links de navegación */
+.top-bar .nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.top-bar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.top-bar .nav-links a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffd700;
+}
+
+.top-bar .nav-links a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-weight: bold;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.top-bar .right-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.top-bar .right-links a:hover {
+    text-decoration: underline;
+    color: #ffd700;
+}
+
+/* =======================
+   BODY / CONTENIDO
+   ======================= */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding-top: 60px; /* espacio debajo de la cabecera */
+    color: #333;
+}
+
+/* =======================
+   CONTENEDOR CARRITO
+   ======================= */
+.carrito-container {
+    max-width: 1000px;
+    margin: auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+h2 {
+    margin-bottom: 25px;
+    text-align: center;
+    color: #2943b9;
+}
+
+.mensaje-vacio {
+    text-align: center;
+    font-size: 1.2em;
+    color: #888;
+    margin-top: 40px;
+}
+
+/* =======================
+   TABLA DE ITEMS
+   ======================= */
+.tabla-carrito {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+}
+
+.tabla-carrito th,
+.tabla-carrito td {
+    border: 1px solid #ddd;
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 0.95em;
+}
+
+.tabla-carrito th {
+    background: #2943b9;
+    color: #fff;
+    font-weight: 600;
+}
+
+.tabla-carrito tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.tabla-carrito tbody tr:hover {
+    background: #eef3ff;
+}
+
+/* Colores por tipo de servicio */
+.tabla-carrito td.tipo-servicio-hotel { 
+    background: #d6eaf8; 
+    color: #1b4f72; 
+    font-weight: bold;
+}
+
+.tabla-carrito td.tipo-servicio-transporte { 
+    background: #fcf3cf; 
+    color: #7d6608; 
+    font-weight: bold;
+}
+
+.tabla-carrito td.tipo-servicio-tour { 
+    background: #fdebd0; 
+    color: #935116; 
+    font-weight: bold;
+}
+
+/* =======================
+   INPUTS
+   ======================= */
+input[type="number"] {
+    width: 60px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 0.95em;
+}
+
+/* =======================
+   BOTONES
+   ======================= */
+.btn-accion {
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: #e74c3c;
+    color: #fff;
+    font-size: 0.9em;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.btn-accion:hover {
+    background: #c0392b;
+}
+
+.btn-checkout {
+    display: inline-block;
+    padding: 10px 25px;
+    background: #27ae60;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: background 0.2s;
+}
+
+.btn-checkout:hover {
+    background: #1e8449;
+}
+
+/* =======================
+   TOTAL CARRITO
+   ======================= */
+.carrito-total {
+    text-align: right;
+    font-size: 1.1em;
+    margin-top: 15px;
+}
+
+.carrito-total h3 {
+    margin-bottom: 10px;
+}

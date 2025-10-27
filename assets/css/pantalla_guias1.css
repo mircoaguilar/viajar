@@ -1,0 +1,318 @@
+/* pantalla_guias.css */
+
+/* Reset básico y Body */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  background-color: #2943b9;
+  color: #333;
+}
+
+/* Cabecera */
+.top-bar {
+  display: flex;
+  justify-content: space-between; /* espacio entre izquierda y derecha */
+  align-items: center;            /* centra verticalmente */
+  padding: 12px 20px;
+  background-color: #2943b9;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+/* Logo */
+.top-bar .logo a {
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Left links (logo + nav) */
+.top-bar .left-links {
+  display: flex;
+  align-items: center;
+  gap: 40px; /* espacio entre logo y nav */
+}
+
+/* Nav-links (Hoteles, Transporte, Guías) */
+.top-bar .nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+/* Links individuales */
+.top-bar .nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover */
+.top-bar .nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffd700;
+  text-decoration: none;
+}
+
+/* Link activo */
+.top-bar .nav-links a.active {
+  background-color: rgba(255, 255, 255, 0.2); /* blanco semi-transparente */
+  color: #fff;
+  font-weight: bold;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Right links */
+.top-bar .right-links {
+  display: flex;
+  gap: 20px;
+}
+
+.top-bar .right-links a {
+  color: white;
+  text-decoration: none;
+}
+
+.top-bar .right-links a:hover {
+  text-decoration: underline;
+  color: #ffd700;
+}
+
+/* Compensar cabecera fija */
+.content {
+  padding-top: 100px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Hero / título buscador */
+.hero-section {
+  text-align: center;
+  padding: 60px 20px 20px;
+}
+
+.hero-section h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 30px;
+}
+
+
+
+.hero-section .hero-content h1,
+.hero-section .hero-content p,
+.search-container {
+  color: #ffffff; /* texto blanco */
+}
+
+
+
+/* Buscador */
+.search-section {
+  background-color: #2943b9;
+  padding: 20px 20px 40px;
+  border-bottom: 1px solid #eee;
+}
+.search-section h2 {
+  padding-left: 90px;
+  }
+
+.search-container {
+  max-width: 600px;
+  margin-left: 500px;
+  
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 10px;
+
+}
+
+.form-group {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.search-form input[type="text"],
+.search-form input[type="number"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.search-form input:focus {
+  border-color: #2943b9;
+  outline: none;
+}
+
+.search-form button {
+  background-color: #2943b9;
+  color: #ffffff;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.search-form button:hover {
+  background-color: #1f3499;
+  transform: scale(1.1);
+}
+
+/* Listado de tours */
+.tours {
+  padding: 40px 20px;
+  background-color: #fdfdfd;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.tours h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #2943b9;
+  margin-bottom: 30px;
+}
+
+.tarjetas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.tarjeta {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 280px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.tarjeta:hover {
+  transform: translateY(-5px);
+}
+
+.tarjeta img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.tarjeta .contenido {
+  padding: 16px;
+}
+
+.tarjeta h3 {
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 10px;
+}
+
+.tarjeta p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.boton-ver-mas {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #2943b9;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.boton-ver-mas:hover {
+  background-color: #1f3499;
+}
+
+/* Footer */
+footer {
+  background-color: #2943b9;
+  color: white;
+  text-align: center;
+  padding: 30px 20px;
+  margin-top: 40px;
+}
+
+footer p {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-group {
+    flex: 1 1 100%;
+  }
+
+  .tarjeta {
+    width: 100%;
+  }
+}
+
+
+/* Sombra fija estilo glow para inputs y botón del buscador */
+.search-form input[type="text"],
+.search-form input[type="number"],
+.search-form button {
+  box-shadow: 0 0 10px rgba(5, 248, 175, 0.6); /* sombra visible y fija */
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+/* Intensifica un poco la sombra al hacer hover */
+.search-form input[type="text"]:hover,
+.search-form input[type="number"]:hover,
+.search-form button:hover {
+  box-shadow: 0 0 14px rgba(5, 248, 175, 0.8);
+}
