@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const poliCount = document.getElementById('politicas-count');
   const reglasCount = document.getElementById('reglas-count');
 
-  // Mostrar y limpiar errores 
+  // Funciones auxiliares
   function mostrarError(input, mensaje) {
     limpiarError(input);
     const error = document.createElement('small');
@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return file && validTypes.includes(file.type) && file.size <= 2 * 1024 * 1024;
   }
 
-  // Contadores dinámicos 
   function contadorTextarea(textarea, display, min, max) {
     textarea.addEventListener('input', () => {
       const len = textarea.value.length;
@@ -62,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
   contadorTextarea(politicas, poliCount, 20, 500);
   contadorTextarea(reglas, reglasCount, 20, 500);
 
-  // Previsualización de imagen principal 
+  // Previsualización
   imagenPrincipal.addEventListener('change', () => {
     previewPrincipal.innerHTML = '';
     const file = imagenPrincipal.files[0];
@@ -78,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
     limpiarError(imagenPrincipal);
   });
 
-  // Previsualización de fotos adicionales
   fotos.addEventListener('change', () => {
     previewFotos.innerHTML = '';
     const files = Array.from(fotos.files);
@@ -100,18 +98,16 @@ document.addEventListener('DOMContentLoaded', () => {
     limpiarError(fotos);
   });
 
-  // Carga dinámica de ciudades 
+  // Cargar ciudades según provincia
   provinciaSelect.addEventListener('change', function() {
     const provinciaId = this.value;
     ciudadSelect.innerHTML = '<option value="">Cargando...</option>';
     ciudadSelect.disabled = true;
-
     if (!provinciaId) {
       ciudadSelect.innerHTML = '<option value="">Seleccionar ciudad...</option>';
       ciudadSelect.disabled = false;
       return;
     }
-
     fetch(`controllers/ciudades/ciudades_por_provincia.php?provincia=${provinciaId}`)
       .then(res => res.json())
       .then(data => {
@@ -130,9 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 
-  // Limpieza de errores al modificar 
-  const campos = [hotelNombre, provinciaSelect, ciudadSelect, direccion, descripcion, servicios, politicas, reglas, imagenPrincipal, fotos];
-  campos.forEach(campo => {
+  // Limpiar errores al modificar campos
+  [hotelNombre, provinciaSelect, ciudadSelect, direccion, descripcion, servicios, politicas, reglas, imagenPrincipal, fotos].forEach(campo => {
     if (campo.tagName === 'INPUT' || campo.tagName === 'TEXTAREA') {
       campo.addEventListener('input', () => limpiarError(campo));
     }
@@ -141,24 +136,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Envío con validaciones 
   formHotel.addEventListener('submit', function(e) {
     e.preventDefault();
     let valido = true;
 
     [hotelNombre, provinciaSelect, ciudadSelect, direccion, descripcion, servicios, politicas, reglas, imagenPrincipal].forEach(limpiarError);
 
-    if (!/^[\w\s.,'-]{3,}$/.test(hotelNombre.value.trim())) {
-      mostrarError(hotelNombre, 'Nombre inválido o demasiado corto.');
-      valido = false;
-    }
+    if (!/^[\w\s.,'-]{3,}$/.test(hotelNombre.value.trim())) { mostrarError(hotelNombre, 'Nombre inválido o demasiado corto.'); valido = false; }
     if (!provinciaSelect.value) { mostrarError(provinciaSelect, 'Seleccioná una provincia.'); valido = false; }
     if (!ciudadSelect.value) { mostrarError(ciudadSelect, 'Seleccioná una ciudad.'); valido = false; }
     if (direccion.value.trim().length < 5) { mostrarError(direccion, 'Dirección muy corta.'); valido = false; }
-
     if (!imagenPrincipal.files[0]) { mostrarError(imagenPrincipal, 'Imagen principal requerida.'); valido = false; }
     else if (!isValidImage(imagenPrincipal.files[0])) { mostrarError(imagenPrincipal, 'Imagen inválida.'); valido = false; }
-
     if (descripcion.value.trim().length < 30) { mostrarError(descripcion, 'Descripción mínima 30 caracteres.'); valido = false; }
     if (servicios.value.trim().length < 1) { mostrarError(servicios, 'Ingresá al menos un servicio.'); valido = false; }
     if (politicas.value.trim().length < 20) { mostrarError(politicas, 'Políticas mínimo 20 caracteres.'); valido = false; }
@@ -168,38 +157,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const formData = new FormData(formHotel);
 
-    fetch('controllers/hoteles/hoteles.controlador.php', {
-      method: 'POST',
-      body: formData
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === 'ok') {
-        // Modal estilizado de éxito 
-        const modal = document.getElementById('hotel-guardado-modal');
-        const btnAceptar = document.getElementById('modal-aceptar');
-        const btnCancelar = document.getElementById('modal-cancelar');
-        modal.style.display = 'flex';
-
-        const redirectToRooms = () => {
-          modal.style.display = 'none';
-          window.location.href = 'index.php?page=hoteles_habitaciones_carga&id_hotel=' + data.id_hotel;
-        };
-
-        const redirectToProfile = () => {
-          modal.style.display = 'none';
-          window.location.href = 'index.php?page=proveedores_perfil';
-        };
-
-        btnAceptar.onclick = redirectToRooms;
-        btnCancelar.onclick = redirectToProfile;
-        modal.onclick = (e) => { if (e.target === modal) redirectToProfile(); };
-
-      } else {
-        alert("Error al guardar el hotel: " + data.mensaje);
-      }
-    })
-    .catch(() => alert("Ocurrió un error de conexión al intentar guardar el hotel."));
+    fetch('controllers/hoteles/hoteles.controlador.php', { method: 'POST', body: formData })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          Swal.fire({
+            icon: 'success',
+            title: 'Hotel enviado para revisión',
+            text: 'Tu hotel fue enviado correctamente y será revisado por el equipo. Te notificaremos cuando sea aprobado.',
+            confirmButtonText: 'Volver al perfil',
+            confirmButtonColor: '#3085d6'
+          }).then(() => {
+            window.location.href = 'index.php?page=proveedores_perfil';
+          });
+        } else {
+          Swal.fire('Error', data.message || 'No se pudo guardar el hotel.', 'error');
+        }
+      })
+      .catch(() => Swal.fire('Error', 'Ocurrió un error de conexión al intentar guardar el hotel.', 'error'));
   });
+
 
 });

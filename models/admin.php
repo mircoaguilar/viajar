@@ -125,7 +125,7 @@ class Admin {
             FROM hotel h
             LEFT JOIN hoteles_info hi ON hi.rela_hotel = h.id_hotel
             LEFT JOIN proveedores p ON h.rela_proveedor = p.id_proveedores
-            WHERE h.activo = 0
+            WHERE h.estado_revision = 'pendiente'
             ORDER BY h.fecha_alta DESC;
         ";
         return $conexion->consultar($query);
@@ -148,7 +148,7 @@ class Admin {
             FROM transporte t
             LEFT JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
             LEFT JOIN tipo_transporte tt ON t.rela_tipo_transporte = tt.id_tipo_transporte
-            WHERE t.activo = 0
+            WHERE t.estado_revision = 'pendiente'
             ORDER BY t.fecha_alta DESC
         ";
         return $conexion->consultar($query);
@@ -171,13 +171,11 @@ class Admin {
                 p.razon_social AS proveedor
             FROM tours tr
             LEFT JOIN proveedores p ON tr.rela_proveedor = p.id_proveedores
-            WHERE tr.activo = 0
+            WHERE tr.estado_revision = 'pendiente'
             ORDER BY tr.created_at DESC
         ";
         return $conexion->consultar($query);
     }
-
-
 
     public function cambiarEstadoServicio($tipo, $id, $accion) {
         $conexion = new Conexion();
@@ -194,6 +192,71 @@ class Admin {
         $query = "UPDATE $tabla SET activo = $nuevo_estado WHERE $id_campo = $id";
         return $conexion->actualizar($query);
     }
+
+    public function aprobarServicio($tipo, $id, $id_admin) {
+        $conexion = new Conexion();
+        $tablas = [
+            'hotel' => 'hotel',
+            'transporte' => 'transporte',
+            'tours' => 'tours'
+        ];
+
+        $id_campo_map = [
+            'hotel' => 'id_hotel',
+            'transporte' => 'id_transporte',
+            'tours' => 'id_tour'
+        ];
+
+        $tabla = $tablas[$tipo];
+        $id_campo = $id_campo_map[$tipo];
+
+        $query = "
+            UPDATE $tabla 
+            SET 
+                activo = 1,
+                estado_revision = 'aprobado',
+                motivo_rechazo = NULL,
+                fecha_revision = NOW(),
+                revisado_por = $id_admin
+            WHERE $id_campo = $id
+        ";
+        return $conexion->actualizar($query);
+    }
+
+    public function rechazarServicio($tipo, $id, $motivo, $id_admin) {
+        $conexion = new Conexion();
+        $tablas = [
+            'hotel' => 'hotel',
+            'transporte' => 'transporte',
+            'tours' => 'tours'
+        ];
+
+        $id_campo_map = [
+            'hotel' => 'id_hotel',
+            'transporte' => 'id_transporte',
+            'tours' => 'id_tour'
+        ];
+
+        if (!isset($tablas[$tipo])) return false;
+
+        $tabla = $tablas[$tipo];
+        $id_campo = $id_campo_map[$tipo];
+
+        $motivo = mysqli_real_escape_string($conexion->getConexion(), $motivo);
+
+        $query = "
+            UPDATE $tabla 
+            SET 
+                estado_revision = 'rechazado',
+                motivo_rechazo = '$motivo',
+                fecha_revision = NOW(),
+                revisado_por = $id_admin
+            WHERE $id_campo = $id
+        ";
+        return $conexion->actualizar($query);
+    }
+
+
 
 
     // Getters & Setters

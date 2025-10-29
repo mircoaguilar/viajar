@@ -26,13 +26,10 @@ $hoteles = $controlador->mis_hoteles($id_usuario);
 <main class="contenido-principal">
     <div class="container">
         <h2>Mis Hoteles</h2>
-        <p class="hint">Aca podés ver tus hoteles registrados y administrar sus datos.</p>
+        <p class="hint">Acá podés ver tus hoteles registrados, su estado y administrar sus datos.</p>
 
-        <!-- Botón de exportación -->
         <div style="margin: 10px 0;">
-            <a href="controllers/exportar.controlador.php?tipo=hoteles" class="btn secondary">
-                Exportar a Excel
-            </a>
+            <a href="controllers/exportar.controlador.php?tipo=hoteles" class="btn secondary">Exportar a Excel</a>
             <a href="controllers/exportar_pdf.controlador.php?tipo=hotel" class="btn secondary">Exportar a PDF</a>
         </div>
 
@@ -45,6 +42,7 @@ $hoteles = $controlador->mis_hoteles($id_usuario);
                     <th>Provincia</th>
                     <th>Ciudad</th>
                     <th>Descripción</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -63,8 +61,21 @@ $hoteles = $controlador->mis_hoteles($id_usuario);
                         <td><?= htmlspecialchars($h['ciudad_nombre']) ?></td>
                         <td><?= htmlspecialchars($h['descripcion'] ?? '-') ?></td>
                         <td>
+                            <?php
+                                $estado = strtolower($h['estado_revision'] ?? 'pendiente');
+                                $clase_estado = 'estado-' . $estado;
+                                echo "<span class='estado $clase_estado'>$estado</span>";
+                            ?>
+                        </td>
+
+                        <td>
                             <a href="index.php?page=hoteles_editar&id_hotel=<?= $h['id_hotel'] ?>" class="btn">Editar</a>
-                            <a href="index.php?page=hoteles_habitaciones&id_hotel=<?= $h['id_hotel'] ?>" class="btn secondary">Ver Habitaciones</a>
+
+                            <?php if ($estado === 'aprobado'): ?>
+                                <a href="index.php?page=hoteles_habitaciones&id_hotel=<?= $h['id_hotel'] ?>" class="btn secondary">Ver Habitaciones</a>
+                            <?php else: ?>
+                                <a class="btn secondary disabled" title="Disponible solo cuando el hotel esté aprobado">Ver Habitaciones</a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>

@@ -6,20 +6,17 @@ require_once('../../models/usuarios.php');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Datos esperados
 $email_destino = $_POST['email'] ?? null;
 $monto = $_POST['monto'] ?? null;
 $servicio = $_POST['servicio'] ?? 'Servicio turístico';
-$fecha = date('d/m/Y H:i'); // Se generará con la zona horaria correcta
+$fecha = date('d/m/Y H:i'); 
 $codigo_pago = $_POST['codigo_pago'] ?? '---';
 
-// Validar datos mínimos
 if (!$email_destino || !$monto) {
     echo json_encode(['status' => 'error', 'message' => 'Datos insuficientes para enviar comprobante']);
     exit;
 }
 
-// Configuración del correo
 $mail = new PHPMailer(true);
 
 try {
@@ -37,7 +34,6 @@ try {
     $mail->isHTML(true);
     $mail->Subject = 'Comprobante de pago - ViajAR';
 
-    // Cuerpo del correo
     $mail->Body = "
         <h2 style='color:#2943b9;'>¡Gracias por tu compra en ViajAR!</h2>
         <p>Tu pago fue procesado correctamente.</p>

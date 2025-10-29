@@ -10,7 +10,6 @@ use MercadoPago\Preference;
 use MercadoPago\Item;
 use MercadoPago\SDK;
 
-// Configurar token de prueba de Mercado Pago
 SDK::setAccessToken('APP_USR-4300521315194194-101414-8cb3c58e3049ab571719141b77482b33-2925165946');
 
 if (!isset($_SESSION['id_usuarios']) || !isset($_SESSION['id_reserva'])) {
@@ -20,7 +19,6 @@ if (!isset($_SESSION['id_usuarios']) || !isset($_SESSION['id_reserva'])) {
 $id_usuario = $_SESSION['id_usuarios'];
 $id_reserva = $_SESSION['id_reserva'];
 
-// Traer la reserva
 $reservaModel = new Reserva();
 $reserva = $reservaModel->traerPorId($id_reserva);
 
@@ -34,11 +32,9 @@ if ($monto_total <= 0) {
     die("Error: El monto total de la reserva es inválido.");
 }
 
-// Crear pago pendiente en DB
 $pago = new Pago();
 $id_pago = $pago->crear_pago($id_reserva, $monto_total, 'pendiente', 8, 3); 
 
-// Crear preferencia de Mercado Pago
 $preference = new Preference();
 
 $item = new Item();
@@ -49,20 +45,16 @@ $item->currency_id = "ARS";
 
 $preference->items = [$item];
 
-// URL pública del servidor (ngrok)
 $ngrok_url = "https://rosette-gynomonoecious-aydin.ngrok-free.dev"; 
 
-// Usamos id_pago en las back_urls para identificar el pago
 $preference->back_urls = [
     "success" => "$ngrok_url/controllers/pagos/mercado_pago_exito.php?id_pago=$id_pago",
     "failure" => "$ngrok_url/controllers/pagos/mercado_pago_falla.php?id_pago=$id_pago",
     "pending" => "$ngrok_url/controllers/pagos/mercado_pago_pendiente.php?id_pago=$id_pago"
 ];
 
-// Auto retorno cuando el pago esté aprobado
 $preference->auto_return = "approved";
 
-// Guardar preferencia
 try {
     $preference->save();
     if (!isset($preference->id)) {

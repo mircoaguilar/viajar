@@ -1,6 +1,6 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
-if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [1, 2])) {
+if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [2])) {
     header("Location: ../../index.php?page=login&message=Acceso no autorizado&status=danger");
     exit;
 }
@@ -96,7 +96,7 @@ $toursPendientes = $adminModel->listarToursPendientes('tour');
 
     <div id="tab-tours" class="tab-content">
         <h2>Tours pendientes</h2>
-        <table class="tabla-servicios" data-tipo="tour">
+        <table class="tabla-servicios" data-tipo="tours">
             <thead>
                 <tr>
                     <th>ID</th>

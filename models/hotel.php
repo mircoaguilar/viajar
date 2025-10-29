@@ -11,6 +11,10 @@ class Hotel {
     private $rela_ciudad;
     private $rela_proveedor;
     private $activo;
+    private $estado_revision;
+    private $motivo_rechazo;
+    private $fecha_revision;
+    private $revisado_por;
 
     public function __construct($id_hotel = '', $hotel_nombre = '', $imagen_principal = '', $rela_provincia = '', $rela_ciudad = '', $rela_proveedor = '') {
         $this->id_hotel = $id_hotel;
@@ -20,13 +24,18 @@ class Hotel {
         $this->rela_ciudad = $rela_ciudad;
         $this->rela_proveedor = $rela_proveedor;
         $this->activo = 1;
+        $this->estado_revision = 'pendiente';
+        $this->motivo_rechazo = null;
+        $this->fecha_revision = null;
+        $this->revisado_por = null;
     }
 
-    // LISTAR TODOS
+    // LISTAR TODOS LOS HOTELES ACTIVOS
     public function traer_hoteles() {
         $conexion = new Conexion();
         $query = "
-            SELECT h.id_hotel, h.hotel_nombre, h.imagen_principal, i.descripcion, h.rela_ciudad
+            SELECT h.id_hotel, h.hotel_nombre, h.imagen_principal, i.descripcion, 
+                   h.rela_ciudad, h.estado_revision, h.motivo_rechazo
             FROM hotel h
             LEFT JOIN hoteles_info i ON i.rela_hotel = h.id_hotel
             WHERE h.activo = 1
@@ -35,7 +44,7 @@ class Hotel {
         return $conexion->consultar($query);
     }
 
-    // LISTAR POR ID
+    // TRAER UN HOTEL POR ID
     public function traer_hotel($id_hotel) {
         $conexion = new Conexion();
         $id_hotel = (int)$id_hotel;
@@ -43,7 +52,7 @@ class Hotel {
         return $conexion->consultar($query);
     }
 
-    // GUARDAR
+    // GUARDAR NUEVO HOTEL
     public function guardar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -53,7 +62,6 @@ class Hotel {
         $provincia = (int)$this->rela_provincia;
         $ciudad = (int)$this->rela_ciudad;
 
-        // Obtener id_proveedor real del usuario logueado
         $proveedorModel = new Proveedor();
         $proveedor = $proveedorModel->obtenerPorUsuario($_SESSION['id_usuarios']);
         if (!$proveedor) {
@@ -62,14 +70,21 @@ class Hotel {
         $rela_proveedor = (int)$proveedor['id_proveedores'];
 
         $query = "INSERT INTO hotel 
-                    (hotel_nombre, imagen_principal, rela_provincia, rela_ciudad, rela_proveedor, activo, fecha_alta)
+                    (hotel_nombre, imagen_principal, rela_provincia, rela_ciudad, rela_proveedor, 
+                     activo, estado_revision, fecha_alta)
                   VALUES 
-                    ('$nombre_escapado', '$imagen_escapada', $provincia, $ciudad, $rela_proveedor, 1, NOW())";
+                    ('$nombre_escapado', '$imagen_escapada', $provincia, $ciudad, $rela_proveedor, 
+                     1, 'pendiente', NOW())";
 
-        return $conexion->insertar($query);
+        $id_hotel = $conexion->insertar($query);
+
+        if (!$id_hotel) return false;
+
+        $this->id_hotel = $id_hotel;
+        return $id_hotel;
     }
 
-    // ACTUALIZAR
+    // ACTUALIZAR DATOS DE UN HOTEL
     public function actualizar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -89,43 +104,42 @@ class Hotel {
         return $conexion->actualizar($query);
     }
 
-    // ELIMINAR LÓGICO
+    // ELIMINAR LÓGICAMENTE UN HOTEL
     public function eliminar_logico() {
         $conexion = new Conexion();
         $query = "UPDATE hotel SET activo = 0 WHERE id_hotel=" . (int)$this->id_hotel;
         return $conexion->actualizar($query);
     }
 
-    // LISTAR SOLO LOS DEL PROVEEDOR LOGUEADO
-   public function traer_hoteles_por_usuario($id_usuario) {
-    $conexion = new Conexion();
-    $id_usuario = (int)$id_usuario;
-    $proveedorModel = new Proveedor();
-    $proveedor = $proveedorModel->obtenerPorUsuario($id_usuario);
-    if (!$proveedor) {
-        return [];
-    }
-    $id_proveedor = (int)$proveedor['id_proveedores'];
-    $query = "
-        SELECT h.id_hotel, 
-               h.hotel_nombre, 
-               h.imagen_principal, 
-               i.descripcion, 
-               c.nombre AS ciudad_nombre,
-               p.nombre AS provincia_nombre
-        FROM hotel h
-        LEFT JOIN hoteles_info i ON i.rela_hotel = h.id_hotel
-        INNER JOIN ciudades c ON h.rela_ciudad = c.id_ciudad
-        INNER JOIN provincias p ON h.rela_provincia = p.id_provincia
-        WHERE h.rela_proveedor = $id_proveedor
-          AND h.activo = 1
-        ORDER BY h.fecha_alta DESC
-    ";
-    return $conexion->consultar($query);
+    // LISTAR HOTELES DEL PROVEEDOR LOGUEADO
+    public function traer_hoteles_por_usuario($id_usuario) {
+        $conexion = new Conexion();
+        $id_usuario = (int)$id_usuario;
+        $proveedorModel = new Proveedor();
+        $proveedor = $proveedorModel->obtenerPorUsuario($id_usuario);
+        if (!$proveedor) return [];
+
+        $id_proveedor = (int)$proveedor['id_proveedores'];
+        $query = "
+            SELECT h.id_hotel, 
+                   h.hotel_nombre, 
+                   h.imagen_principal, 
+                   i.descripcion, 
+                   c.nombre AS ciudad_nombre,
+                   p.nombre AS provincia_nombre,
+                   h.estado_revision,
+                   h.motivo_rechazo
+            FROM hotel h
+            LEFT JOIN hoteles_info i ON i.rela_hotel = h.id_hotel
+            INNER JOIN ciudades c ON h.rela_ciudad = c.id_ciudad
+            INNER JOIN provincias p ON h.rela_provincia = p.id_provincia
+            WHERE h.rela_proveedor = $id_proveedor
+            ORDER BY h.fecha_alta DESC
+        ";
+        return $conexion->consultar($query);
     }
 
-
-    // VERIFICAR QUE EL USUARIO SEA EL PROPIETARIO
+    // VERIFICAR SI UN HOTEL PERTENECE AL USUARIO LOGUEADO
     public function verificar_propietario($id_hotel, $id_usuario) {
         $conexion = new Conexion();
         $id_hotel = (int)$id_hotel;
@@ -143,34 +157,29 @@ class Hotel {
         return ($resultado[0]['cuenta'] > 0);
     }
 
+    // BUSCAR HOTELES DISPONIBLES POR DESTINO
     public function buscar($destino, $desde, $hasta) {
-    $conexion = new Conexion();
-    $mysqli = $conexion->getConexion();
-    $destino = $mysqli->real_escape_string($destino);
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+        $destino = $mysqli->real_escape_string($destino);
 
-    $query = "
-        SELECT h.id_hotel, h.hotel_nombre, h.imagen_principal, i.descripcion, h.rela_ciudad
-        FROM hotel h
-        LEFT JOIN hoteles_info i ON i.rela_hotel = h.id_hotel
-        INNER JOIN ciudades c ON h.rela_ciudad = c.id_ciudad
-        WHERE h.activo=1
-    ";
+        $query = "
+            SELECT h.id_hotel, h.hotel_nombre, h.imagen_principal, i.descripcion, h.rela_ciudad
+            FROM hotel h
+            LEFT JOIN hoteles_info i ON i.rela_hotel = h.id_hotel
+            INNER JOIN ciudades c ON h.rela_ciudad = c.id_ciudad
+            WHERE h.activo=1 AND h.estado_revision='aprobado'
+        ";
 
-    if ($destino) {
-        $query .= " AND c.nombre LIKE '%$destino%'";
+        if ($destino) {
+            $query .= " AND c.nombre LIKE '%$destino%'";
+        }
+
+        $query .= " ORDER BY h.fecha_alta DESC";
+
+        return $conexion->consultar($query);
     }
 
-    // filtrar por fechas si se usa $desde y $hasta
-
-    $query .= " ORDER BY h.fecha_alta DESC";
-
-    return $conexion->consultar($query);
-    }
-
-
-
-
-    // GETTERS Y SETTERS
     public function getId_hotel() { return $this->id_hotel; }
     public function setId_hotel($id) { $this->id_hotel = $id; return $this; }
 
@@ -191,5 +200,17 @@ class Hotel {
 
     public function getActivo() { return $this->activo; }
     public function setActivo($activo) { $this->activo = $activo; return $this; }
+
+    public function getEstado_revision() { return $this->estado_revision; }
+    public function setEstado_revision($estado) { $this->estado_revision = $estado; return $this; }
+
+    public function getMotivo_rechazo() { return $this->motivo_rechazo; }
+    public function setMotivo_rechazo($motivo) { $this->motivo_rechazo = $motivo; return $this; }
+
+    public function getFecha_revision() { return $this->fecha_revision; }
+    public function setFecha_revision($fecha) { $this->fecha_revision = $fecha; return $this; }
+
+    public function getRevisado_por() { return $this->revisado_por; }
+    public function setRevisado_por($revisor) { $this->revisado_por = $revisor; return $this; }
 }
 ?>

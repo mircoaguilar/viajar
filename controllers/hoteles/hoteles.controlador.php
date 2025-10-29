@@ -5,40 +5,47 @@ require_once(__DIR__ . '/../../models/hotelInfo.php');
 
 class HotelesControlador {
 
-    // Guardar hotel y su información
     public function guardar() {
-    header('Content-Type: application/json; charset=utf-8');
+        header('Content-Type: application/json; charset=utf-8');
 
-    if (empty($_POST['hotel_nombre']) || empty($_POST['rela_ciudad'])) {
-        echo json_encode([
-            'status' => 'error',
-            'mensaje' => 'Faltan datos obligatorios'
-        ]);
-        exit;
-    }
-
-    // Imagen principal
-    $imagen_principal_nombre = null;
-    if (isset($_FILES['imagen_principal']) && $_FILES['imagen_principal']['error'] === UPLOAD_ERR_OK) {
-        $directorio_destino = __DIR__ . "/../../assets/images/";
-        $nombre_archivo = uniqid() . '_' . basename($_FILES['imagen_principal']['name']);
-        $ruta_destino = $directorio_destino . $nombre_archivo;
-        if (move_uploaded_file($_FILES['imagen_principal']['tmp_name'], $ruta_destino)) {
-            $imagen_principal_nombre = $nombre_archivo;
+        if (empty($_POST['hotel_nombre']) || empty($_POST['rela_ciudad'])) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Faltan datos obligatorios'
+            ]);
+            exit;
         }
-    }
 
-    $hotel = new Hotel();
-    $hotel->setHotel_nombre($_POST['hotel_nombre']);
-    $hotel->setRela_proveedor($_SESSION['id_proveedores']);
-    $hotel->setRela_ciudad($_POST['rela_ciudad']);
-    $hotel->setRela_provincia($_POST['rela_provincia'] ?? null);
-    $hotel->setActivo(1);
-    $hotel->setImagen_principal($imagen_principal_nombre);
+        // Imagen principal
+        $imagen_principal_nombre = null;
+        if (isset($_FILES['imagen_principal']) && $_FILES['imagen_principal']['error'] === UPLOAD_ERR_OK) {
+            $directorio_destino = __DIR__ . "/../../assets/images/";
+            $nombre_archivo = uniqid() . '_' . basename($_FILES['imagen_principal']['name']);
+            $ruta_destino = $directorio_destino . $nombre_archivo;
+            if (move_uploaded_file($_FILES['imagen_principal']['tmp_name'], $ruta_destino)) {
+                $imagen_principal_nombre = $nombre_archivo;
+            }
+        }
 
-    $id_hotel = $hotel->guardar();
+        // Crear hotel
+        $hotel = new Hotel();
+        $hotel->setHotel_nombre($_POST['hotel_nombre']);
+        $hotel->setRela_proveedor($_SESSION['id_proveedores']);
+        $hotel->setRela_ciudad($_POST['rela_ciudad']);
+        $hotel->setRela_provincia($_POST['rela_provincia'] ?? null);
+        $hotel->setActivo(0); 
+        $hotel->setImagen_principal($imagen_principal_nombre);
 
-    if ($id_hotel) {
+        $id_hotel = $hotel->guardar();
+
+        if (!$id_hotel) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Error al guardar el hotel'
+            ]);
+            exit;
+        }
+
         // Fotos adicionales
         $fotos_nombres = [];
         if (isset($_FILES['fotos']) && is_array($_FILES['fotos']['name'])) {
@@ -62,26 +69,16 @@ class HotelesControlador {
         $info->setServicios($_POST['servicios'] ?? '');
         $info->setPoliticas_cancelacion($_POST['politicas_cancelacion'] ?? '');
         $info->setReglas($_POST['reglas'] ?? '');
-        $info->setActivo(1);
-        $info->setFotos(json_encode($fotos_nombres));
+        $info->setFotos(!empty($fotos_nombres) ? json_encode($fotos_nombres) : null);
         $info->guardar();
 
-        // ✅ Devuelve JSON para el AJAX
         echo json_encode([
-            'status' => 'ok',
-            'mensaje' => 'Hotel guardado correctamente',
+            'status' => 'success',
+            'message' => 'Tu hotel fue enviado para revisión. Te notificaremos cuando sea aprobado.',
             'id_hotel' => $id_hotel
         ]);
         exit;
-    } else {
-        echo json_encode([
-            'status' => 'error',
-            'mensaje' => 'Error al guardar el hotel'
-        ]);
-        exit;
     }
-}
-
 
     // Actualizar hotel y su información
     public function actualizar() {
@@ -165,7 +162,6 @@ class HotelesControlador {
         // Marcar también la info como inactiva
         $info = new HotelInfo();
         $info->setRela_hotel($_POST['id_hotel_eliminar']);
-        $info->setActivo(0);
         $info->actualizar();
 
         if ($eliminado) {

@@ -3,6 +3,8 @@ if (!isset($_SESSION['id_usuarios']) || ($_SESSION['id_perfiles'] ?? 0) != 14) {
     header('Location: index.php?page=login&message=Acceso no autorizado.&status=danger');
     exit;
 }
+
+require_once('models/proveedor.php');
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -19,7 +21,7 @@ if (!isset($_SESSION['id_usuarios']) || ($_SESSION['id_perfiles'] ?? 0) != 14) {
   <div class="container">
     <div class="panel">
       <h2>Crear Tour Guiado</h2>
-      <p class="hint">Cargá la información de tu tour para que los clientes puedan reservarlo.</p>
+      <p class="hint">Cargá la información base de tu tour.</p>
 
       <form id="formTour" enctype="multipart/form-data" class="grid grid-2">
         <input type="hidden" name="action" value="guardar">
@@ -41,7 +43,7 @@ if (!isset($_SESSION['id_usuarios']) || ($_SESSION['id_perfiles'] ?? 0) != 14) {
 
         <div>
           <label for="hora_encuentro">Hora de encuentro (HH:MM)</label>
-          <input type="text" id="hora_encuentro" name="hora_encuentro" placeholder="Ej: 02:40" required>
+          <input type="text" id="hora_encuentro" name="hora_encuentro" placeholder="Ej: 14:30" required>
         </div>
 
         <div>
@@ -51,17 +53,19 @@ if (!isset($_SESSION['id_usuarios']) || ($_SESSION['id_perfiles'] ?? 0) != 14) {
 
         <div>
           <label for="direccion">Dirección</label>
-          <input type="text" id="direccion" name="direccion" >
+          <input type="text" id="direccion" name="direccion">
         </div>
 
         <div class="grid" style="grid-column: 1 / -1;">
           <label for="descripcion">Descripción</label>
-          <textarea id="descripcion" name="descripcion"></textarea>
+          <textarea id="descripcion" name="descripcion" maxlength="1000"></textarea>
+          <small id="descripcion-count" class="char-count">0/1000</small>
         </div>
 
         <div>
           <label for="imagen_principal">Imagen principal</label>
           <input type="file" id="imagen_principal" name="imagen_principal" accept="image/*" required>
+          <div id="preview-principal" class="preview-container"></div>
         </div>
 
         <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['csrf'] ?? ''); ?>">
@@ -76,8 +80,8 @@ if (!isset($_SESSION['id_usuarios']) || ($_SESSION['id_perfiles'] ?? 0) != 14) {
   </div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="assets/js/tours_carga.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 <script>
@@ -85,22 +89,15 @@ flatpickr("#duracion_horas", {
     enableTime: true,
     noCalendar: true,
     dateFormat: "H:i",
-    time_24hr: true,
-    defaultHour: 2,
-    defaultMinute: 0
-  });
+    time_24hr: true
+});
 
 flatpickr("#hora_encuentro", {
     enableTime: true,
     noCalendar: true,
     dateFormat: "H:i",
-    time_24hr: true,
-    defaultHour: 2,
-    defaultMinute: 0
-  });
-
-flatpickr("#fecha_inicio", { dateFormat: "Y-m-d", minDate: "today", locale: "es" });
-flatpickr("#fecha_fin", { dateFormat: "Y-m-d", minDate: "today", locale: "es" });
+    time_24hr: true
+});
 </script>
 
 </body>

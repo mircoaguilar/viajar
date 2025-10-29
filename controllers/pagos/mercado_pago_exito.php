@@ -12,7 +12,6 @@ use PHPMailer\PHPMailer\Exception;
 
 date_default_timezone_set('America/Argentina/Cordoba');
 
-// Recuperar parámetros de la URL
 $id_pago = $_GET['id_pago'] ?? null;
 $id_pago_mp = $_GET['payment_id'] ?? null;
 
@@ -25,7 +24,6 @@ $reservaModel = new Reserva();
 $usuarioModel = new Usuario();
 $carritoModel = new Carrito();
 
-// Traer datos del pago
 $pagoData = $pagoModel->traerPorId($id_pago);
 
 if (!$pagoData) {

@@ -40,8 +40,8 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                         <a href="index.php?page=hoteles_reservas" class="btn">Ver</a>
                     </div>
                     <div class="card">
-                        <h3>Cargar Hotel / Habitaciones</h3>
-                        <p>Agrega un nuevo hotel o tipos de habitaciones.</p>
+                        <h3>Cargar Hotel</h3>
+                        <p>Agrega un nuevo hotel.</p>
                         <a href="index.php?page=hoteles_carga" class="btn">Cargar</a>
                     </div>';
                     break;

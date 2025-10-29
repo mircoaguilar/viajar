@@ -9,11 +9,6 @@ if (isset($_GET['action'])) {
             $controlador->mostrar_dashboard();
             break;
 
-        //  (más adelante podremos agregar otras acciones)
-        // case 'obtener_estadisticas':
-        //     $controlador->obtener_estadisticas();
-        //     break;
-
         default:
             header("Location: ../../index.php?page=dashboard_admin&message=Acción no válida&status=danger");
             exit;
@@ -22,7 +17,6 @@ if (isset($_GET['action'])) {
 
 class AdminControlador {
 
-    //  Muestra el panel principal del administrador
     public function mostrar_dashboard() {
         session_start();
         if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [1, 2])) {
@@ -33,7 +27,6 @@ class AdminControlador {
         require_once(__DIR__ . '/../../models/admin.php');
         $adminModel = new Admin();
 
-        // Datos iniciales (por ahora estáticos hasta conectar al modelo real)
         $data = [
             'usuarios_count' => $adminModel->contarUsuarios(),
             'reservas_count' => $adminModel->contarReservas(),
@@ -43,12 +36,4 @@ class AdminControlador {
         require_once(__DIR__ . '/../../views/admin/dashboard_admin.php');
     }
 
-    //  En el futuro: endpoint para AJAX (gráficos, alertas, etc.)
-    /*
-    public function obtener_estadisticas() {
-        $adminModel = new Admin();
-        $estadisticas = $adminModel->obtenerDatosEstadisticos();
-        echo json_encode($estadisticas);
-    }
-    */
 }

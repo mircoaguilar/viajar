@@ -67,3 +67,31 @@ h2 {
 p {
     margin: 0;
 }
+
+.estado {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-transform: capitalize;
+    font-size: 0.9rem;
+}
+
+.estado-pendiente {
+    background: #ffeb99;
+    color: #9a7b00;
+}
+
+.estado-aprobado {
+    background: #c8f7c5;
+    color: #2b7515;
+}
+
+.estado-rechazado {
+    background: #f8d7da;
+    color: #842029;
+}
+
+.btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

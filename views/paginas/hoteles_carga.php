@@ -104,19 +104,8 @@ $provincias = $provinciaModel->traer_provincias();
   </div>
 </main>
 
-<!-- Modal de confirmación -->
-<div id="hotel-guardado-modal" class="modal-overlay" style="display: none;">
-  <div class="modal-content">
-    <h3>¡Hotel Guardado Exitosamente!</h3>
-    <p>El hotel ha sido creado correctamente.</p>
-    <p>¿Deseas continuar y cargar las habitaciones ahora?</p>
-    <div class="modal-actions">
-      <button id="modal-cancelar" class="btn secondary">Ahora no</button>
-      <button id="modal-aceptar" class="btn">Cargar habitaciones</button>
-    </div>
-  </div>
-</div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="assets/js/hotel_carga.js"></script>
 </body>
 </html>
