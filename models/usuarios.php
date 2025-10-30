@@ -104,17 +104,15 @@
 
         public function generar_token_reset($id_usuario) {
     $conexion = new Conexion();
-    $token = bin2hex(random_bytes(32)); // Genera un token aleatorio
-    $expires = date('Y-m-d H:i:s', strtotime('+1 hour')); // Expira en 1 hora
-    $created_at = date('Y-m-d H:i:s'); // Fecha y hora actual
+    $token = bin2hex(random_bytes(32));
+    $expires = date('Y-m-d H:i:s', strtotime('+1 hour')); 
+    $created_at = date('Y-m-d H:i:s'); 
 
-    // Primero, borra tokens antiguos para este usuario si existen
     $delete_query = "DELETE FROM password_resets WHERE id_usuario = '$id_usuario'";
     if (!$conexion->actualizar($delete_query)) {
         throw new Exception("No se pudo eliminar el token anterior.");
     }
 
-    // Inserta el nuevo token
     $query = "INSERT INTO password_resets (id_usuario, token, expires_at, created_at) VALUES ('$id_usuario', '$token', '$expires', '$created_at')";
     if (!$conexion->insertar($query)) {
         throw new Exception("No se pudo insertar el nuevo token.");
@@ -123,8 +121,6 @@
     return $token;
     }
 
-
-    // Método para validar el token recibido del formulario
     public function validar_token_reset($id_usuario, $token) {
     $conexion = new Conexion();
     $current_time = date('Y-m-d H:i:s');
@@ -135,10 +131,9 @@
         throw new Exception("Token inválido o expirado.");
     }
 
-    return true; // Token válido
+    return true; 
     }
 
-    // Método para invalidar/eliminar el token después de usarlo
     public function invalidar_token_reset($id_usuario, $token) {
     $conexion = new Conexion();
     $query = "DELETE FROM password_resets WHERE id_usuario = '$id_usuario' AND token = '$token'";

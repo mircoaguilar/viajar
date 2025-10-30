@@ -5,8 +5,7 @@ function validate() {
     const passError = document.getElementById('id_password_parrafo');
 
     let valid = true;
-
-    // Validar nombre de usuario
+    
     if (nombreInput.value.trim() === '') {
         nombreInput.classList.add('input-alert');
         nombreError.textContent = 'Usuario requerido';
@@ -16,7 +15,6 @@ function validate() {
         nombreError.textContent = '';
     }
 
-    // Validar contraseña
     if (passInput.value.trim() === '') {
         passInput.classList.add('input-alert');
         passError.textContent = 'Contraseña requerida';

@@ -31,7 +31,6 @@ if ($destino || $desde || $hasta) {
 </head>
 <body>
 
-<!-- HERO -->
 <section class="hero-section">
   <div class="hero-content">
     <h1>Encontrá tu transporte en Formosa</h1>
@@ -39,7 +38,7 @@ if ($destino || $desde || $hasta) {
   </div>
 </section>
 
-<!-- BUSCADOR -->
+
 <section class="search-section">
   <div class="search-container">
     <h2>Buscar viaje</h2>

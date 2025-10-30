@@ -26,7 +26,6 @@ if ($action !== 'crear_reserva') {
     exit;
 }
 
-// Usuario logueado
 $userId = $_SESSION['id_usuarios'] ?? null;
 if (!$userId) {
     echo json_encode(['status'=>'error','message'=>'No autenticado']);
@@ -45,7 +44,6 @@ if (!$idhab || !$checkin || !$checkout) {
     exit;
 }
 
-// Fechas y noches
 $inicio = new DateTime($checkin);
 $fin = new DateTime($checkout);
 $noches = max(1, $inicio->diff($fin)->days);
@@ -61,7 +59,6 @@ $mysqli = $conexion->getConexion();
 $mysqli->begin_transaction();
 
 try {
-    // Validar stock
     $fecha = clone $inicio;
     $fechas = [];
     while ($fecha < $fin) {
@@ -72,40 +69,31 @@ try {
         $fecha->modify('+1 day');
     }
 
-    // Calcular precio total
     $precio_base = $habModel->traer_por_id($idhab)['precio_base_noche'] ?? 0;
     $total = $precio_base * $noches * $personas;
     $estadoReserva = 'pendiente';
 
-    // Crear reserva principal
     $id_reserva = $reservaModel->crear_reserva($userId, $total, $estadoReserva);
 
-    // Crear detalle de reserva (tipo hotel)
     $id_detalle_reserva = $reservaModel->crear_detalle($id_reserva, 'hotel', $personas, $precio_base, $total);
 
-    // Detalle específico de hotel con checkin, checkout y noches
     $reservaModel->crear_detalle_hotel($id_detalle_reserva, $idhab, $checkin, $checkout, $noches);
 
-    // Detalle específico de tour (si aplica)
     if (!empty($_POST['id_tour']) && !empty($_POST['fecha_tour'])) {
         $id_tour = (int)$_POST['id_tour'];
         $fecha_tour = $_POST['fecha_tour'];
         $reservaModel->crear_detalle_tour($id_detalle_reserva, $id_tour, $fecha_tour);
     }
 
-    // Actualizar stock temporalmente
     foreach ($fechas as $f) {
         $stockModel->decrementar_stock($idhab, $f, $mysqli);
     }
 
-    // Guardar id_reserva en sesión
     $_SESSION['id_reserva'] = $id_reserva;
 
-    // Crear factura temporal
     $factura_numero = 'F-' . str_pad($id_reserva, 6, '0', STR_PAD_LEFT);
     $facturaModel->crear_factura($factura_numero, $id_reserva);
 
-    // Crear notificación usando la clase Notificacion
     $metadata = ['reserva' => $id_reserva];
     Notificacion::crear(
         $userId,

@@ -37,7 +37,6 @@ class Transporte_Rutas {
         $this->activo = $activo;
     }
 
-    // Traer todas las rutas de un proveedor
     public function traer_rutas_por_proveedor($id_proveedor) {
         $conexion = new Conexion();
         $query = "
@@ -53,7 +52,6 @@ class Transporte_Rutas {
         return $conexion->consultar($query);
     }
 
-    // Traer ruta por ID
     public function traer_por_id($id_ruta) {
         $conexion = new Conexion();
         $id_ruta = (int)$id_ruta;
@@ -70,7 +68,6 @@ class Transporte_Rutas {
         return $res ? $res[0] : null;
     }
 
-    // Guardar nueva ruta
     public function guardar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -80,7 +77,6 @@ class Transporte_Rutas {
         $origen = (int)$this->rela_ciudad_origen;
         $destino = (int)$this->rela_ciudad_destino;
 
-        // Asegurar formato HH:MM:SS
         $duracion = trim($this->duracion);
         if (strlen($duracion) === 5) {
             $duracion .= ':00';
@@ -111,9 +107,6 @@ class Transporte_Rutas {
         exit;
     }
 
-
-
-    // Actualizar ruta
     public function actualizar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -142,7 +135,6 @@ class Transporte_Rutas {
         return $conexion->actualizar($query);
     }
 
-    // Eliminar lógico
     public function eliminar_logico() {
         $conexion = new Conexion();
         $id = (int)$this->id_ruta;
@@ -150,7 +142,6 @@ class Transporte_Rutas {
         return $conexion->actualizar($query);
     }
 
-    // Getters y Setters
     public function getId_ruta() { return $this->id_ruta; }
     public function setId_ruta($id_ruta) { $this->id_ruta = $id_ruta; return $this; }
 

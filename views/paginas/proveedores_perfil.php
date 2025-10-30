@@ -1,5 +1,5 @@
 <?php
-$perfiles_permitidos = [3, 5, 13, 14]; // Hospedaje, Transporte, Encargado General, Guía
+$perfiles_permitidos = [3, 5, 13, 14]; 
 if (!isset($_SESSION['id_usuarios']) || !in_array($_SESSION['id_perfiles'], $perfiles_permitidos)) {
     header('Location: index.php?page=login&message=Acceso no autorizado. Inicie sesión como proveedor.&status=danger');
     exit;
@@ -27,7 +27,7 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
             <section class="grid-cards">
             <?php
             switch ($_SESSION['id_perfiles']) {
-                case 3: // Hospedaje
+                case 3: 
                     echo '
                     <div class="card">
                         <h3>Mis Hoteles</h3>
@@ -46,7 +46,7 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                     </div>';
                     break;
 
-                case 5: // Transporte
+                case 5: 
                     echo '
                     <div class="card">
                         <h3>Mis Transportes</h3>
@@ -70,7 +70,7 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                     </div>';
                     break;
 
-                case 14: // Guía
+                case 14:
                     echo '
                     <div class="card">
                         <h3>Mis Tours</h3>
@@ -95,7 +95,7 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                     break;
 
 
-                case 13: // Encargado General
+                case 13: 
                     echo '
                     <div class="card">
                         <h3>Mis Servicios</h3>

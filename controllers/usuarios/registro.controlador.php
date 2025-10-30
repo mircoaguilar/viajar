@@ -8,7 +8,6 @@ require_once('../../models/usuarios.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // --- 1. Recibir y limpiar datos ---
     $nombre = trim($_POST['nombre'] ?? '');
     $apellido = trim($_POST['apellido'] ?? '');
     $dni = trim($_POST['dni'] ?? '');
@@ -19,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    // Convertir fecha a formato MySQL YYYY-MM-DD
     $fecha_nac_mysql = null;
     $date_parts = explode('/', $fecha_nac_str);
     if (count($date_parts) === 3) {
@@ -29,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = [];
 
     try {
-        // --- 2. Guardar persona ---
         $persona = new Persona('', $nombre, $apellido, $dni, $fecha_nac_mysql, 1);
         $id_persona = $persona->guardar();
 
@@ -41,25 +38,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
-        // --- 3. Guardar domicilio ---
         $domicilio = new Domicilio($domicilio_desc, $id_persona);
         $domicilio->guardar();
 
-        // --- 4. Guardar contacto (teléfono) ---
-        $id_tipo_contacto_movil = 1; // Tipo contacto: móvil
+        $id_tipo_contacto_movil = 1; 
         $contacto_tel = new Contacto($telefono, $id_persona, $id_tipo_contacto_movil);
         $contacto_tel->guardar();
 
-        // --- 5. Guardar usuario ---
         $usuario = new Usuario('', $username, $email, $password, $id_persona, 1);
         $usuario->guardar();
 
-        // --- 6. Registro exitoso: redirigir a login ---
         header('Location: ../../index.php?page=login&message=' . urlencode('¡Registro exitoso! Ya podes iniciar sesión.') . '&status=success');
         exit();
 
     } catch (Exception $e) {
-        // Captura errores generales
         $errors[] = "Ocurrió un error durante el registro: " . $e->getMessage();
         $_SESSION['errors'] = $errors;
         $_SESSION['form_data'] = $_POST;
@@ -68,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 } else {
-    // Si no es POST, redirige al formulario
     header('Location: ../../index.php?page=registro');
     exit();
 }

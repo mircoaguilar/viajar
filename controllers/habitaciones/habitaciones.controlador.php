@@ -4,7 +4,6 @@ require_once(__DIR__ . '/../../models/hotel_habitaciones.php');
 
 header('Content-Type: application/json');
 
-// Detectar acción: POST para guardar, GET para traer habitaciones
 $action = $_POST['action'] ?? $_GET['action'] ?? null;
 
 if (!$action) {
@@ -27,7 +26,6 @@ switch ($action) {
         }
 
         try {
-            // Procesar fotos (si existen)
             $fotosGuardadas = [];
             if (!empty($_FILES['fotos']['name'][0])) {
                 $carpetaDestino = __DIR__ . '/../../assets/images/';
@@ -44,7 +42,6 @@ switch ($action) {
                 }
             }
 
-            // Guardar en la base de datos
             $habitacion = new Hotel_Habitaciones();
             $habitacion->setRela_hotel($id_hotel);
             $habitacion->setRela_tipo_habitacion($tipo);

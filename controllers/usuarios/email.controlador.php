@@ -4,37 +4,30 @@ require_once ('../../models/usuarios.php');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Obtiene email y origen (admin o público)
 $email_destino = $_GET['email'] ?? null;
 $origin = $_GET['origin'] ?? 'public';
 
-// Valida email
 if (!$email_destino || !filter_var($email_destino, FILTER_VALIDATE_EMAIL)) {
     $redirect_page = $origin === 'admin' ? 'usuarios' : 'login';
     header("Location: /viajAR/index.php?page=$redirect_page&message=Email inválido o no proporcionado para el restablecimiento.&status=danger");
     exit;
 }
 
-// Busca usuario por email
 $usuario_model = new Usuario();
 $usuario_model->setUsuarios_email($email_destino);
 $user_data_array = $usuario_model->validar_email(); 
 
-// Si no existe, envía mensaje genérico (evita filtrar emails)
 if (empty($user_data_array) || !isset($user_data_array[0]['id_usuarios'])) {
     $redirect_page = $origin === 'admin' ? 'usuarios' : 'login';
     header("Location: /viajAR/index.php?page=$redirect_page&message=Solicitud de restablecimiento procesada. Si el email existe, recibirá un enlace.&status=success");
     exit;
 }
 
-// Genera token de restablecimiento
 $id_usuario_para_reset = $user_data_array[0]['id_usuarios']; 
 $reset_token = $usuario_model->generar_token_reset($id_usuario_para_reset);
 
-// Construye enlace de restablecimiento
 $reset_link = "http://localhost/viajAR/index.php?page=cambiar_password&id_usuario=" . urlencode($id_usuario_para_reset) . "&token=" . urlencode($reset_token);
 
-// Configura PHPMailer
 $phpmailer = new PHPMailer(true); 
 
 try {
@@ -43,7 +36,7 @@ try {
     $phpmailer->SMTPAuth = true;
     $phpmailer->Port = 587; 
     $phpmailer->Username = 'mircoaguilar02@gmail.com';
-    $phpmailer->Password = 'ztfd efur zara esyo'; // ⚠️ Considerar mover a config seguro
+    $phpmailer->Password = 'ztfd efur zara esyo'; 
     $phpmailer->CharSet = 'UTF-8';
 
     $phpmailer->setFrom('mircoaguilar02@gmail.com', 'Área de Sistemas ViajAR');
@@ -63,7 +56,6 @@ try {
 
     $phpmailer->send();
 
-    // Redirección con mensaje de éxito
     $redirect_page = $origin === 'admin' ? 'usuarios' : 'login';
     header("Location: /viajAR/index.php?page=$redirect_page&message=Email de restablecimiento enviado correctamente.&status=success");
     exit;

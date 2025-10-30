@@ -5,8 +5,7 @@ error_reporting(E_ALL);
 
 session_start();
 
-// solo usuarios proveedores 
-$perfiles_permitidos = [3,5,13,14]; // hospedaje, transporte, encargado, guía
+$perfiles_permitidos = [3,5,13,14]; 
 if (!isset($_SESSION['id_usuarios']) || !in_array($_SESSION['id_perfiles'] ?? 0, $perfiles_permitidos)) {
     header('HTTP/1.1 403 Forbidden');
     echo "Acceso no autorizado.";
@@ -27,7 +26,6 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 $usuario_id = $_SESSION['id_usuarios'];
 
-// obtener id_proveedor 
 $provModel = new Proveedor();
 $prov = $provModel->obtenerPorUsuario($usuario_id);
 $id_proveedor = $prov ? (int)$prov['id_proveedores'] : null;
@@ -35,7 +33,6 @@ $id_proveedor = $prov ? (int)$prov['id_proveedores'] : null;
 $data = [];
 $label = 'export';
 
-// función auxiliar para limpiar/normalizar filas
 function normalize_row($r) {
     $out = [];
     foreach ($r as $k => $v) {
@@ -56,7 +53,7 @@ try {
                 if (method_exists($tourModel, 'traer_tours_por_usuario')) {
                     $data = $tourModel->traer_tours_por_usuario($usuario_id);
                 } else {
-                    $data = $tourModel->traer_tours(); // fallback
+                    $data = $tourModel->traer_tours(); 
                 }
             } else {
                 $data = $tourModel->traer_tours();
@@ -97,20 +94,17 @@ try {
         $rows = array_values($rows);
     }
 
-    // Si no hay datos, generamos un Excel vacío con un mensaje
     if (empty($rows)) {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'No hay registros para exportar.');
     } else {
-        // construir cabeceras dinámicas a partir de keys del primer row
         $first = $rows[0];
         $headers = array_keys($first);
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        // escribir encabezados
         $col = 'A';
         foreach ($headers as $h) {
             $labelHeader = ucwords(str_replace('_', ' ', $h));
@@ -118,14 +112,11 @@ try {
             $col++;
         }
 
-        // escribir filas
         $rnum = 2;
         foreach ($rows as $row) {
             $col = 'A';
             foreach ($headers as $h) {
-                // si es numérico y parece número, dejar como número
                 $val = $row[$h];
-                // intentar normalizar fechas cortas (YYYY-MM-DD) para que Excel las trate como fecha
                 if (preg_match('/^\d{4}\-\d{2}\-\d{2}$/', $val)) {
                     $sheet->setCellValue($col . $rnum, $val);
                     $sheet->getStyle($col . $rnum)->getNumberFormat()->setFormatCode('yyyy-mm-dd');
@@ -137,7 +128,6 @@ try {
             $rnum++;
         }
 
-        // 
         $highestColumn = $sheet->getHighestColumn();
         $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
         for ($i = 1; $i <= $highestColumnIndex; $i++) {
@@ -145,7 +135,6 @@ try {
         }
     }
 
-    // download
     $filename = $label . '_' . date('Ymd_His') . '.xlsx';
     if (ob_get_length()) ob_end_clean();
 
@@ -158,7 +147,6 @@ try {
     exit;
 
 } catch (\Throwable $e) {
-    // si algo falla, devolvemos mensaje simple (útil para debugging)
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode(['status'=>'error','msg'=>$e->getMessage()]);
     exit;

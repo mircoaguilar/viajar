@@ -50,7 +50,7 @@ class PerfilControlador {
         }
 
         $perfil = new Perfil();
-        $perfil->setId_perfiles($_POST['id_perfiles']); // Se obtiene del hidden input
+        $perfil->setId_perfiles($_POST['id_perfiles']);
         $perfil->setPerfiles_nombre($_POST['perfiles_nombre']);
 
         if ($perfil->actualizar()) {

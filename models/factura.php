@@ -18,7 +18,6 @@ class Factura {
         $this->rela_reserva = $rela_reserva;
     }
 
-    // CREAR FACTURA
     public function crear() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -35,7 +34,6 @@ class Factura {
         return $id;
     }
 
-    // OBTENER FACTURA POR ID
     public function traerPorId($id_factura) {
         $conexion = new Conexion();
         $id_factura = (int)$id_factura;
@@ -45,7 +43,6 @@ class Factura {
         return !empty($facturas) ? $facturas[0] : null;
     }
 
-    // OBTENER FACTURA POR RESERVA
     public function traerPorReserva($id_reserva) {
         $conexion = new Conexion();
         $id_reserva = (int)$id_reserva;
@@ -67,7 +64,6 @@ class Factura {
     }
 
 
-    // GETTERS Y SETTERS
     public function getId_factura() { return $this->id_factura; }
     public function setId_factura($id) { $this->id_factura = $id; return $this; }
 

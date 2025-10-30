@@ -1,11 +1,9 @@
 <?php
-// Verificamos que el cliente esté logueado y tenga el perfil correspondiente
 if (!isset($_SESSION['id_usuarios']) || $_SESSION['perfiles_nombre'] !== 'Cliente') {
     header('Location: index.php?page=login&message=Acceso no autorizado. Inicie sesión como cliente.&status=danger');
     exit;
 }
 
-// Obtenemos los datos del cliente desde la sesión o la base de datos
 $nombre_cliente = $_SESSION['usuarios_nombre_usuario'] ?? 'Cliente';
 $email_cliente = $_SESSION['usuarios_email'] ?? 'N/A';
 $telefono_cliente = $_SESSION['usuarios_telefono'] ?? 'N/A';

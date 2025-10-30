@@ -62,6 +62,7 @@ class Tour {
                   FROM tours t
                   JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
                   WHERE t.activo = 1
+                  AND t.estado_revision = 'aprobado'
                   ORDER BY t.id_tour DESC";
         return $conexion->consultar($query);
     }

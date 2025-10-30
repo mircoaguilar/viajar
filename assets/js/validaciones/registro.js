@@ -1,16 +1,13 @@
-/*Para casos donde el ID del contenedor de error no coincide con el nombre del input*/
 const ERROR_ID_MAP = {
   username: 'error-usuario',
 };
 
-/* Utilidades de error */
 function getErrorElement(input) {
   const defaultId = `error-${input.name}`;
   const mappedId = ERROR_ID_MAP[input.name] || defaultId;
   return document.getElementById(mappedId);
 }
 
-/* Limpia visualmente el error de un input */
 function limpiarError(input) {
   input.classList.remove('input-error', 'input-alert');
   const err = getErrorElement(input);
@@ -20,7 +17,6 @@ function limpiarError(input) {
   }
 }
 
-/* Muestra un error debajo de un input */
 function mostrarError(input, mensaje) {
   input.classList.add('input-error');
   const err = getErrorElement(input);
@@ -32,13 +28,11 @@ function mostrarError(input, mensaje) {
   }
 }
 
-/* Validacion de email */
 function validarEmail(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 }
 
-/* Validacion de usuario por ajax */
 function validate_username(event) {
   const usernameInput = event.target;
   limpiarError(usernameInput);
@@ -71,7 +65,6 @@ function validate_username(event) {
   });
 }
 
-/* Validacion de email por ajax */
 function validate_email(event) {
   const emailInput = event.target;
   limpiarError(emailInput);
@@ -103,7 +96,6 @@ function validate_email(event) {
   });
 }
 
-/* Funcion para mostrar/ocultar contraseña */
 function togglePassword(id, hideId, showId) {
   const input = document.getElementById(id);
   const hideEye = document.getElementById(hideId);
@@ -121,26 +113,22 @@ function togglePassword(id, hideId, showId) {
   }
 }
 
-/* Asignar eventos y validaciones */
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.querySelector('form');
   if (!form) return;
 
   const inputs = form.querySelectorAll('input');
 
-  // Eventos de blur para validar con AJAX
   const usernameInput = document.getElementById('id_nombre_usuario');
   if (usernameInput) usernameInput.addEventListener('blur', validate_username);
 
   const emailInput = document.getElementById('id_email');
   if (emailInput) emailInput.addEventListener('blur', validate_email);
 
-  // Limpiar errores mientras se escribe
   inputs.forEach((input) => {
     input.addEventListener('input', () => limpiarError(input));
   });
 
-  // Validar todo antes de enviar el formulario
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     let valido = true;
@@ -151,7 +139,6 @@ document.addEventListener('DOMContentLoaded', function () {
       const nombre = input.name;
       const valor = input.value.trim();
 
-      // Validaciones simples por campo
       if (nombre === 'nombre' && valor === '') {
         mostrarError(input, 'El nombre es obligatorio');
         valido = false;

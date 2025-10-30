@@ -19,7 +19,6 @@ if (!$id_hotel) {
     exit;
 }
 
-// Verificar que el hotel pertenezca al usuario logueado
 $id_usuario = $_SESSION['id_usuarios'];
 if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
     header('Location: index.php?page=proveedores_perfil&message=Acceso denegado al hotel seleccionado&status=danger');
@@ -42,14 +41,12 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
             <h2>Cargar Habitaciones</h2>
             <p class="hint">Agregá las habitaciones del hotel. Podés cargar varias y previsualizarlas antes de guardar.</p>
 
-            <!-- Contenedor de alertas -->
             <div id="form-alert" style="display:none;" class="alert"></div>
 
             <form id="form-habitaciones" class="grid grid-2" method="POST" enctype="multipart/form-data" action="controllers/hotel_habitaciones/hotel_habitaciones.controlador.php">
                 <input type="hidden" name="action" value="guardar">
                 <input type="hidden" name="rela_hotel" value="<?= htmlspecialchars($id_hotel) ?>">
 
-                <!-- Tipo de habitación -->
                 <div>
                     <label for="nombre_tipo_habitacion">Tipo de Habitación</label>
                     <select id="nombre_tipo_habitacion" name="rela_tipo_habitacion" >
@@ -61,21 +58,18 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
                     <div class="error"></div>
                 </div>
 
-                <!-- Capacidad -->
                 <div>
                     <label for="capacidad_maxima">Capacidad máxima</label>
                     <input type="number" id="capacidad_maxima" name="capacidad_maxima" min="1" >
                     <div class="error"></div>
                 </div>
 
-                <!-- Precio -->
                 <div>
                     <label for="precio_base_noche">Precio base por noche</label>
                     <input type="number" id="precio_base_noche" name="precio_base_noche" min="0" step="0.01" >
                     <div class="error"></div>
                 </div>
 
-                <!-- Descripción -->
                 <div class="grid" style="grid-column: 1 / -1;">
                     <label for="descripcion_unidad">Descripción</label>
                     <textarea id="descripcion_unidad" name="descripcion" maxlength="200" ></textarea>
@@ -83,7 +77,6 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
                     <div class="error"></div>
                 </div>
 
-                <!-- Fotos -->
                 <div class="grid" style="grid-column: 1 / -1;">
                     <label for="fotos_habitacion">Fotos de la habitación</label>
                     <input type="file" id="fotos_habitacion" name="fotos[]" multiple accept="image/jpeg,image/png">
@@ -91,12 +84,10 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
                     <div class="error"></div>
                 </div>
 
-                <!-- Botón de previsualizar -->
                 <div class="grid" style="grid-column: 1 / -1;">
                     <button type="button" id="previsualizar" class="btn">Previsualizar</button>
                 </div>
 
-                <!-- Tabla de previsualización -->
                 <table id="tabla-preview" class="table" style="display:none;">
                     <thead>
                         <tr>
@@ -110,7 +101,6 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
                     <tbody></tbody>
                 </table>
 
-                <!-- Botones finales -->
                 <div class="actions" style="grid-column: 1 / -1;">
                     <button type="submit" class="btn">Guardar Habitación</button>
                     <a href="index.php?page=proveedores_perfil" class="btn secondary">Cancelar</a>
@@ -120,7 +110,6 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
     </div>
 </main>
 
-<!-- Modal de alerta de éxito -->
 <div id="custom-alert" style="display:none;">
     <div>
         <p id="custom-alert-message"></p>

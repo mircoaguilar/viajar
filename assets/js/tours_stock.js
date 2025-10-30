@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Generar rango de fechas
   function generarRangoFechas(desde, hasta) {
     const fechas = [];
     const inicio = new Date(desde);
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return fechas;
   }
 
-  // PREVISUALIZAR
   btnPrevisualizar.addEventListener('click', () => {
     const idTour = selectTour.value;
     const nombreTour = selectTour.options[selectTour.selectedIndex]?.text || '';
@@ -58,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Limpiar tabla y mostrar preview
     tbody.innerHTML = '';
     fechas.forEach(f => {
       const fila = document.createElement('tr');
@@ -73,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
     tablaPreview.style.display = 'table';
   });
 
-  // ENVIAR FORMULARIO (AJAX)
   form.addEventListener('submit', e => {
     e.preventDefault();
 

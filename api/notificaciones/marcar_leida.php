@@ -16,7 +16,6 @@ if (!$id) {
     exit;
 }
 
-// Conectar DB
 $conexion = new Conexion();
 $mysqli = $conexion->getConexion();
 

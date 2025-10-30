@@ -31,14 +31,12 @@ if ($destino || $desde || $hasta) {
 <body>
 
 
-<!-- HERO -->
 <section class="hero-section">
   <div class="hero-content">
     <h1>Encontrá tu alojamiento en Formosa</h1>
   </div>
 </section>
 
-<!-- BUSCADOR DE HOTELES -->
 <section class="search-section">
   <div class="search-container">
     <form class="search-form" method="GET">
@@ -66,8 +64,6 @@ if ($destino || $desde || $hasta) {
   </div>
 </section>
 
-
-<!-- LISTADO DE HOTELES -->
 <section class="hoteles">
   <h2>Hoteles disponibles</h2>
   <div class="tarjetas">

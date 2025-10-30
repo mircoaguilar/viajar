@@ -21,10 +21,8 @@ $total_items = $id_usuario ? $carritoModel->contar_items($id_usuario) : 0;
     </ul>
 </div>
 
-<!-- Overlay -->
 <div id="overlay" class="overlay"></div>
 
-<!-- Contenido principal -->
 <div id="main" class="contenido">
     <div class="top-bar">
         <div class="left-links">
@@ -39,7 +37,6 @@ $total_items = $id_usuario ? $carritoModel->contar_items($id_usuario) : 0;
         </div>
 
         <div class="right-links">
-            <!-- Notificaciones -->
             <div class="notifications-wrapper">
                 <button id="notifications" aria-label="Ver notificaciones">
                     <i class="fa-solid fa-bell"></i>
@@ -53,8 +50,6 @@ $total_items = $id_usuario ? $carritoModel->contar_items($id_usuario) : 0;
                 </div>
             </div>
 
-
-            <!-- Carrito -->
             <div class="carrito-wrapper">
                 <a href="index.php?page=clientes_carrito" class="carrito-icon" aria-label="Ver carrito">
                     <i class="fa-solid fa-cart-shopping"></i>
@@ -62,10 +57,8 @@ $total_items = $id_usuario ? $carritoModel->contar_items($id_usuario) : 0;
                 </a>
             </div>
 
-            <!-- Usuario -->
             <span class="user-name"><?php echo htmlspecialchars($_SESSION['usuarios_nombre_usuario'] ?? ''); ?></span>
 
-            <!-- Menú toggle -->
             <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menú">
                 <i class="fa-solid fa-bars"></i>
             </button>

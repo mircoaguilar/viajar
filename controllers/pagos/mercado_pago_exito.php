@@ -55,7 +55,7 @@ $reservaModel->actualizar();
 $carrito_activo = $carritoModel->traer_carrito_activo($id_usuario);
 if ($carrito_activo) {
     $carritoModel->setId_carrito($carrito_activo['id_carrito']);
-    $carritoModel->limpiar_carrito_usuario($id_usuario); // Limpiar el carrito
+    $carritoModel->limpiar_carrito_usuario($id_usuario); 
 }
 
 unset($_SESSION['carrito'], $_SESSION['carrito_total']);

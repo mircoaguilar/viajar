@@ -30,7 +30,6 @@ class Hotel {
         $this->revisado_por = null;
     }
 
-    // LISTAR TODOS LOS HOTELES ACTIVOS
     public function traer_hoteles() {
         $conexion = new Conexion();
         $query = "
@@ -39,12 +38,12 @@ class Hotel {
             FROM hotel h
             LEFT JOIN hoteles_info i ON i.rela_hotel = h.id_hotel
             WHERE h.activo = 1
+            AND h.estado_revision = 'aprobado'
             ORDER BY h.fecha_alta DESC
         ";
         return $conexion->consultar($query);
     }
 
-    // TRAER UN HOTEL POR ID
     public function traer_hotel($id_hotel) {
         $conexion = new Conexion();
         $id_hotel = (int)$id_hotel;
@@ -52,7 +51,6 @@ class Hotel {
         return $conexion->consultar($query);
     }
 
-    // GUARDAR NUEVO HOTEL
     public function guardar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -84,7 +82,6 @@ class Hotel {
         return $id_hotel;
     }
 
-    // ACTUALIZAR DATOS DE UN HOTEL
     public function actualizar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -104,14 +101,12 @@ class Hotel {
         return $conexion->actualizar($query);
     }
 
-    // ELIMINAR LÓGICAMENTE UN HOTEL
     public function eliminar_logico() {
         $conexion = new Conexion();
         $query = "UPDATE hotel SET activo = 0 WHERE id_hotel=" . (int)$this->id_hotel;
         return $conexion->actualizar($query);
     }
 
-    // LISTAR HOTELES DEL PROVEEDOR LOGUEADO
     public function traer_hoteles_por_usuario($id_usuario) {
         $conexion = new Conexion();
         $id_usuario = (int)$id_usuario;
@@ -139,7 +134,6 @@ class Hotel {
         return $conexion->consultar($query);
     }
 
-    // VERIFICAR SI UN HOTEL PERTENECE AL USUARIO LOGUEADO
     public function verificar_propietario($id_hotel, $id_usuario) {
         $conexion = new Conexion();
         $id_hotel = (int)$id_hotel;
@@ -157,7 +151,6 @@ class Hotel {
         return ($resultado[0]['cuenta'] > 0);
     }
 
-    // BUSCAR HOTELES DISPONIBLES POR DESTINO
     public function buscar($destino, $desde, $hasta) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();

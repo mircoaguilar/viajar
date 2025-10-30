@@ -16,7 +16,6 @@ class HotelesControlador {
             exit;
         }
 
-        // Imagen principal
         $imagen_principal_nombre = null;
         if (isset($_FILES['imagen_principal']) && $_FILES['imagen_principal']['error'] === UPLOAD_ERR_OK) {
             $directorio_destino = __DIR__ . "/../../assets/images/";
@@ -27,7 +26,6 @@ class HotelesControlador {
             }
         }
 
-        // Crear hotel
         $hotel = new Hotel();
         $hotel->setHotel_nombre($_POST['hotel_nombre']);
         $hotel->setRela_proveedor($_SESSION['id_proveedores']);
@@ -46,7 +44,6 @@ class HotelesControlador {
             exit;
         }
 
-        // Fotos adicionales
         $fotos_nombres = [];
         if (isset($_FILES['fotos']) && is_array($_FILES['fotos']['name'])) {
             $directorio_destino = __DIR__ . "/../../assets/images/";
@@ -61,7 +58,6 @@ class HotelesControlador {
             }
         }
 
-        // Info del hotel
         $info = new HotelInfo();
         $info->setRela_hotel($id_hotel);
         $info->setDireccion($_POST['direccion'] ?? '');
@@ -80,7 +76,6 @@ class HotelesControlador {
         exit;
     }
 
-    // Actualizar hotel y su información
     public function actualizar() {
         if (empty($_POST['id_hotel']) || empty($_POST['hotel_nombre']) || empty($_POST['rela_ciudad'])) {
             $id = htmlspecialchars($_POST['id_hotel'] ?? '');
@@ -88,7 +83,6 @@ class HotelesControlador {
             exit;
         }
 
-        // Datos básicos del hotel
         $hotel = new Hotel();
         $hotel->setId_hotel($_POST['id_hotel']);
         $hotel->setHotel_nombre($_POST['hotel_nombre']);
@@ -96,7 +90,6 @@ class HotelesControlador {
         $hotel->setRela_provincia($_POST['rela_provincia'] ?? null);
         $hotel->setActivo(1);
 
-        // Imagen principal nueva (si se sube otra)
         if (isset($_FILES['imagen_principal']) && $_FILES['imagen_principal']['error'] === UPLOAD_ERR_OK) {
             $directorio_destino = __DIR__ . "/../../assets/images/";
             $nombre_archivo = uniqid() . '_' . basename($_FILES['imagen_principal']['name']);
@@ -108,7 +101,6 @@ class HotelesControlador {
 
         $hotel_actualizado = $hotel->actualizar();
 
-        // Info
         $info = new HotelInfo();
         $info->setRela_hotel($_POST['id_hotel']);
         $info->setDireccion($_POST['direccion'] ?? '');
@@ -117,7 +109,6 @@ class HotelesControlador {
         $info->setPoliticas_cancelacion($_POST['politicas_cancelacion'] ?? '');
         $info->setReglas($_POST['reglas'] ?? '');
 
-        // Fotos nuevas
         $fotos_nombres = [];
         if (isset($_FILES['fotos']) && is_array($_FILES['fotos']['name'])) {
             $directorio_destino = __DIR__ . "/../../assets/images/";
@@ -146,20 +137,17 @@ class HotelesControlador {
         exit;
     }
 
-    // Eliminar hotel (borrado lógico)
     public function eliminar() {
         if (empty($_POST['id_hotel_eliminar'])) {
             header("Location: ../../index.php?page=proveedores_perfil&message=ID no especificado para eliminar&status=danger");
             exit;
         }
 
-        // Marcar hotel como inactivo
         $hotel = new Hotel();
         $hotel->setId_hotel($_POST['id_hotel_eliminar']);
         $hotel->setActivo(0);
         $eliminado = $hotel->actualizar();
 
-        // Marcar también la info como inactiva
         $info = new HotelInfo();
         $info->setRela_hotel($_POST['id_hotel_eliminar']);
         $info->actualizar();
@@ -173,7 +161,6 @@ class HotelesControlador {
     }
 }
 
-// Enrutamiento de acciones
 if (isset($_POST['action'])) {
     $controlador = new HotelesControlador();
     switch ($_POST['action']) {

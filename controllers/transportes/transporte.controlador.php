@@ -12,7 +12,6 @@ header('Content-Type: application/json');
 
 class TransportesControlador {
 
-    // Listar transportes (para vistas normales, no AJAX)
     public function listar_transportes() {
         if (!isset($_SESSION['id_usuarios']) || ($_SESSION['id_perfiles'] ?? 0) != 3) {
             header('Location: index.php?page=login&message=Acceso no autorizado.&status=danger');
@@ -21,7 +20,6 @@ class TransportesControlador {
 
         $id_usuario = $_SESSION['id_usuarios'];
 
-        // Aseguramos tener id_proveedores
         if (!isset($_SESSION['id_proveedores'])) {
             $proveedorModel = new Proveedor();
             $proveedor = $proveedorModel->obtenerPorUsuario($id_usuario);
@@ -39,7 +37,6 @@ class TransportesControlador {
         require('views/paginas/transportes_mis_transportes.php');
     }
 
-    // Guardar transporte (AJAX)
     public function guardar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (empty($_POST['transporte_matricula']) || empty($_POST['transporte_capacidad']) || empty($_POST['rela_tipo_transporte'])) {
@@ -61,7 +58,6 @@ class TransportesControlador {
                 $_SESSION['id_proveedores'] ?? null
             );
 
-            // Imagen principal
             if (!empty($_FILES['imagen_principal']['name'])) {
                 $nombreArchivo = time() . "_" . basename($_FILES['imagen_principal']['name']);
                 $rutaDestino = __DIR__ . '/../../assets/images/' . $nombreArchivo;
@@ -88,7 +84,6 @@ class TransportesControlador {
         }
     }
 
-    // Editar transporte (AJAX)
     public function editar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id_transporte'] ?? null;
@@ -126,7 +121,6 @@ class TransportesControlador {
         }
     }
 
-    // Eliminar transporte (AJAX)
     public function eliminar() {
         $id = $_POST['id_transporte'] ?? null;
         if (!$id) {
@@ -146,7 +140,6 @@ class TransportesControlador {
     }
 }
 
-// Router
 if (isset($_POST['action'])) {
     $controlador = new TransportesControlador();
 

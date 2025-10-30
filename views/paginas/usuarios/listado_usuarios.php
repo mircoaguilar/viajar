@@ -23,7 +23,7 @@ $usuarios->page_size = $page_size;
 $usuarios->current_page = $current_page; 
 $result_usuarios = $usuarios->traer_usuarios(); 
 
-$total_rows = 0; // Inicializar en 0
+$total_rows = 0; 
 $result_usuarios_cantidad_array = $usuarios->traer_usuarios_cantidad();
 if (!empty($result_usuarios_cantidad_array) && isset($result_usuarios_cantidad_array[0]['total'])) {
     $total_rows = $result_usuarios_cantidad_array[0]['total'];
@@ -83,7 +83,7 @@ if (isset($_GET['id'])) {
                 <p id="error-persona" class="alerta-error"></p> 
                 <select name="rela_personas" id="rela_personas"
                     <?php echo ($editing_mode) ? 'disabled' : ''; ?> > <option value="">Seleccionar la persona correspondiente</option>
-                    <?php foreach ($personas as $persona_data){ // Cambiado $persona a $persona_data para evitar conflicto de nombres ?>
+                    <?php foreach ($personas as $persona_data){  ?>
                         <option value="<?php echo htmlspecialchars($persona_data['id_personas']); ?>"
                             <?php echo ($editing_mode && $usuario_rela_persona_form == $persona_data['id_personas']) ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($persona_data['personas_nombre'] . ' ' . $persona_data['personas_apellido'] . ' - ' . $persona_data['personas_dni']); ?>
@@ -109,7 +109,7 @@ if (isset($_GET['id'])) {
                 <p id="error-perfil" class="alerta-error"></p>
                 <select name="rela_perfiles" id="rela_perfiles" >
                     <option value="">Seleccionar un perfil</option>
-                    <?php foreach ($perfiles as $perfil_data){ // Cambiado $perfil a $perfil_data ?>
+                    <?php foreach ($perfiles as $perfil_data){  ?>
                         <option value="<?php echo htmlspecialchars($perfil_data['id_perfiles']); ?>"
                             <?php echo ($editing_mode && $usuario_rela_perfil_form == $perfil_data['id_perfiles']) ? 'selected' : ''; ?>>
                             <?php echo htmlspecialchars($perfil_data['perfiles_nombre']); ?>
@@ -203,7 +203,6 @@ if (isset($_GET['id'])) {
 <div id="editar-persona-modal" style="display:none; position:fixed; top:5%; left:50%; transform:translateX(-50%); background:#fff; border:1px solid #ccc; padding:30px; z-index:1000; width:600px; max-width:90%;">
   <h3>Datos personales</h3>
   <div id="datos-persona-lectura">
-    <!-- los datos de la persona en modo lectura -->
   </div>
   <div id="datos-persona-edicion" style="display:none;">
     <p style="color:#c00; font-weight:bold;">

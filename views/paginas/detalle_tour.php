@@ -14,7 +14,6 @@ if (!$tour) {
     die("Error: Tour no encontrado.");
 }
 
-// Traer fechas disponibles desde stock
 $tourStockModel = new Tour_Stock();
 $fechas_disponibles = $tourStockModel->traer_fechas_disponibles($id_tour);
 ?>
@@ -28,14 +27,11 @@ $fechas_disponibles = $tourStockModel->traer_fechas_disponibles($id_tour);
 </head>
 <body>
     <div class="tour-detalle">
-        <!-- Imagen principal arriba -->
         <div class="imagen-principal">
             <img src="assets/images/<?= htmlspecialchars($tour['imagen_principal']); ?>" alt="Imagen del tour">
         </div>
 
-        <!-- Contenedor de info y mapa -->
         <div class="tour-contenedor">
-            <!-- Columna izquierda: info -->
             <div class="tour-info">
                 <h1><?= htmlspecialchars($tour['nombre_tour']); ?></h1>
                 <p><strong>Duración:</strong> <?= htmlspecialchars($tour['duracion_horas']); ?> horas</p>

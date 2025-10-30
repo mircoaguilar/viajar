@@ -15,7 +15,7 @@ $tipos = $tipoModel->traer_tipos_transportes();
   <title>Cargar Transporte</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="assets/css/mi_perfil_proveedor.css">
-  <link rel="stylesheet" href="assets/css/hotel_carga.css"> <!-- lo reutilizamos -->
+  <link rel="stylesheet" href="assets/css/hotel_carga.css"> 
 </head>
 <body>
 

@@ -19,7 +19,6 @@ class Admin {
         $this->activo = $activo;
     }
 
-    // Contar usuarios activos
     public function contarUsuarios() {
         $conexion = new Conexion();
         $query = "SELECT COUNT(*) AS total FROM usuarios WHERE activo = 1";
@@ -27,7 +26,6 @@ class Admin {
         return $res[0]['total'] ?? 0;
     }
 
-    // Contar reservas
     public function contarReservas() {
         $conexion = new Conexion();
         $query = "SELECT COUNT(*) AS total FROM reservas";
@@ -35,7 +33,6 @@ class Admin {
         return $res[0]['total'] ?? 0;
     }
 
-    // Obtener ingresos totales confirmados
     public function obtenerIngresosTotales() {
         $conexion = new Conexion();
         $query = "SELECT COALESCE(SUM(total),0) AS total FROM reservas WHERE activo = 1";
@@ -43,7 +40,6 @@ class Admin {
         return $res[0]['total'] ?? 0;
     }
 
-    // Listar últimos usuarios
     public function traerUltimosUsuarios($limite = 5) {
         $conexion = new Conexion();
         $limite = (int)$limite;
@@ -63,9 +59,6 @@ class Admin {
         return $conexion->consultar($query);
     }
 
-
-
-    // Listar últimas reservas
     public function traerUltimasReservas($limite = 5) {
         $conexion = new Conexion();
         $limite = (int)$limite;
@@ -91,7 +84,6 @@ class Admin {
     }
 
 
-    // Datos para gráfico
     public function obtenerReservasPorMes() {
         $conexion = new Conexion();
         $query = "
@@ -111,7 +103,6 @@ class Admin {
         return $res;
     }
 
-    // Listar hoteles pendientes de aprobación
     public function listarHotelesPendientes() {
         $conexion = new Conexion();
         $query = "
@@ -131,7 +122,6 @@ class Admin {
         return $conexion->consultar($query);
     }
 
-    // Listar transportes pendientes de aprobación
     public function listarTransportesPendientes() {
         $conexion = new Conexion();
         $query = "
@@ -154,7 +144,6 @@ class Admin {
         return $conexion->consultar($query);
     }
 
-    // Listar tours pendientes de aprobación
     public function listarToursPendientes() {
         $conexion = new Conexion();
         $query = "
@@ -256,10 +245,6 @@ class Admin {
         return $conexion->actualizar($query);
     }
 
-
-
-
-    // Getters & Setters
     public function getId_admin() { return $this->id_admin; }
     public function setId_admin($id) { $this->id_admin = $id; return $this; }
 

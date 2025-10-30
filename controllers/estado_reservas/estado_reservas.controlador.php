@@ -1,7 +1,6 @@
 <?php
 require_once(__DIR__ . '/../../models/estado_reserva.php');
 
-// Si llega una acción por POST, la procesamos
 if (isset($_POST['action'])) {
     $controlador = new EstadoReservaControlador();
 
@@ -23,7 +22,6 @@ if (isset($_POST['action'])) {
 
 class EstadoReservaControlador {
 
-    // Guardar un nuevo estado de reserva
     public function guardar() {
         if (empty($_POST['nombre_estado'])) {
             header("Location: ../../index.php?page=estado_reserva&message=El nombre del estado es obligatorio&status=danger");
@@ -41,7 +39,6 @@ class EstadoReservaControlador {
         exit;
     }
 
-    // Actualizar un estado existente
     public function actualizar() {
         if (empty($_POST['id_estado_reserva']) || empty($_POST['nombre_estado'])) {
             header("Location: ../../index.php?page=estado_reserva&message=Datos incompletos&status=danger");
@@ -60,7 +57,6 @@ class EstadoReservaControlador {
         exit;
     }
 
-    // Eliminar un estado (eliminación lógica)
     public function eliminar() {
         if (empty($_POST['id_estado_eliminar'])) {
             header("Location: ../../index.php?page=estado_reserva&message=ID no especificado para eliminar&status=danger");

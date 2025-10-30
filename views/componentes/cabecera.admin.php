@@ -8,7 +8,6 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [2])
     <ul>
         <li><strong>Menú administrador</strong></li>
 
-        <!-- Dropdown: Tablas maestras -->
         <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn">
                 <i class="fa-solid fa-database"></i> Tablas maestras
@@ -33,7 +32,6 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [2])
             </ul>
         </li>
 
-        <!-- Otros links -->
         <li><a href="index.php?page=administrador_perfil"><i class="fa-solid fa-user"></i> Mi perfil</a></li>
         <li><a href="index.php?page=dashboard_admin"><i class="fa fa-chart-line"></i> Dashboard</a></li>
         <li><a href="index.php?page=revision_servicios"><i class="fa-solid fa-check-square"></i> Revisión de servicios</a></li>

@@ -44,7 +44,6 @@ class TipoDocumento {
         return $conexion->actualizar($query);
     }
 
-    // Getters y setters
     public function getId_tipo_documento() { return $this->id_tipo_documento; }
     public function setId_tipo_documento($id_tipo_documento) { $this->id_tipo_documento = $id_tipo_documento; return $this; }
     public function getNombre() { return $this->nombre; }

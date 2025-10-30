@@ -1,4 +1,3 @@
-// Valida si un nombre de usuario ya existe en la base de datos
 function validate_username(event) {
     const usernameInput = event.target;
     const errorUserElement = document.getElementById('error-usuario');
@@ -36,7 +35,6 @@ function validate_username(event) {
     });
 }
 
-// Valida si un correo electrónico ya existe en la base de datos
 function validate_email(event) {
     const emailInput = event.target;
     const errorEmailElement = document.getElementById('error-email');
@@ -80,13 +78,11 @@ function validate_email(event) {
     });
 }
 
-// Valida formato de email
 function validarEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 }
 
-// Validar formulario de creación de usuario
 
 function validarFormulario() {
     const personaSelect = document.getElementById("rela_personas");
@@ -140,7 +136,6 @@ function validarFormulario() {
     }
 }
 
-// Validar formulario de registro de usuario
 
 function validarRegistro() {
     const usuario = document.getElementById("id_nombre_usuario_registro");
@@ -184,7 +179,6 @@ function validarRegistro() {
     }
 }
 
-// Mostrar/Ocultar contraseña
 
 function togglePassword() {
     const passwordInput = document.getElementById("id_password_registro");
@@ -204,16 +198,12 @@ function togglePassword() {
     }
 }
 
-// SELECT2 
 
 $(document).ready(function() {
     $('#rela_personas').select2();
     $('#rela_perfiles').select2();
 });
 
-// MODAL DE EDICIÓN DE PERSONA 
-
-// Abrir modal con datos de persona (modo lectura)
 $(document).on('click', '.editar-persona-btn', function(e) {
     e.preventDefault();
     const personaId = $(this).data('persona-id');
@@ -257,27 +247,23 @@ $(document).on('click', '.editar-persona-btn', function(e) {
     });
 });
 
-// Habilitar edición
 $('#boton-editar-persona').on('click', function() {
     $('#datos-persona-lectura').hide();
     $('#datos-persona-edicion').show();
     $(this).hide();
 });
 
-// Cancelar edición
 $('#cancelar-edicion-persona').on('click', function() {
     $('#datos-persona-edicion').hide();
     $('#datos-persona-lectura').show();
     $('#boton-editar-persona').show();
 });
 
-// Cerrar modal
 $('#cerrar-modal-persona, #overlay').on('click', function() {
     $('#editar-persona-modal').fadeOut();
     $('#overlay').fadeOut();
 });
 
-// Guardar cambios persona
 $('#form-editar-persona').on('submit', function(e) {
     e.preventDefault();
     const formData = $(this).serialize();

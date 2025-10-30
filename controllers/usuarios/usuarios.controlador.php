@@ -23,7 +23,6 @@ if (isset($_POST["action"])) {
 
 class UsuarioControlador {
 
-    // Crear un nuevo usuario
     public function guardar(){
         if (empty($_POST['usuarios_nombre_usuario']) || empty($_POST['usuarios_email']) ||
             empty($_POST['rela_perfiles']) || empty($_POST['rela_personas'])) {
@@ -41,7 +40,6 @@ class UsuarioControlador {
         header("Location: ../../index.php?page=usuarios&message=Usuario guardado correctamente&status=success");
     }
 
-    // Eliminar un usuario
     public function eliminar() {
         $usuario = new Usuario();
         $usuario->setId_usuarios($_POST['id_usuarios']);
@@ -53,7 +51,6 @@ class UsuarioControlador {
         }
     }
 
-    // Actualizar datos de usuario (y opcionalmente de persona asociada)
     public function actualizar() {
         if (empty($_POST['rela_personas'])) {
             header("Location: ../../index.php?page=usuarios&message=Error: La persona asociada es obligatoria&status=danger");
@@ -67,7 +64,6 @@ class UsuarioControlador {
         $usuario->setRela_perfiles($_POST['rela_perfiles']);
         $usuario->setRela_personas($_POST['rela_personas']);
 
-        // Actualizar datos de la persona asociada si se enviaron
         if (isset($_POST['personas_nombre'], $_POST['personas_apellido'], $_POST['personas_dni'])) {
             require_once(__DIR__ . '/../../models/personas.php');
             $persona_model = new Persona();
@@ -85,20 +81,17 @@ class UsuarioControlador {
         }
     }
 
-    // Listar usuarios
     public function listar_usuarios() {
         $usuario = new Usuario();
         return $usuario->traer_usuarios(); 
     }
 
-    // Cambiar contraseña
     public function cambiar_password(){
         $id_usuario_form = $_POST['id_usuarios'] ?? null;
         $new_password = $_POST['usuarios_password'] ?? null;
         $confirm_password = $_POST['password_confirm'] ?? null;
         $token_recibido = $_POST['token'] ?? null;
 
-        // Validar campos
         if (empty($new_password) || empty($confirm_password)) {
             $redirect_params = "message=Todos los campos son obligatorios&status=danger";
             if ($id_usuario_form) $redirect_params .= "&id_usuario=" . htmlspecialchars($id_usuario_form);
@@ -118,7 +111,6 @@ class UsuarioControlador {
         $usuario = new Usuario();
         $is_reset_flow = false;
 
-        // Validar flujo de reset vía token
         if ($token_recibido && $id_usuario_form) {
             $is_reset_flow = true;
             if (!$usuario->validar_token_reset($id_usuario_form, $token_recibido)) {
@@ -135,17 +127,14 @@ class UsuarioControlador {
             }
         }
 
-        // Actualizar contraseña
         $usuario->setId_usuarios($id_usuario_form);
         $usuario->setUsuarios_password($new_password);
         $usuario->cambiar_password();
 
-        // Invalidar token si fue reset
         if ($is_reset_flow) {
             $usuario->invalidar_token_reset($id_usuario_form, $token_recibido);
         }
 
-        // Cerrar sesión actual por seguridad
         session_start();
         session_unset();
         session_destroy();

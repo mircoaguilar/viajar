@@ -48,7 +48,6 @@ class Moneda {
         return $conexion->actualizar($query);
     }
 
-    // Getters y setters
     public function getId_moneda() { return $this->id_moneda; }
     public function setId_moneda($id_moneda) { $this->id_moneda = $id_moneda; return $this; }
     public function getNombre() { return $this->nombre; }

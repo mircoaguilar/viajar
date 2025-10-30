@@ -21,7 +21,6 @@ if (isset($_POST["action"])) {
 
 class TiposHabitacionesControlador {
 
-    // Guarda un nuevo tipo de habitación
     public function guardar() {
         if (empty($_POST['nombre']) || empty($_POST['capacidad'])) {
             header("Location: ../../index.php?page=tipos_habitaciones&message=Nombre y capacidad son obligatorios&status=danger");
@@ -40,7 +39,6 @@ class TiposHabitacionesControlador {
         exit;
     }
 
-    // Actualiza un tipo de habitación existente
     public function actualizar() {
         if (empty($_POST['id_tipo_habitacion']) || empty($_POST['nombre']) || empty($_POST['capacidad'])) {
             $id = htmlspecialchars($_POST['id_tipo_habitacion'] ?? '');
@@ -61,7 +59,6 @@ class TiposHabitacionesControlador {
         exit;
     }
 
-    // Elimina un tipo de habitación de forma lógica
     public function eliminar() {
         if (empty($_POST['id_tipo_habitacion_eliminar'])) {
             header("Location: ../../index.php?page=tipos_habitaciones&message=ID no especificado para eliminar&status=danger");

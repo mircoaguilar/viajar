@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Recuperar Contraseña</title>
-    <link rel="stylesheet" href="assets/css/login.css"> <!-- Usamos tu login.css -->
+    <link rel="stylesheet" href="assets/css/login.css"> 
     <script src="https://kit.fontawesome.com/4b139d7caf.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -13,10 +13,6 @@
             <div class="logo">
                 <a href="index.php">ViajAR</a>
             </div>
-           <!-- <div class="right-links"> 
-                <a href="index.php?page=registro" class="button">Crear una cuenta</a>
-                <a href="index.php?page=login" class="button">Iniciar Sesión</a>
-            </div>-->
         </div>
     </div>
 

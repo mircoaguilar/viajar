@@ -21,7 +21,6 @@ if (isset($_POST["action"])) {
 
 class TiposProveedoresControlador {
 
-    // Guarda un nuevo tipo de proveedor
     public function guardar() {
         if (empty($_POST['nombre'])) {
             header("Location: ../../index.php?page=tipos_proveedores&message=El nombre es obligatorio&status=danger");
@@ -39,7 +38,6 @@ class TiposProveedoresControlador {
         exit;
     }
 
-    // Actualiza un tipo de proveedor existente
     public function actualizar() {
         if (empty($_POST['id_tipo_proveedor']) || empty($_POST['nombre'])) {
             $id = htmlspecialchars($_POST['id_tipo_proveedor'] ?? '');
@@ -59,7 +57,6 @@ class TiposProveedoresControlador {
         exit;
     }
 
-    // Elimina un tipo de proveedor de forma lógica
     public function eliminar() {
         if (empty($_POST['id_tipo_proveedor_eliminar'])) {
             header("Location: ../../index.php?page=tipos_proveedores&message=ID no especificado para eliminar&status=danger");

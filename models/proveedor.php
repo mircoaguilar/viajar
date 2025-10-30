@@ -95,8 +95,6 @@ class Proveedor {
     return $resultado ? $resultado[0] : null;
     }
 
-
-    // Getters y setters
     public function getId_proveedores() { return $this->id_proveedores; }
     public function setId_proveedores($id) { $this->id_proveedores = $id; return $this; }
 

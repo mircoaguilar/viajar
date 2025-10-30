@@ -21,10 +21,8 @@ class Notificacion
             $conexion = new Conexion();
             $mysqli = $conexion->getConexion();
 
-            // Convertir metadata a JSON
             $metadataJson = json_encode($metadata, JSON_UNESCAPED_UNICODE);
 
-            // Insertar en la base de datos
             $sql = "INSERT INTO notificaciones (destinario_usuario, titulo, mensaje, tipo, leido, metadata, creado_en)
                     VALUES (?, ?, ?, ?, 0, ?, NOW())";
             $stmt = $mysqli->prepare($sql);
@@ -32,7 +30,6 @@ class Notificacion
             $stmt->execute();
             $stmt->close();
 
-            // Enviar en tiempo real por Pusher
             $pusher = ConexionPusher::getPusher();
             $canal = "private-user-{$usuario}";
 

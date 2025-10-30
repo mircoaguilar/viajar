@@ -35,7 +35,6 @@ class Transporte {
         $this->activo = $activo;
     }
 
-    // Listar todos los transportes activos
     public function traer_transportes() {
         $conexion = new Conexion();
         $query = "
@@ -49,7 +48,6 @@ class Transporte {
         return $conexion->consultar($query);
     }
 
-    // Listar transportes por usuario
     public function traer_transportes_por_usuario($id_usuario) {
         $conexion = new Conexion();
         $id_usuario = (int)$id_usuario;
@@ -80,7 +78,6 @@ class Transporte {
         return $conexion->consultar($query);
     }
 
-    // Traer transporte por ID
     public function traer_transporte($id) {
         $conexion = new Conexion();
         $id = (int)$id;
@@ -94,7 +91,6 @@ class Transporte {
         return $res ? $res[0] : null;
     }
 
-    // Guardar transporte
     public function guardar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -124,7 +120,6 @@ class Transporte {
         }
     }
 
-    // Actualizar transporte
     public function actualizar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -148,14 +143,12 @@ class Transporte {
         return $conexion->actualizar($query);
     }
 
-    // Eliminar lógico
     public function eliminar_logico() {
         $conexion = new Conexion();
         $query = "UPDATE transporte SET activo = 0 WHERE id_transporte = " . (int)$this->id_transporte;
         return $conexion->actualizar($query);
     }
 
-    // Verificar propietario
     public function verificar_propietario($id_transporte, $id_proveedor) {
         $conexion = new Conexion();
         $id_transporte = (int)$id_transporte;
@@ -204,7 +197,6 @@ class Transporte {
     }
 
 
-    // Getters & Setters
     public function getId_transporte() { return $this->id_transporte; }
     public function setId_transporte($id) { $this->id_transporte = $id; return $this; }
 

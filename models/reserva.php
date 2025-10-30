@@ -22,7 +22,6 @@ class Reserva {
         $this->activo = 1;
     }
 
-    // Crear reserva principal
     public function crear_reserva($id_usuario, $total, $estado) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -36,7 +35,6 @@ class Reserva {
         return $id_reserva;
     }
 
-    // Crear detalle de reserva y devolver ID del detalle
     public function crear_detalle($id_reserva, $tipo_servicio, $cantidad, $precio_unitario, $subtotal) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -44,13 +42,12 @@ class Reserva {
         $stmt = $mysqli->prepare("INSERT INTO detalle_reservas (rela_reservas, tipo_servicio, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("isidd", $id_reserva, $tipo_servicio, $cantidad, $precio_unitario, $subtotal);
         $stmt->execute();
-        $id_detalle = $stmt->insert_id; // ID del detalle insertado
+        $id_detalle = $stmt->insert_id; 
         $stmt->close();
 
         return $id_detalle;
     }
 
-    // Crear detalle específico de hotel
     public function crear_detalle_hotel($id_detalle_reserva, $id_habitacion, $check_in, $check_out, $noches) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -93,7 +90,6 @@ class Reserva {
         return $id_detalle_tour;
     }
 
-    // Traer reservas de un usuario
     public function traerPorUsuario($userId) {
         $conexion = new Conexion();
         $userId = (int)$userId;
@@ -102,7 +98,6 @@ class Reserva {
         return $conexion->consultar($query);
     }
 
-    // Traer detalles de una reserva
     public function traerDetallesPorId($id_reserva) {
         $conexion = new Conexion();
         $id_reserva = (int)$id_reserva;
@@ -111,7 +106,6 @@ class Reserva {
         return $conexion->consultar($query);
     }
 
-    // traer detalle específico de hotel
     public function traerDetalleHotel($id_detalle_reserva) {
         $conexion = new Conexion();
         $id_detalle_reserva = (int)$id_detalle_reserva;
@@ -150,7 +144,6 @@ class Reserva {
         return $conexion->consultar($query);
     }
 
-    // Traer una reserva por su ID
     public function traerPorId($id_reserva) {
         $conexion = new Conexion();
         $id_reserva = (int)$id_reserva;
@@ -165,7 +158,6 @@ class Reserva {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
 
-        // Asegurarse que el ID de reserva esté definido
         if (!$this->id_reservas) {
             throw new Exception("No se puede actualizar: ID de reserva no definido.");
         }
@@ -182,7 +174,6 @@ class Reserva {
         return $resultado;
     }
 
-    // GETTERS Y SETTERS
     public function getId_reservas() { return $this->id_reservas; }
     public function setId_reservas($id) { $this->id_reservas = $id; return $this; }
 

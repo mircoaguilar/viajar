@@ -10,7 +10,7 @@ class Persona {
     private $personas_fecha_nac;
     private $activo; 
 
-    public function __construct($id_personas = '', $personas_nombre = '', $personas_apellido = '', $personas_dni = '', $personas_fecha_nac = '', $activo = 1) { // <-- Valor por defecto 1
+    public function __construct($id_personas = '', $personas_nombre = '', $personas_apellido = '', $personas_dni = '', $personas_fecha_nac = '', $activo = 1) { 
         $this->id_personas = $id_personas;
         $this->personas_nombre = $personas_nombre;
         $this->personas_apellido = $personas_apellido;

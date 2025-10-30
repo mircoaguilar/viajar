@@ -1,7 +1,6 @@
 <?php
 require_once(__DIR__ . '/../../models/proveedor.php');
 
-// Enrutamiento según la acción enviada por POST
 if (isset($_POST["action"])) {
     $controlador = new ProveedoresControlador();
     switch ($_POST["action"]) {
@@ -21,8 +20,6 @@ if (isset($_POST["action"])) {
 }
 
 class ProveedoresControlador {
-
-    // Guardar un nuevo proveedor
     public function guardar() {
         if (empty($_POST['razon_social']) || empty($_POST['cuit']) || empty($_POST['rela_tipo_proveedor'])) {
             header("Location: ../../index.php?page=proveedores&message=Datos obligatorios incompletos&status=danger");
@@ -45,7 +42,6 @@ class ProveedoresControlador {
         exit;
     }
 
-    // Actualizar un proveedor existente
     public function actualizar() {
         if (empty($_POST['id_proveedores']) || empty($_POST['razon_social']) || empty($_POST['cuit']) || empty($_POST['rela_tipo_proveedor'])) {
             $id = htmlspecialchars($_POST['id_proveedores'] ?? '');
@@ -69,7 +65,6 @@ class ProveedoresControlador {
         exit;
     }
 
-    // Eliminación lógica de un proveedor
     public function eliminar() {
         if (empty($_POST['id_proveedor_eliminar'])) {
             header("Location: ../../index.php?page=proveedores&message=ID no especificado para eliminar&status=danger");
@@ -87,7 +82,6 @@ class ProveedoresControlador {
         exit;
     }
 
-    // LISTAR HOTELS DEL USUARIO LOGUEADO
     public function mis_hoteles($id_usuario) {
         require_once(__DIR__ . '/../../models/hotel.php');
         $hotelModel = new Hotel();

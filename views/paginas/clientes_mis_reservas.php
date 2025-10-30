@@ -15,7 +15,6 @@ $hotelModel = new Hotel();
 $tourModel = new Tour();
 $pagoModel = new Pago();
 
-// Traer reservas del cliente
 $reservas = $reservaModel->traerPorUsuario($userId);
 ?>
 <!DOCTYPE html>
@@ -47,9 +46,8 @@ $reservas = $reservaModel->traerPorUsuario($userId);
                     $detalles = $reservaModel->traerDetallesPorId($reserva['id_reservas']);
                     $servicios = [];
                     $totalPersonas = 0;
-                    $ticketEnlace = '/viajar/clientes/ticket.php?id=' . $reserva['id_reservas']; // Enlace único para "Ver Ticket"
+                    $ticketEnlace = '/viajar/clientes/ticket.php?id=' . $reserva['id_reservas']; 
                     
-                    // Recorrer los detalles para agregar los servicios
                     foreach ($detalles as $det) {
                         if ($det['tipo_servicio'] === 'hotel') {
                             $habitacion = $hotelModel->traer_hoteles_por_usuario($det['rela_servicio']);
@@ -62,10 +60,8 @@ $reservas = $reservaModel->traerPorUsuario($userId);
                         }
                     }
 
-                    // Unir todos los servicios
                     $serviciosStr = implode(", ", $servicios);
 
-                    // Estado de la reserva
                     $estadoReserva = ucfirst($reserva['reservas_estado']);
                 ?>
                 <tr>
@@ -74,7 +70,6 @@ $reservas = $reservaModel->traerPorUsuario($userId);
                     <td>$<?= number_format($reserva['total'], 0, ',', '.') ?></td>
                     <td><?= $estadoReserva ?></td>
                     <td>
-                        <!-- Solo un botón para ver el ticket de la reserva completa -->
                         <a href="<?= $ticketEnlace ?>" class="btn-ver-ticket">Ver Ticket</a>
                     </td>
                 </tr>

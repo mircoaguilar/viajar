@@ -21,7 +21,6 @@ if (isset($_POST["action"])) {
 
 class ProvinciaControlador {
 
-    // Guardar nueva provincia
     public function guardar() {
         if (empty($_POST['nombre'])) {
             header("Location: ../../index.php?page=provincias&message=El nombre es obligatorio&status=danger");
@@ -38,7 +37,6 @@ class ProvinciaControlador {
         exit;
     }
 
-    // Actualizar provincia existente
     public function actualizar() {
         if (empty($_POST['id_provincia']) || empty($_POST['nombre'])) {
             header("Location: ../../index.php?page=provincias&message=Datos incompletos&status=danger");
@@ -56,7 +54,6 @@ class ProvinciaControlador {
         exit;
     }
 
-    // Eliminación lógica de provincia
     public function eliminar() {
         if (empty($_POST['id_provincia_eliminar'])) {
             header("Location: ../../index.php?page=provincias&message=ID no especificado&status=danger");

@@ -21,7 +21,6 @@ if (isset($_POST["action"])) {
 
 class TipoTransporteControlador {
 
-    // Guarda un nuevo tipo de transporte
     public function guardar() {
         if (empty($_POST['descripcion'])) {
             header("Location: ../../index.php?page=tipos_transportes&message=La descripción es obligatoria&status=danger");
@@ -38,7 +37,6 @@ class TipoTransporteControlador {
         exit;
     }
 
-    // Actualiza un tipo de transporte existente
     public function actualizar() {
         if (empty($_POST['id_tipo_transporte']) || empty($_POST['descripcion'])) {
             $id = htmlspecialchars($_POST['id_tipo_transporte'] ?? '');
@@ -57,7 +55,6 @@ class TipoTransporteControlador {
         exit;
     }
 
-    // Elimina un tipo de transporte de forma lógica
     public function eliminar() {
         if (empty($_POST['id_tipo_transporte_eliminar'])) {
             header("Location: ../../index.php?page=tipos_transportes&message=ID no especificado para eliminar&status=danger");

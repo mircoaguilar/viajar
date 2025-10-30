@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
 
       const formData = new FormData(formRuta);
-      formData.append('ajax', '1'); // forzar AJAX
+      formData.append('ajax', '1'); 
 
       fetch('controllers/transportes/rutas.controlador.php?action=guardar', {
         method: 'POST',

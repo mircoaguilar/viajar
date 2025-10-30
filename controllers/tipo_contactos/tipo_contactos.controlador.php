@@ -23,7 +23,6 @@ if (isset($_POST["action"])) {
 
 class TipoContactoControlador {
 
-    // Guarda un nuevo tipo de contacto
     public function guardar() {
         if (empty($_POST['tipo_contacto_descripcion'])) {
             header("Location: ../../index.php?page=tipo_contactos&message=La descripción del tipo de contacto es obligatoria&status=danger");
@@ -41,7 +40,6 @@ class TipoContactoControlador {
         exit;
     }
 
-    // Actualiza un tipo de contacto existente
     public function actualizar() {
         if (empty($_POST['id_tipo_contacto']) || empty($_POST['tipo_contacto_descripcion'])) {
             $id_tipo_contacto_redir = htmlspecialchars($_POST['id_tipo_contacto'] ?? '');
@@ -60,7 +58,6 @@ class TipoContactoControlador {
         exit;
     }
 
-    // Elimina un tipo de contacto de forma lógica
     public function eliminar() {
         if (empty($_POST['id_tipo_contacto_eliminar'])) {
             header("Location: ../../index.php?page=tipo_contactos&message=ID de tipo de contacto no especificado para eliminar&status=danger");

@@ -7,7 +7,6 @@ require_once(__DIR__ . '/../../models/proveedor.php');
 
 class RutasControlador {
 
-    // Listar rutas del proveedor
     public function listar() {
         $this->verificarSesionProveedor();
 
@@ -19,7 +18,6 @@ class RutasControlador {
         require_once(__DIR__ . '/../../views/paginas/transportes_rutas_listar.php');
     }
 
-    // Guardar nueva ruta
     public function guardar() {
         $this->verificarSesionProveedor();
         $this->validarMetodoPOST();
@@ -35,7 +33,6 @@ class RutasControlador {
         $precio = floatval($_POST['precio_por_persona'] ?? 0);
         $rela_transporte = (int)($_POST['rela_transporte'] ?? 0);
 
-        // Validaciones
         if (!$nombre || !$trayecto || !$origen || !$destino || !$rela_transporte) {
             $this->responder(['status'=>'error', 'message'=>'Faltan datos obligatorios']);
         }
@@ -46,7 +43,6 @@ class RutasControlador {
             $this->responder(['status'=>'error', 'message'=>'El precio debe ser positivo']);
         }
 
-        // Validar propiedad del transporte
         $transporteModel = new Transporte();
         if (!$transporteModel->verificar_propietario($rela_transporte, $id_proveedor)) {
             $this->responder(['status'=>'error', 'message'=>'El vehículo no pertenece a tu cuenta']);
@@ -68,7 +64,6 @@ class RutasControlador {
         else $this->responder(['status'=>'error', 'message'=>'Error al guardar la ruta']);
     }
 
-    // Editar ruta
     public function editar() {
         $this->verificarSesionProveedor();
         $this->validarMetodoPOST();
@@ -82,13 +77,11 @@ class RutasControlador {
         $ruta = $rutaModel->traer_por_id($id_ruta);
         if (!$ruta) $this->responder(['status'=>'error','message'=>'Ruta no encontrada']);
 
-        // Validar propiedad del transporte asociado
         $transporteModel = new Transporte();
         if (!$transporteModel->verificar_propietario($ruta['rela_transporte'], $id_proveedor)) {
             $this->responder(['status'=>'error','message'=>'No autorizado para editar esta ruta']);
         }
 
-        // Validaciones
         $nombre = trim($_POST['nombre'] ?? '');
         $trayecto = trim($_POST['trayecto'] ?? '');
         $origen = (int)($_POST['rela_ciudad_origen'] ?? 0);
@@ -105,7 +98,6 @@ class RutasControlador {
             $this->responder(['status'=>'error', 'message'=>'El precio debe ser positivo']);
         }
 
-        // Actualizar campos
         $rutaModel->setId_ruta($id_ruta)
                   ->setNombre($nombre)
                   ->setTrayecto($trayecto)
@@ -121,7 +113,6 @@ class RutasControlador {
         else $this->responder(['status'=>'error','message'=>'Error al actualizar ruta']);
     }
 
-    // Eliminar ruta (lógico)
     public function eliminar() {
         $this->verificarSesionProveedor();
 
@@ -146,7 +137,6 @@ class RutasControlador {
         else $this->responder(['status'=>'error','message'=>'Error al eliminar ruta']);
     }
 
-    // --- Helpers ---
     private function responder(array $payload) {
         $isAjax = (
             !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
@@ -189,7 +179,6 @@ class RutasControlador {
     }
 }
 
-// --- Router ---
 $action = $_REQUEST['action'] ?? null;
 $ctrl = new RutasControlador();
 

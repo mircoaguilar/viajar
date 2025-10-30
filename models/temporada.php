@@ -52,7 +52,6 @@ class Temporada {
         return $conexion->actualizar($query);
     }
 
-    // Getters y setters
     public function getId_temporada() { return $this->id_temporada; }
     public function setId_temporada($id_temporada) { $this->id_temporada = $id_temporada; return $this; }
     public function getNombre() { return $this->nombre; }

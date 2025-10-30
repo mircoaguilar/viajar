@@ -7,7 +7,6 @@ header('Content-Type: application/json');
 
 class ToursControlador {
 
-    // Listar tours del proveedor logueado
     public function listar_tours() {
         if (!isset($_SESSION['id_usuarios']) || !in_array($_SESSION['id_perfiles'], [13, 14])) {
             header('Location: index.php?page=login&message=Acceso no autorizado.&status=danger');
@@ -33,7 +32,6 @@ class ToursControlador {
         require('views/paginas/tours_mis_tours.php');
     }
 
-    // Guardar tour 
     public function guardar() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
@@ -71,7 +69,6 @@ class ToursControlador {
             $_SESSION['id_proveedores'] ?? null
         );
 
-        // Imagen principal
         if (!empty($_FILES['imagen_principal']['name'])) {
             $nombreArchivo = time() . "_" . basename($_FILES['imagen_principal']['name']);
             $rutaDestino = __DIR__ . '/../../assets/images/' . $nombreArchivo;
@@ -89,7 +86,6 @@ class ToursControlador {
         exit;
     }
 
-    // Editar tour 
     public function editar() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
@@ -113,7 +109,6 @@ class ToursControlador {
             $_SESSION['id_proveedores'] ?? null
         );
 
-        // Imagen principal
         if (!empty($_FILES['imagen_principal']['name'])) {
             $nombreArchivo = time() . "_" . basename($_FILES['imagen_principal']['name']);
             $rutaDestino = __DIR__ . '/../../assets/images/' . $nombreArchivo;
@@ -131,8 +126,6 @@ class ToursControlador {
         exit;
     }
 
-
-    // Eliminar tour 
     public function eliminar() {
         $id = $_POST['id_tour'] ?? null;
         if (!$id) {
@@ -152,7 +145,6 @@ class ToursControlador {
     }
 }
 
-// Router
 if (isset($_POST['action'])) {
     $controlador = new ToursControlador();
 

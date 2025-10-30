@@ -18,7 +18,6 @@ if (!isset($_SESSION['id_usuarios'])) {
 <main class="carrito-container">
     <h2>Mi Carrito</h2>
     <div id="carrito-contenido">
-        <!-- Items se cargarán vía JS -->
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

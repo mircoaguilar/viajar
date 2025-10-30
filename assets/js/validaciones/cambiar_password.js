@@ -1,21 +1,19 @@
-/* Funcion del ojito que muestra/oculta la contraseña */
 function togglePassword(inputId, hideEyeId, showEyeId) {
     const input = document.getElementById(inputId);
     const hideEye = document.getElementById(hideEyeId);
     const showEye = document.getElementById(showEyeId);
 
     if (input.type === "password") {
-        input.type = "text";          // mostrar contraseña
+        input.type = "text";        
         hideEye.style.display = "none";
         showEye.style.display = "block";
     } else {
-        input.type = "password";      // ocultar contraseña
+        input.type = "password";     
         hideEye.style.display = "block";
         showEye.style.display = "none";
     }
 }
 
-/* validaciones del formulario */
 function validateForm() {
     const password = document.getElementById("password");
     const confirm = document.getElementById("password_confirm");
@@ -24,13 +22,11 @@ function validateForm() {
 
     let valid = true;
 
-    // limpiar mensajes y bordes rojos
     passwordError.textContent = "";
     confirmError.textContent = "";
     password.classList.remove("input-alert");
     confirm.classList.remove("input-alert");
 
-    // chequear contraseña
     if (!password.value) {
         passwordError.textContent = "Debe ingresar una contraseña.";
         password.classList.add("input-alert");
@@ -41,7 +37,6 @@ function validateForm() {
         valid = false;
     }
 
-    // chequear confirmación
     if (!confirm.value) {
         confirmError.textContent = "Debe confirmar la contraseña.";
         confirm.classList.add("input-alert");
@@ -52,7 +47,6 @@ function validateForm() {
         valid = false;
     }
 
-    // si todo está bien, enviar formulario
     if (valid) {
         document.getElementById("cambiar_password_form").submit();
     }

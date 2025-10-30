@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const formTransporte = document.getElementById('formTransporte');
 
-  // --- Envío por AJAX ---
   if (formTransporte) {
     formTransporte.addEventListener('submit', function(e) {
       e.preventDefault();

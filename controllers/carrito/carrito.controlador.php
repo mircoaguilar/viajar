@@ -12,21 +12,19 @@ if (!isset($_SESSION['id_usuarios'])) {
 
 $id_usuario = $_SESSION['id_usuarios'];
 
-// Validar acción recibida
 $action = $_POST['action'] ?? $_GET['action'] ?? null;
 if (!$action) {
     echo json_encode(['status' => 'error', 'message' => 'Acción no especificada']);
     exit;
 }
 
-// Inicializar modelos
 $carritoModel = new Carrito();
 $itemModel = new CarritoItem();
 
 switch ($action) {
 
     case 'agregar':
-        $tipo_servicio = $_POST['tipo_servicio'] ?? null; // hotel, transporte, tour
+        $tipo_servicio = $_POST['tipo_servicio'] ?? null; 
         $id_servicio   = $_POST['id_servicio'] ?? null;
         $cantidad      = (int)($_POST['cantidad'] ?? 1);
         $precio_unitario = (float)($_POST['precio_unitario'] ?? 0);
@@ -36,7 +34,6 @@ switch ($action) {
             exit;
         }
 
-        // Traer carrito activo o crear uno nuevo
         $carrito = $carritoModel->traer_carrito_activo($id_usuario);
         if (!$carrito) {
             $carritoModel->setId_usuario($id_usuario)->setActivo(1);
@@ -45,7 +42,6 @@ switch ($action) {
             $id_carrito = $carrito['id_carrito'];
         }
 
-        // Calcular subtotal
         $subtotal = $cantidad * $precio_unitario;
 
         $fecha_inicio = null;
@@ -63,7 +59,6 @@ switch ($action) {
             $fecha_fin = null;
         }
 
-        // Agregar item
         $itemModel->setId_carrito($id_carrito)
                 ->setTipo_servicio($tipo_servicio)
                 ->setId_servicio($id_servicio)
@@ -108,14 +103,12 @@ switch ($action) {
             exit;
         }
 
-        // Traer item actual para tomar fechas
         $item = $itemModel->traer_por_id($id_item);
         if (!$item) {
             echo json_encode(['status' => 'error', 'message' => 'Item no encontrado']);
             exit;
         }
 
-        // Calcular subtotal
         $subtotal = $cantidad * $precio_unitario;
 
         if ($item['tipo_servicio'] === 'hotel' && !empty($item['fecha_inicio']) && !empty($item['fecha_fin'])) {
@@ -125,7 +118,6 @@ switch ($action) {
             $subtotal *= max($noches, 1);
         }
 
-        // Actualizar item
         $itemModel->setCantidad($cantidad)
                   ->setPrecio_unitario($precio_unitario)
                   ->setSubtotal($subtotal)
@@ -166,16 +158,13 @@ switch ($action) {
         $reservaModel = new Reserva();
         $total = 0;
 
-        // Calcular total de la reserva
         foreach ($items as $it) {
             $total += $it['subtotal'];
         }
 
-        // Crear reserva principal
-        $estadoReserva = 'pendiente'; // o 'confirmada' si se paga online directamente
+        $estadoReserva = 'pendiente';
         $id_reserva = $reservaModel->crear_reserva($id_usuario, $total, $estadoReserva);
 
-        // Crear detalle de cada item (tipo hotel/transporte/tour)
         foreach ($items as $it) {
             $id_detalle = $reservaModel->crear_detalle(
                 $id_reserva,
@@ -204,7 +193,6 @@ switch ($action) {
 
         }
 
-        // Guardar id_reserva en sesión
         $_SESSION['id_reserva'] = $id_reserva;
 
         echo json_encode(['status'=>'success','id_reserva'=>$id_reserva,'message'=>'Reserva creada']);

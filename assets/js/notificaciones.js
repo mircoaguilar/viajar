@@ -34,7 +34,6 @@ function cargarNotificaciones() {
                     noLeidas++;
                 }
 
-                // Icono según tipo
                 let iconClass = 'fa-solid fa-bell';
                 switch (n.tipo) {
                     case 'pago': iconClass = 'fa-solid fa-money-bill'; break;
@@ -51,7 +50,6 @@ function cargarNotificaciones() {
                     </button>
                 `;
 
-                // Click en marcar como leída
                 li.querySelector('.mark-read').addEventListener('click', (e) => {
                     e.stopPropagation();
                     marcarLeida(n.id_notificacion, li);
@@ -60,7 +58,6 @@ function cargarNotificaciones() {
                 notificationsList.appendChild(li);
             });
 
-            // Mostrar / ocultar contador
             if (noLeidas > 0) {
                 notificationCount.textContent = noLeidas;
                 notificationCount.style.display = 'inline-block';

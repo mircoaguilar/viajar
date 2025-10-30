@@ -51,7 +51,6 @@ class Tipo_proveedor {
         return $conexion->actualizar($query);
     }
 
-    // Getters y setters
     public function getId_tipo_proveedor() { return $this->id_tipo_proveedor; }
     public function setId_tipo_proveedor($id) { $this->id_tipo_proveedor = $id; return $this; }
     public function getNombre() { return $this->nombre; }

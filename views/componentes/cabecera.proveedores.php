@@ -10,18 +10,18 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [3, 
         <li><strong>Menú proveedor</strong></li>
         <?php
         switch ($_SESSION['id_perfiles']) {
-            case 3: // hospedaje
+            case 3: 
                 echo '<li><a href="index.php?page=hoteles_mis_hoteles"><i class="fa-solid fa-hotel"></i> Mis hospedajes</a></li>';
                 echo '<li><a href="index.php?page=hoteles_reservas"><i class="fa-solid fa-calendar-check"></i> Reservas</a></li>';
                 echo '<li><a href="index.php?page=hoteles_carga"><i class="fa-solid fa-plus"></i> Cargar Hotel / Habitaciones</a></li>';
                 break;
-            case 5: // transporte
+            case 5: 
                 echo '<li><a href="index.php?page=transportes_mis_transportes"><i class="fa-solid fa-bus"></i> Mis transportes</a></li>';
                 echo '<li><a href="index.php?page=reservas_transporte"><i class="fa-solid fa-calendar-check"></i> Reservas</a></li>';
                 echo '<li><a href="index.php?page=transportes_carga"><i class="fa-solid fa-plus"></i> Agregar Transporte</a></li>';
                 echo '<li><a href="index.php?page=transportes_rutas_carga"><i class="fa-solid fa-route"></i> Crear Nueva Ruta</a></li>';
                 break;
-           case 14: // Guía
+           case 14: 
                 echo '
                     <li><a href="index.php?page=tours_mis_tours"><i class="fa-solid fa-map-location-dot"></i> Mis tours</a></li>
                     <li><a href="index.php?page=tours_proximos"><i class="fa-solid fa-calendar-days"></i> Próximos tours</a></li>
@@ -30,7 +30,7 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [3, 
                 ';
                 break;
 
-            case 13: // encargado general
+            case 13: 
                 echo '<li><a href="index.php?page=mis_servicios"><i class="fa-solid fa-briefcase"></i> Mis servicios</a></li>';
                 break;
         }
@@ -43,7 +43,6 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [3, 
 <div id="overlay" class="overlay"></div>
 
 
-<!-- Panel principal -->
 <div id="main" class="contenido">
     <div class="top-bar">
         <div class="logo">

@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const tbody = previewTable.querySelector('tbody');
     const alertBox = document.getElementById('form-alert');
 
-    // --- Traer habitaciones según hotel ---
     hotelSelect.addEventListener('change', () => {
         const idHotel = hotelSelect.value;
         habitacionSelect.innerHTML = '<option value="">Cargando...</option>';
@@ -25,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     });
 
-    // --- Validación de campos ---
     function validarFormulario() {
         let valido = true;
         alertBox.style.display = 'none';
@@ -67,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return valido;
     }
 
-    // --- Limpiar errores al escribir ---
     const inputs = form.querySelectorAll('input, select');
     inputs.forEach(input => {
         input.addEventListener('input', () => {
@@ -78,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Previsualización ---
     btnPrev.addEventListener('click', () => {
         tbody.innerHTML = '';
         if (!validarFormulario()) return;
@@ -104,7 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
         previewTable.style.display = 'table';
     });
 
-    // --- Envío AJAX ---
     form.addEventListener('submit', e => {
         e.preventDefault();
         if (!validarFormulario()) return;

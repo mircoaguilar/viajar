@@ -9,7 +9,6 @@ if (!$id_hotel) {
     exit;
 }
 
-// Traer hotel
 $hotelModel = new Hotel();
 $hotelesArray = $hotelModel->traer_hotel($id_hotel);
 if (empty($hotelesArray) || !is_array($hotelesArray)) {
@@ -51,7 +50,6 @@ function get_room_field($room) {
     return null;
 }
 
-// Fotos adicionales
 $fotos_adicionales = !empty($hotelInfo['fotos']) ? json_decode($hotelInfo['fotos'], true) : [];
 if (!is_array($fotos_adicionales)) $fotos_adicionales = [];
 ?>
@@ -66,7 +64,6 @@ if (!is_array($fotos_adicionales)) $fotos_adicionales = [];
 </head>
 <body>
 
-<!-- Hero -->
 <section class="hotel-hero">
   <img src="assets/images/<?= htmlspecialchars($hotel['imagen_principal'] ?? 'placeholder.jpg') ?>" alt="<?= htmlspecialchars($hotel['hotel_nombre'] ?? '') ?>">
   <div class="overlay">
@@ -77,7 +74,6 @@ if (!is_array($fotos_adicionales)) $fotos_adicionales = [];
   </div>
 </section>
 
-<!-- Info principal -->
 <section class="hotel-main container">
   <div class="info">
     <h2>Sobre el hotel</h2>
@@ -116,7 +112,6 @@ if (!is_array($fotos_adicionales)) $fotos_adicionales = [];
   </aside>
 </section>
 
-<!-- Fotos adicionales -->
 <?php if (!empty($fotos_adicionales)): ?>
 <section class="hotel-fotos container">
   <h2>Fotos adicionales</h2>

@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const poliCount = document.getElementById('politicas-count');
   const reglasCount = document.getElementById('reglas-count');
 
-  // Funciones auxiliares
   function mostrarError(input, mensaje) {
     limpiarError(input);
     const error = document.createElement('small');
@@ -61,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
   contadorTextarea(politicas, poliCount, 20, 500);
   contadorTextarea(reglas, reglasCount, 20, 500);
 
-  // Previsualización
   imagenPrincipal.addEventListener('change', () => {
     previewPrincipal.innerHTML = '';
     const file = imagenPrincipal.files[0];
@@ -98,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
     limpiarError(fotos);
   });
 
-  // Cargar ciudades según provincia
   provinciaSelect.addEventListener('change', function() {
     const provinciaId = this.value;
     ciudadSelect.innerHTML = '<option value="">Cargando...</option>';
@@ -126,7 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 
-  // Limpiar errores al modificar campos
   [hotelNombre, provinciaSelect, ciudadSelect, direccion, descripcion, servicios, politicas, reglas, imagenPrincipal, fotos].forEach(campo => {
     if (campo.tagName === 'INPUT' || campo.tagName === 'TEXTAREA') {
       campo.addEventListener('input', () => limpiarError(campo));

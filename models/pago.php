@@ -32,7 +32,6 @@ class Pago {
         $this->activo = 1;
     }
 
-    // CREAR PAGO
     public function crear() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -52,7 +51,6 @@ class Pago {
         return $id;
     }
 
-    // CREAR PAGO CON PARÁMETROS
     public function crear_pago($id_reserva, $monto, $estado = 'pendiente', $tipoPagoId = 8, $id_moneda = 3, $comprobante = null) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -66,7 +64,6 @@ class Pago {
         return $id_pago;
     }
 
-    // ACTUALIZAR ESTADO
     public function actualizarEstado($estado) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -77,7 +74,6 @@ class Pago {
         return $conexion->actualizar($query);
     }
 
-    // ACTUALIZAR ESTADO Y COMPROBANTE
     public function actualizarComprobante($comprobante, $estado) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -89,7 +85,6 @@ class Pago {
         $stmt->close();
     }
 
-    // OBTENER PAGOS POR RESERVA
     public function traerPorReserva($id_reserva) {
         $conexion = new Conexion();
         $id_reserva = (int)$id_reserva;
@@ -98,7 +93,6 @@ class Pago {
         return $conexion->consultar($query);
     }
 
-    // ELIMINACIÓN LÓGICA
     public function eliminarLogico() {
         $conexion = new Conexion();
         $id = (int)$this->id_pago;
@@ -107,14 +101,12 @@ class Pago {
         return $conexion->actualizar($query);
     }
 
-    // Enviar comprobante por email
     public function enviarComprobante($email_usuario) {
         $asunto = "Comprobante de pago ViajAR";
         $mensaje = "Hola, tu pago de $ {$this->pago_monto} se registró correctamente.\nEstado: {$this->pago_estado}\nComprobante: {$this->pago_comprobante}";
         mail($email_usuario, $asunto, $mensaje);
     }
 
-    // OBTENER PAGO POR ID
     public function traerPorId($id_pago) {
         $conexion = new Conexion();
         $id_pago = (int)$id_pago;
@@ -129,8 +121,6 @@ class Pago {
         return null; 
     }
 
-
-    // GETTERS Y SETTERS
     public function getId_pago() { return $this->id_pago; }
     public function setId_pago($id) { $this->id_pago = $id; return $this; }
 

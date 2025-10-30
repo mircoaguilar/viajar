@@ -17,7 +17,6 @@ class HotelInfo {
         $this->db = new Conexion();
     }
 
-    // GUARDAR INFO
     public function guardar() {
         $fotos_json = !empty($this->fotos) ? $this->fotos : json_encode([]);
         $query = "INSERT INTO hoteles_info 
@@ -34,7 +33,6 @@ class HotelInfo {
         return $this->db->insertar($query);
     }
 
-    // ACTUALIZAR INFO
     public function actualizar() {
         $fotos_json = !empty($this->fotos) ? $this->fotos : json_encode([]);
         $query = "UPDATE hoteles_info SET
@@ -48,7 +46,6 @@ class HotelInfo {
         return $this->db->actualizar($query);
     }
 
-    // TRAER INFO DE UN HOTEL
     public function traer_por_hotel($id_hotel) {
         return $this->db->consultar("
             SELECT * FROM hoteles_info 

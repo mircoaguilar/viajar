@@ -20,13 +20,11 @@ class LoginControlador {
         $nombre_usuario_ingresado = trim($_POST["nombre_usuario"] ?? '');
         $password_ingresada = trim($_POST["password"] ?? '');
 
-        // Validar campos vacíos (backend)
         if (empty($nombre_usuario_ingresado) || empty($password_ingresada)) {
             header("Location: ../index.php?page=login&message=Todos los campos son obligatorios&status=danger");
             exit();
         }
 
-        // Validar usuario
         $usuario->setUsuarios_nombre_usuario($nombre_usuario_ingresado);
         $resultado = $usuario->validar_usuario();
 
@@ -37,18 +35,15 @@ class LoginControlador {
 
         $row = $resultado[0];
 
-        // Verificar contraseña
         if (!password_verify($password_ingresada, $row['usuarios_password'])) {
             header("Location: ../index.php?page=login&message=Usuario o Contraseña incorrecto&status=danger");
             exit();
         }
 
-        // Configurar sesión
         $_SESSION['usuarios_nombre_usuario'] = $row['usuarios_nombre_usuario'];
         $_SESSION['id_usuarios'] = $row['id_usuarios'];
         $_SESSION['usuarios_email'] = $row['usuarios_email'];
 
-        // Obtener perfil del usuario
         $resultado_perfiles = $perfil->traer_perfil($row['rela_perfiles']);
         if (empty($resultado_perfiles)) {
             header("Location: ../index.php?page=login&message=Error de perfil de usuario&status=danger");
@@ -58,20 +53,17 @@ class LoginControlador {
         $_SESSION['id_perfiles'] = $row_perfil['id_perfiles'];
         $_SESSION['perfiles_nombre'] = $row_perfil['perfiles_nombre'];
 
-        // Detectar usuario nuevo
         if (password_verify($nombre_usuario_ingresado, $row['usuarios_password'])) {
             $_SESSION['es_nuevo_usuario'] = true;
             header("Location: ../index.php?page=cambiar_password&message=Usted es un usuario nuevo, cambie su password&status=danger");
             exit();
         }
 
-        // Si es proveedor, obtener id_proveedores
         $id_proveedor = $proveedor->obtenerPorUsuario($row['id_usuarios']);
         if ($id_proveedor) {
             $_SESSION['id_proveedores'] = $id_proveedor;
         }
 
-        // Determinar página destino según perfil
         switch ($_SESSION['perfiles_nombre']) {
             case 'Administrador':
                 $redirect = "index.php?page=administrador_perfil";
@@ -87,10 +79,8 @@ class LoginControlador {
                 break;
         }
 
-        // Corregir parámetros para no generar doble '?'
         $redirect .= (strpos($redirect, '?') === false ? '?' : '&') . "message=" . urlencode("Bienvenido, " . $row['usuarios_nombre_usuario']) . "&status=success";
 
-        // Redirigir directamente al destino final
         header("Location: ../$redirect");
         exit();
     }

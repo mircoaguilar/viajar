@@ -1,7 +1,6 @@
 <?php
 require_once(__DIR__ . '/../../models/ciudad.php');
 
-// Si llega una acción por POST, la procesamos
 if (isset($_POST["action"])) {
     $controlador = new CiudadesControlador();
 
@@ -23,7 +22,6 @@ if (isset($_POST["action"])) {
 
 class CiudadesControlador {
 
-    // Guardar una nueva ciudad
     public function guardar() {
         if (empty($_POST['nombre']) || empty($_POST['rela_provincia'])) {
             header("Location: ../../index.php?page=ciudades&message=Datos obligatorios incompletos&status=danger");
@@ -44,7 +42,6 @@ class CiudadesControlador {
         exit;
     }
 
-    // Actualizar datos de una ciudad
     public function actualizar() {
         if (empty($_POST['id_ciudad']) || empty($_POST['nombre']) || empty($_POST['rela_provincia'])) {
             $id = htmlspecialchars($_POST['id_ciudad'] ?? '');
@@ -65,7 +62,6 @@ class CiudadesControlador {
         exit;
     }
 
-    // Eliminar una ciudad (eliminación lógica)
     public function eliminar() {
         if (empty($_POST['id_ciudad_eliminar'])) {
             header("Location: ../../index.php?page=ciudades&message=ID no especificado para eliminar&status=danger");

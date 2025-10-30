@@ -64,7 +64,6 @@ class Ciudad {
     }
 
 
-    // Getters y setters
     public function getId_ciudad() { return $this->id_ciudad; }
     public function setId_ciudad($id) { $this->id_ciudad = $id; return $this; }
     public function getNombre() { return $this->nombre; }

@@ -31,7 +31,6 @@ class Hotel_Habitaciones {
         $this->activo = 1;
     }
 
-    // LISTAR HABITACIONES POR HOTEL
     public function traer_por_hotel($id_hotel) {
         $conexion = new Conexion();
         $id_hotel = (int)$id_hotel;
@@ -45,7 +44,6 @@ class Hotel_Habitaciones {
 
         $habitaciones = $conexion->consultar($query);
 
-        // Decodificar fotos JSON a array
         foreach ($habitaciones as &$hab) {
             $hab['fotos'] = !empty($hab['fotos']) ? json_decode($hab['fotos'], true) : [];
         }
@@ -53,7 +51,6 @@ class Hotel_Habitaciones {
         return $habitaciones;
     }
 
-    // GUARDAR HABITACIÓN
     public function guardar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -63,7 +60,7 @@ class Hotel_Habitaciones {
         $capacidad = (int)$this->capacidad_maxima;
         $precio = (float)$this->precio_base_noche;
         $descripcion = $mysqli->real_escape_string($this->descripcion);
-        $fotos = $mysqli->real_escape_string($this->fotos); // JSON de rutas
+        $fotos = $mysqli->real_escape_string($this->fotos); 
 
         $query = "INSERT INTO hotel_habitaciones 
                     (rela_hotel, rela_tipo_habitacion, capacidad_maxima, precio_base_noche, descripcion, fotos, activo, fecha_creacion)
@@ -73,7 +70,7 @@ class Hotel_Habitaciones {
         return $conexion->insertar($query);
     }
 
-    // ACTUALIZAR HABITACIÓN
+
     public function actualizar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -95,7 +92,6 @@ class Hotel_Habitaciones {
         return $conexion->actualizar($query);
     }
 
-    // ELIMINAR LÓGICO
     public function eliminar_logico() {
         $conexion = new Conexion();
         $query = "UPDATE hotel_habitaciones 
@@ -104,7 +100,6 @@ class Hotel_Habitaciones {
         return $conexion->actualizar($query);
     }
 
-    // TRAER HABITACIÓN POR ID
     public function traer_por_id($id_habitacion) {
         $conexion = new Conexion();
         $id_habitacion = (int)$id_habitacion;
@@ -147,7 +142,6 @@ class Hotel_Habitaciones {
         return true;
     }
 
-    // MANEJO DE FOTOS 
     public function getFotosArray() {
         return !empty($this->fotos) ? json_decode($this->fotos, true) : [];
     }
@@ -157,7 +151,6 @@ class Hotel_Habitaciones {
         return $this;
     }
 
-    // GETTERS Y SETTERS
     public function getId_hotel_habitacion() { return $this->id_hotel_habitacion; }
     public function setId_hotel_habitacion($id) { $this->id_hotel_habitacion = $id; return $this; }
 

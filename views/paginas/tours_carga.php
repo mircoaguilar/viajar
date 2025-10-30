@@ -1,5 +1,5 @@
 <?php
-if (!isset($_SESSION['id_usuarios']) || ($_SESSION['id_perfiles'] ?? 0) != 14) { // perfil guía
+if (!isset($_SESSION['id_usuarios']) || ($_SESSION['id_perfiles'] ?? 0) != 14) { 
     header('Location: index.php?page=login&message=Acceso no autorizado.&status=danger');
     exit;
 }

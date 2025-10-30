@@ -8,7 +8,6 @@ if (!$id_hotel) {
     exit;
 }
 
-// Traer hotel
 $hotelModel = new Hotel();
 $hotelesArray = $hotelModel->traer_hotel($id_hotel);
 if (empty($hotelesArray) || !is_array($hotelesArray)) {
@@ -17,7 +16,6 @@ if (empty($hotelesArray) || !is_array($hotelesArray)) {
 }
 $hotel = $hotelesArray[0];
 
-// Traer habitaciones
 $habitacionModel = new Hotel_Habitaciones();
 $habitaciones = $habitacionModel->traer_por_hotel($id_hotel);
 if (!is_array($habitaciones)) $habitaciones = [];
@@ -26,14 +24,12 @@ $checkin = $_GET['checkin'] ?? '';
 $checkout = $_GET['checkout'] ?? '';
 $personasFiltro = (int)($_GET['personas'] ?? 0);
 
-// Filtrar por capacidad
 if ($personasFiltro > 0) {
     $habitaciones = array_filter($habitaciones, function($hab) use ($personasFiltro) {
         return $hab['capacidad_maxima'] >= $personasFiltro;
     });
 }
 
-// Filtrar por disponibilidad si se ingresaron fechas
 if (!empty($checkin) && !empty($checkout)) {
     $habitaciones = array_filter($habitaciones, function($hab) use ($habitacionModel, $checkin, $checkout) {
         return $habitacionModel->disponibleEnFechas($hab['id_hotel_habitacion'], $checkin, $checkout);

@@ -1,4 +1,3 @@
-// Cargar carrito
 async function cargarCarrito() {
     try {
         const resp = await fetch('controllers/carrito/carrito.controlador.php?action=listar');
@@ -32,7 +31,6 @@ async function cargarCarrito() {
         data.items.forEach(it => {
             total += parseFloat(it.subtotal);
 
-            // Mostrar fechas según tipo de servicio
             let fechas = '-';
             if(it.tipo_servicio === 'hotel') {
                 fechas = `${it.fecha_inicio ?? '-'}${it.fecha_fin ? ' → ' + it.fecha_fin : ''}`;
@@ -77,7 +75,6 @@ async function cargarCarrito() {
     }
 }
 
-// Quitar item
 async function quitarItem(id_item) {
     if (!confirm('¿Seguro que querés eliminar este ítem?')) return;
 
@@ -102,7 +99,6 @@ async function quitarItem(id_item) {
     }
 }
 
-// Actualizar cantidad
 async function actualizarItem(id_item, cantidad, precio_unitario, checkin = null, checkout = null, fecha_tour = null) {
     if (cantidad <= 0) return;
 
@@ -132,7 +128,6 @@ async function actualizarItem(id_item, cantidad, precio_unitario, checkin = null
     }
 }
 
-// Contador del carrito
 async function actualizarContadorCarrito(count = null) {
     const contador = document.getElementById('carrito-count');
     if (!contador) return;
@@ -150,7 +145,6 @@ async function actualizarContadorCarrito(count = null) {
     }
 }
 
-// Agregar hotel
 async function agregarAlCarrito(id_hab, id_hotel, checkin, checkout, personas, precio_unitario) {
     if (!id_hab || !id_hotel || !checkin || !checkout || !personas) {
         Swal.fire('Error', 'Faltan datos obligatorios', 'error');
@@ -187,7 +181,6 @@ async function agregarAlCarrito(id_hab, id_hotel, checkin, checkout, personas, p
     } catch(err) { console.error(err); }
 }
 
-// Agregar tour
 async function agregarTourAlCarrito(id_tour, fecha_tour, precio_unitario) {
     if (!id_tour || !fecha_tour || !precio_unitario) {
         Swal.fire('Error', 'Faltan datos del tour', 'error');
@@ -221,7 +214,6 @@ async function agregarTourAlCarrito(id_tour, fecha_tour, precio_unitario) {
     } catch(err) { console.error(err); }
 }
 
-// Finalizar compra
 async function finalizarCompra() {
     try {
         const form = new FormData();
@@ -234,7 +226,6 @@ async function finalizarCompra() {
         const data = await resp.json();
 
         if (data.status === 'success') {
-            // Redirigir a checkout de Mercado Pago
             window.location.href = "views/paginas/checkout_mercadopago.php";
         } else {
             Swal.fire('Error', data.message || 'No se pudo crear la reserva', 'error');
@@ -245,7 +236,6 @@ async function finalizarCompra() {
     }
 }
 
-// Inicialización
 window.addEventListener('DOMContentLoaded', () => {
     cargarCarrito();
     actualizarContadorCarrito();

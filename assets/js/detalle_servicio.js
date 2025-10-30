@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let startX;
   let scrollLeft;
 
-  /*  Drag con el mouse */
   carrusel.addEventListener('mousedown', (e) => {
     isDown = true;
     carrusel.classList.add('active');
@@ -28,11 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - carrusel.offsetLeft;
-    const walk = (x - startX) * 2; // sensibilidad del drag
+    const walk = (x - startX) * 2; 
     carrusel.scrollLeft = scrollLeft - walk;
   });
 
-  /*  Botones de navegación */
   const btnPrev = document.querySelector('.carrusel-prev');
   const btnNext = document.querySelector('.carrusel-next');
   const scrollAmount = 250;

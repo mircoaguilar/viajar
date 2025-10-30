@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Cambio de foto principal al clicar miniatura
   const cards = document.querySelectorAll('.habitacion-card');
   cards.forEach(card => {
     const principal = card.querySelector('.foto-principal');
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Flatpickr
   const checkinInput = document.getElementById('checkin');
   const checkoutInput = document.getElementById('checkout');
 
@@ -52,9 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // -------------------------------
-  // Agregar al carrito (AJAX + SweetAlert)
-  // -------------------------------
   const botonesCarrito = document.querySelectorAll('.btn-agregar-carrito');
   botonesCarrito.forEach(btn => {
     btn.addEventListener('click', function() {
@@ -78,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(res => res.json())
       .then(res => {
         if (res.success) {
-          // Actualizar contador carrito
           const badge = document.getElementById("carrito-count");
           if (badge) badge.textContent = res.cantidad;
 

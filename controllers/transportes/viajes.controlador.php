@@ -1,7 +1,6 @@
 <?php
 require_once(__DIR__ . '/../../models/viaje.php');
 
-/*  Enrutador de acciones */
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
 
@@ -38,21 +37,18 @@ if (isset($_GET['action'])) {
     }
 }
 
-/*  Listar próximos viajes */
 function listar_viajes() {
     $viaje = new Viaje();
     $viajes = $viaje->traer_viajes_proximos(20);
     echo json_encode($viajes);
 }
 
-/*  Obtener un viaje por ID */
 function obtener_viaje($id) {
     $viaje = new Viaje();
     $resultado = $viaje->traer_viaje_por_id($id);
     echo json_encode($resultado);
 }
 
-/*  Guardar un nuevo viaje */
 function guardar_viaje() {
     if (!isset($_POST['viaje_fecha'], $_POST['rela_transporte_rutas'], $_POST['hora_salida'], $_POST['hora_llegada'], $_POST['asientos_disponibles'])) {
         echo json_encode(['error' => 'Faltan datos']);
@@ -60,9 +56,9 @@ function guardar_viaje() {
     }
 
     $viaje = new Viaje(
-        '', // id (autoincrement)
+        '', 
         $_POST['viaje_fecha'],
-        1, // activo por defecto
+        1,
         $_POST['rela_transporte_rutas'],
         $_POST['hora_salida'],
         $_POST['hora_llegada'],
@@ -73,14 +69,12 @@ function guardar_viaje() {
     echo json_encode(['success' => $resultado]);
 }
 
-/*  Actualizar un viaje existente */
 function actualizar_viaje($id) {
     if (!isset($_POST['viaje_fecha'], $_POST['hora_salida'], $_POST['hora_llegada'], $_POST['asientos_disponibles'])) {
         echo json_encode(['error' => 'Faltan datos']);
         return;
     }
 
-    // acá usás $_POST['rela_transporte_rutas'], pero no lo validás arriba.
     $viaje = new Viaje(
         $id,
         $_POST['viaje_fecha'],
@@ -95,7 +89,6 @@ function actualizar_viaje($id) {
     echo json_encode(['success' => $resultado]);
 }
 
-/*  Eliminación lógica de un viaje */
 function eliminar_viaje($id) {
     $viaje = new Viaje($id);
     $resultado = $viaje->eliminar_logico();

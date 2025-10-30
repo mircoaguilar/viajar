@@ -4,7 +4,7 @@ require_once('conexion.php');
 class Carrito {
     private $id_carrito;
     private $rela_usuario;
-    private $activo; // 1 = activo, 0 = cerrado
+    private $activo; 
     private $fecha_creacion;
 
     private $db;
@@ -92,9 +92,6 @@ class Carrito {
         return true;
     }
 
-
-
-    // Setters
     public function setId_carrito($id) { $this->id_carrito = $id; return $this; }
     public function setId_usuario($id) { $this->rela_usuario = $id; return $this; }
     public function setActivo($activo = 1) { $this->activo = $activo; return $this; }

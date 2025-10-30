@@ -13,7 +13,6 @@ $id_hotel = (int)($_GET['id_hotel'] ?? 0);
 $hotelModel = new Hotel();
 $reservaModel = new Reserva();
 
-// traer hoteles del proveedor
 $hotelesUsuario = $hotelModel->traer_hoteles_por_usuario($id_usuario);
 
 if (!$id_hotel && !empty($hotelesUsuario)) {
@@ -25,7 +24,6 @@ if ($id_hotel && !$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
     exit;
 }
 
-// traer reservas
 $reservas = $id_hotel ? $reservaModel->traer_por_hotel($id_hotel) : [];
 ?>
 <!DOCTYPE html>
@@ -40,7 +38,6 @@ $reservas = $id_hotel ? $reservaModel->traer_por_hotel($id_hotel) : [];
 <main class="reservas-container">
     <h2>Reservas del Hotel</h2>
 
-    <!-- Filtro de hotel -->
     <?php if (!empty($hotelesUsuario)): ?>
     <form method="get" action="index.php" style="margin-bottom:20px; text-align:center;">
         <input type="hidden" name="page" value="hoteles_reservas">
@@ -55,7 +52,6 @@ $reservas = $id_hotel ? $reservaModel->traer_por_hotel($id_hotel) : [];
     </form>
     <?php endif; ?>
 
-    <!-- Tabla de reservas -->
     <?php if (!empty($reservas)): ?>
     <table class="tabla-reservas">
         <thead>

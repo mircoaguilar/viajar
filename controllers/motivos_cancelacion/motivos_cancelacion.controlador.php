@@ -1,7 +1,6 @@
 <?php
 require_once(__DIR__ . '/../../models/motivo_cancelacion.php');
 
-// Si llega una acción por POST, se crea el controlador y se ejecuta la acción correspondiente
 if (isset($_POST['action'])) {
     $controlador = new MotivoCancelacionControlador();
     switch($_POST['action']) {
@@ -22,7 +21,6 @@ if (isset($_POST['action'])) {
 
 class MotivoCancelacionControlador {
 
-    // Guarda un nuevo motivo de cancelación
     public function guardar() {
         if (empty($_POST['descripcion'])) {
             header("Location: ../../index.php?page=motivos_cancelacion&message=La descripción es obligatoria&status=danger");
@@ -40,7 +38,6 @@ class MotivoCancelacionControlador {
         exit;
     }
 
-    // Actualiza un motivo existente
     public function actualizar() {
         if (empty($_POST['id_motivo_cancelacion']) || empty($_POST['descripcion'])) {
             header("Location: ../../index.php?page=motivos_cancelacion&message=Datos incompletos&status=danger");
@@ -59,7 +56,6 @@ class MotivoCancelacionControlador {
         exit;
     }
 
-    // Elimina un motivo de cancelación (borrado lógico)
     public function eliminar() {
         if (empty($_POST['id_motivo_cancelacion'])) {
             header("Location: ../../index.php?page=motivos_cancelacion&message=ID de motivo no proporcionado&status=danger");

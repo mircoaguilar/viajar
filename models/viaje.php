@@ -26,7 +26,6 @@ class Viaje {
         $this->hora_llegada = $hora_llegada;
     }
 
-    // Traer próximos viajes activos
     public function traer_viajes_proximos($limit = 5) {
         $conexion = new Conexion();
         $hoy = date('Y-m-d');
@@ -57,7 +56,6 @@ class Viaje {
         return $conexion->consultar($query);
     }
 
-    // Traer un viaje por ID
     public function traer_viaje_por_id($id) {
         $conexion = new Conexion();
         $query = "
@@ -86,7 +84,6 @@ class Viaje {
         return $conexion->consultar($query);
     }
 
-    // Guardar un nuevo viaje
     public function guardar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -101,10 +98,9 @@ class Viaje {
             (viaje_fecha, activo, rela_transporte_rutas, hora_salida, hora_llegada) 
             VALUES ('$fecha', $activo, $ruta, '$hora_salida', '$hora_llegada')";
 
-        return $conexion->insertar($query); // devuelve el ID insertado o false
+        return $conexion->insertar($query); 
     }
 
-    // Actualizar viaje existente
     public function actualizar() {
         if (!$this->id_viajes) return false;
 
@@ -129,7 +125,6 @@ class Viaje {
         return $conexion->actualizar($query);
     }
 
-    // Eliminar viaje (lógico → poner activo = 0)
     public function eliminar_logico() {
         if (!$this->id_viajes) return false;
 
@@ -141,7 +136,6 @@ class Viaje {
         return $conexion->actualizar($query);
     }
 
-    // Getters y Setters
     public function getId_viajes() {
         return $this->id_viajes;
     }

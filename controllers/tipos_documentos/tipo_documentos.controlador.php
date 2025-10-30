@@ -23,7 +23,6 @@ if (isset($_POST['action'])) {
 
 class TipoDocumentoControlador {
 
-    // Guarda un nuevo tipo de documento
     public function guardar() {
         if (empty($_POST['nombre'])) {
             header("Location: ../../index.php?page=tipos_documentos&message=El nombre es obligatorio&status=danger");
@@ -40,7 +39,6 @@ class TipoDocumentoControlador {
         exit;
     }
 
-    // Actualiza un tipo de documento existente
     public function actualizar() {
         if (empty($_POST['id_tipo_documento']) || empty($_POST['nombre'])) {
             header("Location: ../../index.php?page=tipos_documentos&message=Datos incompletos&status=danger");
@@ -58,7 +56,6 @@ class TipoDocumentoControlador {
         exit;
     }
 
-    // Elimina un tipo de documento de forma lógica
     public function eliminar() {
         if (empty($_POST['id_tipo_documento_eliminar'])) {
             header("Location: ../../index.php?page=tipos_documentos&message=ID no especificado para eliminar&status=danger");

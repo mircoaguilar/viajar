@@ -23,7 +23,6 @@ if (isset($_POST["action"])) {
 
 class TipoPagoControlador {
 
-    // Guarda un nuevo tipo de pago
     public function guardar() {
         if (empty($_POST['tipo_pago_descripcion'])) {
             header("Location: ../../index.php?page=tipo_pagos&message=La descripción del tipo de pago es obligatoria&status=danger");
@@ -40,7 +39,6 @@ class TipoPagoControlador {
         exit;
     }
 
-    // Actualiza un tipo de pago existente
     public function actualizar() {
         if (empty($_POST['id_tipo_pago']) || empty($_POST['tipo_pago_descripcion'])) {
             $id_tipo_pago_redir = htmlspecialchars($_POST['id_tipo_pago'] ?? '');
@@ -59,7 +57,6 @@ class TipoPagoControlador {
         exit;
     }
 
-    // Elimina un tipo de pago de forma lógica
     public function eliminar() {
         if (empty($_POST['id_tipo_pago_eliminar'])) {
             header("Location: ../../index.php?page=tipo_pagos&message=ID de tipo de pago no especificado para eliminar&status=danger");

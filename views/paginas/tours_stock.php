@@ -1,6 +1,6 @@
 <?php
 
-if (!isset($_SESSION['id_usuarios']) || !in_array($_SESSION['id_perfiles'] ?? 0, [1,14])) {
+if (!isset($_SESSION['id_usuarios']) || !in_array($_SESSION['id_perfiles'] ?? 0, [2,14])) {
     header('Location: index.php?page=login&message=Acceso no autorizado.&status=danger');
     exit;
 }

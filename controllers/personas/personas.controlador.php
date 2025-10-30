@@ -3,12 +3,10 @@ require_once '../../models/personas.php';
 
 header('Content-Type: application/json');
 
-// Obtener acción enviada
 $action = $_REQUEST['action'] ?? '';
 
 switch ($action) {
 
-    // Obtener los datos de una persona por su ID
     case 'obtener':
         if (!isset($_GET['id'])) {
             echo json_encode(['success' => false, 'message' => 'ID no proporcionado']);
@@ -25,8 +23,6 @@ switch ($action) {
             echo json_encode(['success' => false, 'message' => 'Persona no encontrada o inactiva']);
         }
         break;
-
-    // Actualizar los datos de una persona
     case 'actualizar':
         $id = $_POST['id_personas'] ?? '';
         $nombre = $_POST['personas_nombre'] ?? '';
@@ -55,7 +51,6 @@ switch ($action) {
         }
         exit;
 
-    // Acción no válida
     default:
         ob_clean();
         echo json_encode(['success' => false, 'message' => 'Acción no válida']);

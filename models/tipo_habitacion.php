@@ -55,7 +55,6 @@ class TipoHabitacion {
         return $conexion->actualizar($query);
     }
 
-    // Getters y setters
     public function getId_tipo_habitacion() { return $this->id_tipo_habitacion; }
     public function setId_tipo_habitacion($id) { $this->id_tipo_habitacion = $id; return $this; }
     public function getNombre() { return $this->nombre; }

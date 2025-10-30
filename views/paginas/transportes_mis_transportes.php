@@ -27,7 +27,6 @@ $transportes = $controlador->mis_transportes($id_usuario);
         <h2>Mis Transportes</h2>
         <p class="hint">Aca podés ver tus vehículos registrados y administrar sus datos y rutas.</p>
 
-        <!-- Botón de exportación -->
         <div style="margin: 10px 0;">
             <a href="controllers/exportar.controlador.php?tipo=transportes" class="btn secondary">
                 Exportar a Excel

@@ -11,7 +11,7 @@ $fecha   = $_GET['fecha'] ?? '';
 $tourModel = new Tour();
 
 if ($destino || $fecha) {
-    $tours = $tourModel->buscar_disponibles($destino, $fecha);
+    $tours = $tourModel->buscar($destino, $fecha);
 } else {
     $tours = $tourModel->traer_tours();
 }
@@ -28,7 +28,6 @@ if ($destino || $fecha) {
 </head>
 <body>
 
-<!-- HERO -->
 <section class="hero-section">
   <div class="hero-content">
     <h1>Descubrí los mejores tours guiados en Formosa</h1>
@@ -36,7 +35,6 @@ if ($destino || $fecha) {
   </div>
 </section>
 
-<!-- BUSCADOR -->
 <section class="search-section">
   <div class="search-container">
     <h2>Buscar tour guiado</h2>
@@ -68,7 +66,6 @@ if ($destino || $fecha) {
   </div>
 </section>
 
-<!-- LISTADO DE TOURS -->
 <section class="tours">
   <h2>Tours disponibles</h2>
   <div class="tarjetas">

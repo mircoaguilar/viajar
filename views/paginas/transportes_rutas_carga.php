@@ -8,7 +8,7 @@ require_once('models/ciudad.php');
 require_once('models/transporte.php');
 
 $ciudadModel = new Ciudad();
-$ciudades = $ciudadModel->traer_ciudades(); // Trae todas las ciudades
+$ciudades = $ciudadModel->traer_ciudades(); 
 
 $transporteModel = new Transporte();
 $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usuarios']);

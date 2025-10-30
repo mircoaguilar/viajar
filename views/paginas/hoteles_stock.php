@@ -41,7 +41,6 @@ $hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
       <form id="form-stock" class="grid grid-2">
         <input type="hidden" name="action" value="guardar_stock">
 
-        <!-- Hotel -->
         <div>
           <label for="rela_hotel">Hotel</label>
           <select id="rela_hotel" name="rela_hotel" required>
@@ -53,7 +52,6 @@ $hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
           <div class="error"></div>
         </div>
 
-        <!-- Habitación -->
         <div>
           <label for="rela_habitacion">Habitación</label>
           <select id="rela_habitacion" name="rela_habitacion" required>
@@ -62,33 +60,28 @@ $hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
           <div class="error"></div>
         </div>
 
-        <!-- Fecha inicio -->
         <div>
           <label for="fecha_inicio">Fecha de inicio</label>
           <input type="text" id="fecha_inicio" name="fecha_inicio" required>
           <div class="error"></div>
         </div>
 
-        <!-- Fecha fin -->
         <div>
           <label for="fecha_fin">Fecha fin</label>
           <input type="text" id="fecha_fin" name="fecha_fin" required>
           <div class="error"></div>
         </div>
 
-        <!-- Cantidad -->
         <div>
           <label for="cantidad">Cantidad disponible</label>
           <input type="number" id="cantidad" name="cantidad" min="0" value="1" required>
           <div class="error"></div>
         </div>
 
-        <!-- Botón previsualizar -->
         <div style="grid-column: 1 / -1;">
           <button type="button" id="previsualizar" class="btn">Previsualizar</button>
         </div>
 
-        <!-- Tabla previsualización -->
         <table id="tabla-preview" class="table" style="display:none;">
           <thead>
             <tr>
@@ -100,7 +93,6 @@ $hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
           <tbody></tbody>
         </table>
 
-        <!-- Botones finales -->
         <div class="actions" style="grid-column: 1 / -1;">
           <button type="submit" class="btn">Guardar Stock</button>
           <a href="index.php?page=proveedores_perfil" class="btn secondary">Cancelar</a>
@@ -110,7 +102,6 @@ $hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
   </div>
 </main>
 
-<!-- Alerta flotante personalizada -->
 <div id="custom-alert" style="display:none;">
   <div>
     <p id="custom-alert-msg"></p>

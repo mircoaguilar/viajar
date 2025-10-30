@@ -64,10 +64,8 @@ switch ($tipo) {
         break;
 }
 
-// Generar PDF
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
 
-// Descargar
 $dompdf->stream("listado_$tipo.pdf", ["Attachment" => true]);

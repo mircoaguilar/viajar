@@ -11,12 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const customMessage = document.getElementById("custom-alert-message");
     const customBtn = document.getElementById("custom-alert-btn");
 
-    // --- Contador de caracteres ---
     descripcion.addEventListener("input", () => {
         contador.textContent = `${descripcion.value.length}/200 caracteres`;
     });
 
-    // --- Validación completa ---
     function validarFormulario() {
         let valido = true;
         alertBox.style.display = "none";
@@ -26,14 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (errorDiv) errorDiv.textContent = "";
             input.classList.remove("is-invalid");
 
-            // Tipo de habitación
             if (input.id === "nombre_tipo_habitacion" && input.value === "") {
                 errorDiv.textContent = "El tipo de habitación es obligatorio.";
                 input.classList.add("is-invalid");
                 valido = false;
             }
 
-            // Capacidad
             if (input.id === "capacidad_maxima") {
                 const valor = parseInt(input.value, 10);
                 if (!valor || valor < 1 || valor > 20) {
@@ -43,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Precio
             if (input.id === "precio_base_noche") {
                 const valor = parseFloat(input.value);
                 if (isNaN(valor) || valor < 0 || valor > 50000) {
@@ -53,14 +48,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Descripción
             if (input.id === "descripcion_unidad" && input.value.trim() === "") {
                 errorDiv.textContent = "La descripción es obligatoria.";
                 input.classList.add("is-invalid");
                 valido = false;
             }
 
-            // Fotos
             if (input.id === "fotos_habitacion" && input.files.length > 0) {
                 if (input.files.length > 5) {
                     errorDiv.textContent = "Máx. 5 imágenes permitidas.";
@@ -85,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return valido;
     }
 
-    // --- Quitar error al escribir ---
     inputs.forEach(input => {
         input.addEventListener("input", () => {
             input.classList.remove("is-invalid");
@@ -94,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- Previsualización ---
     const btnPrev = document.getElementById("previsualizar");
     btnPrev.addEventListener("click", () => {
         if (!validarFormulario()) return;
@@ -133,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.appendChild(tr);
     });
 
-    // --- Envío AJAX ---
     form.addEventListener("submit", (e) => {
         e.preventDefault();
         if (!validarFormulario()) {
@@ -144,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const formData = new FormData(form);
-        formData.append('action', 'guardar'); // seguridad extra
+        formData.append('action', 'guardar');
 
         fetch("controllers/habitaciones/habitaciones.controlador.php", {
             method: "POST",
@@ -153,7 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(data => {
             if (data.status === "success") {
-                // Alerta personalizada
                 customMessage.textContent = "¡Habitación guardada con éxito! Serás redirigido para cargar la disponibilidad.";
                 customAlert.style.display = "flex";
 
@@ -161,7 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = `index.php?page=hoteles_stock&id_habitacion=${data.id}`;
                 };
 
-                // Redirección automática en 3 segundos
                 setTimeout(() => {
                     window.location.href = `index.php?page=hoteles_stock&id_habitacion=${data.id}`;
                 }, 3000);

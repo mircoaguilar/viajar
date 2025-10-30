@@ -1,6 +1,6 @@
 <?php
-$page = $_GET['page'] ?? ''; // obtener la página actual
-if ($page !== 'login' && $page !== 'registro'): // ocultar cabecera en login y registro
+$page = $_GET['page'] ?? ''; 
+if ($page !== 'login' && $page !== 'registro'): 
 ?>
 <div class="top-bar">
   <div class="left-links">

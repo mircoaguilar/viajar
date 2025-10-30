@@ -44,7 +44,6 @@ class EstadoReserva {
         return $conexion->actualizar($query);
     }
 
-    // Getters y Setters
     public function getId_estado_reserva() { return $this->id_estado_reserva; }
     public function setId_estado_reserva($id_estado_reserva) { $this->id_estado_reserva = $id_estado_reserva; return $this; }
     public function getNombre_estado() { return $this->nombre_estado; }
