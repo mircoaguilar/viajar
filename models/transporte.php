@@ -12,6 +12,10 @@ class Transporte {
     private $imagen_principal;
     private $rela_proveedor;
     private $activo;
+    private $estado_revision;
+    private $motivo_rechazo;
+    private $fecha_revision;
+    private $revisado_por;
 
     public function __construct(
         $id_transporte = '',
@@ -22,7 +26,11 @@ class Transporte {
         $descripcion = '',
         $imagen_principal = '',
         $rela_proveedor = '',
-        $activo = 1
+        $activo = 1,
+        $estado_revision = 'pendiente',
+        $motivo_rechazo = null,
+        $fecha_revision = null,
+        $revisado_por = null
     ) {
         $this->id_transporte = $id_transporte;
         $this->transporte_matricula = $transporte_matricula;
@@ -33,12 +41,16 @@ class Transporte {
         $this->imagen_principal = $imagen_principal;
         $this->rela_proveedor = $rela_proveedor;
         $this->activo = $activo;
+        $this->estado_revision = $estado_revision;
+        $this->motivo_rechazo = $motivo_rechazo;
+        $this->fecha_revision = $fecha_revision;
+        $this->revisado_por = $revisado_por;
     }
 
     public function traer_transportes() {
         $conexion = new Conexion();
         $query = "
-            SELECT t.*, tt.descripcion AS tipo_transporte, p.id_proveedores
+            SELECT t.*, tt.descripcion AS tipo_transporte, p.razon_social AS proveedor_nombre
             FROM transporte t
             JOIN tipo_transporte tt ON t.rela_tipo_transporte = tt.id_tipo_transporte
             JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
@@ -82,9 +94,10 @@ class Transporte {
         $conexion = new Conexion();
         $id = (int)$id;
         $query = "
-            SELECT t.*, tt.descripcion AS tipo_transporte
+            SELECT t.*, tt.descripcion AS tipo_transporte, p.razon_social AS proveedor_nombre
             FROM transporte t
             JOIN tipo_transporte tt ON t.rela_tipo_transporte = tt.id_tipo_transporte
+            JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
             WHERE t.id_transporte = $id AND t.activo = 1
         ";
         $res = $conexion->consultar($query);

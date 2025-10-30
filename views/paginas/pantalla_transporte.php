@@ -102,7 +102,7 @@ if ($destino || $desde || $hasta) {
             <p><strong>Fecha:</strong> <?= htmlspecialchars($viaje['viaje_fecha']) ?></p>
             <p><strong>Hora salida:</strong> <?= htmlspecialchars($viaje['hora_salida']) ?></p>
             <p><strong>Precio:</strong> $<?= number_format($viaje['precio_por_persona'], 0, ',', '.') ?></p>
-            <a href="detalle_viaje.php?id=<?= $viaje['id_viajes'] ?>" class="boton-ver-mas">Ver más</a>
+            <a href="index.php?page=detalle_viaje&id=<?= $viaje['id_viajes'] ?>" class="boton-ver-mas">Ver más</a>
           </div>
         </div>
       <?php endforeach; ?>

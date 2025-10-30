@@ -86,6 +86,7 @@ if (isset($_GET['page'])) {
         'cambiar_password',
         'detalle_hotel',
         'detalle_tour',
+        'detalle_viaje',
         'pantalla_habitaciones'
     ];
 
