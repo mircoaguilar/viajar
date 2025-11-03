@@ -60,14 +60,15 @@ class Viaje {
         $conexion = new Conexion();
         $query = "
             SELECT viajes.id_viajes, 
-                   viajes.viaje_fecha, 
-                   viajes.hora_salida, 
-                   viajes.hora_llegada,
-                   c1.nombre AS origen, 
-                   c2.nombre AS destino,
-                   transporte.nombre_servicio, 
-                   transporte_rutas.precio_por_persona, 
-                   transporte.imagen_principal
+                viajes.viaje_fecha, 
+                viajes.hora_salida, 
+                viajes.hora_llegada,
+                viajes.rela_transporte_rutas,  -- << agregada
+                c1.nombre AS origen, 
+                c2.nombre AS destino,
+                transporte.nombre_servicio, 
+                transporte_rutas.precio_por_persona, 
+                transporte.imagen_principal
             FROM viajes
             JOIN transporte_rutas 
                 ON viajes.rela_transporte_rutas = transporte_rutas.id_ruta
@@ -78,10 +79,11 @@ class Viaje {
             JOIN ciudades c2 
                 ON transporte_rutas.rela_ciudad_destino = c2.id_ciudad
             WHERE viajes.id_viajes = $id 
-              AND viajes.activo = 1
+            AND viajes.activo = 1
             LIMIT 1
         ";
-        return $conexion->consultar($query);
+        $result = $conexion->consultar($query);
+        return !empty($result) ? $result[0] : null;
     }
 
     public function guardar() {
@@ -124,6 +126,41 @@ class Viaje {
 
         return $conexion->actualizar($query);
     }
+
+    public function traer_primer_viaje_por_transporte($idTransporte) {
+        $conexion = new Conexion();
+        $hoy = date('Y-m-d');
+
+        $query = "
+            SELECT viajes.id_viajes, 
+                viajes.viaje_fecha, 
+                viajes.hora_salida, 
+                viajes.hora_llegada,
+                viajes.rela_transporte_rutas,  -- << agregada
+                c1.nombre AS origen, 
+                c2.nombre AS destino,
+                transporte.nombre_servicio, 
+                transporte_rutas.precio_por_persona, 
+                transporte.imagen_principal
+            FROM viajes
+            JOIN transporte_rutas 
+                ON viajes.rela_transporte_rutas = transporte_rutas.id_ruta
+            JOIN transporte 
+                ON transporte_rutas.rela_transporte = transporte.id_transporte
+            JOIN ciudades c1 
+                ON transporte_rutas.rela_ciudad_origen = c1.id_ciudad
+            JOIN ciudades c2 
+                ON transporte_rutas.rela_ciudad_destino = c2.id_ciudad
+            WHERE transporte.id_transporte = $idTransporte
+            AND viajes.activo = 1
+            AND viajes.viaje_fecha >= '$hoy'
+            ORDER BY viajes.viaje_fecha ASC
+            LIMIT 1
+        ";
+        $result = $conexion->consultar($query);
+        return !empty($result) ? $result[0] : null;
+    }
+
 
     public function eliminar_logico() {
         if (!$this->id_viajes) return false;

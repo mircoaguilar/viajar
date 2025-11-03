@@ -1,26 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const precioAsiento = 2500;
+  const precioAsiento = parseFloat(document.body.dataset.precio) || 0;
   const contador = document.getElementById("contador");
   const total = document.getElementById("total");
   const seleccionados = new Set();
+  const viajeId = document.body.dataset.viajeId;
 
-  const modal = document.getElementById("modal-carrito");
-  const modalCerrar = document.getElementById("modal-cerrar");
-  const btnAgregarCarrito = document.getElementById("btn-agregar-carrito");
-  const btnCancelar = document.getElementById("btn-cancelar");
-  const modalLista = document.getElementById("modal-lista");
-  const modalTotal = document.getElementById("modal-total");
+  document.querySelectorAll(".bus-container").forEach(async busContainer => {
+    const pisoNum = busContainer.dataset.numero;
+    const filas = parseInt(busContainer.dataset.filas);
+    const columnas = parseInt(busContainer.dataset.asientos);
+    const contenedorAsientos = busContainer.querySelector(".asientos");
 
-  generarPiso("asientos-piso1", 8, 4, ocupadosPiso1, "Piso 1");
-  generarPiso("asientos-piso2", 8, 4, ocupadosPiso2, "Piso 2");
+    // Ruta corregida: controllers/viajes/asientos_ocupados.php
+    const ocupados = await fetchOcupados(pisoNum);
 
-  function generarPiso(idContenedor, filas, columnas, ocupados, pisoNombre) {
-    const contenedor = document.getElementById(idContenedor);
+    generarPiso(contenedorAsientos, filas, columnas, ocupados, `Piso ${pisoNum}`);
+  });
+
+  function generarPiso(contenedor, filas, columnas, ocupados, pisoNombre) {
     let numAsiento = 1;
 
     for (let f = 0; f < filas; f++) {
       for (let c = 0; c < columnas + 1; c++) {
-        if (c === 2) {
+        if (c === Math.floor(columnas / 2)) {
           const pasillo = document.createElement("div");
           pasillo.classList.add("vacio");
           contenedor.appendChild(pasillo);
@@ -31,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
         div.classList.add("asiento");
         div.textContent = numAsiento;
         div.dataset.info = `${pisoNombre} - Asiento ${numAsiento}`;
-
         const idUnico = `${pisoNombre}-${numAsiento}`;
 
         if (ocupados.includes(numAsiento)) {
@@ -66,18 +67,26 @@ document.addEventListener("DOMContentLoaded", () => {
     total.textContent = (seleccionados.size * precioAsiento).toLocaleString("es-AR");
   }
 
+  const modal = document.getElementById("modal-carrito");
+  const modalCerrar = document.getElementById("modal-cerrar");
+  const btnCancelar = document.getElementById("btn-cancelar");
+  const btnAgregarCarrito = document.getElementById("btn-agregar-carrito");
+
   document.getElementById("btn-confirmar").addEventListener("click", () => {
     if (seleccionados.size === 0) {
       alert("No seleccionaste ningún asiento.");
       return;
     }
 
+    const modalLista = document.getElementById("modal-lista");
+    const modalTotal = document.getElementById("modal-total");
+
     modalLista.innerHTML = "";
     document.querySelectorAll(".asiento.seleccionado").forEach(a => {
-      const piso = a.closest(".bus-container").querySelector("h3").textContent;
+      const piso = a.closest(".bus-container").dataset.numero;
       const num = a.textContent;
       const p = document.createElement("p");
-      p.textContent = `${piso} - Asiento ${num}`;
+      p.textContent = `Piso ${piso} - Asiento ${num}`;
       modalLista.appendChild(p);
     });
 
@@ -88,7 +97,27 @@ document.addEventListener("DOMContentLoaded", () => {
   modalCerrar.addEventListener("click", () => modal.style.display = "none");
   btnCancelar.addEventListener("click", () => modal.style.display = "none");
 
-  btnAgregarCarrito.addEventListener("click", () => {
+  btnAgregarCarrito.addEventListener("click", async () => {
+    const asientosSeleccionados = Array.from(document.querySelectorAll(".asiento.seleccionado")).map(a => {
+      return {
+        piso: a.closest(".bus-container").dataset.numero,
+        num: parseInt(a.textContent)
+      };
+    });
+
+    try {
+      const res = await fetch("controllers/viajes/ocupar_asientos.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ viajeId, asientos: asientosSeleccionados })
+      });
+      const data = await res.json();
+      if (data.status !== "success") throw new Error(data.message || "Error al ocupar asientos");
+    } catch (e) {
+      alert("Ocurrió un error al ocupar los asientos: " + e.message);
+      return;
+    }
+
     alert("Asientos agregados al carrito");
     modal.style.display = "none";
     document.querySelectorAll(".asiento.seleccionado").forEach(a => {
@@ -102,4 +131,16 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("click", e => {
     if (e.target == modal) modal.style.display = "none";
   });
+
+  async function fetchOcupados(pisoNum) {
+    try {
+      const response = await fetch(`controllers/viajes/asientos_ocupados.php?viaje=${viajeId}&piso=${pisoNum}`);
+      if (!response.ok) throw new Error("Error al traer los asientos ocupados");
+      const data = await response.json();
+      return data.ocupados || [];
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  }
 });

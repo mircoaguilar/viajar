@@ -11,6 +11,7 @@ class Transporte {
     private $descripcion;
     private $imagen_principal;
     private $rela_proveedor;
+    private $fecha_alta;
     private $activo;
     private $estado_revision;
     private $motivo_rechazo;
@@ -26,6 +27,7 @@ class Transporte {
         $descripcion = '',
         $imagen_principal = '',
         $rela_proveedor = '',
+        $fecha_alta = null,
         $activo = 1,
         $estado_revision = 'pendiente',
         $motivo_rechazo = null,
@@ -40,6 +42,7 @@ class Transporte {
         $this->descripcion = $descripcion;
         $this->imagen_principal = $imagen_principal;
         $this->rela_proveedor = $rela_proveedor;
+        $this->fecha_alta = $fecha_alta;
         $this->activo = $activo;
         $this->estado_revision = $estado_revision;
         $this->motivo_rechazo = $motivo_rechazo;
@@ -71,15 +74,7 @@ class Transporte {
         $id_proveedor = (int)$proveedor['id_proveedores'];
 
         $query = "
-            SELECT 
-                t.id_transporte,
-                t.nombre_servicio,
-                tt.descripcion AS tipo_transporte,
-                t.transporte_matricula,
-                t.descripcion,
-                t.transporte_capacidad,
-                t.imagen_principal,
-                p.razon_social AS proveedor_nombre
+            SELECT t.*, tt.descripcion AS tipo_transporte, p.razon_social AS proveedor_nombre
             FROM transporte t
             JOIN tipo_transporte tt ON t.rela_tipo_transporte = tt.id_tipo_transporte
             JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
@@ -121,10 +116,11 @@ class Transporte {
         $id_proveedor = (int)$proveedor['id_proveedores'];
 
         $query = "INSERT INTO transporte 
-                    (transporte_matricula, transporte_capacidad, rela_tipo_transporte, 
-                     nombre_servicio, descripcion, imagen_principal, rela_proveedor, activo)
+                    (transporte_matricula, transporte_capacidad, rela_tipo_transporte,
+                    nombre_servicio, descripcion, imagen_principal, rela_proveedor, activo, fecha_alta)
                   VALUES
-                    ('$matricula', $capacidad, $tipo, '$nombre', '$desc', '$imagen', $id_proveedor, 1)";
+                    ('$matricula', $capacidad, $tipo,
+                    '$nombre', '$desc', '$imagen', $id_proveedor, 1, NOW())";
 
         if ($mysqli->query($query)) {
             return $mysqli->insert_id;
@@ -145,13 +141,13 @@ class Transporte {
         $imagen = $this->imagen_principal ? ", imagen_principal='" . $mysqli->real_escape_string($this->imagen_principal) . "'" : "";
 
         $query = "UPDATE transporte SET
-                    transporte_matricula = '$matricula',
-                    transporte_capacidad = $capacidad,
-                    rela_tipo_transporte = $tipo,
-                    nombre_servicio = '$nombre',
-                    descripcion = '$desc'
-                    $imagen
-                  WHERE id_transporte = " . (int)$this->id_transporte;
+            transporte_matricula = '$matricula',
+            transporte_capacidad = $capacidad,
+            rela_tipo_transporte = $tipo,
+            nombre_servicio = '$nombre',
+            descripcion = '$desc'
+            $imagen
+            WHERE id_transporte = " . (int)$this->id_transporte;
 
         return $conexion->actualizar($query);
     }
@@ -205,10 +201,8 @@ class Transporte {
         }
 
         $query .= " ORDER BY r.fecha_salida ASC";
-
         return $conexion->consultar($query);
     }
-
 
     public function getId_transporte() { return $this->id_transporte; }
     public function setId_transporte($id) { $this->id_transporte = $id; return $this; }
@@ -234,7 +228,22 @@ class Transporte {
     public function getRela_proveedor() { return $this->rela_proveedor; }
     public function setRela_proveedor($p) { $this->rela_proveedor = $p; return $this; }
 
+    public function getFecha_alta() { return $this->fecha_alta; }
+    public function setFecha_alta($f) { $this->fecha_alta = $f; return $this; }
+
     public function getActivo() { return $this->activo; }
     public function setActivo($a) { $this->activo = $a; return $this; }
+
+    public function getEstado_revision() { return $this->estado_revision; }
+    public function setEstado_revision($e) { $this->estado_revision = $e; return $this; }
+
+    public function getMotivo_rechazo() { return $this->motivo_rechazo; }
+    public function setMotivo_rechazo($m) { $this->motivo_rechazo = $m; return $this; }
+
+    public function getFecha_revision() { return $this->fecha_revision; }
+    public function setFecha_revision($f) { $this->fecha_revision = $f; return $this; }
+
+    public function getRevisado_por() { return $this->revisado_por; }
+    public function setRevisado_por($r) { $this->revisado_por = $r; return $this; }
 }
 ?>

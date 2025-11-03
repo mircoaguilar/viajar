@@ -87,8 +87,6 @@ if ($destino || $desde || $hasta) {
   </div>
 </section>
 
-
-<!-- LISTADO DE VIAJES -->
 <section class="viajes">
   <h2>Próximos viajes</h2>
   <div class="tarjetas">
