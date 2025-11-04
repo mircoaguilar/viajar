@@ -43,7 +43,7 @@ $hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
 
         <div>
           <label for="rela_hotel">Hotel</label>
-          <select id="rela_hotel" name="rela_hotel" required>
+          <select id="rela_hotel" name="rela_hotel">
             <option value="">Seleccionar hotel...</option>
             <?php foreach ($hoteles as $h): ?>
               <option value="<?= $h['id_hotel'] ?>"><?= htmlspecialchars($h['hotel_nombre']) ?></option>
@@ -54,7 +54,7 @@ $hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
 
         <div>
           <label for="rela_habitacion">Habitación</label>
-          <select id="rela_habitacion" name="rela_habitacion" required>
+          <select id="rela_habitacion" name="rela_habitacion">
             <option value="">Seleccionar habitación...</option>
           </select>
           <div class="error"></div>
@@ -62,19 +62,19 @@ $hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
 
         <div>
           <label for="fecha_inicio">Fecha de inicio</label>
-          <input type="text" id="fecha_inicio" name="fecha_inicio" required>
+          <input type="text" id="fecha_inicio" name="fecha_inicio">
           <div class="error"></div>
         </div>
 
         <div>
           <label for="fecha_fin">Fecha fin</label>
-          <input type="text" id="fecha_fin" name="fecha_fin" required>
+          <input type="text" id="fecha_fin" name="fecha_fin">
           <div class="error"></div>
         </div>
 
         <div>
           <label for="cantidad">Cantidad disponible</label>
-          <input type="number" id="cantidad" name="cantidad" min="0" value="1" required>
+          <input type="number" id="cantidad" name="cantidad" min="0" value="1">
           <div class="error"></div>
         </div>
 

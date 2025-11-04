@@ -46,7 +46,7 @@ $fechas_disponibles = $tourStockModel->traer_fechas_disponibles($id_tour);
 
                 <div class="acciones">
                     <label for="fecha_tour"><strong>Elegir fecha:</strong></label>
-                    <select name="fecha" id="fecha_tour" required>
+                    <select name="fecha" id="fecha_tour">
                         <option value="">Seleccione una fecha</option>
                         <?php foreach ($fechas_disponibles as $f): ?>
                             <option value="<?= $f['fecha']; ?>">
@@ -61,8 +61,7 @@ $fechas_disponibles = $tourStockModel->traer_fechas_disponibles($id_tour);
                            id="cantidad_personas" 
                            min="1" 
                            max="1" 
-                           value="1" 
-                           required>
+                           value="1">
 
                     <button type="button" class="btn-reserva"
                         onclick="agregarTourAlCarrito(

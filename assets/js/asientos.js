@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const filas = parseInt(busContainer.dataset.filas);
     const columnas = parseInt(busContainer.dataset.asientos);
     const contenedorAsientos = busContainer.querySelector(".asientos");
-
-    // Ruta corregida: controllers/viajes/asientos_ocupados.php
     const ocupados = await fetchOcupados(pisoNum);
 
     generarPiso(contenedorAsientos, filas, columnas, ocupados, `Piso ${pisoNum}`);
@@ -91,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     modalTotal.textContent = (seleccionados.size * precioAsiento).toLocaleString("es-AR");
-    modal.style.display = "block";
+    modal.style.display = "flex";
   });
 
   modalCerrar.addEventListener("click", () => modal.style.display = "none");

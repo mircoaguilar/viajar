@@ -69,6 +69,7 @@ if ($destino || $desde || $hasta) {
                 </option>
             <?php endforeach; ?>
         </select>
+      </div>
 
       <div class="form-group">
         <label>Desde</label>

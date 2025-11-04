@@ -87,7 +87,7 @@ if (!$ruta) die("Ruta no encontrada.");
   </div>
 
   <div id="modal-carrito" class="modal">
-    <div class="modal-contenido">
+    <div class="modal-content">
       <span id="modal-cerrar" class="cerrar">&times;</span>
       <h3>Asientos seleccionados</h3>
       <div id="modal-lista"></div>
