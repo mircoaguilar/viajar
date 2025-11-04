@@ -48,11 +48,29 @@ class Carrito {
                     WHEN ci.tipo_servicio = 'tour' THEN g.nombre_tour
                     ELSE ci.id_servicio
                 END AS nombre_servicio,
+
+                CASE 
+                    WHEN ci.tipo_servicio = 'hotel' THEN ci.fecha_inicio
+                    WHEN ci.tipo_servicio = 'tour' THEN ci.fecha_inicio
+                    WHEN ci.tipo_servicio = 'transporte' THEN ci.fecha_inicio
+                    ELSE NULL
+                END AS fecha_inicio,
+
+                CASE 
+                    WHEN ci.tipo_servicio = 'hotel' THEN ci.fecha_fin
+                    ELSE NULL
+                END AS fecha_fin,
+
                 CASE 
                     WHEN ci.tipo_servicio = 'tour' THEN ci.fecha_inicio
-                    WHEN ci.tipo_servicio = 'hotel' THEN CONCAT(ci.fecha_inicio, ' → ', ci.fecha_fin)
                     ELSE NULL
-                END AS fecha_tour
+                END AS fecha_tour,
+
+                CASE 
+                    WHEN ci.tipo_servicio = 'transporte' THEN ci.fecha_inicio
+                    ELSE NULL
+                END AS fecha_servicio
+
             FROM carrito_items ci
             LEFT JOIN hotel_habitaciones hh 
                 ON ci.tipo_servicio = 'hotel' AND ci.id_servicio = hh.id_hotel_habitacion
@@ -66,6 +84,7 @@ class Carrito {
             ORDER BY ci.id_item ASC
         ");
     }
+
 
     public function contar_items($id_usuario) {
         $carrito = $this->traer_carrito_activo($id_usuario);

@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const total = document.getElementById("total");
   const seleccionados = new Set();
   const viajeId = document.body.dataset.viajeId;
+  const viajeFecha = document.body.dataset.fecha; 
 
   document.querySelectorAll(".bus-container").forEach(async busContainer => {
     const pisoNum = busContainer.dataset.numero;
@@ -92,42 +93,62 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "flex";
   });
 
-  modalCerrar.addEventListener("click", () => modal.style.display = "none");
-  btnCancelar.addEventListener("click", () => modal.style.display = "none");
+  modalCerrar.addEventListener("click", () => (modal.style.display = "none"));
+  btnCancelar.addEventListener("click", () => (modal.style.display = "none"));
 
   btnAgregarCarrito.addEventListener("click", async () => {
-    const asientosSeleccionados = Array.from(document.querySelectorAll(".asiento.seleccionado")).map(a => {
-      return {
-        piso: a.closest(".bus-container").dataset.numero,
-        num: parseInt(a.textContent)
-      };
-    });
-
-    try {
-      const res = await fetch("controllers/viajes/ocupar_asientos.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ viajeId, asientos: asientosSeleccionados })
-      });
-      const data = await res.json();
-      if (data.status !== "success") throw new Error(data.message || "Error al ocupar asientos");
-    } catch (e) {
-      alert("Ocurrió un error al ocupar los asientos: " + e.message);
+    const cantidad = seleccionados.size;
+    if (cantidad === 0) {
+      alert("No seleccionaste ningún asiento.");
       return;
     }
 
-    alert("Asientos agregados al carrito");
-    modal.style.display = "none";
-    document.querySelectorAll(".asiento.seleccionado").forEach(a => {
-      a.classList.remove("seleccionado");
-      a.classList.add("ocupado");
+    const asientosSeleccionados = Array.from(document.querySelectorAll(".asiento.seleccionado")).map(a => {
+      const busContainer = a.closest(".bus-container");
+      const columnas = parseInt(busContainer.dataset.asientos, 10);
+      const piso = busContainer.dataset.numero;
+      const numero = parseInt(a.textContent, 10);
+
+      const fila = Math.ceil(numero / columnas);
+      const columna = numero - (fila - 1) * columnas;
+
+      return { piso: parseInt(piso, 10), numero, fila, columna };
     });
-    seleccionados.clear();
-    actualizarResumen();
+
+    const formData = new FormData();
+    formData.append("tipo_servicio", "transporte");
+    formData.append("id_servicio", viajeId);
+    formData.append("cantidad", cantidad);
+    formData.append("precio_unitario", precioAsiento);
+    formData.append("asientos", JSON.stringify(asientosSeleccionados));
+    formData.append("fecha_servicio", viajeFecha);
+
+    try {
+      const res = await fetch("controllers/carrito/carrito.controlador.php?action=agregar", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await res.json();
+      if (data.status !== "success") throw new Error(data.message || "Error al agregar al carrito");
+
+      alert("Asientos agregados al carrito correctamente");
+
+      modal.style.display = "none";
+      document.querySelectorAll(".asiento.seleccionado").forEach(a => {
+        a.classList.remove("seleccionado");
+        a.classList.add("ocupado");
+      });
+      seleccionados.clear();
+      actualizarResumen();
+
+    } catch (e) {
+      alert("Ocurrió un error al agregar los asientos: " + e.message);
+    }
   });
 
   window.addEventListener("click", e => {
-    if (e.target == modal) modal.style.display = "none";
+    if (e.target === modal) modal.style.display = "none";
   });
 
   async function fetchOcupados(pisoNum) {

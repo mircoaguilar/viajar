@@ -26,7 +26,10 @@ class Reserva {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
 
-        $stmt = $mysqli->prepare("INSERT INTO reservas (fecha_creacion, total, reservas_estado, rela_usuarios) VALUES (NOW(), ?, ?, ?)");
+        $stmt = $mysqli->prepare("
+            INSERT INTO reservas (fecha_creacion, total, reservas_estado, rela_usuarios) 
+            VALUES (NOW(), ?, ?, ?)
+        ");
         $stmt->bind_param("dsi", $total, $estado, $id_usuario);
         $stmt->execute();
         $id_reserva = $stmt->insert_id;
@@ -39,7 +42,11 @@ class Reserva {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
 
-        $stmt = $mysqli->prepare("INSERT INTO detalle_reservas (rela_reservas, tipo_servicio, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)");
+        $stmt = $mysqli->prepare("
+            INSERT INTO detalle_reservas 
+            (rela_reservas, tipo_servicio, cantidad, precio_unitario, subtotal) 
+            VALUES (?, ?, ?, ?, ?)
+        ");
         $stmt->bind_param("isidd", $id_reserva, $tipo_servicio, $cantidad, $precio_unitario, $subtotal);
         $stmt->execute();
         $id_detalle = $stmt->insert_id; 
@@ -51,12 +58,6 @@ class Reserva {
     public function crear_detalle_hotel($id_detalle_reserva, $id_habitacion, $check_in, $check_out, $noches) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
-
-        $id_detalle_reserva = (int)$id_detalle_reserva;
-        $id_habitacion = (int)$id_habitacion;
-        $check_in = $mysqli->real_escape_string($check_in);
-        $check_out = $mysqli->real_escape_string($check_out);
-        $noches = (int)$noches;
 
         $stmt = $mysqli->prepare("
             INSERT INTO detalle_reserva_hotel (rela_detalle_reserva, rela_habitacion, check_in, check_out, noches) 
@@ -74,10 +75,6 @@ class Reserva {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
 
-        $id_detalle_reserva = (int)$id_detalle_reserva;
-        $id_tour = (int)$id_tour;
-        $fecha_tour = $mysqli->real_escape_string($fecha_tour);
-
         $stmt = $mysqli->prepare("
             INSERT INTO detalle_reserva_tour (rela_detalle_reserva, rela_tour, fecha) 
             VALUES (?, ?, ?)
@@ -90,10 +87,37 @@ class Reserva {
         return $id_detalle_tour;
     }
 
+    public function crear_detalle_transporte($id_detalle_reserva, $id_viaje, $asientos_json, $fecha_servicio, $precio_unitario) {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+
+        $asientosArray = json_decode($asientos_json, true);
+
+        $stmt = $mysqli->prepare("
+            INSERT INTO detalle_reserva_transporte 
+            (rela_detalle_reserva, id_viaje, piso, numero_asiento, fila, columna, fecha_servicio, precio_unitario)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ");
+
+        foreach ($asientosArray as $a) {
+            $piso = (int)$a['piso'];
+            $numero = (int)$a['numero'];
+            $fila = (int)$a['fila'];
+            $columna = (int)$a['columna'];
+
+            $stmt->bind_param("iiiiissd", 
+                $id_detalle_reserva, $id_viaje, $piso, $numero, $fila, $columna, $fecha_servicio, $precio_unitario
+            );
+            $stmt->execute();
+        }
+
+        $stmt->close();
+        return true;
+    }
+
     public function traerPorUsuario($userId) {
         $conexion = new Conexion();
         $userId = (int)$userId;
-
         $query = "SELECT * FROM reservas WHERE rela_usuarios = $userId AND activo = 1 ORDER BY fecha_creacion DESC";
         return $conexion->consultar($query);
     }
@@ -101,7 +125,6 @@ class Reserva {
     public function traerDetallesPorId($id_reserva) {
         $conexion = new Conexion();
         $id_reserva = (int)$id_reserva;
-
         $query = "SELECT * FROM detalle_reservas WHERE rela_reservas = $id_reserva";
         return $conexion->consultar($query);
     }
@@ -109,14 +132,31 @@ class Reserva {
     public function traerDetalleHotel($id_detalle_reserva) {
         $conexion = new Conexion();
         $id_detalle_reserva = (int)$id_detalle_reserva;
-
         $query = "SELECT * FROM detalle_reserva_hotel WHERE rela_detalle_reserva = $id_detalle_reserva LIMIT 1";
         $resultado = $conexion->consultar($query);
-
         return !empty($resultado) ? $resultado[0] : [];
     }
 
-   public function traer_por_hotel($id_hotel) {
+    public function traerDetalleTransporte($id_detalle_reserva) {
+        $conexion = new Conexion();
+        $id_detalle_reserva = (int)$id_detalle_reserva;
+
+        $query = "
+            SELECT 
+                drt.*, 
+                v.origen, 
+                v.destino, 
+                v.hora_salida, 
+                v.hora_llegada
+            FROM detalle_reserva_transporte drt
+            INNER JOIN viaje v ON v.id_viaje = drt.id_viaje
+            WHERE drt.rela_detalle_reserva = $id_detalle_reserva
+        ";
+
+        return $conexion->consultar($query);
+    }
+
+    public function traer_por_hotel($id_hotel) {
         $conexion = new Conexion();
         $id_hotel = (int)$id_hotel;
         $query = "
@@ -147,10 +187,8 @@ class Reserva {
     public function traerPorId($id_reserva) {
         $conexion = new Conexion();
         $id_reserva = (int)$id_reserva;
-
         $query = "SELECT * FROM reservas WHERE id_reservas = $id_reserva LIMIT 1";
         $resultado = $conexion->consultar($query);
-
         return !empty($resultado) ? $resultado[0] : [];
     }
 
@@ -189,3 +227,4 @@ class Reserva {
     public function getActivo() { return $this->activo; }
     public function setActivo($activo) { $this->activo = $activo; return $this; }
 }
+?>

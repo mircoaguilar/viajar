@@ -36,6 +36,8 @@ async function cargarCarrito() {
                 fechas = `${it.fecha_inicio ?? '-'}${it.fecha_fin ? ' → ' + it.fecha_fin : ''}`;
             } else if(it.tipo_servicio === 'tour') {
                 fechas = it.fecha_tour ?? '-';
+            } else if(it.tipo_servicio === 'transporte') {
+                fechas = it.fecha_servicio ?? '-';
             }
 
             html += `

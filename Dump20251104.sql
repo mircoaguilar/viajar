@@ -94,7 +94,7 @@ CREATE TABLE `carrito_items` (
   PRIMARY KEY (`id_item`),
   KEY `carrito_items_ibfk_1` (`rela_carrito`),
   CONSTRAINT `carrito_items_ibfk_1` FOREIGN KEY (`rela_carrito`) REFERENCES `carrito` (`id_carrito`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +103,7 @@ CREATE TABLE `carrito_items` (
 
 LOCK TABLES `carrito_items` WRITE;
 /*!40000 ALTER TABLE `carrito_items` DISABLE KEYS */;
-INSERT INTO `carrito_items` VALUES (54,13,'hotel',16,1,'2025-10-30','2025-10-31',150000.00,150000.00);
+INSERT INTO `carrito_items` VALUES (73,13,'transporte',3,1,'2025-12-20',NULL,15000.00,15000.00);
 /*!40000 ALTER TABLE `carrito_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,87 +166,6 @@ INSERT INTO `contacto` VALUES (2,'3704687824',366,1),(4,'3705786843',367,1),(6,'
 UNLOCK TABLES;
 
 --
--- Table structure for table `detalle_pasajeros`
---
-
-DROP TABLE IF EXISTS `detalle_pasajeros`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `detalle_pasajeros` (
-  `id_detalle_pasajeros` int NOT NULL AUTO_INCREMENT,
-  `detalle_pasajeros_asiento` int DEFAULT NULL,
-  `detalle_pasajeros_estado` varchar(50) DEFAULT NULL,
-  `rela_reservas` int NOT NULL,
-  PRIMARY KEY (`id_detalle_pasajeros`),
-  KEY `fk_detalle_pasajeros_reservas1_idx` (`rela_reservas`),
-  CONSTRAINT `fk_detalle_pasajeros_reservas1` FOREIGN KEY (`rela_reservas`) REFERENCES `reservas` (`id_reservas`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `detalle_pasajeros`
---
-
-LOCK TABLES `detalle_pasajeros` WRITE;
-/*!40000 ALTER TABLE `detalle_pasajeros` DISABLE KEYS */;
-/*!40000 ALTER TABLE `detalle_pasajeros` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `detalle_pasajeros_has_pasajeros`
---
-
-DROP TABLE IF EXISTS `detalle_pasajeros_has_pasajeros`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `detalle_pasajeros_has_pasajeros` (
-  `detalle_pasajeros_id_detalle_pasajeros` int NOT NULL,
-  `pasajeros_id_pasajeros` int NOT NULL,
-  PRIMARY KEY (`detalle_pasajeros_id_detalle_pasajeros`,`pasajeros_id_pasajeros`),
-  KEY `fk_detalle_pasajeros_has_pasajeros_pasajeros1_idx` (`pasajeros_id_pasajeros`),
-  KEY `fk_detalle_pasajeros_has_pasajeros_detalle_pasajeros1_idx` (`detalle_pasajeros_id_detalle_pasajeros`),
-  CONSTRAINT `fk_detalle_pasajeros_has_pasajeros_detalle_pasajeros1` FOREIGN KEY (`detalle_pasajeros_id_detalle_pasajeros`) REFERENCES `detalle_pasajeros` (`id_detalle_pasajeros`),
-  CONSTRAINT `fk_detalle_pasajeros_has_pasajeros_pasajeros1` FOREIGN KEY (`pasajeros_id_pasajeros`) REFERENCES `pasajeros` (`id_pasajeros`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `detalle_pasajeros_has_pasajeros`
---
-
-LOCK TABLES `detalle_pasajeros_has_pasajeros` WRITE;
-/*!40000 ALTER TABLE `detalle_pasajeros_has_pasajeros` DISABLE KEYS */;
-/*!40000 ALTER TABLE `detalle_pasajeros_has_pasajeros` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `detalle_pasajeros_has_viajes`
---
-
-DROP TABLE IF EXISTS `detalle_pasajeros_has_viajes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `detalle_pasajeros_has_viajes` (
-  `detalle_pasajeros_id_detalle_pasajeros` int NOT NULL,
-  `viajes_id_viajes` int NOT NULL,
-  PRIMARY KEY (`detalle_pasajeros_id_detalle_pasajeros`,`viajes_id_viajes`),
-  KEY `fk_detalle_pasajeros_has_viajes_viajes1_idx` (`viajes_id_viajes`),
-  KEY `fk_detalle_pasajeros_has_viajes_detalle_pasajeros1_idx` (`detalle_pasajeros_id_detalle_pasajeros`),
-  CONSTRAINT `fk_detalle_pasajeros_has_viajes_detalle_pasajeros1` FOREIGN KEY (`detalle_pasajeros_id_detalle_pasajeros`) REFERENCES `detalle_pasajeros` (`id_detalle_pasajeros`),
-  CONSTRAINT `fk_detalle_pasajeros_has_viajes_viajes1` FOREIGN KEY (`viajes_id_viajes`) REFERENCES `viajes` (`id_viajes`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `detalle_pasajeros_has_viajes`
---
-
-LOCK TABLES `detalle_pasajeros_has_viajes` WRITE;
-/*!40000 ALTER TABLE `detalle_pasajeros_has_viajes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `detalle_pasajeros_has_viajes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `detalle_reserva_hotel`
 --
 
@@ -274,7 +193,6 @@ CREATE TABLE `detalle_reserva_hotel` (
 
 LOCK TABLES `detalle_reserva_hotel` WRITE;
 /*!40000 ALTER TABLE `detalle_reserva_hotel` DISABLE KEYS */;
-INSERT INTO `detalle_reserva_hotel` VALUES (64,122,16,'2025-10-24','2025-10-25',1),(65,124,16,'2025-10-25','2025-10-26',1),(66,125,16,'2025-10-25','2025-10-26',1),(67,126,16,'2025-10-25','2025-10-26',1),(68,128,16,'2025-10-25','2025-10-26',1),(69,130,16,'2025-10-25','2025-10-26',1),(70,132,16,'2025-10-25','2025-10-26',1),(71,134,16,'2025-10-25','2025-10-26',1),(72,136,16,'2025-10-30','2025-10-31',1);
 /*!40000 ALTER TABLE `detalle_reserva_hotel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,7 +222,6 @@ CREATE TABLE `detalle_reserva_tour` (
 
 LOCK TABLES `detalle_reserva_tour` WRITE;
 /*!40000 ALTER TABLE `detalle_reserva_tour` DISABLE KEYS */;
-INSERT INTO `detalle_reserva_tour` VALUES (32,123,6,'2025-10-26'),(33,127,6,'2025-10-28'),(34,129,6,'2025-10-28'),(35,131,6,'2025-10-28'),(36,133,6,'2025-10-28'),(37,135,6,'2025-10-28');
 /*!40000 ALTER TABLE `detalle_reserva_tour` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,14 +236,18 @@ CREATE TABLE `detalle_reserva_transporte` (
   `id_detalle_transporte` int NOT NULL AUTO_INCREMENT,
   `rela_detalle_reserva` int NOT NULL,
   `id_viaje` int NOT NULL,
-  `asiento_desde` int DEFAULT NULL,
-  `asiento_hasta` int DEFAULT NULL,
+  `piso` int NOT NULL,
+  `numero_asiento` int NOT NULL,
+  `fila` int DEFAULT NULL,
+  `columna` int DEFAULT NULL,
+  `fecha_servicio` date DEFAULT NULL,
+  `precio_unitario` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id_detalle_transporte`),
-  KEY `fk_transporte_detalle_reserva` (`rela_detalle_reserva`),
-  KEY `fk_transporte_viaje` (`id_viaje`),
-  CONSTRAINT `fk_transporte_detalle_reserva` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`),
-  CONSTRAINT `fk_transporte_viaje` FOREIGN KEY (`id_viaje`) REFERENCES `viajes` (`id_viajes`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+  KEY `rela_detalle_reserva` (`rela_detalle_reserva`),
+  KEY `id_viaje` (`id_viaje`),
+  CONSTRAINT `detalle_reserva_transporte_ibfk_1` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`),
+  CONSTRAINT `detalle_reserva_transporte_ibfk_2` FOREIGN KEY (`id_viaje`) REFERENCES `viajes` (`id_viajes`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -355,7 +276,7 @@ CREATE TABLE `detalle_reservas` (
   PRIMARY KEY (`id_detalle_reserva`),
   KEY `rela_reservas` (`rela_reservas`),
   CONSTRAINT `detalle_reservas_ibfk_1` FOREIGN KEY (`rela_reservas`) REFERENCES `reservas` (`id_reservas`)
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -364,7 +285,6 @@ CREATE TABLE `detalle_reservas` (
 
 LOCK TABLES `detalle_reservas` WRITE;
 /*!40000 ALTER TABLE `detalle_reservas` DISABLE KEYS */;
-INSERT INTO `detalle_reservas` VALUES (122,80,'hotel',1,150000.00,150000.00),(123,80,'tour',2,15000.00,30000.00),(124,81,'hotel',1,150000.00,150000.00),(125,82,'hotel',1,150000.00,150000.00),(126,83,'hotel',1,150000.00,150000.00),(127,83,'tour',2,15000.00,30000.00),(128,84,'hotel',1,150000.00,150000.00),(129,84,'tour',2,15000.00,30000.00),(130,85,'hotel',1,150000.00,150000.00),(131,85,'tour',2,15000.00,30000.00),(132,86,'hotel',1,150000.00,150000.00),(133,86,'tour',2,15000.00,30000.00),(134,87,'hotel',1,150000.00,150000.00),(135,87,'tour',2,15000.00,30000.00),(136,88,'hotel',1,150000.00,150000.00);
 /*!40000 ALTER TABLE `detalle_reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -766,7 +686,6 @@ CREATE TABLE `pago` (
 
 LOCK TABLES `pago` WRITE;
 /*!40000 ALTER TABLE `pago` DISABLE KEYS */;
-INSERT INTO `pago` VALUES (60,'2025-10-24',180000,'aprobado',80,8,'131203243302',3),(61,'2025-10-25',150000,'pendiente',81,8,NULL,3),(62,'2025-10-25',150000,'pendiente',81,8,NULL,3),(63,'2025-10-25',150000,'pendiente',81,8,NULL,3),(64,'2025-10-25',150000,'pendiente',82,8,NULL,3),(65,'2025-10-27',180000,'aprobado',87,8,'130918844773',3),(66,'2025-10-27',150000,'pendiente',88,8,NULL,3);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1009,7 +928,7 @@ CREATE TABLE `reservas` (
   PRIMARY KEY (`id_reservas`),
   KEY `fk_reservas_usuarios1_idx` (`rela_usuarios`),
   CONSTRAINT `fk_reservas_usuarios1` FOREIGN KEY (`rela_usuarios`) REFERENCES `usuarios` (`id_usuarios`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1018,7 +937,7 @@ CREATE TABLE `reservas` (
 
 LOCK TABLES `reservas` WRITE;
 /*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
-INSERT INTO `reservas` VALUES (80,'2025-10-24 20:28:51',180000.00,'confirmada',74,1),(81,'2025-10-25 20:38:42',150000.00,'pendiente',74,1),(82,'2025-10-25 20:41:56',150000.00,'pendiente',74,1),(83,'2025-10-27 17:42:43',180000.00,'pendiente',74,1),(84,'2025-10-27 17:47:13',180000.00,'pendiente',74,1),(85,'2025-10-27 17:47:47',180000.00,'pendiente',74,1),(86,'2025-10-27 17:48:21',180000.00,'pendiente',74,1),(87,'2025-10-27 17:51:43',180000.00,'confirmada',74,1),(88,'2025-10-27 23:09:44',150000.00,'pendiente',74,1),(89,'2025-11-20 23:10:44',200000.00,'pendiente',74,1),(90,'2025-12-20 23:10:44',200000.00,'pendiente',74,1),(91,'2025-01-20 23:10:44',200000.00,'pendiente',74,1),(92,'2025-02-20 23:10:44',200000.00,'pendiente',74,1),(93,'2025-03-20 23:10:44',200000.00,'pendiente',74,1),(94,'2025-04-20 23:10:44',200000.00,'pendiente',74,1),(95,'2025-05-20 23:10:44',200000.00,'pendiente',74,1),(96,'2025-06-20 23:10:44',200000.00,'pendiente',74,1),(97,'2025-07-20 23:10:44',200000.00,'pendiente',74,1),(98,'2025-08-20 23:10:44',200000.00,'pendiente',74,1),(99,'2025-09-20 23:10:44',200000.00,'pendiente',74,1);
+INSERT INTO `reservas` VALUES (80,'2025-10-24 20:28:51',180000.00,'confirmada',74,1);
 /*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1319,6 +1238,35 @@ INSERT INTO `transporte` VALUES (3,'ABC123',40,2,'Colectivo Formosa','Servicio d
 UNLOCK TABLES;
 
 --
+-- Table structure for table `transporte_pisos`
+--
+
+DROP TABLE IF EXISTS `transporte_pisos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `transporte_pisos` (
+  `id_piso` int NOT NULL AUTO_INCREMENT,
+  `rela_transporte` int NOT NULL,
+  `numero_piso` int NOT NULL,
+  `filas` int NOT NULL,
+  `asientos_por_fila` int NOT NULL,
+  PRIMARY KEY (`id_piso`),
+  KEY `rela_transporte` (`rela_transporte`),
+  CONSTRAINT `transporte_pisos_ibfk_1` FOREIGN KEY (`rela_transporte`) REFERENCES `transporte` (`id_transporte`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `transporte_pisos`
+--
+
+LOCK TABLES `transporte_pisos` WRITE;
+/*!40000 ALTER TABLE `transporte_pisos` DISABLE KEYS */;
+INSERT INTO `transporte_pisos` VALUES (1,3,1,5,4),(2,3,2,3,4);
+/*!40000 ALTER TABLE `transporte_pisos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `transporte_rutas`
 --
 
@@ -1391,6 +1339,39 @@ INSERT INTO `usuarios` VALUES (66,'jperez','juan@gmail.com','2025-06-27 17:00:20
 UNLOCK TABLES;
 
 --
+-- Table structure for table `viaje_asientos`
+--
+
+DROP TABLE IF EXISTS `viaje_asientos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `viaje_asientos` (
+  `id_asiento` int NOT NULL AUTO_INCREMENT,
+  `rela_viaje` int NOT NULL,
+  `piso` tinyint DEFAULT '1',
+  `fila` int NOT NULL,
+  `columna` char(1) COLLATE utf8mb4_general_ci NOT NULL,
+  `ocupado` tinyint(1) DEFAULT '0',
+  `rela_reserva` int DEFAULT NULL,
+  PRIMARY KEY (`id_asiento`),
+  KEY `rela_viaje` (`rela_viaje`),
+  KEY `rela_reserva` (`rela_reserva`),
+  CONSTRAINT `viaje_asientos_ibfk_1` FOREIGN KEY (`rela_viaje`) REFERENCES `viajes` (`id_viajes`),
+  CONSTRAINT `viaje_asientos_ibfk_2` FOREIGN KEY (`rela_reserva`) REFERENCES `reservas` (`id_reservas`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `viaje_asientos`
+--
+
+LOCK TABLES `viaje_asientos` WRITE;
+/*!40000 ALTER TABLE `viaje_asientos` DISABLE KEYS */;
+INSERT INTO `viaje_asientos` VALUES (2,3,1,2,'2',1,80);
+/*!40000 ALTER TABLE `viaje_asientos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `viajes`
 --
 
@@ -1403,7 +1384,6 @@ CREATE TABLE `viajes` (
   `rela_transporte_rutas` int NOT NULL,
   `hora_salida` time NOT NULL,
   `hora_llegada` time NOT NULL,
-  `asientos_disponibles` int DEFAULT NULL,
   `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_viajes`),
   KEY `fk_viajes_transporte_rutas` (`rela_transporte_rutas`),
@@ -1417,7 +1397,7 @@ CREATE TABLE `viajes` (
 
 LOCK TABLES `viajes` WRITE;
 /*!40000 ALTER TABLE `viajes` DISABLE KEYS */;
-INSERT INTO `viajes` VALUES (3,'2025-12-20',10,'08:00:00','10:00:00',50,1);
+INSERT INTO `viajes` VALUES (3,'2025-12-20',10,'08:00:00','10:00:00',1);
 /*!40000 ALTER TABLE `viajes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1438,4 +1418,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-30 18:23:53
+-- Dump completed on 2025-11-04 14:41:49

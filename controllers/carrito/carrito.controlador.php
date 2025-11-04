@@ -59,6 +59,12 @@ switch ($action) {
             $fecha_fin = null;
         }
 
+        if ($tipo_servicio === 'transporte' && !empty($_POST['fecha_servicio'])) {
+            $fecha_inicio = $_POST['fecha_servicio'];
+            $fecha_fin = null;
+        }
+
+
         $itemModel->setId_carrito($id_carrito)
                 ->setTipo_servicio($tipo_servicio)
                 ->setId_servicio($id_servicio)
@@ -189,8 +195,16 @@ switch ($action) {
                     $it['id_servicio'],  
                     $fecha_tour  
                 );
+                
+            } elseif ($it['tipo_servicio'] === 'transporte') {
+                $reservaModel->crear_detalle_transporte(
+                    $id_detalle,                  
+                    $it['id_servicio'],           
+                    $it['asientos'],              
+                    $it['fecha_servicio'],       
+                    $it['precio_unitario']        
+                );
             }
-
         }
 
         $_SESSION['id_reserva'] = $id_reserva;
