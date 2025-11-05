@@ -8,7 +8,7 @@ require_once('models/ciudad.php');
 require_once('models/transporte.php');
 
 $ciudadModel = new Ciudad();
-$ciudades = $ciudadModel->traer_ciudades(); 
+$ciudades = $ciudadModel->traer_ciudades();
 
 $transporteModel = new Transporte();
 $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usuarios']);
@@ -21,6 +21,7 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="assets/css/mi_perfil_proveedor.css">
   <link rel="stylesheet" href="assets/css/hotel_carga.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 
@@ -43,17 +44,23 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
           <input type="text" id="trayecto" name="trayecto" placeholder="Ej: Formosa - Herradura - Clorinda" required>
         </div>
 
-
         <div>
           <label for="rela_transporte">Transporte</label>
           <select id="rela_transporte" name="rela_transporte" required>
             <option value="">Seleccionar transporte...</option>
             <?php foreach ($transportes as $t): ?>
-              <option value="<?= $t['id_transporte'] ?>">
+              <option value="<?= $t['id_transporte'] ?>"
+                data-nombre="<?= htmlspecialchars($t['nombre_servicio']) ?>"
+                data-tipo="<?= htmlspecialchars($t['tipo_transporte']) ?>"
+                data-matricula="<?= htmlspecialchars($t['transporte_matricula']) ?>"
+                data-capacidad="<?= htmlspecialchars($t['transporte_capacidad']) ?>"
+                data-img="<?= htmlspecialchars($t['imagen_principal'] ?? '') ?>">
                 <?= htmlspecialchars($t['nombre_servicio']) ?> (<?= htmlspecialchars($t['transporte_matricula']) ?>)
               </option>
             <?php endforeach; ?>
           </select>
+
+          <div id="previewTransporte" class="preview-transporte"></div>
         </div>
 
         <div>
@@ -99,12 +106,11 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
       </form>
     </div>
   </div>
-
 </main>
 
-<script src="assets/js/rutas_carga.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="assets/js/rutas_carga.js"></script>
 <script>
   flatpickr("#duracion", {
     enableTime: true,

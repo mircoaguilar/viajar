@@ -1,7 +1,7 @@
 <?php
 if (!isset($_SESSION['id_usuarios']) || ($_SESSION['id_perfiles'] ?? 0) != 5) {
-    header('Location: index.php?page=login&message=Acceso no autorizado.&status=danger');
-    exit;
+  header('Location: index.php?page=login&message=Acceso no autorizado.&status=danger');
+  exit;
 }
 
 require_once('models/tipo_transporte.php');
@@ -14,8 +14,8 @@ $tipos = $tipoModel->traer_tipos_transportes();
   <meta charset="UTF-8" />
   <title>Cargar Transporte</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="assets/css/hotel_carga.css">
   <link rel="stylesheet" href="assets/css/mi_perfil_proveedor.css">
-  <link rel="stylesheet" href="assets/css/hotel_carga.css"> 
 </head>
 <body>
 
@@ -65,18 +65,21 @@ $tipos = $tipoModel->traer_tipos_transportes();
           <input type="file" id="imagen_principal" name="imagen_principal" accept="image/*" required>
         </div>
 
-        <input type="hidden" name="csrf" value="<?= htmlspecialchars($_SESSION['csrf'] ?? ''); ?>">
+        <div class="grid" style="grid-column: 1 / -1;">
+          <h3>Configuración de pisos</h3>
+          <div id="contenedorPisos"></div>
+          <button type="button" id="btnAgregarPiso" class="btn secondary">Agregar piso</button>
+        </div>
 
         <div class="actions" style="grid-column: 1 / -1;">
           <a href="index.php?page=mis_transportes" class="btn secondary">Cancelar</a>
           <button type="submit" class="btn">Guardar transporte</button>
         </div>
       </form>
-
     </div>
   </div>
 </main>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="assets/js/transportes_carga.js"></script>
 </body>
 </html>

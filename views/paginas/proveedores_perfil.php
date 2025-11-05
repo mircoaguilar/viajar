@@ -67,6 +67,11 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                         <h3>Crear Nueva Ruta</h3>
                         <p>Configurá una nueva ruta para tus transportes.</p>
                         <a href="index.php?page=transportes_rutas_carga" class="btn">Crear</a>
+                    </div>
+                    <div class="card">
+                        <h3>Agregar Viaje</h3>
+                        <p>Publicá un nuevo viaje disponible para los pasajeros.</p>
+                        <a href="index.php?page=transportes_viajes_carga" class="btn">Agregar</a>
                     </div>';
                     break;
 

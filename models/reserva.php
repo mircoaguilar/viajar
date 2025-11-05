@@ -87,11 +87,14 @@ class Reserva {
         return $id_detalle_tour;
     }
 
-    public function crear_detalle_transporte($id_detalle_reserva, $id_viaje, $asientos_json, $fecha_servicio, $precio_unitario) {
+    public function crear_detalle_transporte($id_detalle_reserva, $id_viaje, $asientosArray, $fecha_servicio, $precio_unitario) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
 
-        $asientosArray = json_decode($asientos_json, true);
+        if (empty($asientosArray) || !is_array($asientosArray)) {
+            error_log("crear_detalle_transporte: No se recibieron asientos o no es un array válido.");
+            return false;
+        }
 
         $stmt = $mysqli->prepare("
             INSERT INTO detalle_reserva_transporte 
@@ -99,16 +102,37 @@ class Reserva {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ");
 
+        if (!$stmt) {
+            error_log("Error preparando statement: " . $mysqli->error);
+            return false;
+        }
+
         foreach ($asientosArray as $a) {
-            $piso = (int)$a['piso'];
-            $numero = (int)$a['numero'];
-            $fila = (int)$a['fila'];
-            $columna = (int)$a['columna'];
+            $piso = isset($a['piso']) ? (int)$a['piso'] : null;
+            $numero = isset($a['numero']) ? (int)$a['numero'] : null;
+            $fila = isset($a['fila']) ? (int)$a['fila'] : null;
+            $columna = isset($a['columna']) ? (int)$a['columna'] : null;
+
+            if ($piso === null || $numero === null) {
+                error_log("crear_detalle_transporte: asiento incompleto: " . print_r($a, true));
+                continue;
+            }
 
             $stmt->bind_param("iiiiissd", 
-                $id_detalle_reserva, $id_viaje, $piso, $numero, $fila, $columna, $fecha_servicio, $precio_unitario
+                $id_detalle_reserva, 
+                $id_viaje, 
+                $piso, 
+                $numero, 
+                $fila, 
+                $columna, 
+                $fecha_servicio, 
+                $precio_unitario
             );
-            $stmt->execute();
+
+            $ok = $stmt->execute();
+            if (!$ok) {
+                error_log("Error al insertar asiento en detalle_reserva_transporte: " . $stmt->error);
+            }
         }
 
         $stmt->close();

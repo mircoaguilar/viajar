@@ -216,6 +216,51 @@ async function agregarTourAlCarrito(id_tour, fecha_tour, precio_unitario) {
     } catch(err) { console.error(err); }
 }
 
+async function agregarTransporteAlCarrito(id_viaje, asientos, fecha_servicio, precio_unitario) {
+    if (!id_viaje || !asientos || asientos.length === 0 || !fecha_servicio) {
+        Swal.fire('Error', 'Faltan datos del viaje o no se seleccionaron asientos', 'error');
+        return;
+    }
+
+    const form = new FormData();
+    form.append('action', 'agregar');
+    form.append('id_usuario', USER_ID);
+    form.append('tipo_servicio', 'transporte');
+    form.append('id_servicio', id_viaje);
+    form.append('cantidad', asientos.length);
+    form.append('precio_unitario', precio_unitario);
+    form.append('fecha_servicio', fecha_servicio);
+    form.append('asientos', JSON.stringify(asientos));
+
+    console.log("Enviando transporte al carrito:", [...form]);
+
+    try {
+        const resp = await fetch('controllers/carrito/carrito.controlador.php', {
+            method: 'POST',
+            body: form
+        });
+        const text = await resp.text();
+        let data;
+        try { 
+            data = JSON.parse(text);
+        } catch(e) { 
+            console.error('Respuesta no JSON del servidor:', text);
+            return;
+        }
+
+        if (data.status === 'success') {
+            Swal.fire('Agregado', 'Viaje agregado al carrito', 'success');
+            cargarCarrito();
+        } else {
+            Swal.fire('Error', data.message || 'No se pudo agregar el viaje', 'error');
+        }
+    } catch (err) {
+        console.error('Error al agregar transporte:', err);
+        Swal.fire('Error', 'Ocurrió un problema al agregar el transporte', 'error');
+    }
+}
+
+
 async function finalizarCompra() {
     try {
         const form = new FormData();

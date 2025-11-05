@@ -65,6 +65,18 @@ class TransportesControlador {
             $id_nuevo = $transporte->guardar();
 
             if ($id_nuevo) {
+
+                if (!empty($_POST['pisos']) && is_array($_POST['pisos'])) {
+                    require_once(__DIR__ . '/../../models/transporte_piso.php');
+                    $pisoModel = new TransportePiso();
+
+                    foreach ($_POST['pisos'] as $numero => $pisoData) {
+                        $filas = (int)($pisoData['filas'] ?? 0);
+                        $asientos = (int)($pisoData['asientos_por_fila'] ?? 0);
+                        $pisoModel->guardar($id_nuevo, $numero, $filas, $asientos);
+                    }
+                }
+
                 echo json_encode([
                     "status" => "ok",
                     "id_transporte" => $id_nuevo
@@ -78,6 +90,7 @@ class TransportesControlador {
             exit;
         }
     }
+
 
     public function editar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

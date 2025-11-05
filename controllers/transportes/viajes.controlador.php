@@ -32,7 +32,7 @@ if (isset($_GET['action'])) {
             break;
 
         default:
-            echo json_encode(['error' => 'Acción no válida']);
+            echo json_encode(['status' => 'error', 'message' => 'Acción no válida']);
             break;
     }
 }
@@ -50,47 +50,54 @@ function obtener_viaje($id) {
 }
 
 function guardar_viaje() {
-    if (!isset($_POST['viaje_fecha'], $_POST['rela_transporte_rutas'], $_POST['hora_salida'], $_POST['hora_llegada'], $_POST['asientos_disponibles'])) {
-        echo json_encode(['error' => 'Faltan datos']);
+    if (!isset($_POST['viaje_fecha'], $_POST['rela_transporte_rutas'], $_POST['hora_salida'], $_POST['hora_llegada'])) {
+        echo json_encode(['status' => 'error', 'message' => 'Faltan datos obligatorios']);
         return;
     }
 
-    $viaje = new Viaje(
-        '', 
-        $_POST['viaje_fecha'],
-        1,
-        $_POST['rela_transporte_rutas'],
-        $_POST['hora_salida'],
-        $_POST['hora_llegada'],
-        $_POST['asientos_disponibles']
-    );
+    $viaje = new Viaje();
+    $viaje->setViaje_fecha($_POST['viaje_fecha']);
+    $viaje->setRela_transporte_rutas($_POST['rela_transporte_rutas']);
+    $viaje->setHora_salida($_POST['hora_salida']);
+    $viaje->setHora_llegada($_POST['hora_llegada']);
+    $viaje->setActivo(1);
 
     $resultado = $viaje->guardar();
-    echo json_encode(['success' => $resultado]);
+
+    echo json_encode([
+        'status' => $resultado ? 'success' : 'error',
+        'message' => $resultado ? 'Viaje guardado correctamente.' : 'Error al guardar el viaje.'
+    ]);
 }
 
 function actualizar_viaje($id) {
-    if (!isset($_POST['viaje_fecha'], $_POST['hora_salida'], $_POST['hora_llegada'], $_POST['asientos_disponibles'])) {
-        echo json_encode(['error' => 'Faltan datos']);
+    if (!isset($_POST['viaje_fecha'], $_POST['hora_salida'], $_POST['hora_llegada'], $_POST['rela_transporte_rutas'])) {
+        echo json_encode(['status' => 'error', 'message' => 'Faltan datos obligatorios']);
         return;
     }
 
-    $viaje = new Viaje(
-        $id,
-        $_POST['viaje_fecha'],
-        1,
-        $_POST['rela_transporte_rutas'],
-        $_POST['hora_salida'],
-        $_POST['hora_llegada'],
-        $_POST['asientos_disponibles']
-    );
+    $viaje = new Viaje();
+    $viaje->setId_viajes($id);
+    $viaje->setViaje_fecha($_POST['viaje_fecha']);
+    $viaje->setRela_transporte_rutas($_POST['rela_transporte_rutas']);
+    $viaje->setHora_salida($_POST['hora_salida']);
+    $viaje->setHora_llegada($_POST['hora_llegada']);
+    $viaje->setActivo(1);
 
     $resultado = $viaje->actualizar();
-    echo json_encode(['success' => $resultado]);
+
+    echo json_encode([
+        'status' => $resultado ? 'success' : 'error',
+        'message' => $resultado ? 'Viaje actualizado correctamente.' : 'Error al actualizar el viaje.'
+    ]);
 }
 
 function eliminar_viaje($id) {
     $viaje = new Viaje($id);
     $resultado = $viaje->eliminar_logico();
-    echo json_encode(['success' => $resultado]);
+
+    echo json_encode([
+        'status' => $resultado ? 'success' : 'error',
+        'message' => $resultado ? 'Viaje eliminado correctamente.' : 'Error al eliminar el viaje.'
+    ]);
 }

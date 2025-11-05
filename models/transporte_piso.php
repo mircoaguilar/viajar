@@ -1,5 +1,6 @@
 <?php
 require_once('conexion.php');
+require_once('transporte.php');
 
 class TransportePiso {
     private $id_piso;
@@ -37,26 +38,27 @@ class TransportePiso {
         return $res ? $res[0] : null;
     }
 
-    public function guardar() {
+    public function guardar($rela_transporte, $numero_piso, $filas, $asientos_por_fila) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
 
-        $rela_transporte = (int)$this->rela_transporte;
-        $numero_piso = (int)$this->numero_piso;
-        $filas = (int)$this->filas;
-        $asientos_por_fila = (int)$this->asientos_por_fila;
+        $rela_transporte = (int)$rela_transporte;
+        $numero_piso = (int)$numero_piso;
+        $filas = (int)$filas;
+        $asientos_por_fila = (int)$asientos_por_fila;
 
         $query = "INSERT INTO transporte_pisos
                     (rela_transporte, numero_piso, filas, asientos_por_fila)
-                  VALUES
+                VALUES
                     ($rela_transporte, $numero_piso, $filas, $asientos_por_fila)";
         
         if ($mysqli->query($query)) {
             return $mysqli->insert_id;
         } else {
-            return false;
+            throw new Exception("Error al guardar piso: " . $mysqli->error);
         }
     }
+
     public function actualizar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();

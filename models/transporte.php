@@ -129,6 +129,41 @@ class Transporte {
         }
     }
 
+    public function guardarConPisos($pisos = []) {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+
+        try {
+            $mysqli->begin_transaction();
+
+            $id_transporte = $this->guardar();
+            if (!$id_transporte) {
+                throw new Exception("Error al guardar transporte.");
+            }
+
+            foreach ($pisos as $piso) {
+                $numero = (int)$piso['numero_piso'];
+                $filas = (int)$piso['filas'];
+                $asientos = (int)$piso['asientos_por_fila'];
+
+                $queryPiso = "
+                    INSERT INTO transporte_pisos (rela_transporte, numero_piso, filas, asientos_por_fila)
+                    VALUES ($id_transporte, $numero, $filas, $asientos)
+                ";
+                if (!$mysqli->query($queryPiso)) {
+                    throw new Exception("Error al guardar piso: " . $mysqli->error);
+                }
+            }
+
+            $mysqli->commit();
+            return $id_transporte;
+        } catch (Exception $e) {
+            $mysqli->rollback();
+            error_log("Error en guardarConPisos: " . $e->getMessage());
+            return false;
+        }
+    }
+
     public function actualizar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -203,6 +238,32 @@ class Transporte {
         $query .= " ORDER BY r.fecha_salida ASC";
         return $conexion->consultar($query);
     }
+
+    public function traer_rutas_por_usuario($id_usuario) {
+        $conexion = new Conexion();
+        $id_usuario = (int)$id_usuario;
+        $proveedorModel = new Proveedor();
+        $proveedor = $proveedorModel->obtenerPorUsuario($id_usuario);
+        if (!$proveedor) return [];
+
+        $id_proveedor = (int)$proveedor['id_proveedores'];
+
+        $query = "
+            SELECT r.*, 
+                t.nombre_servicio AS transporte_nombre, 
+                t.transporte_matricula, 
+                tt.descripcion AS tipo_transporte
+            FROM transporte_rutas r
+            JOIN transporte t ON r.rela_transporte = t.id_transporte
+            JOIN tipo_transporte tt ON t.rela_tipo_transporte = tt.id_tipo_transporte
+            WHERE t.rela_proveedor = $id_proveedor
+            AND r.activo = 1
+            ORDER BY r.id_ruta DESC
+        ";
+
+        return $conexion->consultar($query);
+    }
+
 
     public function getId_transporte() { return $this->id_transporte; }
     public function setId_transporte($id) { $this->id_transporte = $id; return $this; }
