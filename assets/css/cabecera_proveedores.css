@@ -1,0 +1,275 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Top bar principal */
+.top-bar {
+  background-color: #2943b9;
+  padding: 12px 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-bar .logo a {
+  color: white;
+  font-size: 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.top-bar .right-links a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+  font-size: 1rem;
+}
+
+.top-bar .right-links a:hover {
+  text-decoration: underline;
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 10px;
+}
+
+/* Menú lateral */
+.menu-lateral {
+  background-color: #eae2b7;
+  width: 240px;
+  height: 100%;
+  padding: 20px 0;
+  font-family: 'Segoe UI', sans-serif;
+  overflow-y: auto;
+  border-left: 2px solid #ffffff;
+  position: fixed;
+  top: 0;
+  right: -240px;
+  z-index: 1000;
+  transition: right 0.3s ease;
+  display: block;
+}
+
+.menu-lateral.menu-visible {
+  right: 0;
+}
+
+.menu-lateral ul {
+  list-style: none;
+  padding: 0 0 10px 0;
+}
+
+.menu-lateral li:first-child strong {
+  font-size: 20px;
+  color: #003049;
+  padding-left: 24px;
+  margin-bottom: 20px;
+  display: block;
+  font-weight: bold;
+  border-bottom: 1px solid #b0a97e;
+  padding-bottom: 12px;
+}
+
+.menu-lateral li {
+  padding: 0 24px;
+  margin-bottom: 10px;
+}
+
+.menu-lateral a {
+  text-decoration: none;
+  color: #003049;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menu-lateral a i {
+  margin-right: 10px;
+  min-width: 20px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.menu-lateral a:hover,
+.menu-lateral a:focus {
+  background-color: #d8d3c5;
+  color: #000;
+  outline: none;
+}
+
+/* Overlay */
+#overlay,
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+  z-index: 998;
+  display: none;
+}
+
+#overlay.visible,
+.overlay.visible {
+  display: block;
+}
+
+/* Panel desplazable */
+.contenido {
+  transition: transform 300ms ease;
+  background-color: #fdfdfd;
+  min-height: auto;
+}
+
+/* Menú alternativo */
+#menu {
+  position: fixed;
+  top: 0;
+  right: -240px;
+  width: 240px;
+  height: 100%;
+  background-color: white;
+  z-index: 999;
+  transition: right 0.3s ease;
+  display: block;
+}
+
+#menu.menu-visible {
+  right: 0;
+}
+
+/* Fondo oscurecido */
+.oscurecer::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+  z-index: 998;
+}
+
+/* Responsive completo */
+@media (max-width: 992px) {
+  .top-bar {
+    padding: 8px 15px;
+  }
+
+  .top-bar .logo a {
+    font-size: 1.3rem;
+  }
+
+  .top-bar .right-links a {
+    font-size: 0.9rem;
+    margin-left: 12px;
+  }
+
+  .menu-toggle {
+    font-size: 20px;
+    padding: 8px;
+  }
+
+  .menu-lateral {
+    width: 200px;
+  }
+
+  .menu-lateral li:first-child strong {
+    font-size: 18px;
+    padding-left: 16px;
+  }
+
+  .menu-lateral li {
+    padding: 0 16px;
+  }
+
+  .menu-lateral a {
+    font-size: 14px;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-bar .logo a {
+    font-size: 1.2rem;
+  }
+
+  .top-bar .right-links a {
+    font-size: 0.85rem;
+    margin-left: 10px;
+  }
+
+  .menu-toggle {
+    font-size: 18px;
+  }
+
+  .menu-lateral {
+    width: 180px;
+  }
+
+  .menu-lateral li:first-child strong {
+    font-size: 16px;
+    padding-left: 14px;
+  }
+
+  .menu-lateral li {
+    padding: 0 14px;
+  }
+
+  .menu-lateral a {
+    font-size: 13px;
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-bar .logo a {
+    font-size: 1rem;
+  }
+
+  .top-bar .right-links a {
+    font-size: 0.8rem;
+    margin-left: 8px;
+  }
+
+  .menu-toggle {
+    font-size: 16px;
+  }
+
+  .menu-lateral {
+    width: 160px;
+  }
+
+  .menu-lateral li:first-child strong {
+    font-size: 14px;
+    padding-left: 12px;
+  }
+
+  .menu-lateral li {
+    padding: 0 12px;
+  }
+
+  .menu-lateral a {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+}

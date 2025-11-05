@@ -1,0 +1,235 @@
+.top-bar {
+    background-color: #2943b9;
+    padding: 12px 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px; /* altura fija */
+    z-index: 100;
+}
+
+.top-bar .left-links,
+.top-bar .right-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.top-bar .logo a {
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Links de navegación */
+.top-bar .nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.top-bar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.top-bar .nav-links a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffd700;
+}
+
+.top-bar .nav-links a.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-weight: bold;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.top-bar .right-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.top-bar .right-links a:hover {
+    text-decoration: underline;
+    color: #ffd700;
+}
+
+/* Contenedor principal */
+.mis-reservas-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mis-reservas-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Tabla */
+.tabla-reservas {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.tabla-reservas thead {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+.tabla-reservas th,
+.tabla-reservas td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-reservas tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabla-reservas tbody tr:hover {
+    background-color: #f1f7ff;
+}
+
+/* Botones */
+.btn-pagar {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #28a745;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-pagar:hover {
+    background-color: #218838;
+}
+
+.btn-disabled {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #6c757d;
+    color: #fff;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Mensajes */
+p {
+    text-align: center;
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Contenedor principal */
+.reservas-container {
+    max-width: 1200px;
+    margin: 100px auto 40px auto; /* dejamos espacio para cabecera fija */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.reservas-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Tabla */
+.tabla-reservas {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.tabla-reservas thead {
+    background-color: #2943b9; /* azul corporativo */
+    color: #fff;
+}
+
+.tabla-reservas th,
+.tabla-reservas td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-reservas tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.tabla-reservas tbody tr:hover {
+    background-color: #f1f7ff;
+}
+
+/* Botones genéricos */
+.btn-accion {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #2943b9;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-accion:hover {
+    background-color: #1f338f;
+}
+
+.btn-disabled {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #6c757d;
+    color: #fff;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* Mensajes */
+.mensaje-vacio {
+    text-align: center;
+    color: #555;
+    font-size: 1rem;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .tabla-reservas th, .tabla-reservas td {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    .reservas-container {
+        margin: 20px;
+        padding: 15px;
+    }
+}

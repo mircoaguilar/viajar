@@ -1,0 +1,500 @@
+/* Reset básico para todos los elementos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos globales del body */
+body {
+    font-family: sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding-top: 0;
+}
+
+/* Barra superior y logo */
+.top-bar {
+    background-color: #2943b9;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: relative;
+}
+
+.logo a,
+.logo-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.right-links a {
+    text-decoration: none;
+    margin-left: 15px;
+    font-size: 0.9em;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Botones generales y específicos */
+.button {
+    background-color: white;
+    color: #003580;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: normal;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #f0f0f0;
+}
+
+.button-usuarios { 
+   background-color: #2943b9;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.button-usuarios:hover {
+    background-color: #1e32a0;
+}
+
+.button.secondary,
+.button.cancel {
+    background-color: #6c757d;
+    color: white;
+}
+
+.button.secondary:hover,
+.button.cancel:hover {
+    background-color: #5a6268;
+}
+
+/* Alineación de botones dentro de tablas */
+td.acciones-botones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Centrado de nombres y estados en tablas */
+th.nombre-estado, td.nombre-estado,
+th.nombre-perfil, td.nombre-perfil,
+th.nombre-tipo-pago, td.nombre-tipo-pago,
+th.nombre-tipo-contacto, td.nombre-tipo-contacto,
+th.nombre-provincia, td.nombre-provincia,
+th.nombre-acciones,
+th.nombre-documento, td.nombre-documento,
+th.nombre-transporte, td.nombre-transporte,
+th.nombre-motivo-cancelacion, td.nombre-motivo-cancelacion {
+    text-align: center;
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 900px;
+    margin: 5px auto 20px;
+    padding: 3px;
+    background-color: white;
+}
+
+/* Estilos de formularios */
+form h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    padding: 9px;
+    color: #2943b9;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="number"],
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+form input[type="number"]::-webkit-outer-spin-button,
+form input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+form select[multiple] {
+    height: 150px;
+    overflow-y: auto;
+}
+
+form input[type="submit"],
+form button[type="submit"] {
+    background-color: #2943b9;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+form input[type="submit"]:hover,
+form button[type="submit"]:hover {
+    background-color: #1e32a0;
+}
+
+.grupo-input, .grupo-select {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.grupo-input .alerta-error,
+.grupo-select .alerta-error {
+    position: absolute;
+    top: -18px;
+    left: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: red;
+    background-color: white;
+    padding: 0 4px;
+    z-index: 10;
+    line-height: 1;
+}
+
+.grupo-select .alerta-error {
+    top: -23px;
+}
+
+/* Tablas */
+h2 {
+    font-size: 22px;
+    color: #2943b9;
+    margin-bottom: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+thead tr {
+    background-color: #2943b9;
+    color: white;
+}
+
+th, td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+}
+
+tbody tr:hover {
+    background-color: #f2f5ff;
+}
+
+td.acciones {
+    text-align: center;
+}
+
+/* Enlaces de acciones */
+a {
+    color: #2943b9;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#eliminar {
+    color: white;
+    background-color: red;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+    text-decoration: none;
+}
+
+#eliminar:hover {
+    background-color: darkred;
+}
+
+#editar {
+    color: white;
+    background-color: #d78a0e;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+    text-decoration: none;
+}
+
+#editar:hover {
+    background-color: #b76f0c;
+}
+
+#reset {
+    color: white;
+    background-color: #17a2b8;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+    text-decoration: none;
+}
+
+#reset:hover {
+    background-color: #138496;
+}
+
+/* Paginación */
+.paginacion {
+    text-align: center;
+    margin: 20px 0;
+    font-family: sans-serif;
+}
+
+.paginacion ul {
+    list-style: none;
+    padding: 0;
+    display: inline-flex;
+    gap: 5px;
+}
+
+.paginacion ul li a,
+.paginacion ul li .numero-pagina-actual {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.paginacion ul li a:hover:not(.disabled) {
+    background-color: #f0f0f0;
+}
+
+.paginacion ul li .numero-pagina-actual,
+.paginacion ul li a.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    cursor: default;
+    border-color: #007bff;
+}
+
+.paginacion ul li a.disabled {
+    color: #aaa;
+    pointer-events: none;
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+    border-color: #ddd;
+}
+
+/* Mensajes de alerta */
+.alert {
+    padding: 12px 20px;
+    margin: 20px auto;
+    max-width: 850px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Select2 */
+.select2-container {
+    width: 100% !important;
+    position: relative;
+    top: -7px;
+}
+
+.select2-container--default .select2-selection--single {
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333;
+    background-color: white;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #2943b9;
+    outline: none;
+    box-shadow: 0 0 3px #2943b9;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 38px;
+    right: 10px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    padding-left: 0px;
+    text-align: left;
+    line-height: 20px;
+    color: #333;
+}
+
+.select2-container .select2-dropdown {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: white;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background-color: #2943b9;
+    color: white;
+}
+
+/* Dropdown de menú */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.dropdown-toggle-link {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 0.9em;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: inline-block;
+    position: relative;
+    user-select: none;
+}
+
+.dropdown-toggle-link::after {
+    content: "";
+    display: inline-block;
+    margin-left: 6px;
+    vertical-align: middle;
+    border-top: 5px solid white;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+}
+
+.dropdown-toggle-link:hover::after {
+    border-top-color: #ccc;
+}
+
+.dropdown-menu {
+    white-space: nowrap;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    min-width: 160px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    margin-top: 4px;
+    padding: 10px 20px;
+    z-index: 1000;
+    list-style: disc;
+    color: #003580;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu li {
+    margin-left: 0;
+    padding: 5px 0;
+}
+
+.dropdown-menu li a {
+    color: #003580;
+    text-decoration: none;
+    font-weight: normal;
+    display: inline-block;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #f0f0f0;
+}
+
+.dropdown-menu hr {
+    margin: 6px 0;
+    border: none;
+    border-top: 1px solid #ccc;
+}
+
+/* Botón eliminar usuario con mismo estilo que los otros botones */
+.btn-eliminar {
+    background-color: red; /* igual que #eliminar */
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-eliminar:hover {
+    background-color: darkred; /* igual que #eliminar:hover */
+}
+
+
+/* Botón cerrar modal persona */
+#cerrar-modal-persona {
+    margin-top: 15px;
+}

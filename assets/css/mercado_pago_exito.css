@@ -1,0 +1,56 @@
+/* Estilos generales para la página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo de la caja principal que contiene el mensaje de éxito */
+.mensaje-exito {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Título del mensaje */
+.mensaje-exito h1 {
+    font-size: 2.5rem;
+    color: #2943b9;
+    margin-bottom: 20px;
+}
+
+/* Estilo del párrafo que muestra el mensaje */
+.mensaje-exito p {
+    font-size: 1.1rem;
+    color: #333;
+    margin: 10px 0;
+}
+
+/* Estilo para el enlace de volver al inicio */
+.btn-volver {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #2943b9;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+/* Efecto al pasar el mouse por encima del botón */
+.btn-volver:hover {
+    background-color: #1e2a99;
+}
+
+/* Estilo del texto resaltado (como el correo electrónico) */
+strong {
+    font-weight: bold;
+    color: #2943b9;
+}
