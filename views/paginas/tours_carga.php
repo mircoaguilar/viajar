@@ -28,27 +28,27 @@ require_once('models/proveedor.php');
 
         <div>
           <label for="nombre_tour">Nombre del tour</label>
-          <input type="text" id="nombre_tour" name="nombre_tour" required>
+          <input type="text" id="nombre_tour" name="nombre_tour" >
         </div>
 
         <div>
           <label for="duracion_horas">Duración (HH:MM)</label>
-          <input type="text" id="duracion_horas" name="duracion_horas" placeholder="Ej: 02:40" required>
+          <input type="text" id="duracion_horas" name="duracion_horas" placeholder="Ej: 02:40" >
         </div>
 
         <div>
           <label for="precio_por_persona">Precio por persona</label>
-          <input type="number" id="precio_por_persona" name="precio_por_persona" min="0" step="0.01" required>
+          <input type="number" id="precio_por_persona" name="precio_por_persona" min="0" step="0.01" >
         </div>
 
         <div>
           <label for="hora_encuentro">Hora de encuentro (HH:MM)</label>
-          <input type="text" id="hora_encuentro" name="hora_encuentro" placeholder="Ej: 14:30" required>
+          <input type="text" id="hora_encuentro" name="hora_encuentro" placeholder="Ej: 14:30" >
         </div>
 
         <div>
           <label for="lugar_encuentro">Lugar de encuentro</label>
-          <input type="text" id="lugar_encuentro" name="lugar_encuentro" required>
+          <input type="text" id="lugar_encuentro" name="lugar_encuentro" >
         </div>
 
         <div>
@@ -64,7 +64,7 @@ require_once('models/proveedor.php');
 
         <div>
           <label for="imagen_principal">Imagen principal</label>
-          <input type="file" id="imagen_principal" name="imagen_principal" accept="image/*" required>
+          <input type="file" id="imagen_principal" name="imagen_principal" accept="image/*">
           <div id="preview-principal" class="preview-container"></div>
         </div>
 
@@ -81,9 +81,11 @@ require_once('models/proveedor.php');
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="assets/js/tours_carga.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+
+<script src="assets/js/tours_carga.js"></script>
 <script>
 flatpickr("#duracion_horas", {
     enableTime: true,

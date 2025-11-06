@@ -85,7 +85,6 @@ class Carrito {
         ");
     }
 
-
     public function contar_items($id_usuario) {
         $carrito = $this->traer_carrito_activo($id_usuario);
         if (!$carrito) return 0;

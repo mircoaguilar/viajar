@@ -94,7 +94,11 @@ CREATE TABLE `carrito_items` (
   PRIMARY KEY (`id_item`),
   KEY `carrito_items_ibfk_1` (`rela_carrito`),
   CONSTRAINT `carrito_items_ibfk_1` FOREIGN KEY (`rela_carrito`) REFERENCES `carrito` (`id_carrito`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb3;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb3;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +107,11 @@ CREATE TABLE `carrito_items` (
 
 LOCK TABLES `carrito_items` WRITE;
 /*!40000 ALTER TABLE `carrito_items` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT INTO `carrito_items` VALUES (75,13,'hotel',16,1,'2025-11-04','2025-11-06',150000.00,300000.00),(77,13,'tour',6,1,'2025-10-25',NULL,15000.00,15000.00),(83,13,'transporte',3,2,'2025-12-20',NULL,15000.00,30000.00);
+=======
+INSERT INTO `carrito_items` VALUES (54,13,'hotel',16,1,'2025-10-30','2025-10-31',150000.00,150000.00);
+>>>>>>> origin/master
 /*!40000 ALTER TABLE `carrito_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,6 +174,90 @@ INSERT INTO `contacto` VALUES (2,'3704687824',366,1),(4,'3705786843',367,1),(6,'
 UNLOCK TABLES;
 
 --
+<<<<<<< HEAD
+=======
+-- Table structure for table `detalle_pasajeros`
+--
+
+DROP TABLE IF EXISTS `detalle_pasajeros`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `detalle_pasajeros` (
+  `id_detalle_pasajeros` int NOT NULL AUTO_INCREMENT,
+  `detalle_pasajeros_asiento` int DEFAULT NULL,
+  `detalle_pasajeros_estado` varchar(50) DEFAULT NULL,
+  `rela_reservas` int NOT NULL,
+  PRIMARY KEY (`id_detalle_pasajeros`),
+  KEY `fk_detalle_pasajeros_reservas1_idx` (`rela_reservas`),
+  CONSTRAINT `fk_detalle_pasajeros_reservas1` FOREIGN KEY (`rela_reservas`) REFERENCES `reservas` (`id_reservas`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalle_pasajeros`
+--
+
+LOCK TABLES `detalle_pasajeros` WRITE;
+/*!40000 ALTER TABLE `detalle_pasajeros` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detalle_pasajeros` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `detalle_pasajeros_has_pasajeros`
+--
+
+DROP TABLE IF EXISTS `detalle_pasajeros_has_pasajeros`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `detalle_pasajeros_has_pasajeros` (
+  `detalle_pasajeros_id_detalle_pasajeros` int NOT NULL,
+  `pasajeros_id_pasajeros` int NOT NULL,
+  PRIMARY KEY (`detalle_pasajeros_id_detalle_pasajeros`,`pasajeros_id_pasajeros`),
+  KEY `fk_detalle_pasajeros_has_pasajeros_pasajeros1_idx` (`pasajeros_id_pasajeros`),
+  KEY `fk_detalle_pasajeros_has_pasajeros_detalle_pasajeros1_idx` (`detalle_pasajeros_id_detalle_pasajeros`),
+  CONSTRAINT `fk_detalle_pasajeros_has_pasajeros_detalle_pasajeros1` FOREIGN KEY (`detalle_pasajeros_id_detalle_pasajeros`) REFERENCES `detalle_pasajeros` (`id_detalle_pasajeros`),
+  CONSTRAINT `fk_detalle_pasajeros_has_pasajeros_pasajeros1` FOREIGN KEY (`pasajeros_id_pasajeros`) REFERENCES `pasajeros` (`id_pasajeros`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalle_pasajeros_has_pasajeros`
+--
+
+LOCK TABLES `detalle_pasajeros_has_pasajeros` WRITE;
+/*!40000 ALTER TABLE `detalle_pasajeros_has_pasajeros` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detalle_pasajeros_has_pasajeros` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `detalle_pasajeros_has_viajes`
+--
+
+DROP TABLE IF EXISTS `detalle_pasajeros_has_viajes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `detalle_pasajeros_has_viajes` (
+  `detalle_pasajeros_id_detalle_pasajeros` int NOT NULL,
+  `viajes_id_viajes` int NOT NULL,
+  PRIMARY KEY (`detalle_pasajeros_id_detalle_pasajeros`,`viajes_id_viajes`),
+  KEY `fk_detalle_pasajeros_has_viajes_viajes1_idx` (`viajes_id_viajes`),
+  KEY `fk_detalle_pasajeros_has_viajes_detalle_pasajeros1_idx` (`detalle_pasajeros_id_detalle_pasajeros`),
+  CONSTRAINT `fk_detalle_pasajeros_has_viajes_detalle_pasajeros1` FOREIGN KEY (`detalle_pasajeros_id_detalle_pasajeros`) REFERENCES `detalle_pasajeros` (`id_detalle_pasajeros`),
+  CONSTRAINT `fk_detalle_pasajeros_has_viajes_viajes1` FOREIGN KEY (`viajes_id_viajes`) REFERENCES `viajes` (`id_viajes`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalle_pasajeros_has_viajes`
+--
+
+LOCK TABLES `detalle_pasajeros_has_viajes` WRITE;
+/*!40000 ALTER TABLE `detalle_pasajeros_has_viajes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `detalle_pasajeros_has_viajes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+>>>>>>> origin/master
 -- Table structure for table `detalle_reserva_hotel`
 --
 
@@ -184,7 +276,11 @@ CREATE TABLE `detalle_reserva_hotel` (
   KEY `fk_detalle_hotel_habitacion` (`rela_habitacion`),
   CONSTRAINT `fk_detalle_hotel_habitacion` FOREIGN KEY (`rela_habitacion`) REFERENCES `hotel_habitaciones` (`id_hotel_habitacion`),
   CONSTRAINT `fk_hotel_detalle_reserva` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb3;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb3;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,7 +289,11 @@ CREATE TABLE `detalle_reserva_hotel` (
 
 LOCK TABLES `detalle_reserva_hotel` WRITE;
 /*!40000 ALTER TABLE `detalle_reserva_hotel` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT INTO `detalle_reserva_hotel` VALUES (88,190,16,'2025-11-04','2025-11-06',2);
+=======
+INSERT INTO `detalle_reserva_hotel` VALUES (64,122,16,'2025-10-24','2025-10-25',1),(65,124,16,'2025-10-25','2025-10-26',1),(66,125,16,'2025-10-25','2025-10-26',1),(67,126,16,'2025-10-25','2025-10-26',1),(68,128,16,'2025-10-25','2025-10-26',1),(69,130,16,'2025-10-25','2025-10-26',1),(70,132,16,'2025-10-25','2025-10-26',1),(71,134,16,'2025-10-25','2025-10-26',1),(72,136,16,'2025-10-30','2025-10-31',1);
+>>>>>>> origin/master
 /*!40000 ALTER TABLE `detalle_reserva_hotel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,7 +314,11 @@ CREATE TABLE `detalle_reserva_tour` (
   KEY `fk_tour_detalle` (`rela_tour`),
   CONSTRAINT `fk_tour_detalle` FOREIGN KEY (`rela_tour`) REFERENCES `tours` (`id_tour`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_tour_detalle_reserva` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb3;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb3;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,7 +327,11 @@ CREATE TABLE `detalle_reserva_tour` (
 
 LOCK TABLES `detalle_reserva_tour` WRITE;
 /*!40000 ALTER TABLE `detalle_reserva_tour` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT INTO `detalle_reserva_tour` VALUES (53,191,6,'2025-10-25');
+=======
+INSERT INTO `detalle_reserva_tour` VALUES (32,123,6,'2025-10-26'),(33,127,6,'2025-10-28'),(34,129,6,'2025-10-28'),(35,131,6,'2025-10-28'),(36,133,6,'2025-10-28'),(37,135,6,'2025-10-28');
+>>>>>>> origin/master
 /*!40000 ALTER TABLE `detalle_reserva_tour` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -238,6 +346,7 @@ CREATE TABLE `detalle_reserva_transporte` (
   `id_detalle_transporte` int NOT NULL AUTO_INCREMENT,
   `rela_detalle_reserva` int NOT NULL,
   `id_viaje` int NOT NULL,
+<<<<<<< HEAD
   `piso` int NOT NULL,
   `numero_asiento` int NOT NULL,
   `fila` int DEFAULT NULL,
@@ -250,6 +359,16 @@ CREATE TABLE `detalle_reserva_transporte` (
   CONSTRAINT `detalle_reserva_transporte_ibfk_1` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`),
   CONSTRAINT `detalle_reserva_transporte_ibfk_2` FOREIGN KEY (`id_viaje`) REFERENCES `viajes` (`id_viajes`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+=======
+  `asiento_desde` int DEFAULT NULL,
+  `asiento_hasta` int DEFAULT NULL,
+  PRIMARY KEY (`id_detalle_transporte`),
+  KEY `fk_transporte_detalle_reserva` (`rela_detalle_reserva`),
+  KEY `fk_transporte_viaje` (`id_viaje`),
+  CONSTRAINT `fk_transporte_detalle_reserva` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`),
+  CONSTRAINT `fk_transporte_viaje` FOREIGN KEY (`id_viaje`) REFERENCES `viajes` (`id_viajes`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -258,7 +377,10 @@ CREATE TABLE `detalle_reserva_transporte` (
 
 LOCK TABLES `detalle_reserva_transporte` WRITE;
 /*!40000 ALTER TABLE `detalle_reserva_transporte` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT INTO `detalle_reserva_transporte` VALUES (3,192,3,1,11,3,3,'2025-12-20',15000.00),(4,192,3,1,12,3,4,'2025-12-20',15000.00);
+=======
+>>>>>>> origin/master
 /*!40000 ALTER TABLE `detalle_reserva_transporte` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,7 +401,11 @@ CREATE TABLE `detalle_reservas` (
   PRIMARY KEY (`id_detalle_reserva`),
   KEY `rela_reservas` (`rela_reservas`),
   CONSTRAINT `detalle_reservas_ibfk_1` FOREIGN KEY (`rela_reservas`) REFERENCES `reservas` (`id_reservas`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=193 DEFAULT CHARSET=utf8mb3;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8mb3;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -288,7 +414,11 @@ CREATE TABLE `detalle_reservas` (
 
 LOCK TABLES `detalle_reservas` WRITE;
 /*!40000 ALTER TABLE `detalle_reservas` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT INTO `detalle_reservas` VALUES (190,123,'hotel',1,150000.00,300000.00),(191,123,'tour',1,15000.00,15000.00),(192,123,'transporte',2,15000.00,30000.00);
+=======
+INSERT INTO `detalle_reservas` VALUES (122,80,'hotel',1,150000.00,150000.00),(123,80,'tour',2,15000.00,30000.00),(124,81,'hotel',1,150000.00,150000.00),(125,82,'hotel',1,150000.00,150000.00),(126,83,'hotel',1,150000.00,150000.00),(127,83,'tour',2,15000.00,30000.00),(128,84,'hotel',1,150000.00,150000.00),(129,84,'tour',2,15000.00,30000.00),(130,85,'hotel',1,150000.00,150000.00),(131,85,'tour',2,15000.00,30000.00),(132,86,'hotel',1,150000.00,150000.00),(133,86,'tour',2,15000.00,30000.00),(134,87,'hotel',1,150000.00,150000.00),(135,87,'tour',2,15000.00,30000.00),(136,88,'hotel',1,150000.00,150000.00);
+>>>>>>> origin/master
 /*!40000 ALTER TABLE `detalle_reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -467,7 +597,11 @@ CREATE TABLE `hotel_habitaciones_stock` (
   PRIMARY KEY (`id_stock`),
   UNIQUE KEY `unica_fecha_habitacion` (`rela_habitacion`,`fecha`),
   CONSTRAINT `hotel_habitaciones_stock_ibfk_1` FOREIGN KEY (`rela_habitacion`) REFERENCES `hotel_habitaciones` (`id_hotel_habitacion`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb3;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb3;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -476,7 +610,11 @@ CREATE TABLE `hotel_habitaciones_stock` (
 
 LOCK TABLES `hotel_habitaciones_stock` WRITE;
 /*!40000 ALTER TABLE `hotel_habitaciones_stock` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT INTO `hotel_habitaciones_stock` VALUES (64,16,'2025-11-04',3,1),(65,16,'2025-11-05',3,1),(66,16,'2025-11-06',3,1),(67,16,'2025-11-07',3,1),(68,16,'2025-11-08',3,1),(69,16,'2025-11-09',3,1),(70,16,'2025-11-10',3,1),(71,16,'2025-11-11',3,1),(72,16,'2025-11-12',3,1),(73,16,'2025-11-13',3,1),(74,16,'2025-11-14',3,1),(75,16,'2025-11-15',3,1),(76,16,'2025-11-16',3,1),(77,16,'2025-11-17',3,1),(78,16,'2025-11-18',3,1),(79,16,'2025-11-19',3,1),(80,16,'2025-11-20',3,1),(81,16,'2025-11-21',3,1),(82,16,'2025-11-22',3,1),(83,16,'2025-11-23',3,1),(84,16,'2025-11-24',3,1),(85,16,'2025-11-25',3,1),(86,16,'2025-11-26',3,1),(87,16,'2025-11-27',3,1),(88,16,'2025-11-28',3,1),(89,16,'2025-11-29',3,1),(90,16,'2025-11-30',3,1),(91,15,'2025-11-04',3,1),(92,15,'2025-11-05',3,1),(93,15,'2025-11-06',3,1),(94,15,'2025-11-07',3,1),(95,15,'2025-11-08',3,1),(96,15,'2025-11-09',3,1),(97,15,'2025-11-10',3,1),(98,15,'2025-11-11',3,1),(99,15,'2025-11-12',3,1),(100,15,'2025-11-13',3,1),(101,15,'2025-11-14',3,1),(102,15,'2025-11-15',3,1),(103,15,'2025-11-16',3,1),(104,15,'2025-11-17',3,1),(105,15,'2025-11-18',3,1),(106,15,'2025-11-19',3,1),(107,15,'2025-11-20',3,1),(108,15,'2025-11-21',3,1),(109,15,'2025-11-22',3,1),(110,15,'2025-11-23',3,1),(111,15,'2025-11-24',3,1),(112,15,'2025-11-25',3,1),(113,15,'2025-11-26',3,1),(114,15,'2025-11-27',3,1),(115,15,'2025-11-28',3,1),(116,15,'2025-11-29',3,1),(117,15,'2025-11-30',3,1);
+=======
+INSERT INTO `hotel_habitaciones_stock` VALUES (48,15,'2025-10-24',3,1),(49,15,'2025-10-25',3,1),(50,15,'2025-10-26',3,1),(51,15,'2025-10-27',3,1),(52,15,'2025-10-28',3,1),(53,15,'2025-10-29',3,1),(54,15,'2025-10-30',3,1),(55,15,'2025-10-31',3,1),(56,16,'2025-10-24',3,1),(57,16,'2025-10-25',3,1),(58,16,'2025-10-26',3,1),(59,16,'2025-10-27',3,1),(60,16,'2025-10-28',3,1),(61,16,'2025-10-29',3,1),(62,16,'2025-10-30',3,1),(63,16,'2025-10-31',3,1);
+>>>>>>> origin/master
 /*!40000 ALTER TABLE `hotel_habitaciones_stock` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -681,7 +819,11 @@ CREATE TABLE `pago` (
   CONSTRAINT `fk_pago_moneda` FOREIGN KEY (`rela_monedas`) REFERENCES `monedas` (`id_moneda`),
   CONSTRAINT `fk_pago_reservas1` FOREIGN KEY (`rela_reservas`) REFERENCES `reservas` (`id_reservas`),
   CONSTRAINT `fk_pago_tipo_pago1` FOREIGN KEY (`rela_tipo_pago`) REFERENCES `tipo_pago` (`id_tipo_pago`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb3;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb3;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -690,7 +832,11 @@ CREATE TABLE `pago` (
 
 LOCK TABLES `pago` WRITE;
 /*!40000 ALTER TABLE `pago` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT INTO `pago` VALUES (78,'2025-11-04',345000,'pendiente',123,8,NULL,3);
+=======
+INSERT INTO `pago` VALUES (60,'2025-10-24',180000,'aprobado',80,8,'131203243302',3),(61,'2025-10-25',150000,'pendiente',81,8,NULL,3),(62,'2025-10-25',150000,'pendiente',81,8,NULL,3),(63,'2025-10-25',150000,'pendiente',81,8,NULL,3),(64,'2025-10-25',150000,'pendiente',82,8,NULL,3),(65,'2025-10-27',180000,'aprobado',87,8,'130918844773',3),(66,'2025-10-27',150000,'pendiente',88,8,NULL,3);
+>>>>>>> origin/master
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -933,7 +1079,11 @@ CREATE TABLE `reservas` (
   PRIMARY KEY (`id_reservas`),
   KEY `fk_reservas_usuarios1_idx` (`rela_usuarios`),
   CONSTRAINT `fk_reservas_usuarios1` FOREIGN KEY (`rela_usuarios`) REFERENCES `usuarios` (`id_usuarios`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb3;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb3;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -942,7 +1092,11 @@ CREATE TABLE `reservas` (
 
 LOCK TABLES `reservas` WRITE;
 /*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT INTO `reservas` VALUES (123,'2025-11-04 20:06:17',345000.00,'pendiente',74,1);
+=======
+INSERT INTO `reservas` VALUES (80,'2025-10-24 20:28:51',180000.00,'confirmada',74,1),(81,'2025-10-25 20:38:42',150000.00,'pendiente',74,1),(82,'2025-10-25 20:41:56',150000.00,'pendiente',74,1),(83,'2025-10-27 17:42:43',180000.00,'pendiente',74,1),(84,'2025-10-27 17:47:13',180000.00,'pendiente',74,1),(85,'2025-10-27 17:47:47',180000.00,'pendiente',74,1),(86,'2025-10-27 17:48:21',180000.00,'pendiente',74,1),(87,'2025-10-27 17:51:43',180000.00,'confirmada',74,1),(88,'2025-10-27 23:09:44',150000.00,'pendiente',74,1),(89,'2025-11-20 23:10:44',200000.00,'pendiente',74,1),(90,'2025-12-20 23:10:44',200000.00,'pendiente',74,1),(91,'2025-01-20 23:10:44',200000.00,'pendiente',74,1),(92,'2025-02-20 23:10:44',200000.00,'pendiente',74,1),(93,'2025-03-20 23:10:44',200000.00,'pendiente',74,1),(94,'2025-04-20 23:10:44',200000.00,'pendiente',74,1),(95,'2025-05-20 23:10:44',200000.00,'pendiente',74,1),(96,'2025-06-20 23:10:44',200000.00,'pendiente',74,1),(97,'2025-07-20 23:10:44',200000.00,'pendiente',74,1),(98,'2025-08-20 23:10:44',200000.00,'pendiente',74,1),(99,'2025-09-20 23:10:44',200000.00,'pendiente',74,1);
+>>>>>>> origin/master
 /*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1093,7 +1247,11 @@ CREATE TABLE `tipo_transporte` (
   `descripcion` varchar(60) DEFAULT NULL,
   `activo` tinyint DEFAULT '1',
   PRIMARY KEY (`id_tipo_transporte`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1102,7 +1260,11 @@ CREATE TABLE `tipo_transporte` (
 
 LOCK TABLES `tipo_transporte` WRITE;
 /*!40000 ALTER TABLE `tipo_transporte` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT INTO `tipo_transporte` VALUES (1,'Cama',1),(2,'Semi Cama',1),(3,'Vip',1),(6,'Común',1);
+=======
+INSERT INTO `tipo_transporte` VALUES (1,'Cama',1),(2,'Semi Cama',1),(3,'Vip',1);
+>>>>>>> origin/master
 /*!40000 ALTER TABLE `tipo_transporte` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1229,7 +1391,11 @@ CREATE TABLE `transporte` (
   CONSTRAINT `fk_proveedor_transporte` FOREIGN KEY (`rela_proveedor`) REFERENCES `proveedores` (`id_proveedores`),
   CONSTRAINT `fk_tipo_transporte` FOREIGN KEY (`rela_tipo_transporte`) REFERENCES `tipo_transporte` (`id_tipo_transporte`),
   CONSTRAINT `fk_transporte_revisado_por` FOREIGN KEY (`revisado_por`) REFERENCES `usuarios` (`id_usuarios`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1243,6 +1409,7 @@ INSERT INTO `transporte` VALUES (3,'ABC123',40,2,'Colectivo Formosa','Servicio d
 UNLOCK TABLES;
 
 --
+<<<<<<< HEAD
 -- Table structure for table `transporte_pisos`
 --
 
@@ -1271,6 +1438,8 @@ LOCK TABLES `transporte_pisos` WRITE;
 UNLOCK TABLES;
 
 --
+=======
+>>>>>>> origin/master
 -- Table structure for table `transporte_rutas`
 --
 
@@ -1295,7 +1464,11 @@ CREATE TABLE `transporte_rutas` (
   CONSTRAINT `fk_ruta_destino` FOREIGN KEY (`rela_ciudad_destino`) REFERENCES `ciudades` (`id_ciudad`),
   CONSTRAINT `fk_ruta_origen` FOREIGN KEY (`rela_ciudad_origen`) REFERENCES `ciudades` (`id_ciudad`),
   CONSTRAINT `fk_transporte_rutas` FOREIGN KEY (`rela_transporte`) REFERENCES `transporte` (`id_transporte`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1343,6 +1516,7 @@ INSERT INTO `usuarios` VALUES (66,'jperez','juan@gmail.com','2025-06-27 17:00:20
 UNLOCK TABLES;
 
 --
+<<<<<<< HEAD
 -- Table structure for table `viaje_asientos`
 --
 
@@ -1375,6 +1549,8 @@ LOCK TABLES `viaje_asientos` WRITE;
 UNLOCK TABLES;
 
 --
+=======
+>>>>>>> origin/master
 -- Table structure for table `viajes`
 --
 
@@ -1387,11 +1563,19 @@ CREATE TABLE `viajes` (
   `rela_transporte_rutas` int NOT NULL,
   `hora_salida` time NOT NULL,
   `hora_llegada` time NOT NULL,
+<<<<<<< HEAD
+=======
+  `asientos_disponibles` int DEFAULT NULL,
+>>>>>>> origin/master
   `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_viajes`),
   KEY `fk_viajes_transporte_rutas` (`rela_transporte_rutas`),
   CONSTRAINT `fk_viajes_transporte_rutas` FOREIGN KEY (`rela_transporte_rutas`) REFERENCES `transporte_rutas` (`id_ruta`)
+<<<<<<< HEAD
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+=======
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+>>>>>>> origin/master
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1400,7 +1584,11 @@ CREATE TABLE `viajes` (
 
 LOCK TABLES `viajes` WRITE;
 /*!40000 ALTER TABLE `viajes` DISABLE KEYS */;
+<<<<<<< HEAD
 INSERT INTO `viajes` VALUES (3,'2025-12-20',10,'08:00:00','10:00:00',1);
+=======
+INSERT INTO `viajes` VALUES (3,'2025-12-20',10,'08:00:00','10:00:00',50,1);
+>>>>>>> origin/master
 /*!40000 ALTER TABLE `viajes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1421,4 +1609,8 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+<<<<<<< HEAD
 -- Dump completed on 2025-11-05 17:54:55
+=======
+-- Dump completed on 2025-10-30 18:23:53
+>>>>>>> origin/master

@@ -58,7 +58,6 @@ $transportes = $controlador->mis_transportes($id_usuario);
                                 <span>Sin imagen</span>
                             <?php endif; ?>
                         </td>
-
                         <td><?= htmlspecialchars($t['nombre_servicio']) ?></td>
                         <td><?= htmlspecialchars($t['tipo_transporte']) ?></td>
                         <td><?= htmlspecialchars($t['transporte_capacidad']) ?></td>

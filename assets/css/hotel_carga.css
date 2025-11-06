@@ -194,12 +194,6 @@ textarea {
   }
 }
 
-
-/* ... (Tus estilos existentes) ... */
-
-/* Estilos para el Modal/Popup de Confirmación */
-
-/* 1. Overlay (Fondo oscuro) */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -307,6 +301,11 @@ textarea {
 }
 
 
+
+
+
+/* esto es de carga de stock*/
+
 #custom-alert {
   position: fixed;
   top:0; left:0;
@@ -329,7 +328,6 @@ textarea {
   margin-bottom: 20px;
 }
 
-
 .is-invalid {
   border-color: #d9534f !important;
   background: #fff6f6;
@@ -341,6 +339,7 @@ textarea {
   margin-top: 4px;
 }
 
+/* Contenedor de alerta de formulario (dinámico) */
 #form-alert {
   display: none;
   padding: 10px;
@@ -349,6 +348,7 @@ textarea {
   font-weight: 600;
 }
 
+/* Modal/Alerta flotante para confirmación de guardado */
 #custom-alert {
   position: fixed;
   top: 0; left: 0;
@@ -388,3 +388,31 @@ textarea {
 }
 
 
+.input-error {
+  border: 2px solid red;
+  background-color: #ffe6e6;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 2px;
+  display: block;
+}
+
+.char-count {
+  font-size: 0.85rem;
+  margin-top: 2px;
+  display: block;
+  text-align: right;
+  color: #555;
+}
+
+.char-count.warning {
+  color: orange;
+}
+
+.char-count.exceeded {
+  color: red;
+  font-weight: bold;
+}

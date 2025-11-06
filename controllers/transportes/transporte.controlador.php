@@ -91,7 +91,6 @@ class TransportesControlador {
         }
     }
 
-
     public function editar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id_transporte'] ?? null;

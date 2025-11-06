@@ -120,11 +120,9 @@ switch ($action) {
             echo json_encode(['status' => 'error', 'message' => 'ID de item requerido']);
             exit;
         }
-
         $itemModel->eliminar($id_item);
         echo json_encode(['status' => 'success', 'message' => 'Item eliminado']);
         break;
-
 
     case 'actualizar':
         $id_item = (int)($_POST['id_item'] ?? 0);
@@ -157,7 +155,6 @@ switch ($action) {
 
         echo json_encode(['status' => 'success', 'message' => 'Cantidad actualizada']);
         break;
-
 
     case 'listar':
         $carrito = $carritoModel->traer_carrito_activo($id_usuario);
