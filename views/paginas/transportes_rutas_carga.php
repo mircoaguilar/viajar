@@ -36,17 +36,17 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
 
         <div>
           <label for="nombre">Nombre de la ruta</label>
-          <input type="text" id="nombre" name="nombre" placeholder="Ej: Formosa – Clorinda" required>
+          <input type="text" id="nombre" name="nombre" placeholder="Ej: Formosa – Clorinda">
         </div>
 
         <div>
           <label for="trayecto">Trayecto</label>
-          <input type="text" id="trayecto" name="trayecto" placeholder="Ej: Formosa - Herradura - Clorinda" required>
+          <input type="text" id="trayecto" name="trayecto" placeholder="Ej: Formosa - Herradura - Clorinda">
         </div>
 
         <div>
           <label for="rela_transporte">Transporte</label>
-          <select id="rela_transporte" name="rela_transporte" required>
+          <select id="rela_transporte" name="rela_transporte" >
             <option value="">Seleccionar transporte...</option>
             <?php foreach ($transportes as $t): ?>
               <option value="<?= $t['id_transporte'] ?>"
@@ -65,7 +65,7 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
 
         <div>
           <label for="rela_ciudad_origen">Ciudad de origen</label>
-          <select id="rela_ciudad_origen" name="rela_ciudad_origen" required>
+          <select id="rela_ciudad_origen" name="rela_ciudad_origen">
             <option value="">Seleccionar origen...</option>
             <?php foreach ($ciudades as $c): ?>
               <option value="<?= $c['id_ciudad'] ?>"><?= htmlspecialchars($c['nombre']) ?></option>
@@ -75,7 +75,7 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
 
         <div>
           <label for="rela_ciudad_destino">Ciudad de destino</label>
-          <select id="rela_ciudad_destino" name="rela_ciudad_destino" required>
+          <select id="rela_ciudad_destino" name="rela_ciudad_destino">
             <option value="">Seleccionar destino...</option>
             <?php foreach ($ciudades as $c): ?>
               <option value="<?= $c['id_ciudad'] ?>"><?= htmlspecialchars($c['nombre']) ?></option>
@@ -85,12 +85,12 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
 
         <div>
           <label for="duracion">Duración (HH:MM)</label>
-          <input type="text" id="duracion" name="duracion" placeholder="Ej: 02:40" required>
+          <input type="text" id="duracion" name="duracion" placeholder="Ej: 02:40">
         </div>
 
         <div>
           <label for="precio_por_persona">Precio por persona</label>
-          <input type="number" id="precio_por_persona" name="precio_por_persona" min="0" step="0.01" required>
+          <input type="number" id="precio_por_persona" name="precio_por_persona" min="0" step="0.01" >
         </div>
 
         <div class="grid" style="grid-column: 1 / -1;">
@@ -109,7 +109,7 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script src="assets/js/rutas_carga.js"></script>
 <script>
   flatpickr("#duracion", {

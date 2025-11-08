@@ -416,3 +416,39 @@ textarea {
   color: red;
   font-weight: bold;
 }
+
+
+
+
+
+.error-input {
+  border: 2px solid #e74c3c !important;
+  background-color: #fff5f5;
+  box-shadow: none;
+  transition: all 0.15s ease;
+  outline: none;
+}
+
+.error-msg {
+  color: #e74c3c;
+  font-size: 0.9em;
+  margin-top: 4px;
+  display: block;
+}
+
+
+
+
+
+
+.input-error {
+  border: 2px solid red !important;
+  background-color: #ffe6e6;
+}
+
+.error-text {
+  color: red;
+  font-size: 13px;
+  margin-top: 3px;
+  display: block;
+}

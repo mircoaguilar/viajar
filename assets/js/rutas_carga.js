@@ -1,86 +1,108 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('formRuta');
+  const maxChars = 500;
 
-  const formRuta = document.getElementById('formRuta');
-  const selectTransporte = document.getElementById('rela_transporte');
-  const preview = document.getElementById('previewTransporte');
-  const origen = document.getElementById('rela_ciudad_origen');
-  const destino = document.getElementById('rela_ciudad_destino');
+  const crearError = (input, mensaje) => {
+    eliminarError(input);
+    input.classList.add('input-error');
+    const error = document.createElement('small');
+    error.className = 'error-text';
+    error.textContent = mensaje;
+    input.insertAdjacentElement('afterend', error);
+  };
 
-  if (selectTransporte) {
-    selectTransporte.addEventListener('change', () => {
-      const selected = selectTransporte.options[selectTransporte.selectedIndex];
-      if (!selected.value) {
-        preview.style.display = 'none';
-        preview.innerHTML = '';
-        return;
-      }
+  const eliminarError = (input) => {
+    input.classList.remove('input-error');
+    const next = input.nextElementSibling;
+    if (next && next.classList.contains('error-text')) next.remove();
+  };
 
-      const nombre = selected.dataset.nombre;
-      const tipo = selected.dataset.tipo;
-      const matricula = selected.dataset.matricula;
-      const capacidad = selected.dataset.capacidad;
-      const img = selected.dataset.img;
+ 
+  form.querySelectorAll('input, select, textarea').forEach(el => {
+    el.addEventListener('input', () => eliminarError(el));
+  });
 
-      preview.innerHTML = `
-        ${img ? `<img src="assets/images/${img}" alt="${nombre}">` : ''}
-        <div class="info">
-          <p><strong>${nombre}</strong></p>
-          <p>Tipo: ${tipo}</p>
-          <p>Matrícula: ${matricula}</p>
-          <p>Capacidad: ${capacidad}</p>
-        </div>
-      `;
-      preview.style.display = 'flex';
-    });
-  }
+  
+  const descripcion = document.getElementById('descripcion');
+  const contador = document.createElement('small');
+  contador.id = 'contador';
+  contador.style.display = 'block';
+  contador.style.marginTop = '4px';
+  descripcion.insertAdjacentElement('afterend', contador);
 
-  if (origen && destino) {
-    destino.addEventListener('change', () => {
-      if (origen.value && destino.value && origen.value === destino.value) {
-        Swal.fire('Atención', 'La ciudad de origen y destino no pueden ser la misma.', 'warning');
-        destino.value = "";
-      }
-    });
-  }
+  const actualizarContador = () => {
+    const len = descripcion.value.length;
+    contador.textContent = `${len}/${maxChars} caracteres`;
+    contador.style.color = len > maxChars ? 'red' : '#555';
+  };
+  descripcion.addEventListener('input', actualizarContador);
+  actualizarContador();
 
-  if (formRuta) {
-    formRuta.addEventListener('submit', (e) => {
-      e.preventDefault();
 
-      const duracion = formRuta.duracion.value.trim();
-      if (!/^\d{1,2}:\d{2}$/.test(duracion)) {
-        Swal.fire('Formato incorrecto', 'La duración debe tener el formato HH:MM (ej: 02:30).', 'warning');
-        return;
-      }
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let valido = true;
 
-      const formData = new FormData(formRuta);
-      formData.append('ajax', '1');
+    const nombre = form.nombre;
+    const trayecto = form.trayecto;
+    const transporte = form.rela_transporte;
+    const origen = form.rela_ciudad_origen;
+    const destino = form.rela_ciudad_destino;
+    const duracion = form.duracion;
+    const precio = form.precio_por_persona;
 
-      fetch('controllers/transportes/rutas.controlador.php?action=guardar', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success' || data.status === 'ok') {
-          Swal.fire({
-            icon: 'success',
-            //feedback momentario no es el definitivo
-            title: 'Ruta cargada correctamente',
-            text: 'Tu ruta fue cargada correctamente.',
-            confirmButtonText: 'Volver a mi perfil',
-            confirmButtonColor: '#3085d6'
-          }).then(() => {
-            window.location.href = 'index.php?page=proveedores_perfil';
-          });
-        } else {
-          Swal.fire('Error', data.message || data.mensaje || 'No se pudo guardar la ruta.', 'error');
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        Swal.fire('Error', 'Ocurrió un error al intentar guardar la ruta.', 'error');
-      });
-    });
-  }
+    if (!/^[\w\s-]{3,}$/.test(nombre.value.trim())) {
+      crearError(nombre, 'Ingrese un nombre válido (mínimo 3 caracteres).');
+      valido = false;
+    }
+
+    if (!/^[\w\s-]{10,}$/.test(trayecto.value.trim()) || !trayecto.value.includes('-')) {
+      crearError(trayecto, 'El trayecto debe tener al menos 10 caracteres y contener guiones (-).');
+      valido = false;
+    }
+
+    
+    if (transporte.value === '') {
+      crearError(transporte, 'Seleccione un transporte.');
+      valido = false;
+    }
+
+    
+    if (origen.value === '') {
+      crearError(origen, 'Seleccione una ciudad de origen.');
+      valido = false;
+    }
+    if (destino.value === '') {
+      crearError(destino, 'Seleccione una ciudad de destino.');
+      valido = false;
+    }
+    if (origen.value && destino.value && origen.value === destino.value) {
+      crearError(destino, 'La ciudad de destino no puede ser igual a la de origen.');
+      valido = false;
+    }
+
+    
+    if (!/^(0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/.test(duracion.value.trim())) {
+      crearError(duracion, 'Ingrese una duración válida (HH:MM).');
+      valido = false;
+    }
+
+    
+    if (!(parseFloat(precio.value) > 0)) {
+      crearError(precio, 'Ingrese un precio válido mayor que 0.');
+      valido = false;
+    }
+
+    const desc = descripcion.value.trim();
+    if (desc === '') {
+      crearError(descripcion, 'Falta datos en descripción.');
+      valido = false;
+    } else if (desc.length > maxChars) {
+      crearError(descripcion, `La descripción no puede superar los ${maxChars} caracteres.`);
+      valido = false;
+    }
+
+    if (!valido) return;
+    form.submit();
+  });
 });

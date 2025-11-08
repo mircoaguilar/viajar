@@ -30,17 +30,17 @@ $tipos = $tipoModel->traer_tipos_transportes();
 
         <div>
           <label for="transporte_matricula">Matrícula / Patente</label>
-          <input type="text" id="transporte_matricula" name="transporte_matricula" required>
+          <input type="text" id="transporte_matricula" name="transporte_matricula" >
         </div>
 
         <div>
           <label for="transporte_capacidad">Capacidad (personas)</label>
-          <input type="number" id="transporte_capacidad" name="transporte_capacidad" min="1" required>
+          <input type="number" id="transporte_capacidad" name="transporte_capacidad" min="1">
         </div>
 
         <div>
           <label for="rela_tipo_transporte">Tipo de transporte</label>
-          <select id="rela_tipo_transporte" name="rela_tipo_transporte" required>
+          <select id="rela_tipo_transporte" name="rela_tipo_transporte">
             <option value="">Seleccionar...</option>
             <?php foreach ($tipos as $tipo): ?>
               <option value="<?= $tipo['id_tipo_transporte'] ?>">
@@ -52,7 +52,7 @@ $tipos = $tipoModel->traer_tipos_transportes();
 
         <div>
           <label for="nombre_servicio">Nombre del servicio</label>
-          <input type="text" id="nombre_servicio" name="nombre_servicio" required>
+          <input type="text" id="nombre_servicio" name="nombre_servicio">
         </div>
 
         <div class="grid" style="grid-column: 1 / -1;">
@@ -62,7 +62,7 @@ $tipos = $tipoModel->traer_tipos_transportes();
 
         <div>
           <label for="imagen_principal">Imagen principal</label>
-          <input type="file" id="imagen_principal" name="imagen_principal" accept="image/*" required>
+          <input type="file" id="imagen_principal" name="imagen_principal" accept="image/*">
         </div>
 
         <div class="grid" style="grid-column: 1 / -1;">
@@ -79,7 +79,7 @@ $tipos = $tipoModel->traer_tipos_transportes();
     </div>
   </div>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script src="assets/js/transportes_carga.js"></script>
 </body>
 </html>

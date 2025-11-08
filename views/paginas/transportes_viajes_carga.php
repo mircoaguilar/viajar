@@ -33,7 +33,7 @@ $rutas = $transporteModel->traer_rutas_por_usuario($_SESSION['id_usuarios']);
 
         <div>
           <label for="rela_transporte_rutas">Ruta</label>
-          <select id="rela_transporte_rutas" name="rela_transporte_rutas" required>
+          <select id="rela_transporte_rutas" name="rela_transporte_rutas" >
             <option value="">Seleccionar ruta...</option>
             <?php foreach ($rutas as $r): ?>
               <option value="<?= $r['id_ruta'] ?>">
@@ -45,17 +45,17 @@ $rutas = $transporteModel->traer_rutas_por_usuario($_SESSION['id_usuarios']);
 
         <div>
           <label for="viaje_fecha">Fecha del viaje</label>
-          <input type="text" id="viaje_fecha" name="viaje_fecha" required>
+          <input type="text" id="viaje_fecha" name="viaje_fecha" >
         </div>
 
         <div>
           <label for="hora_salida">Hora de salida</label>
-          <input type="text" id="hora_salida" name="hora_salida" required>
+          <input type="text" id="hora_salida" name="hora_salida" >
         </div>
 
         <div>
           <label for="hora_llegada">Hora de llegada</label>
-          <input type="text" id="hora_llegada" name="hora_llegada" required>
+          <input type="text" id="hora_llegada" name="hora_llegada" >
         </div>
 
         <div class="actions" style="grid-column: 1 / -1;">

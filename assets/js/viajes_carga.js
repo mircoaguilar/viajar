@@ -1,76 +1,83 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const formViaje = document.getElementById('formViaje');
-  const selectRuta = document.getElementById('rela_transporte_rutas');
-  const preview = document.getElementById('previewRuta');
+  const form = document.getElementById('formViaje');
 
-  if (selectRuta) {
-    selectRuta.addEventListener('change', () => {
-      const selected = selectRuta.options[selectRuta.selectedIndex];
-      if (!selected.value) {
-        preview.style.display = 'none';
-        preview.innerHTML = '';
-        return;
+  const crearError = (input, mensaje) => {
+    eliminarError(input);
+    input.classList.add('input-error');
+    const error = document.createElement('small');
+    error.className = 'error-text';
+    error.textContent = mensaje;
+    input.insertAdjacentElement('afterend', error);
+  };
+
+  const eliminarError = (input) => {
+    input.classList.remove('input-error');
+    const next = input.nextElementSibling;
+    if (next && next.classList.contains('error-text')) next.remove();
+  };
+
+  
+  form.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('input', () => eliminarError(el));
+    el.addEventListener('change', () => eliminarError(el));
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let valido = true;
+
+    const ruta = form.rela_transporte_rutas;
+    const fecha = form.viaje_fecha;
+    const salida = form.hora_salida;
+    const llegada = form.hora_llegada;
+
+    
+    if (ruta.value === '') {
+      crearError(ruta, 'Seleccione una ruta válida.');
+      valido = false;
+    }
+
+    
+    const fechaValor = fecha.value.trim();
+    const hoy = new Date();
+    const fechaIngresada = new Date(fechaValor);
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(fechaValor)) {
+      crearError(fecha, 'Ingrese una fecha válida (AAAA-MM-DD).');
+      valido = false;
+    } else if (fechaIngresada < new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())) {
+      crearError(fecha, 'La fecha no puede ser anterior a hoy.');
+      valido = false;
+    }
+
+    
+    const horaSalida = salida.value.trim();
+    const horaLlegada = llegada.value.trim();
+
+    if (!/^\d{2}:\d{2}$/.test(horaSalida)) {
+      crearError(salida, 'Ingrese una hora de salida válida (HH:MM).');
+      valido = false;
+    }
+
+    if (!/^\d{2}:\d{2}$/.test(horaLlegada)) {
+      crearError(llegada, 'Ingrese una hora de llegada válida (HH:MM).');
+      valido = false;
+    }
+
+    
+    if (/^\d{2}:\d{2}$/.test(horaSalida) && /^\d{2}:\d{2}$/.test(horaLlegada)) {
+      const [hS, mS] = horaSalida.split(':').map(Number);
+      const [hL, mL] = horaLlegada.split(':').map(Number);
+      const minutosSalida = hS * 60 + mS;
+      const minutosLlegada = hL * 60 + mL;
+
+      if (minutosLlegada <= minutosSalida) {
+        crearError(llegada, 'La hora de llegada debe ser posterior a la hora de salida.');
+        valido = false;
       }
+    }
 
-      const nombre = selected.dataset.nombre;
-      const trayecto = selected.dataset.trayecto;
-      const duracion = selected.dataset.duracion;
-      const precio = selected.dataset.precio;
-      const transporte = selected.dataset.transporte;
-
-      preview.innerHTML = `
-        <div class="info">
-          <p><strong>${nombre}</strong></p>
-          <p>Trayecto: ${trayecto}</p>
-          <p>Duración: ${duracion}</p>
-          <p>Precio: $${precio}</p>
-          <p>Transporte: ${transporte}</p>
-        </div>
-      `;
-      preview.style.display = 'block';
-    });
-  }
-
-  if (formViaje) {
-    formViaje.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const formData = new FormData(formViaje);
-      formData.append('ajax', '1');
-      
-      const horaSalida = formViaje.hora_salida.value.trim();
-      const horaLlegada = formViaje.hora_llegada.value.trim();
-      if (!/^\d{2}:\d{2}$/.test(horaSalida) || !/^\d{2}:\d{2}$/.test(horaLlegada)) {
-        Swal.fire('Formato incorrecto', 'Las horas deben tener el formato HH:MM.', 'warning');
-        return;
-      }
-
-      fetch('controllers/transportes/viajes.controlador.php?action=guardar', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success' || data.status === 'ok') {
-          Swal.fire({
-            //feedback momentario no es el definitivo
-            icon: 'success',
-            title: 'Viaje cargado correctamente',
-            text: 'Tu viaje fue guardado',
-            confirmButtonText: 'Volver a mi perfil',
-            confirmButtonColor: '#3085d6'
-          }).then(() => {
-            window.location.href = 'index.php?page=proveedores_perfil';
-          });
-        } else {
-          Swal.fire('Error', data.message || data.mensaje || 'No se pudo guardar el viaje.', 'error');
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        Swal.fire('Error', 'Ocurrió un error al intentar guardar el viaje.', 'error');
-      });
-    });
-  }
-
+    if (!valido) return;
+    form.submit();
+  });
 });
