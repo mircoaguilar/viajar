@@ -120,7 +120,6 @@ flatpickr("#desde", { dateFormat: "Y-m-d", minDate: "today", locale: "es" });
 flatpickr("#hasta", { dateFormat: "Y-m-d", minDate: "today", locale: "es" });
 </script>
 
-<script src="assets/js/pantalla_transporte.js"></script>
 
 </body>
 </html>

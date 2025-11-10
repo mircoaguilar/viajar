@@ -49,8 +49,8 @@ async function cargarCarrito() {
                         <input type="number" min="1" value="${it.cantidad}" 
                             onchange="actualizarItem(${it.id_item}, this.value, ${it.precio_unitario}, '${it.fecha_inicio ?? ''}', '${it.fecha_fin ?? ''}', '${it.fecha_tour ?? ''}')">
                     </td>
-                    <td>$ ${parseFloat(it.precio_unitario).toFixed(2)}</td>
-                    <td>$ ${parseFloat(it.subtotal).toFixed(2)}</td>
+                    <td>$ ${formatoPrecio(it.precio_unitario)}</td>
+                    <td>$ ${formatoPrecio(it.subtotal)}</td>
                     <td>
                         <button class="btn-accion" onclick="quitarItem(${it.id_item})">
                             <i class="fa-solid fa-trash"></i>
@@ -64,7 +64,7 @@ async function cargarCarrito() {
                 </tbody>
             </table>
             <div class="carrito-total">
-                <h3>Total: $ ${total.toFixed(2)}</h3>
+                <h3>Total: $ ${formatoPrecio(total)}</h3>
                 <button class="btn-checkout" onclick="finalizarCompra()">Finalizar Compra</button>
             </div>
         `;
@@ -76,6 +76,15 @@ async function cargarCarrito() {
         Swal.fire('Error', 'No se pudo cargar el carrito. Revisa la consola.', 'error');
     }
 }
+
+function formatoPrecio(valor) {
+    const numero = Number(valor) || 0;
+    return new Intl.NumberFormat('es-AR', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(numero);
+}
+
 
 async function quitarItem(id_item) {
     if (!confirm('¿Seguro que querés eliminar este ítem?')) return;

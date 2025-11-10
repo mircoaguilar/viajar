@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const total = document.getElementById("total");
   const seleccionados = new Set();
   const viajeId = document.body.dataset.viajeId;
-  const viajeFecha = document.body.dataset.fecha; 
+  const viajeFecha = document.body.dataset.fecha;
 
   document.querySelectorAll(".bus-container").forEach(async busContainer => {
     const pisoNum = busContainer.dataset.numero;
@@ -12,13 +12,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const columnas = parseInt(busContainer.dataset.asientos);
     const contenedorAsientos = busContainer.querySelector(".asientos");
     const ocupados = await fetchOcupados(pisoNum);
-
     generarPiso(contenedorAsientos, filas, columnas, ocupados, `Piso ${pisoNum}`);
   });
 
   function generarPiso(contenedor, filas, columnas, ocupados, pisoNombre) {
     let numAsiento = 1;
-
     for (let f = 0; f < filas; f++) {
       for (let c = 0; c < columnas + 1; c++) {
         if (c === Math.floor(columnas / 2)) {
@@ -66,75 +64,229 @@ document.addEventListener("DOMContentLoaded", () => {
     total.textContent = (seleccionados.size * precioAsiento).toLocaleString("es-AR");
   }
 
-  const modal = document.getElementById("modal-carrito");
-  const modalCerrar = document.getElementById("modal-cerrar");
-  const btnCancelar = document.getElementById("btn-cancelar");
-  const btnAgregarCarrito = document.getElementById("btn-agregar-carrito");
+  const modalCompleto = document.getElementById("modal-completo");
+  const modalCerrar = document.getElementById("modal-completo-cerrar");
+  const listaAsientos = document.getElementById("lista-asientos");
+  const contenedorFormularios = document.getElementById("contenedor-formularios");
+  const modalTotal = document.getElementById("modal-total-unique");
+  const formPasajeros = document.getElementById("form-pasajeros-completo");
 
-  document.getElementById("btn-confirmar").addEventListener("click", () => {
-    if (seleccionados.size === 0) {
-      alert("No seleccionaste ningún asiento.");
+  let datosAuxiliares = null;
+
+  async function cargarDatosAuxiliares() {
+    if (datosAuxiliares) return datosAuxiliares;
+    try {
+      const res = await fetch("controllers/viajes/datos_auxiliares.php");
+      if (!res.ok) throw new Error("Error al obtener datos auxiliares");
+      datosAuxiliares = await res.json();
+      return datosAuxiliares;
+    } catch (err) {
+      console.error(err);
+      return { nacionalidades: [], tipos_documento: [] };
+    }
+  }
+
+  async function verificarSesion() {
+    try {
+      const response = await fetch("controllers/usuarios/usuarios.controlador.php?action=verificar_sesion");
+      if (!response.ok) throw new Error("No se pudo verificar la sesión");
+
+      const data = await response.json();
+      return data.logged_in === true; 
+    } catch (error) {
+      console.error("Error verificando sesión:", error);
+      return false;
+    }
+  }
+
+  document.getElementById("btn-confirmar").addEventListener("click", async () => {
+    const logged = await verificarSesion();
+
+    if (!logged) {
+      Swal.fire({
+        icon: "warning",
+        title: "Inicia sesión",
+        text: "Debes iniciar sesión para continuar con la compra.",
+        showCancelButton: true,
+        confirmButtonText: "Ir al inicio de sesión",
+        cancelButtonText: "Cancelar"
+      }).then(result => {
+        if (result.isConfirmed) {
+          window.location.href = "index.php?page=login";
+        }
+      });
       return;
     }
 
-    const modalLista = document.getElementById("modal-lista");
-    const modalTotal = document.getElementById("modal-total");
+    if (seleccionados.size === 0) {
+      Swal.fire({
+        icon: "info",
+        title: "Sin asientos seleccionados",
+        text: "Seleccioná al menos un asiento antes de continuar.",
+        confirmButtonText: "Entendido"
+      });
+      return;
+    }
 
-    modalLista.innerHTML = "";
-    document.querySelectorAll(".asiento.seleccionado").forEach(a => {
+    listaAsientos.innerHTML = "";
+    contenedorFormularios.innerHTML = "";
+
+    const seleccion = Array.from(document.querySelectorAll(".asiento.seleccionado"));
+    const aux = await cargarDatosAuxiliares();
+
+    seleccion.forEach((a, i) => {
       const piso = a.closest(".bus-container").dataset.numero;
       const num = a.textContent;
+
       const p = document.createElement("p");
       p.textContent = `Piso ${piso} - Asiento ${num}`;
-      modalLista.appendChild(p);
+      listaAsientos.appendChild(p);
+
+      const formGroup = document.createElement("div");
+      formGroup.classList.add("form-pasajero");
+      formGroup.innerHTML = `
+        <h5>Pasajero ${i + 1} (${piso}-${num})</h5>
+
+        <label>Nombre</label>
+        <input type="text" name="pasajeros[${i}][nombre]">
+
+        <label>Apellido</label>
+        <input type="text" name="pasajeros[${i}][apellido]">
+
+        <div class="dual">
+          <div>
+            <label>Tipo documento</label>
+            <select id="tipo_doc_${i}" name="pasajeros[${i}][rela_tipo_documento]">
+              <option value="">Seleccionar</option>
+              ${aux.tipos_documento.map(t => `<option value="${t.id}">${escapeHtml(t.nombre)}</option>`).join("")}
+            </select>
+          </div>
+
+          <div>
+            <label>Número documento</label>
+            <input type="text" name="pasajeros[${i}][numero_documento]">
+          </div>
+
+          <div>
+            <label>Nacionalidad</label>
+            <select id="nacionalidad_${i}" name="pasajeros[${i}][rela_nacionalidad]">
+              <option value="">Seleccionar</option>
+              ${aux.nacionalidades.map(n => `<option value="${n.id}">${escapeHtml(n.nombre)}</option>`).join("")}
+            </select>
+          </div>
+        </div>
+
+        <div class="dual">
+          <div>
+            <label>Sexo</label>
+            <select name="pasajeros[${i}][sexo]">
+              <option value="">Seleccionar</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div>
+            <label>Fecha de nacimiento</label>
+            <input type="text" name="pasajeros[${i}][fecha_nacimiento]" class="flatpickr-date">
+          </div>
+        </div>
+
+        <input type="hidden" name="pasajeros[${i}][asiento_piso]" value="${piso}">
+        <input type="hidden" name="pasajeros[${i}][asiento_numero]" value="${num}">
+      `;
+
+      contenedorFormularios.appendChild(formGroup);
+
+      try {
+        if (typeof $ !== "undefined" && $.fn && $.fn.select2) {
+          const $nac = $(`#nacionalidad_${i}`);
+          const $tipo = $(`#tipo_doc_${i}`);
+
+          if ($nac.data("select2")) $nac.select2("destroy");
+          if ($tipo.data("select2")) $tipo.select2("destroy");
+
+          $nac.select2({
+            width: "100%",
+            dropdownParent: $(formGroup),
+            placeholder: "Seleccionar nacionalidad"
+          });
+          $tipo.select2({
+            width: "100%",
+            dropdownParent: $(formGroup),
+            placeholder: "Seleccionar tipo documento"
+          });
+
+          console.log(`initialized select2 for nacionalidad_${i} and tipo_doc_${i}`);
+        }
+      } catch (err) {
+        console.error("Error inicializando select2 para pasajero", i, err);
+      }
+
+      try {
+        if (typeof flatpickr !== "undefined") {
+          flatpickr(formGroup.querySelector(".flatpickr-date"), {
+            locale: "es",
+            dateFormat: "d/m/Y",
+            maxDate: "today",
+            allowInput: true
+          });
+          console.log(`initialized flatpickr for pasajero ${i}`);
+        }
+      } catch (err) {
+        console.error("Error inicializando flatpickr para pasajero", i, err);
+      }
     });
 
     modalTotal.textContent = (seleccionados.size * precioAsiento).toLocaleString("es-AR");
-    modal.style.display = "flex";
+    modalCompleto.style.display = "flex";
   });
 
-  modalCerrar.addEventListener("click", () => (modal.style.display = "none"));
-  btnCancelar.addEventListener("click", () => (modal.style.display = "none"));
+  modalCerrar.addEventListener("click", () => (modalCompleto.style.display = "none"));
+  document.getElementById("btn-cancelar-pasajeros").addEventListener("click", () => (modalCompleto.style.display = "none"));
+  window.addEventListener("click", e => {
+    if (e.target === modalCompleto) modalCompleto.style.display = "none";
+  });
 
-  btnAgregarCarrito.addEventListener("click", async () => {
-    const cantidad = seleccionados.size;
-    if (cantidad === 0) {
-      alert("No seleccionaste ningún asiento.");
-      return;
-    }
+  formPasajeros.addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const formData = new FormData(formPasajeros);
+    formData.append("tipo_servicio", "transporte");
+    formData.append("id_servicio", viajeId);
+    formData.append("cantidad", seleccionados.size);
+    formData.append("precio_unitario", precioAsiento);
+    formData.append("fecha_servicio", viajeFecha);
 
     const asientosSeleccionados = Array.from(document.querySelectorAll(".asiento.seleccionado")).map(a => {
       const busContainer = a.closest(".bus-container");
       const columnas = parseInt(busContainer.dataset.asientos, 10);
       const piso = busContainer.dataset.numero;
       const numero = parseInt(a.textContent, 10);
-
       const fila = Math.ceil(numero / columnas);
       const columna = numero - (fila - 1) * columnas;
-
       return { piso: parseInt(piso, 10), numero, fila, columna };
     });
-
-    const formData = new FormData();
-    formData.append("tipo_servicio", "transporte");
-    formData.append("id_servicio", viajeId);
-    formData.append("cantidad", cantidad);
-    formData.append("precio_unitario", precioAsiento);
     formData.append("asientos", JSON.stringify(asientosSeleccionados));
-    formData.append("fecha_servicio", viajeFecha);
 
     try {
       const res = await fetch("controllers/carrito/carrito.controlador.php?action=agregar", {
         method: "POST",
         body: formData
       });
-
       const data = await res.json();
+
       if (data.status !== "success") throw new Error(data.message || "Error al agregar al carrito");
 
-      alert("Asientos agregados al carrito correctamente");
+      await Swal.fire({
+        icon: "success",
+        title: "¡Agregado al carrito!",
+        text: "Los asientos y datos de los pasajeros se guardaron correctamente.",
+        confirmButtonText: "Aceptar"
+      });
 
-      modal.style.display = "none";
+      modalCompleto.style.display = "none";
+
       document.querySelectorAll(".asiento.seleccionado").forEach(a => {
         a.classList.remove("seleccionado");
         a.classList.add("ocupado");
@@ -142,13 +294,13 @@ document.addEventListener("DOMContentLoaded", () => {
       seleccionados.clear();
       actualizarResumen();
 
-    } catch (e) {
-      alert("Ocurrió un error al agregar los asientos: " + e.message);
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error: " + err.message
+      });
     }
-  });
-
-  window.addEventListener("click", e => {
-    if (e.target === modal) modal.style.display = "none";
   });
 
   async function fetchOcupados(pisoNum) {
@@ -161,5 +313,15 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(e);
       return [];
     }
+  }
+
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
   }
 });

@@ -1,25 +1,40 @@
 <?php
-
+session_start(); 
 require_once(__DIR__ . '/../../models/usuarios.php');
 
-if (isset($_POST["action"])) {
+$action = $_POST['action'] ?? $_GET['action'] ?? null;
+
+if ($action) {
     $usuario_controlador = new UsuarioControlador();
 
-    switch ($_POST["action"]) {
+    switch ($action) {
         case "guardar":
             $usuario_controlador->guardar();
             break;
+
         case "actualizar":
             $usuario_controlador->actualizar();
             break;
+
         case "eliminar":
             $usuario_controlador->eliminar();
             break;
+
         case "cambiar_password":
             $usuario_controlador->cambiar_password();
             break;
+
+        case "verificar_sesion":
+            // ✅ importante: especificar tipo de contenido JSON
+            header('Content-Type: application/json');
+            echo json_encode([
+                'logged_in' => isset($_SESSION['id_usuarios']),
+                'user_id' => $_SESSION['id_usuarios'] ?? null
+            ]);
+            exit; // ✅ asegura que no se siga ejecutando más código
     }
 }
+
 
 class UsuarioControlador {
 

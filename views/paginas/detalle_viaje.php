@@ -34,6 +34,9 @@ if (!$ruta) die("Ruta no encontrada.");
 <head>
   <meta charset="UTF-8">
   <title>Detalle del transporte - <?= htmlspecialchars($transporte['nombre_servicio']) ?></title>
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="assets/css/detalle_transporte.css">
 </head>
 <body 
@@ -86,17 +89,37 @@ if (!$ruta) die("Ruta no encontrada.");
     <button id="btn-confirmar">Agregar al carrito</button>
   </div>
 
-  <div id="modal-carrito" class="modal">
-    <div class="modal-content">
-      <span id="modal-cerrar" class="cerrar">&times;</span>
-      <h3>Asientos seleccionados</h3>
-      <div id="modal-lista"></div>
-      <p><strong>Total:</strong> $<span id="modal-total">0</span></p>
-      <button id="btn-agregar-carrito">Confirmar</button>
-      <button id="btn-cancelar">Cancelar</button>
+  <div id="modal-completo" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width:1000px;">
+      <span id="modal-completo-cerrar" class="cerrar">&times;</span>
+      <h3>Asientos seleccionados y datos de pasajeros</h3>
+
+      <div style="display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:0 0 320px;border-right:1px solid #eee;padding-right:12px;">
+          <h4>Asientos</h4>
+          <div id="lista-asientos" style="max-height:360px;overflow:auto;"></div>
+          <p style="margin-top:8px;"><strong>Total:</strong> $<span id="modal-total-unique">0</span></p>
+        </div>
+
+        <div style="flex:1;padding-left:12px;">
+          <h4>Datos de pasajeros</h4>
+          <form id="form-pasajeros-completo">
+            <div id="contenedor-formularios"></div>
+
+            <div style="margin-top:12px;display:flex;gap:8px;">
+              <button type="submit" id="btn-confirmar-pasajeros">Confirmar y agregar al carrito</button>
+              <button type="button" id="btn-cancelar-pasajeros">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script src="assets/js/asientos.js"></script>
+
 </body>
 </html>

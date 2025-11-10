@@ -37,7 +37,7 @@ $tours = $tourModel->traer_tours_por_usuario($id_usuario);
 
         <div>
           <label for="rela_tour">Tour</label>
-          <select id="rela_tour" name="rela_tour" required>
+          <select id="rela_tour" name="rela_tour">
             <option value="">Seleccionar tour...</option>
             <?php foreach ($tours as $t): ?>
               <option value="<?= $t['id_tour'] ?>"><?= htmlspecialchars($t['nombre_tour']) ?></option>
@@ -47,17 +47,17 @@ $tours = $tourModel->traer_tours_por_usuario($id_usuario);
 
         <div>
           <label for="fecha_inicio">Fecha inicio</label>
-          <input type="text" id="fecha_inicio" name="fecha_inicio" placeholder="YYYY-MM-DD" required>
+          <input type="text" id="fecha_inicio" name="fecha_inicio" placeholder="YYYY-MM-DD">
         </div>
 
         <div>
           <label for="fecha_fin">Fecha fin</label>
-          <input type="text" id="fecha_fin" name="fecha_fin" placeholder="YYYY-MM-DD" required>
+          <input type="text" id="fecha_fin" name="fecha_fin" placeholder="YYYY-MM-DD">
         </div>
 
         <div>
           <label for="cantidad">Cupos disponibles</label>
-          <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
+          <input type="number" id="cantidad" name="cantidad" min="1" value="1">
         </div>
 
         <div style="grid-column: 1 / -1;">
