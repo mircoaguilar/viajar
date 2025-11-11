@@ -504,3 +504,23 @@ h3 {
         gap: 30px;
     }
 }
+
+
+
+.input-error {
+  border: 1px solid #e74c3c !important;
+  background-color: #ffeaea !important;
+}
+
+.select2-container--default .select2-selection--single.input-error {
+  border: 1px solid #e74c3c !important;
+  background-color: #ffeaea !important;
+}
+
+.error-msg {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}

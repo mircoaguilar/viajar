@@ -216,8 +216,6 @@ document.addEventListener("DOMContentLoaded", () => {
             dropdownParent: $(formGroup),
             placeholder: "Seleccionar tipo documento"
           });
-
-          console.log(`initialized select2 for nacionalidad_${i} and tipo_doc_${i}`);
         }
       } catch (err) {
         console.error("Error inicializando select2 para pasajero", i, err);
@@ -231,7 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
             maxDate: "today",
             allowInput: true
           });
-          console.log(`initialized flatpickr for pasajero ${i}`);
         }
       } catch (err) {
         console.error("Error inicializando flatpickr para pasajero", i, err);
@@ -248,8 +245,50 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === modalCompleto) modalCompleto.style.display = "none";
   });
 
+
   formPasajeros.addEventListener("submit", async e => {
     e.preventDefault();
+
+    formPasajeros.querySelectorAll(".error-msg").forEach(el => el.remove());
+    formPasajeros.querySelectorAll("input, select").forEach(el => el.classList.remove("input-error"));
+
+    let camposInvalidos = 0;
+
+    formPasajeros.querySelectorAll(".form-pasajero").forEach(grupo => {
+      const nombre = grupo.querySelector("input[name*='[nombre]']");
+      const apellido = grupo.querySelector("input[name*='[apellido]']");
+      const tipoDoc = grupo.querySelector("select[name*='[rela_tipo_documento]']");
+      const nroDoc = grupo.querySelector("input[name*='[numero_documento]']");
+      const nacionalidad = grupo.querySelector("select[name*='[rela_nacionalidad]']");
+      const sexo = grupo.querySelector("select[name*='[sexo]']");
+      const fecha = grupo.querySelector("input[name*='[fecha_nacimiento]']");
+
+      const campos = [
+        { el: nombre, nombre: "Nombre" },
+        { el: apellido, nombre: "Apellido" },
+        { el: tipoDoc, nombre: "Tipo de documento" },
+        { el: nroDoc, nombre: "Número de documento" },
+        { el: nacionalidad, nombre: "Nacionalidad" },
+        { el: sexo, nombre: "Sexo" },
+        { el: fecha, nombre: "Fecha de nacimiento" },
+      ];
+
+      campos.forEach(c => {
+        if (!c.el.value.trim()) {
+          mostrarError(c.el, `${c.nombre} es obligatorio`);
+          camposInvalidos++;
+        }
+      });
+    });
+
+    if (camposInvalidos > 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "Campos incompletos",
+        text: "Por favor, completá todos los datos de los pasajeros antes de continuar."
+      });
+      return;
+    }
 
     const formData = new FormData(formPasajeros);
     formData.append("tipo_servicio", "transporte");
@@ -274,7 +313,23 @@ document.addEventListener("DOMContentLoaded", () => {
         method: "POST",
         body: formData
       });
-      const data = await res.json();
+
+      const contentType = res.headers.get("content-type") || "";
+      let data;
+
+      if (contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        console.error("Respuesta no-JSON del servidor:", text);
+        Swal.fire({
+          icon: "error",
+          title: "Error en el servidor",
+          html: `<div style="text-align:left;white-space:pre-wrap;max-height:300px;overflow:auto;">${escapeHtml(text).slice(0,1000)}</div>`,
+          confirmButtonText: "Cerrar"
+        });
+        return;
+      }
 
       if (data.status !== "success") throw new Error(data.message || "Error al agregar al carrito");
 
@@ -286,7 +341,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       modalCompleto.style.display = "none";
-
       document.querySelectorAll(".asiento.seleccionado").forEach(a => {
         a.classList.remove("seleccionado");
         a.classList.add("ocupado");
@@ -302,6 +356,42 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
+  function mostrarError(elemento, mensaje) {
+    const error = document.createElement("div");
+    error.classList.add("error-msg");
+    error.textContent = mensaje;
+    elemento.classList.add("input-error");
+
+    const isSelect2 = elemento.classList.contains("select2-hidden-accessible");
+
+    if (isSelect2) {
+      const select2Container = elemento.nextElementSibling;
+      if (select2Container && select2Container.classList.contains("select2")) {
+        select2Container.classList.add("input-error");
+        select2Container.insertAdjacentElement("afterend", error);
+        $(elemento).on("change.select2", function () {
+          error.remove();
+          select2Container.classList.remove("input-error");
+        });
+        return;
+      }
+    }
+
+    elemento.insertAdjacentElement("afterend", error);
+    elemento.addEventListener("input", () => {
+      if (elemento.value.trim() !== "") {
+        error.remove();
+        elemento.classList.remove("input-error");
+      }
+    });
+    elemento.addEventListener("change", () => {
+      if (elemento.value.trim() !== "") {
+        error.remove();
+        elemento.classList.remove("input-error");
+      }
+    });
+  }
 
   async function fetchOcupados(pisoNum) {
     try {
