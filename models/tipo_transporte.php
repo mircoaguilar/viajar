@@ -1,5 +1,6 @@
 <?php
 require_once('conexion.php');
+require_once('auditoria.php');
 
 class TipoTransporte {
     private $id_tipo_transporte;
@@ -26,23 +27,62 @@ class TipoTransporte {
 
     public function guardar() {
         $conexion = new Conexion();
-        $descripcion_escapada = $conexion->getConexion()->real_escape_string($this->descripcion);
-        $query = "INSERT INTO tipo_transporte (descripcion, activo) VALUES ('$descripcion_escapada', 1)";
-        return $conexion->insertar($query);
+        $mysqli = $conexion->getConexion();
+        $descripcion_esc = $mysqli->real_escape_string($this->descripcion);
+
+        $query = "INSERT INTO tipo_transporte (descripcion, activo) VALUES ('$descripcion_esc', 1)";
+        $resultado = $conexion->insertar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Alta de tipo de transporte',
+                "Se creó el tipo de transporte: {$this->descripcion}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function actualizar() {
         $conexion = new Conexion();
-        $mysqli_connection = $conexion->getConexion(); 
-        $descripcion_escapada = $mysqli_connection->real_escape_string($this->descripcion);
-        $query = "UPDATE tipo_transporte SET descripcion = '$descripcion_escapada' WHERE id_tipo_transporte = " . (int)$this->id_tipo_transporte;
-        return $conexion->actualizar($query);
+        $mysqli = $conexion->getConexion();
+        $descripcion_esc = $mysqli->real_escape_string($this->descripcion);
+
+        $query = "UPDATE tipo_transporte SET descripcion='$descripcion_esc' WHERE id_tipo_transporte=" . (int)$this->id_tipo_transporte;
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Actualización de tipo de transporte',
+                "Se actualizó el tipo de transporte (ID: {$this->id_tipo_transporte}) a: {$this->descripcion}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function eliminar_logico() {
         $conexion = new Conexion();
-        $query = "UPDATE tipo_transporte SET activo = 0 WHERE id_tipo_transporte = " . (int)$this->id_tipo_transporte;
-        return $conexion->actualizar($query);
+        $query = "UPDATE tipo_transporte SET activo=0 WHERE id_tipo_transporte=" . (int)$this->id_tipo_transporte;
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Baja lógica de tipo de transporte',
+                "Se eliminó lógicamente el tipo de transporte (ID: {$this->id_tipo_transporte})"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function getId_tipo_transporte() {

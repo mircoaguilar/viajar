@@ -1,4 +1,5 @@
 <?php
+session_start(); 
 require_once(__DIR__ . '/../../models/tipo_proveedor.php');
 
 if (isset($_POST["action"])) {

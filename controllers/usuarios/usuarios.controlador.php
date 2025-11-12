@@ -25,13 +25,12 @@ if ($action) {
             break;
 
         case "verificar_sesion":
-            // ✅ importante: especificar tipo de contenido JSON
             header('Content-Type: application/json');
             echo json_encode([
                 'logged_in' => isset($_SESSION['id_usuarios']),
                 'user_id' => $_SESSION['id_usuarios'] ?? null
             ]);
-            exit; // ✅ asegura que no se siga ejecutando más código
+            exit; 
     }
 }
 
@@ -50,6 +49,7 @@ class UsuarioControlador {
         $usuarios->setUsuarios_email($_POST['usuarios_email']);
         $usuarios->setUsuarios_password($_POST['usuarios_nombre_usuario']); 
         $usuarios->setRela_perfiles($_POST['rela_perfiles']);
+        $usuarios->setRela_personas($_POST['rela_personas']);
         $usuarios->guardar();
 
         header("Location: ../../index.php?page=usuarios&message=Usuario guardado correctamente&status=success");

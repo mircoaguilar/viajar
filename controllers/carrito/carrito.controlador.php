@@ -39,7 +39,6 @@ switch ($action) {
         exit;
     }
 
-    // Obtener o crear carrito activo
     $carrito = $carritoModel->traer_carrito_activo($id_usuario);
     if (!$carrito) {
         $carritoModel->setId_usuario($id_usuario)->setActivo(1);
@@ -53,7 +52,6 @@ switch ($action) {
     $fecha_fin = null;
     $asientos = [];
 
-    // HOTEL
     if ($tipo_servicio === 'hotel' && !empty($_POST['checkin']) && !empty($_POST['checkout'])) {
         $fecha_inicio = $_POST['checkin'];
         $fecha_fin    = $_POST['checkout'];
@@ -61,13 +59,11 @@ switch ($action) {
         $subtotal *= max($noches, 1);
     }
 
-    // TOUR
     if ($tipo_servicio === 'tour' && !empty($_POST['fecha_tour'])) {
         $fecha_inicio = $_POST['fecha_tour'];
         $fecha_fin = null;
     }
 
-    // TRANSPORTE
     if ($tipo_servicio === 'transporte') {
         $fecha_inicio = $_POST['fecha_servicio'] ?? null;
         $fecha_fin = null;
@@ -82,7 +78,6 @@ switch ($action) {
         error_log("Agregando transporte al carrito: servicio={$id_servicio}, fecha={$fecha_inicio}, asientos=" . print_r($asientos, true));
     }
 
-    // Crear item del carrito
     $itemModel->setId_carrito($id_carrito)
               ->setTipo_servicio($tipo_servicio)
               ->setId_servicio($id_servicio)
@@ -103,7 +98,6 @@ switch ($action) {
         exit;
     }
 
-    // PASAJEROS
     if ($tipo_servicio === 'transporte') {
         require_once(__DIR__ . '/../../models/pasajero.php');
 
@@ -117,7 +111,6 @@ switch ($action) {
             $pasajeroModel = new Pasajero();
 
             foreach ($pasajeros as $p) {
-                // ✅ Convertir fecha de nacimiento a formato MySQL (YYYY-MM-DD)
                 $fecha_nac = null;
                 if (!empty($p['fecha_nacimiento'])) {
                     $fecha_obj = DateTime::createFromFormat('d/m/Y', $p['fecha_nacimiento']);
@@ -139,7 +132,6 @@ switch ($action) {
             error_log("No se recibieron pasajeros válidos en la petición");
         }
 
-        // Guardar asientos extra en sesión
         if (!isset($_SESSION['carrito_extra'])) {
             $_SESSION['carrito_extra'] = [];
         }

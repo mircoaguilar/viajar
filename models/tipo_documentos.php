@@ -1,5 +1,6 @@
 <?php
 require_once('conexion.php');
+require_once('auditoria.php');
 
 class TipoDocumento {
     private $id_tipo_documento;
@@ -26,22 +27,62 @@ class TipoDocumento {
 
     public function guardar() {
         $conexion = new Conexion();
-        $nombre_esc = $conexion->getConexion()->real_escape_string($this->nombre);
+        $mysqli = $conexion->getConexion();
+        $nombre_esc = $mysqli->real_escape_string($this->nombre);
+
         $query = "INSERT INTO tipos_documento (nombre, activo) VALUES ('$nombre_esc', 1)";
-        return $conexion->insertar($query);
+        $resultado = $conexion->insertar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Alta de tipo de documento',
+                "Se creó el tipo de documento: {$this->nombre}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function actualizar() {
         $conexion = new Conexion();
-        $nombre_esc = $conexion->getConexion()->real_escape_string($this->nombre);
+        $mysqli = $conexion->getConexion();
+        $nombre_esc = $mysqli->real_escape_string($this->nombre);
+
         $query = "UPDATE tipos_documento SET nombre='$nombre_esc' WHERE id_tipo_documento=" . (int)$this->id_tipo_documento;
-        return $conexion->actualizar($query);
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Actualización de tipo de documento',
+                "Se actualizó el tipo de documento (ID: {$this->id_tipo_documento}) a: {$this->nombre}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function eliminar_logico() {
         $conexion = new Conexion();
         $query = "UPDATE tipos_documento SET activo=0 WHERE id_tipo_documento=" . (int)$this->id_tipo_documento;
-        return $conexion->actualizar($query);
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Baja lógica de tipo de documento',
+                "Se eliminó lógicamente el tipo de documento (ID: {$this->id_tipo_documento})"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function getId_tipo_documento() { return $this->id_tipo_documento; }

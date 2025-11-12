@@ -1,5 +1,6 @@
 <?php
 require_once('conexion.php');
+require_once('auditoria.php');
 
 class Ciudad {
     private $id_ciudad;
@@ -38,7 +39,19 @@ class Ciudad {
         $provincia = (int)$this->rela_provincia;
 
         $query = "INSERT INTO ciudades (nombre, rela_provincia, activo) VALUES ('$nombre', $provincia, 1)";
-        return $conexion->insertar($query);
+        $resultado = $conexion->insertar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Alta de ciudad',
+                "Se creó la ciudad: {$this->nombre} (Provincia ID: $provincia)"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function actualizar() {
@@ -48,19 +61,43 @@ class Ciudad {
         $provincia = (int)$this->rela_provincia;
 
         $query = "UPDATE ciudades SET nombre='$nombre', rela_provincia=$provincia WHERE id_ciudad=".(int)$this->id_ciudad;
-        return $conexion->actualizar($query);
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Actualización de ciudad',
+                "Se actualizó la ciudad (ID: {$this->id_ciudad}) a nombre: '{$this->nombre}', provincia ID: $provincia"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function eliminar_logico() {
         $conexion = new Conexion();
         $query = "UPDATE ciudades SET activo = 0 WHERE id_ciudad=".(int)$this->id_ciudad;
-        return $conexion->actualizar($query);
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Baja lógica de ciudad',
+                "Se eliminó lógicamente la ciudad (ID: {$this->id_ciudad}, nombre: {$this->nombre})"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function traer_por_provincia($id_provincia) {
-    $conexion = new Conexion();
-    $id_provincia = (int)$id_provincia;
-    return $conexion->consultar("SELECT id_ciudad, nombre FROM ciudades WHERE rela_provincia = $id_provincia AND activo = 1 ORDER BY nombre ASC");
+        $conexion = new Conexion();
+        $id_provincia = (int)$id_provincia;
+        return $conexion->consultar("SELECT id_ciudad, nombre FROM ciudades WHERE rela_provincia = $id_provincia AND activo = 1 ORDER BY nombre ASC");
     }
 
 

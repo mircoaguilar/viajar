@@ -38,7 +38,7 @@ if (isset($_GET['id'])) {
 <body>
 
     <div class="container">
-        <form method="post" action="controllers/tipo_documentos/tipo_documentos.controlador.php">
+        <form method="post" action="controllers/tipos_documentos/tipo_documentos.controlador.php">
             <input type="hidden" name="action" value="<?php echo $form_action; ?>" />
             <?php if ($editing_mode): ?>
                 <input type="hidden" name="id_tipo_documento" value="<?php echo htmlspecialchars($id_tipo_documento_editar); ?>" />

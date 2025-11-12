@@ -1,5 +1,6 @@
 <?php
 require_once('conexion.php');
+require_once('auditoria.php');
 
 class Temporada {
     private $id_temporada;
@@ -8,7 +9,7 @@ class Temporada {
     private $fecha_fin;
     private $activo;
 
-    public function __construct($id_temporada='', $nombre='', $fecha_inicio='', $fecha_fin='', $activo=1) {
+    public function __construct($id_temporada = '', $nombre = '', $fecha_inicio = '', $fecha_fin = '', $activo = 1) {
         $this->id_temporada = $id_temporada;
         $this->nombre = $nombre;
         $this->fecha_inicio = $fecha_inicio;
@@ -30,26 +31,69 @@ class Temporada {
 
     public function guardar() {
         $conexion = new Conexion();
-        $nombre_esc = $conexion->getConexion()->real_escape_string($this->nombre);
-        $fecha_inicio_esc = $conexion->getConexion()->real_escape_string($this->fecha_inicio);
-        $fecha_fin_esc = $conexion->getConexion()->real_escape_string($this->fecha_fin);
-        $query = "INSERT INTO temporadas (nombre, fecha_inicio, fecha_fin, activo) VALUES ('$nombre_esc', '$fecha_inicio_esc', '$fecha_fin_esc', 1)";
-        return $conexion->insertar($query);
+        $mysqli = $conexion->getConexion();
+        $nombre_esc = $mysqli->real_escape_string($this->nombre);
+        $fecha_inicio_esc = $mysqli->real_escape_string($this->fecha_inicio);
+        $fecha_fin_esc = $mysqli->real_escape_string($this->fecha_fin);
+
+        $query = "INSERT INTO temporadas (nombre, fecha_inicio, fecha_fin, activo) 
+                  VALUES ('$nombre_esc', '$fecha_inicio_esc', '$fecha_fin_esc', 1)";
+        $resultado = $conexion->insertar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Alta de temporada',
+                "Se creó la temporada: {$this->nombre} ({$this->fecha_inicio} a {$this->fecha_fin})"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function actualizar() {
         $conexion = new Conexion();
-        $nombre_esc = $conexion->getConexion()->real_escape_string($this->nombre);
-        $fecha_inicio_esc = $conexion->getConexion()->real_escape_string($this->fecha_inicio);
-        $fecha_fin_esc = $conexion->getConexion()->real_escape_string($this->fecha_fin);
-        $query = "UPDATE temporadas SET nombre='$nombre_esc', fecha_inicio='$fecha_inicio_esc', fecha_fin='$fecha_fin_esc' WHERE id_temporada=" . (int)$this->id_temporada;
-        return $conexion->actualizar($query);
+        $mysqli = $conexion->getConexion();
+        $nombre_esc = $mysqli->real_escape_string($this->nombre);
+        $fecha_inicio_esc = $mysqli->real_escape_string($this->fecha_inicio);
+        $fecha_fin_esc = $mysqli->real_escape_string($this->fecha_fin);
+
+        $query = "UPDATE temporadas 
+                  SET nombre='$nombre_esc', fecha_inicio='$fecha_inicio_esc', fecha_fin='$fecha_fin_esc' 
+                  WHERE id_temporada=" . (int)$this->id_temporada;
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Actualización de temporada',
+                "Se actualizó la temporada (ID: {$this->id_temporada}) a: {$this->nombre} ({$this->fecha_inicio} a {$this->fecha_fin})"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function eliminar_logico() {
         $conexion = new Conexion();
         $query = "UPDATE temporadas SET activo=0 WHERE id_temporada=" . (int)$this->id_temporada;
-        return $conexion->actualizar($query);
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Baja lógica de temporada',
+                "Se eliminó lógicamente la temporada (ID: {$this->id_temporada})"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function getId_temporada() { return $this->id_temporada; }

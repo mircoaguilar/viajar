@@ -1,6 +1,7 @@
 <?php
 require_once('conexion.php');
 require_once('tipo_proveedor.php');
+require_once('auditoria.php');
 
 class Proveedor {
     private $id_proveedores;
@@ -27,7 +28,7 @@ class Proveedor {
 
     public function traer_proveedores() {
         $conexion = new Conexion();
-        $query = "SELECT p.*, t.nombre, u.usuario 
+        $query = "SELECT p.*, t.nombre AS tipo_proveedor_nombre, u.usuarios_nombre_usuario AS usuario_nombre
                   FROM proveedores p 
                   LEFT JOIN tipo_proveedores t ON p.rela_tipo_proveedor = t.id_tipo_proveedor 
                   LEFT JOIN usuarios u ON p.rela_usuario = u.id_usuarios
@@ -46,6 +47,7 @@ class Proveedor {
     public function guardar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
+
         $razon_escapada = $mysqli->real_escape_string($this->razon_social);
         $cuit_escapado = $mysqli->real_escape_string($this->cuit);
         $domicilio_escapado = $mysqli->real_escape_string($this->proveedor_domicilio);
@@ -57,12 +59,25 @@ class Proveedor {
                     (razon_social, cuit, proveedor_domicilio, proveedor_email, rela_tipo_proveedor, rela_usuario, activo, created_at)
                   VALUES 
                     ('$razon_escapada', '$cuit_escapado', '$domicilio_escapado', '$email_escapado', $rela_tipo, $rela_usuario, 1, NOW())";
-        return $conexion->insertar($query);
+        $resultado = $conexion->insertar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Alta de proveedor',
+                "Se creó el proveedor: {$this->razon_social}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function actualizar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
+
         $razon_escapada = $mysqli->real_escape_string($this->razon_social);
         $cuit_escapado = $mysqli->real_escape_string($this->cuit);
         $domicilio_escapado = $mysqli->real_escape_string($this->proveedor_domicilio);
@@ -78,21 +93,45 @@ class Proveedor {
                     rela_tipo_proveedor=$rela_tipo,
                     rela_usuario=$rela_usuario
                   WHERE id_proveedores=" . (int)$this->id_proveedores;
-        return $conexion->actualizar($query);
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Actualización de proveedor',
+                "Se actualizó el proveedor (ID: {$this->id_proveedores}) a nombre: {$this->razon_social}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function eliminar_logico() {
         $conexion = new Conexion();
         $query = "UPDATE proveedores SET activo = 0 WHERE id_proveedores=" . (int)$this->id_proveedores;
-        return $conexion->actualizar($query);
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Baja lógica de proveedor',
+                "Se eliminó lógicamente el proveedor (ID: {$this->id_proveedores})"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function obtenerPorUsuario($id_usuario) {
-    $conexion = new Conexion();
-    $id_usuario = (int)$id_usuario;
-    $query = "SELECT * FROM proveedores WHERE rela_usuario = $id_usuario AND activo = 1 LIMIT 1";
-    $resultado = $conexion->consultar($query);
-    return $resultado ? $resultado[0] : null;
+        $conexion = new Conexion();
+        $id_usuario = (int)$id_usuario;
+        $query = "SELECT * FROM proveedores WHERE rela_usuario = $id_usuario AND activo = 1 LIMIT 1";
+        $resultado = $conexion->consultar($query);
+        return $resultado ? $resultado[0] : null;
     }
 
     public function getId_proveedores() { return $this->id_proveedores; }

@@ -1,5 +1,6 @@
 <?php
 require_once('conexion.php');
+require_once('auditoria.php');
 
 class TipoHabitacion {
     private $id_tipo_habitacion;
@@ -25,34 +26,77 @@ class TipoHabitacion {
     public function traer_tipo_habitacion($id_tipo_habitacion) {
         $conexion = new Conexion();
         $id_tipo_habitacion = (int)$id_tipo_habitacion;
-        $query = "SELECT id_tipo_habitacion, nombre, descripcion, capacidad FROM tipos_habitacion WHERE id_tipo_habitacion = $id_tipo_habitacion AND activo = 1";
+        $query = "SELECT id_tipo_habitacion, nombre, descripcion, capacidad 
+                  FROM tipos_habitacion 
+                  WHERE id_tipo_habitacion = $id_tipo_habitacion AND activo = 1";
         return $conexion->consultar($query);
     }
 
     public function guardar() {
         $conexion = new Conexion();
-        $mysqli_connection = $conexion->getConexion();
-        $nombre_escapado = $mysqli_connection->real_escape_string($this->nombre);
-        $descripcion_escapada = $mysqli_connection->real_escape_string($this->descripcion);
+        $mysqli = $conexion->getConexion();
+        $nombre_esc = $mysqli->real_escape_string($this->nombre);
+        $descripcion_esc = $mysqli->real_escape_string($this->descripcion);
         $capacidad_int = (int)$this->capacidad;
-        $query = "INSERT INTO tipos_habitacion (nombre, descripcion, capacidad, activo) VALUES ('$nombre_escapado', '$descripcion_escapada', $capacidad_int, 1)";
-        return $conexion->insertar($query);
+
+        $query = "INSERT INTO tipos_habitacion (nombre, descripcion, capacidad, activo) 
+                  VALUES ('$nombre_esc', '$descripcion_esc', $capacidad_int, 1)";
+        $resultado = $conexion->insertar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Alta de tipo de habitación',
+                "Se creó la habitación: {$this->nombre}, capacidad: {$this->capacidad}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function actualizar() {
         $conexion = new Conexion();
-        $mysqli_connection = $conexion->getConexion();
-        $nombre_escapado = $mysqli_connection->real_escape_string($this->nombre);
-        $descripcion_escapada = $mysqli_connection->real_escape_string($this->descripcion);
+        $mysqli = $conexion->getConexion();
+        $nombre_esc = $mysqli->real_escape_string($this->nombre);
+        $descripcion_esc = $mysqli->real_escape_string($this->descripcion);
         $capacidad_int = (int)$this->capacidad;
-        $query = "UPDATE tipos_habitacion SET nombre='$nombre_escapado', descripcion='$descripcion_escapada', capacidad=$capacidad_int WHERE id_tipo_habitacion=" . (int)$this->id_tipo_habitacion;
-        return $conexion->actualizar($query);
+
+        $query = "UPDATE tipos_habitacion 
+                  SET nombre='$nombre_esc', descripcion='$descripcion_esc', capacidad=$capacidad_int 
+                  WHERE id_tipo_habitacion=" . (int)$this->id_tipo_habitacion;
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Actualización de tipo de habitación',
+                "Se actualizó la habitación (ID: {$this->id_tipo_habitacion}) a nombre: {$this->nombre}, capacidad: {$this->capacidad}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function eliminar_logico() {
         $conexion = new Conexion();
-        $query = "UPDATE tipos_habitacion SET activo = 0 WHERE id_tipo_habitacion = " . (int)$this->id_tipo_habitacion;
-        return $conexion->actualizar($query);
+        $query = "UPDATE tipos_habitacion SET activo = 0 WHERE id_tipo_habitacion=" . (int)$this->id_tipo_habitacion;
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Baja lógica de tipo de habitación',
+                "Se eliminó lógicamente la habitación (ID: {$this->id_tipo_habitacion})"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function getId_tipo_habitacion() { return $this->id_tipo_habitacion; }

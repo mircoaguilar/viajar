@@ -1,5 +1,6 @@
 <?php
 require_once('conexion.php');
+require_once('auditoria.php');
 
 class Tipo_proveedor {
     private $id_tipo_proveedor;
@@ -23,32 +24,74 @@ class Tipo_proveedor {
     public function traer_tipo_proveedor($id_tipo_proveedor) {
         $conexion = new Conexion();
         $id_tipo_proveedor = (int)$id_tipo_proveedor;
-        $query = "SELECT id_tipo_proveedor, nombre, descripcion FROM tipo_proveedores WHERE id_tipo_proveedor = $id_tipo_proveedor AND activo = 1";
+        $query = "SELECT id_tipo_proveedor, nombre, descripcion 
+                  FROM tipo_proveedores 
+                  WHERE id_tipo_proveedor = $id_tipo_proveedor AND activo = 1";
         return $conexion->consultar($query);
     }
 
     public function guardar() {
         $conexion = new Conexion();
-        $mysqli_connection = $conexion->getConexion();
-        $nombre_escapado = $mysqli_connection->real_escape_string($this->nombre);
-        $descripcion_escapada = $mysqli_connection->real_escape_string($this->descripcion);
-        $query = "INSERT INTO tipo_proveedores (nombre, descripcion, activo) VALUES ('$nombre_escapado', '$descripcion_escapada', 1)";
-        return $conexion->insertar($query);
+        $mysqli = $conexion->getConexion();
+        $nombre_esc = $mysqli->real_escape_string($this->nombre);
+        $descripcion_esc = $mysqli->real_escape_string($this->descripcion);
+
+        $query = "INSERT INTO tipo_proveedores (nombre, descripcion, activo) VALUES ('$nombre_esc', '$descripcion_esc', 1)";
+        $resultado = $conexion->insertar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Alta de tipo de proveedor',
+                "Se creó el tipo de proveedor: {$this->nombre}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function actualizar() {
         $conexion = new Conexion();
-        $mysqli_connection = $conexion->getConexion();
-        $nombre_escapado = $mysqli_connection->real_escape_string($this->nombre);
-        $descripcion_escapada = $mysqli_connection->real_escape_string($this->descripcion);
-        $query = "UPDATE tipo_proveedores SET nombre='$nombre_escapado', descripcion='$descripcion_escapada' WHERE id_tipo_proveedor=" . (int)$this->id_tipo_proveedor;
-        return $conexion->actualizar($query);
+        $mysqli = $conexion->getConexion();
+        $nombre_esc = $mysqli->real_escape_string($this->nombre);
+        $descripcion_esc = $mysqli->real_escape_string($this->descripcion);
+
+        $query = "UPDATE tipo_proveedores 
+                  SET nombre='$nombre_esc', descripcion='$descripcion_esc' 
+                  WHERE id_tipo_proveedor=" . (int)$this->id_tipo_proveedor;
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Actualización de tipo de proveedor',
+                "Se actualizó el tipo de proveedor (ID: {$this->id_tipo_proveedor}) a nombre: {$this->nombre}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function eliminar_logico() {
         $conexion = new Conexion();
-        $query = "UPDATE tipo_proveedores SET activo = 0 WHERE id_tipo_proveedor = " . (int)$this->id_tipo_proveedor;
-        return $conexion->actualizar($query);
+        $query = "UPDATE tipo_proveedores SET activo=0 WHERE id_tipo_proveedor=" . (int)$this->id_tipo_proveedor;
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Baja lógica de tipo de proveedor',
+                "Se eliminó lógicamente el tipo de proveedor (ID: {$this->id_tipo_proveedor})"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function getId_tipo_proveedor() { return $this->id_tipo_proveedor; }

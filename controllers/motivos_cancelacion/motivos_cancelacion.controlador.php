@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once(__DIR__ . '/../../models/motivo_cancelacion.php');
 
 if (isset($_POST['action'])) {

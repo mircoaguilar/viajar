@@ -68,6 +68,13 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                 </ul>
             </div>
 
+            <div class="card">
+                <h3><i class="fas fa-clipboard-list"></i> Historial de Auditorías</h3>
+                <ul>
+                    <li><a href="index.php?page=listado_auditorias">Ver Auditorías</a></li>
+                </ul>
+            </div>
+
             </div>
     </div>
 </body>

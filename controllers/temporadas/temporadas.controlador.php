@@ -1,4 +1,5 @@
 <?php
+session_start(); 
 require_once(__DIR__ . '/../../models/Temporada.php');
 
 if (isset($_POST['action'])) {

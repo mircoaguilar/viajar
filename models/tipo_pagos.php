@@ -1,12 +1,12 @@
 <?php
 
-
-require_once('conexion.php'); 
+require_once('conexion.php');
+require_once('auditoria.php');
 
 class Tipo_pago {
     private $id_tipo_pago;
     private $tipo_pago_descripcion;
-    private $activo; 
+    private $activo;
 
     public function __construct($id_tipo_pago = '', $tipo_pago_descripcion = '') {
         $this->id_tipo_pago = $id_tipo_pago;
@@ -32,7 +32,20 @@ class Tipo_pago {
         $mysqli_connection = $conexion->getConexion(); 
         $descripcion_escapada = $mysqli_connection->real_escape_string($this->tipo_pago_descripcion);
         $query = "INSERT INTO tipo_pago (tipo_pago_descripcion, activo) VALUES ('$descripcion_escapada', 1)";
-        return $conexion->insertar($query);
+        
+        $resultado = $conexion->insertar($query);
+        
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',  
+                $_SESSION['id_usuarios'] ?? null, 
+                'Alta de tipo de pago',
+                "Se creó un nuevo tipo de pago: {$this->tipo_pago_descripcion}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function actualizar() {
@@ -40,14 +53,40 @@ class Tipo_pago {
         $mysqli_connection = $conexion->getConexion();
         $descripcion_escapada = $mysqli_connection->real_escape_string($this->tipo_pago_descripcion);
         $query = "UPDATE tipo_pago SET tipo_pago_descripcion = '" . $descripcion_escapada . "' WHERE id_tipo_pago = " . (int)$this->id_tipo_pago;
-        return $conexion->actualizar($query);
+        
+        $resultado = $conexion->actualizar($query);
 
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',  
+                $_SESSION['id_usuarios'] ?? null,  
+                'Actualización de tipo de pago',
+                "Se actualizó el tipo de pago (ID: {$this->id_tipo_pago}) a '{$this->tipo_pago_descripcion}'"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function eliminar_logico() {
         $conexion = new Conexion();
         $query = "UPDATE tipo_pago SET activo = 0 WHERE id_tipo_pago = " . (int)$this->id_tipo_pago;
-        return $conexion->actualizar($query); 
+        
+        $resultado = $conexion->actualizar($query);
+        
+       
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',  
+                $_SESSION['id_usuarios'] ?? null, 
+                'Baja lógica de tipo de pago',
+                "Se eliminó lógicamente el tipo de pago (ID: {$this->id_tipo_pago})"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
 

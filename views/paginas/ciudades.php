@@ -95,9 +95,14 @@ if (isset($_GET['id'])) {
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
 
-                            <button class="btn-eliminar" data-id="<?php echo htmlspecialchars($ciudad['id_ciudad']); ?>">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+                            <form method="post" action="controllers/ciudades/ciudades.controlador.php" 
+                                onsubmit="return confirm('¿Seguro que quieres eliminar esta ciudad?');">
+                                <input type="hidden" name="action" value="eliminar">
+                                <input type="hidden" name="id_ciudad_eliminar" value="<?php echo $ciudad['id_ciudad']; ?>">
+                                <button id="eliminar" type="submit">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -106,7 +111,6 @@ if (isset($_GET['id'])) {
     </table>
 </div>
 
-<script src="assets/js/validaciones/usuarios.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="assets/js/toast.js"></script>
 

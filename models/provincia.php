@@ -1,5 +1,6 @@
 <?php
 require_once('conexion.php');
+require_once('auditoria.php');
 
 class Provincia {
     private $id_provincia;
@@ -29,22 +30,60 @@ class Provincia {
         $conexion = new Conexion();
         $mysqli_connection = $conexion->getConexion();
         $nombre_escapado = $mysqli_connection->real_escape_string($this->nombre);
+
         $query = "INSERT INTO provincias (nombre, activo) VALUES ('$nombre_escapado', 1)";
-        return $conexion->insertar($query);
+        $resultado = $conexion->insertar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Alta de provincia',
+                "Se creó la provincia: {$this->nombre}"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function actualizar() {
         $conexion = new Conexion();
         $mysqli_connection = $conexion->getConexion();
         $nombre_escapado = $mysqli_connection->real_escape_string($this->nombre);
+
         $query = "UPDATE provincias SET nombre = '$nombre_escapado' WHERE id_provincia = ".(int)$this->id_provincia;
-        return $conexion->actualizar($query);
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Actualización de provincia',
+                "Se actualizó la provincia (ID: {$this->id_provincia}) a '{$this->nombre}'"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function eliminar_logico() {
         $conexion = new Conexion();
         $query = "UPDATE provincias SET activo = 0 WHERE id_provincia = ".(int)$this->id_provincia;
-        return $conexion->actualizar($query);
+        $resultado = $conexion->actualizar($query);
+
+        if ($resultado) {
+            $auditoria = new Auditoria(
+                '',
+                $_SESSION['id_usuarios'] ?? null,
+                'Baja lógica de provincia',
+                "Se eliminó lógicamente la provincia (ID: {$this->id_provincia})"
+            );
+            $auditoria->guardar();
+        }
+
+        return $resultado;
     }
 
     public function traer_ciudades_por_provincia($id_provincia) {

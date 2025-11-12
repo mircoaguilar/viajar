@@ -9,7 +9,7 @@ class Conexion {
     public function __construct() {
         $this->servidor = 'localhost';
         $this->usuario = 'root';
-        $this->password = '';
+        $this->password = 'hola';
         $this->base_datos = 'viajar';
     }
 
@@ -43,9 +43,16 @@ class Conexion {
     public function insertar($query) {
         $con = $this->conectar();
         $exito = $con->query($query);
-        if ($exito) return $con->insert_id ?: $con->affected_rows;
+
+        if ($exito) {
+            if ($con->insert_id > 0) {
+                return $con->insert_id;
+            } 
+            return true;
+        }
         return false;
     }
+
 
     public function eliminar($query) {
         return $this->conectar()->query($query);

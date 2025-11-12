@@ -1,4 +1,5 @@
 <?php
+session_start(); 
 require_once(__DIR__ . '/../../models/moneda.php');
 
 if (isset($_POST['action'])) {
