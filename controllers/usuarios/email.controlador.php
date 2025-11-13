@@ -1,8 +1,11 @@
 <?php
 require_once ('../../vendor/autoload.php');
 require_once ('../../models/usuarios.php'); 
+require_once ('../../models/auditoria.php'); 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+
+session_start();
 
 $email_destino = $_GET['email'] ?? null;
 $origin = $_GET['origin'] ?? 'public';
@@ -56,12 +59,29 @@ try {
 
     $phpmailer->send();
 
+    $auditoria = new Auditoria(
+        '', 
+        $_SESSION['id_usuarios'] ?? null,
+        'Envío de email',
+        "Se envió un email de restablecimiento de contraseña a $email_destino"
+    );
+    $auditoria->guardar();
+
     $redirect_page = $origin === 'admin' ? 'usuarios' : 'login';
     header("Location: /viajAR/index.php?page=$redirect_page&message=Email de restablecimiento enviado correctamente.&status=success");
     exit;
 
 } catch (Exception $e) {
     error_log("Error al enviar el email a $email_destino: " . $phpmailer->ErrorInfo);
+
+    $auditoria = new Auditoria(
+        '', 
+        $_SESSION['id_usuarios'] ?? null,
+        'Error envío email',
+        "Falló el intento de envío de restablecimiento a $email_destino"
+    );
+    $auditoria->guardar();
+
     $redirect_page = $origin === 'admin' ? 'usuarios' : 'login';
     header("Location: /viajAR/index.php?page=$redirect_page&message=Error al enviar el email. Verifica la configuración o intenta más tarde.&status=danger");
     exit;

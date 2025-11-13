@@ -37,7 +37,7 @@ class AuditoriasControlador {
         $usuarioModel = new Usuario();
 
         $auditorias = $auditoriaModel->traer_todas();
-        $usuarios   = $usuarioModel->traer_todos();
+        $usuarios   = $usuarioModel->traer_usuarios();
         $acciones   = $auditoriaModel->traer_acciones_distintas();
 
         require_once(__DIR__ . '/../../views/paginas/listado_auditorias.php');
@@ -52,13 +52,14 @@ class AuditoriasControlador {
         $fecha_hasta = $_POST['fecha_hasta'] ?? '';
 
         $auditoriaModel = new Auditoria();
-        $usuarioModel = new Usuario();
-
         $auditorias = $auditoriaModel->filtrar($usuario, $accion, $fecha_desde, $fecha_hasta);
 
-        $usuarios = $usuarioModel->traer_usuarios();
-        $acciones = $auditoriaModel->traer_acciones_distintas();
-
-        require_once(__DIR__ . '/../../views/paginas/listado_auditorias.php');
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            "status" => "success",
+            "auditorias" => $auditorias
+        ]);
+        exit;
     }
+
 }

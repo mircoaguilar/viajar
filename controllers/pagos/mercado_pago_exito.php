@@ -5,7 +5,8 @@ require_once('../../models/pago.php');
 require_once('../../models/reserva.php');
 require_once('../../models/usuarios.php');
 require_once('../../models/Notificacion.php');
-require_once('../../models/carrito.php'); 
+require_once('../../models/carrito.php');
+require_once('../../models/auditoria.php');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -25,45 +26,46 @@ $usuarioModel = new Usuario();
 $carritoModel = new Carrito();
 
 $pagoData = $pagoModel->traerPorId($id_pago);
+if (!$pagoData) die("Error: No se encontró pago asociado a este ID.");
 
-if (!$pagoData) {
-    die("Error: No se encontró pago asociado a este ID.");
-}
+if ($pagoData['pago_estado'] === 'aprobado') {
+    $id_reserva = $pagoData['rela_reservas'];
+    $reservaData = $reservaModel->traerPorId($id_reserva);
+    $id_usuario = $reservaData['rela_usuarios'];
+    $monto_total = $pagoData['pago_monto'];
+} else {
+    $id_reserva = $pagoData['rela_reservas'] ?? null;
+    $monto_total = $pagoData['pago_monto'] ?? 0;
+    if (!$id_reserva) die("Error: El pago no está asociado a ninguna reserva.");
 
-$id_reserva = $pagoData['rela_reservas'] ?? null;
-$monto_total = $pagoData['pago_monto'] ?? 0;
+    $reservaData = $reservaModel->traerPorId($id_reserva);
+    $id_usuario = $reservaData['rela_usuarios'] ?? null;
+    if (!$id_usuario) die("Error: No se encontró el usuario asociado a esta reserva.");
 
-if (!$id_reserva) {
-    die("Error: El pago no está asociado a ninguna reserva.");
-}
+    $pagoModel->setId_pago($id_pago);
+    $pagoModel->actualizarComprobante($id_pago_mp, 'aprobado');
 
-$reservaData = $reservaModel->traerPorId($id_reserva);
-$id_usuario = $reservaData['rela_usuarios'] ?? null;
+    $reservaModel->setId_reservas($id_reserva);
+    $reservaModel->setReservas_estado('confirmada');
+    $reservaModel->setTotal($monto_total);
+    $reservaModel->actualizar();
 
-if (!$id_usuario) {
-    die("Error: No se encontró el usuario asociado a esta reserva.");
-}
+    $carrito_activo = $carritoModel->traer_carrito_activo($id_usuario);
+    if ($carrito_activo) {
+        $carritoModel->setId_carrito($carrito_activo['id_carrito']);
+        $carritoModel->limpiar_carrito_usuario($id_usuario);
+    }
 
-$pagoModel->setId_pago($id_pago);
-$pagoModel->actualizarComprobante($id_pago_mp, 'aprobado');
+    unset($_SESSION['carrito'], $_SESSION['carrito_total']);
 
-$reservaModel->setId_reservas($id_reserva);
-$reservaModel->setReservas_estado('confirmada');
-$reservaModel->setTotal($monto_total);
-$reservaModel->actualizar(); 
+    $auditoria = new Auditoria(
+        '',
+        $id_usuario,
+        'Confirmación de pago',
+        "El usuario ID $id_usuario confirmó el pago de la reserva #$id_reserva por $$monto_total (Mercado Pago ID: $id_pago_mp)"
+    );
+    $auditoria->guardar();
 
-$carrito_activo = $carritoModel->traer_carrito_activo($id_usuario);
-if ($carrito_activo) {
-    $carritoModel->setId_carrito($carrito_activo['id_carrito']);
-    $carritoModel->limpiar_carrito_usuario($id_usuario); 
-}
-
-unset($_SESSION['carrito'], $_SESSION['carrito_total']);
-
-$email_usuario = $usuarioModel->traer_usuarios_por_id($id_usuario);
-$email_usuario = $email_usuario[0]['usuarios_email'] ?? null;
-
-if ($id_usuario && $email_usuario) {
     $metadata = ['reserva' => $id_reserva, 'pago' => $id_pago, 'tipo_pago' => 'mercadopago'];
     Notificacion::crear(
         $id_usuario,
@@ -72,7 +74,10 @@ if ($id_usuario && $email_usuario) {
         "pago",
         $metadata
     );
+}
 
+$email_usuario = $usuarioModel->traer_usuarios_por_id($id_usuario)[0]['usuarios_email'] ?? null;
+if ($email_usuario) {
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
@@ -80,7 +85,7 @@ if ($id_usuario && $email_usuario) {
         $mail->SMTPAuth = true;
         $mail->Port = 587;
         $mail->Username = 'mircoaguilar02@gmail.com';
-        $mail->Password = 'ztfd efur zara esyo'; 
+        $mail->Password = 'ztfd efur zara esyo';
         $mail->CharSet = 'UTF-8';
         $mail->setFrom('mircoaguilar02@gmail.com', 'ViajAR - Comprobante de Pago');
         $mail->addAddress($email_usuario);
@@ -105,9 +110,7 @@ if ($id_usuario && $email_usuario) {
         $mail->AltBody = "Gracias por tu compra en ViajAR\nReserva: #$id_reserva\nMonto: $$monto_total\nCódigo de pago: $id_pago_mp\nFecha: $fecha\nConservá este correo como comprobante.";
 
         $mail->send();
-    } catch (Exception $e) {
-    }
-} else {
+    } catch (Exception $e) {}
 }
 
 ?>
@@ -116,18 +119,18 @@ if ($id_usuario && $email_usuario) {
 <head>
     <meta charset="UTF-8">
     <title>Pago exitoso - ViajAR</title>
-    <link rel="stylesheet" href="http://localhost/viajar/assets/css/mercado_pago_exito.css">
+    <link rel="stylesheet" href="../../assets/css/mercado_pago_exito.css">
 </head>
 <body>
-    <div class="mensaje-exito">
-        <h1>¡Pago exitoso!</h1>
-        <p>Tu pago se procesó correctamente y tu reserva fue confirmada.</p>
-        <?php if ($email_usuario): ?>
-            <p>Se envió un comprobante a tu correo electrónico: <strong><?php echo htmlspecialchars($email_usuario); ?></strong></p>
-        <?php else: ?>
-            <p>No se pudo enviar comprobante por correo.</p>
-        <?php endif; ?>
-        <a href="http://localhost/viajar/index.php" class="btn-volver">Volver al inicio</a>
-    </div>
+<div class="mensaje-exito">
+    <h1>¡Pago exitoso!</h1>
+    <p>Tu pago se procesó correctamente y tu reserva fue confirmada.</p>
+    <?php if ($email_usuario): ?>
+        <p>Se envió un comprobante a tu correo electrónico: <strong><?= htmlspecialchars($email_usuario) ?></strong></p>
+    <?php else: ?>
+        <p>No se pudo enviar comprobante por correo.</p>
+    <?php endif; ?>
+    <a href="http://localhost/viajar/index.php" class="btn-volver">Volver al inicio</a>
+</div>
 </body>
 </html>
