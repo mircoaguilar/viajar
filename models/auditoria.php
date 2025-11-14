@@ -77,28 +77,30 @@ class Auditoria extends Pagination {
             $condiciones[] = "auditoria.rela_usuario = $usuario";
         }
 
-        if ($accion === 'Otros') {
+        if ($accion === 'reserva_pago') {
+            $condiciones[] = "(
+                auditoria.accion LIKE 'Reserva%' OR
+                auditoria.accion LIKE 'Confirmación de pago%'
+            )";
+        } elseif ($accion === 'Otros') {
             $condiciones[] = "(
                 auditoria.accion NOT LIKE 'Alta%' AND
                 auditoria.accion NOT LIKE 'Actualización%' AND
-                auditoria.accion NOT LIKE 'Baja%'
+                auditoria.accion NOT LIKE 'Baja%' AND
+                auditoria.accion NOT LIKE 'Reserva%' AND
+                auditoria.accion NOT LIKE 'Confirmación de pago%'
             )";
         } elseif (!empty($accion)) {
             $accion = $mysqli->real_escape_string($accion);
             $condiciones[] = "auditoria.accion LIKE '{$accion}%'";
         }
 
-        if (!empty($fecha_desde)) {
-            $fecha_desde = $mysqli->real_escape_string($fecha_desde);
-            $condiciones[] = "auditoria.fecha >= '$fecha_desde'";
-        }
-
-        if (!empty($fecha_hasta)) {
-            $fecha_hasta = $mysqli->real_escape_string($fecha_hasta);
-            $condiciones[] = "auditoria.fecha <= '$fecha_hasta'";
-        }
+        if (!empty($fecha_desde)) $condiciones[] = "auditoria.fecha >= '{$mysqli->real_escape_string($fecha_desde)}'";
+        if (!empty($fecha_hasta)) $condiciones[] = "auditoria.fecha <= '{$mysqli->real_escape_string($fecha_hasta)}'";
 
         $where = count($condiciones) > 0 ? "WHERE " . implode(" AND ", $condiciones) : "";
+
+        $offset = $this->current_page * $this->page_size;
 
         $query = "SELECT 
                     auditoria.id_auditoria,
@@ -112,10 +114,13 @@ class Auditoria extends Pagination {
                 LEFT JOIN usuarios ON auditoria.rela_usuario = usuarios.id_usuarios
                 LEFT JOIN perfiles ON usuarios.rela_perfiles = perfiles.id_perfiles
                 $where
-                ORDER BY auditoria.fecha DESC";
+                ORDER BY auditoria.fecha DESC
+                LIMIT {$this->page_size} OFFSET $offset";
 
         return $conexion->consultar($query);
     }
+
+
 
     public function traer_acciones_distintas() {
         $conexion = new Conexion();
@@ -123,27 +128,43 @@ class Auditoria extends Pagination {
         return $conexion->consultar($query);
     }
 
-    public static function registrar_evento($accion, $descripcion) {
-        if (session_status() === PHP_SESSION_NONE) session_start();
-
-        $usuario_id = $_SESSION['id_usuarios'] ?? null;
-
-        if (!$usuario_id) {
-            return false; 
-        }
-
+    public function contar($usuario = '', $accion = '', $fecha_desde = '', $fecha_hasta = '') {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
+        $condiciones = [];
 
-        $accion = $mysqli->real_escape_string($accion);
-        $descripcion = $mysqli->real_escape_string($descripcion);
+        if (!empty($usuario)) $condiciones[] = "auditoria.rela_usuario = " . (int)$usuario;
 
-        $query = "INSERT INTO auditoria (rela_usuario, accion, descripcion, fecha)
-                VALUES ($usuario_id, '$accion', '$descripcion', NOW())";
+        if ($accion === 'reserva_pago') {
+            $condiciones[] = "(
+                auditoria.accion LIKE 'Reserva%' OR
+                auditoria.accion LIKE 'Confirmación de pago%'
+            )";
+        } elseif ($accion === 'Otros') {
+            $condiciones[] = "(
+                auditoria.accion NOT LIKE 'Alta%' AND
+                auditoria.accion NOT LIKE 'Actualización%' AND
+                auditoria.accion NOT LIKE 'Baja%' AND
+                auditoria.accion NOT LIKE 'Reserva%' AND
+                auditoria.accion NOT LIKE 'Confirmación de pago%'
+            )";
+        } elseif (!empty($accion)) {
+            $condiciones[] = "auditoria.accion LIKE '{$mysqli->real_escape_string($accion)}%'";
+        }
 
-        return $conexion->insertar($query);
+        if (!empty($fecha_desde)) $condiciones[] = "auditoria.fecha >= '{$mysqli->real_escape_string($fecha_desde)}'";
+        if (!empty($fecha_hasta)) $condiciones[] = "auditoria.fecha <= '{$mysqli->real_escape_string($fecha_hasta)}'";
+
+        $where = count($condiciones) > 0 ? "WHERE " . implode(" AND ", $condiciones) : "";
+
+        $query = "SELECT COUNT(*) AS total FROM auditoria
+                LEFT JOIN usuarios ON auditoria.rela_usuario = usuarios.id_usuarios
+                LEFT JOIN perfiles ON usuarios.rela_perfiles = perfiles.id_perfiles
+                $where";
+
+        $res = $conexion->consultar($query);
+        return $res[0]['total'] ?? 0;
     }
-
 
 
         /**

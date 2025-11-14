@@ -12,7 +12,6 @@ require_once __DIR__ . '/../../models/reserva.php';
 require_once __DIR__ . '/../../models/pago.php';
 require_once __DIR__ . '/../../models/factura.php';
 require_once __DIR__ . '/../../models/usuarios.php';
-require_once __DIR__ . '/../../models/Notificacion.php';
 require __DIR__ . '/../../vendor/autoload.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -93,15 +92,6 @@ try {
 
     $factura_numero = 'F-' . str_pad($id_reserva, 6, '0', STR_PAD_LEFT);
     $facturaModel->crear_factura($factura_numero, $id_reserva);
-
-    $metadata = ['reserva' => $id_reserva];
-    Notificacion::crear(
-        $userId,
-        "Reserva creada #$id_reserva",
-        "Tu reserva fue creada y está pendiente de pago.",
-        "reserva",
-        $metadata
-    );
 
     $mysqli->commit();
 

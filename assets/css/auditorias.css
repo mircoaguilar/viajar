@@ -145,6 +145,52 @@ h1 {
     border: 1px solid #ccc;
 }
 
+.paginacion {
+    text-align: center;
+    margin: 20px 0;
+    font-family: sans-serif;
+}
+
+.paginacion ul {
+    list-style: none;
+    padding: 0;
+    display: inline-flex;
+    gap: 5px;
+}
+
+.paginacion ul li a,
+.paginacion ul li .numero-pagina-actual {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.paginacion ul li a:hover:not(.disabled) {
+    background-color: #f0f0f0;
+}
+
+.paginacion ul li .numero-pagina-actual,
+.paginacion ul li a.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    cursor: default;
+    border-color: #007bff;
+}
+
+.paginacion ul li a.disabled {
+    color: #aaa;
+    pointer-events: none;
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+    border-color: #ddd;
+}
+
 @media (max-width: 768px) {
     .filtros-container {
         flex-direction: column;

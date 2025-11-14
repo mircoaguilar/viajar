@@ -214,6 +214,8 @@ switch ($action) {
 
     case 'crear_reserva':
         require_once(__DIR__ . '/../../models/reserva.php');
+        require_once(__DIR__ . '/../../models/auditoria.php');
+        require_once(__DIR__ . '/../../vendor/autoload.php'); 
 
         $carrito = $carritoModel->traer_carrito_activo($id_usuario);
         if (!$carrito) {
@@ -230,67 +232,99 @@ switch ($action) {
             exit;
         }
 
-        $reservaModel = new Reserva();
-        $total = 0;
-        foreach ($items as $it) {
-            $total += $it['subtotal'];
-        }
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+        $mysqli->begin_transaction();
+        try {
+            $reservaModel = new Reserva();
+            $total = 0;
+            foreach ($items as $it) {
+                $total += $it['subtotal'];
+            }
 
-        $id_reserva = $reservaModel->crear_reserva($id_usuario, $total, 'pendiente');
+            $id_reserva = $reservaModel->crear_reserva($id_usuario, $total, 'pendiente');
+            if (!$id_reserva) throw new Exception("Error al crear reserva principal");
 
-        error_log("DEBUG crear_reserva: carrito_extra = " . print_r($extras, true));
-
-        foreach ($items as $it) {
-            $id_detalle = $reservaModel->crear_detalle(
-                $id_reserva,
-                $it['tipo_servicio'],
-                $it['cantidad'],
-                $it['precio_unitario'],
-                $it['subtotal']
-            );
-
-            if ($it['tipo_servicio'] === 'hotel') {
-                $reservaModel->crear_detalle_hotel(
-                    $id_detalle,
-                    $it['id_servicio'],
-                    $it['fecha_inicio'],
-                    $it['fecha_fin'],
-                    max(1, (new DateTime($it['fecha_fin']))->diff(new DateTime($it['fecha_inicio']))->days)
+            foreach ($items as $it) {
+                $id_detalle = $reservaModel->crear_detalle(
+                    $id_reserva,
+                    $it['tipo_servicio'],
+                    $it['cantidad'],
+                    $it['precio_unitario'],
+                    $it['subtotal']
                 );
 
-            } elseif ($it['tipo_servicio'] === 'tour') {
-                $reservaModel->crear_detalle_tour(
-                    $id_detalle,
-                    $it['id_servicio'],
-                    $it['fecha_tour'] ?? null
-                );
-
-            } elseif ($it['tipo_servicio'] === 'transporte') {
-                $extrasTransporte = $extras[$it['id_servicio']] ?? null;
-
-                if (!isset($extrasTransporte['asientos']) || !is_array($extrasTransporte['asientos']) || empty($extrasTransporte['asientos'])) {
-                    error_log("crear_reserva: No hay asientos válidos para transporte id_servicio={$it['id_servicio']}");
-                    continue;
+                if (!$id_detalle) {
+                    throw new Exception("Error al crear detalle para servicio {$it['tipo_servicio']} (servicio={$it['id_servicio']})");
                 }
 
-                $asientos = $extrasTransporte['asientos'];
-                $fecha_servicio = $extrasTransporte['fecha_servicio'] ?? null;
+                if ($it['tipo_servicio'] === 'hotel') {
+                    $noches = 1;
+                    try {
+                        $fecha_inicio_dt = new DateTime($it['fecha_inicio']);
+                        $fecha_fin_dt = new DateTime($it['fecha_fin']);
+                        $noches = max(1, $fecha_fin_dt->diff($fecha_inicio_dt)->days);
+                    } catch (Exception $ex) {
+                        error_log("WARN crear_reserva: fechas hotel inválidas para detalle {$id_detalle}: " . $ex->getMessage());
+                    }
 
-                error_log("Creando detalle transporte: servicio={$it['id_servicio']}, fecha={$fecha_servicio}, asientos=" . print_r($asientos, true));
+                    $reservaModel->crear_detalle_hotel(
+                        $id_detalle,
+                        $it['id_servicio'],
+                        $it['fecha_inicio'],
+                        $it['fecha_fin'],
+                        $noches
+                    );
+                } elseif ($it['tipo_servicio'] === 'tour') {
+                    $reservaModel->crear_detalle_tour(
+                        $id_detalle,
+                        $it['id_servicio'],
+                        $it['fecha_tour'] ?? null
+                    );
+                } elseif ($it['tipo_servicio'] === 'transporte') {
+                    $extrasTransporte = $extras[$it['id_servicio']] ?? null;
 
-                $reservaModel->crear_detalle_transporte(
-                    $id_detalle,
-                    $it['id_servicio'],
-                    $asientos,
-                    $fecha_servicio,
-                    $it['precio_unitario']
-                );
+                    if (!isset($extrasTransporte['asientos']) || !is_array($extrasTransporte['asientos']) || empty($extrasTransporte['asientos'])) {
+                    } else {
+                        $asientos = $extrasTransporte['asientos'];
+                        $fecha_servicio = $extrasTransporte['fecha_servicio'] ?? null;
+
+                        $okTrans = $reservaModel->crear_detalle_transporte(
+                            $id_detalle,
+                            $it['id_servicio'],
+                            $asientos,
+                            $fecha_servicio,
+                            $it['precio_unitario']
+                        );
+
+                        if ($okTrans === false) {
+                            throw new Exception("Error al crear detalle transporte para servicio {$it['id_servicio']}");
+                        }
+                    }
+                }
+            } 
+
+            $auditoria = new Auditoria(
+                '',
+                $id_usuario,
+                'Reserva creada',
+                "El usuario ID {$id_usuario} creó la reserva #{$id_reserva} por \${$total}"
+            );
+
+            if (method_exists($auditoria, 'guardar')) {
+                $res_aud = $auditoria->guardar();
+            $_SESSION['id_reserva'] = $id_reserva;
+            $mysqli->commit();
             }
-        }
 
-        $_SESSION['id_reserva'] = $id_reserva;
-        echo json_encode(['status'=>'success','id_reserva'=>$id_reserva,'message'=>'Reserva creada']);
+            echo json_encode(['status'=>'success','id_reserva'=>$id_reserva,'message'=>'Reserva creada']);
+        } catch (Exception $e) {
+            $mysqli->rollback();
+            error_log("ERROR crear_reserva: Exception -> " . $e->getMessage());
+            echo json_encode(['status'=>'error','message'=>$e->getMessage()]);
+        }
         break;
+
 
 
     default:
