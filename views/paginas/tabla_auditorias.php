@@ -9,7 +9,6 @@
             <th>Fecha</th>
         </tr>
     </thead>
-
     <tbody>
         <?php if (!empty($auditorias)): ?>
             <?php foreach ($auditorias as $a): ?>
@@ -29,26 +28,46 @@
 </table>
 
 <nav class="paginacion">
-    <ul>
-        <li>
-            <a href="#" 
-               data-page="<?= max(0, $current_page-1) ?>"
-               class="pagina-btn <?= ($current_page <= 0) ? 'disabled' : '' ?>">Atrás</a>
-        </li>
-
-        <?php $rango = 2; ?>
-        <?php for($i = max(0, $current_page - $rango); $i <= min($total_pages-1, $current_page + $rango); $i++): ?>
+    <p class="info-paginacion">Mostrando registros **<?= $current_page * $page_size + 1 ?>** a **<?= min($total_rows, ($current_page + 1) * $page_size) ?>** de **<?= $total_rows ?>**. Página **<?= $current_page + 1 ?>** de **<?= $total_pages ?>**.</p>
+    
+    <?php if ($total_pages > 1): ?>
+        <ul>
             <li>
-                <a href="#" 
-                   data-page="<?= $i ?>"
-                   class="pagina-btn <?= ($i == $current_page) ? 'active' : '' ?>"><?= $i+1 ?></a>
+                <a href="#" data-page="<?= max(0, $current_page - 1) ?>"
+                   class="btn-paginacion <?= ($current_page <= 0) ? 'disabled' : '' ?>">Atrás</a>
             </li>
-        <?php endfor; ?>
 
-        <li>
-            <a href="#"
-               data-page="<?= min($total_pages-1, $current_page+1) ?>"
-               class="pagina-btn <?= ($current_page >= $total_pages-1) ? 'disabled' : '' ?>">Siguiente</a>
-        </li>
-    </ul>
+            <?php
+            $rango = 2;
+            $start = max(0, $current_page - $rango);
+            $end = min($total_pages - 1, $current_page + $rango);
+
+            if ($start > 0) {
+                echo '<li><a href="#" data-page="0" class="btn-paginacion">1</a></li>';
+                if ($start > 1) {
+                    echo '<li><span>...</span></li>';
+                }
+            }
+
+            for($i = $start; $i <= $end; $i++): ?>
+                <li>
+                    <a href="#" data-page="<?= $i ?>"
+                       class="btn-paginacion <?= ($i == $current_page) ? 'active' : '' ?>"><?= $i + 1 ?></a>
+                </li>
+            <?php endfor;
+
+            if ($end < $total_pages - 1) {
+                if ($end < $total_pages - 2) {
+                    echo '<li><span>...</span></li>';
+                }
+                echo '<li><a href="#" data-page="' . ($total_pages - 1) . '" class="btn-paginacion">' . $total_pages . '</a></li>';
+            }
+            ?>
+
+            <li>
+                <a href="#" data-page="<?= min($total_pages - 1, $current_page + 1) ?>"
+                   class="btn-paginacion <?= ($current_page >= $total_pages - 1) ? 'disabled' : '' ?>">Siguiente</a>
+            </li>
+        </ul>
+    <?php endif; ?>
 </nav>

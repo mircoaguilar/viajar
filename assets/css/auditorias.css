@@ -191,6 +191,11 @@ h1 {
     border-color: #ddd;
 }
 
+.info-paginacion {
+    display: none !important;
+}
+
+
 @media (max-width: 768px) {
     .filtros-container {
         flex-direction: column;

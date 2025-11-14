@@ -28,6 +28,12 @@ $auditorias = $auditoriaModel->filtrar($usuario_filtro, $accion_filtro, $fecha_d
 
 $usuarioModel = new Usuario();
 $usuarios = $usuarioModel->traer_usuarios();
+
+if (isset($_GET['ajax']) && $_GET['ajax'] === 'true') {
+    require(__DIR__ . '/tabla_auditorias.php'); 
+    exit; 
+}
+
 ?>
 
 <div class="contenido-dashboard">
@@ -35,9 +41,11 @@ $usuarios = $usuarioModel->traer_usuarios();
 
     <section class="dashboard-section">
         <h2>Filtrar auditorías</h2>
-        <form class="form-filtros" method="get">
+        <form id="form-filtros-auditoria" class="form-filtros" method="get">
             <div class="filtros-container">
                 <input type="hidden" name="page" value="auditorias">
+                
+                <input type="hidden" name="current_page" id="current_page_input" value="<?= $current_page ?>">
                 
                 <div class="filtro-item">
                     <label for="usuario">Usuario:</label>
@@ -75,7 +83,7 @@ $usuarios = $usuarioModel->traer_usuarios();
                 
                 <div class="filtro-item acciones">
                     <button type="submit" class="btn-filtrar" title="Filtrar"><i class="fa fa-search"></i></button>
-                    <a href="?page=auditorias" class="btn-limpiar" title="Limpiar filtros">
+                    <a href="?page=listado_auditorias" id="btn-limpiar-filtros" class="btn-limpiar" title="Limpiar filtros">
                         <i class="fa fa-times"></i>
                     </a>
                 </div>
@@ -85,59 +93,12 @@ $usuarios = $usuarioModel->traer_usuarios();
 
     <section class="dashboard-section">
         <h2>Registros</h2>
-        <table class="tabla-datos">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Usuario</th>
-                    <th>Perfil</th>
-                    <th>Acción</th>
-                    <th>Descripción</th>
-                    <th>Fecha</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (!empty($auditorias)): ?>
-                    <?php foreach ($auditorias as $a): ?>
-                        <tr>
-                            <td><?= $a['id_auditoria'] ?></td>
-                            <td><?= htmlspecialchars($a['usuario_nombre'] ?? 'Desconocido') ?></td>
-                            <td><?= htmlspecialchars($a['perfil_nombre'] ?? '') ?></td>
-                            <td><?= htmlspecialchars($a['accion']) ?></td>
-                            <td><?= htmlspecialchars($a['descripcion']) ?></td>
-                            <td><?= date('d/m/Y H:i', strtotime($a['fecha'])) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr><td colspan="6" class="no-datos">No se encontraron auditorías.</td></tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-
-        <nav class="paginacion">
-            <ul>
-                <li>
-                    <a href="?page=listado_auditorias&current_page=<?= max(0, $current_page-1) ?>&usuario=<?= $usuario_filtro ?>&accion=<?= $accion_filtro ?>&fecha_desde=<?= $fecha_desde ?>&fecha_hasta=<?= $fecha_hasta ?>"
-                       class="<?= ($current_page <= 0) ? 'disabled' : '' ?>">Atrás</a>
-                </li>
-
-                <?php
-                $rango = 2;
-                for($i = max(0, $current_page - $rango); $i <= min($total_pages-1, $current_page + $rango); $i++): ?>
-                    <li>
-                        <a href="?page=listado_auditorias&current_page=<?= $i ?>&usuario=<?= $usuario_filtro ?>&accion=<?= $accion_filtro ?>&fecha_desde=<?= $fecha_desde ?>&fecha_hasta=<?= $fecha_hasta ?>"
-                           class="<?= ($i == $current_page) ? 'active' : '' ?>"><?= $i+1 ?></a>
-                    </li>
-                <?php endfor; ?>
-
-                <li>
-                    <a href="?page=listado_auditorias&current_page=<?= min($total_pages-1, $current_page+1) ?>&usuario=<?= $usuario_filtro ?>&accion=<?= $accion_filtro ?>&fecha_desde=<?= $fecha_desde ?>&fecha_hasta=<?= $fecha_hasta ?>"
-                       class="<?= ($current_page >= $total_pages-1) ? 'disabled' : '' ?>">Siguiente</a>
-                </li>
-            </ul>
-        </nav>
-
-    </section>
+        <div id="resultados-auditoria">
+            <?php 
+            require(__DIR__ . '/tabla_auditorias.php'); 
+            ?>
+        </div>
+        </section>
 </div>
 
 <link rel="stylesheet" href="/viajar/assets/css/auditorias.css">

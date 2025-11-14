@@ -33,15 +33,35 @@ class AuditoriasControlador {
     public function listar_auditorias() {
         $this->verificar_acceso();
 
-        $auditoriaModel = new Auditoria();
-        $usuarioModel = new Usuario();
+        $page_size = 10;
+        $current_page = isset($_GET['current_page']) ? max(0, (int)$_GET['current_page']) : 0;
 
-        $auditorias = $auditoriaModel->traer_todas();
-        $usuarios   = $usuarioModel->traer_usuarios();
-        $acciones   = $auditoriaModel->traer_acciones_distintas();
+        $usuario = $_GET['usuario'] ?? '';
+        $accion = $_GET['accion'] ?? '';
+        $fecha_desde = $_GET['fecha_desde'] ?? '';
+        $fecha_hasta = $_GET['fecha_hasta'] ?? '';
+
+        $auditoriaModel = new Auditoria();
+        $auditoriaModel->page_size = $page_size;
+        $auditoriaModel->current_page = $current_page;
+
+        $total_rows = $auditoriaModel->contar($usuario, $accion, $fecha_desde, $fecha_hasta);
+        $total_pages = max(1, ceil($total_rows / $page_size));
+
+        $auditorias = $auditoriaModel->filtrar($usuario, $accion, $fecha_desde, $fecha_hasta);
+
+        if (isset($_GET['ajax']) && $_GET['ajax'] === 'true') {
+            require(__DIR__ . '/../../views/paginas/tabla_auditorias.php');
+            exit;
+        }
+
+        $usuarioModel = new Usuario();
+        $usuarios = $usuarioModel->traer_usuarios();
 
         require_once(__DIR__ . '/../../views/paginas/listado_auditorias.php');
     }
+
+
 
     public function filtrar() {
         $this->verificar_acceso();
@@ -61,5 +81,6 @@ class AuditoriasControlador {
         ]);
         exit;
     }
+    
 
 }

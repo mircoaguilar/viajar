@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
     $('.select2').select2({
         placeholder: "Seleccione un usuario",
         allowClear: true,
@@ -15,66 +14,68 @@ document.addEventListener("DOMContentLoaded", () => {
         locale: "es"
     });
 
-    const formFiltros = document.querySelector('.form-filtros');
-    const tablaBody = document.querySelector('.tabla-datos tbody');
-    const btnFiltrar = document.querySelector('.btn-filtrar');
-    const btnLimpiar = document.querySelector('.btn-limpiar');
+    const base_url = "/viajar/controllers/auditorias/auditorias.controlador.php?action=listar_auditorias";
+    const $resultados = $('#resultados-auditoria');
+    const $formFiltros = $('#form-filtros-auditoria'); 
+    const $currentPageInput = $('#current_page_input'); 
+    const $btnLimpiar = $('#btn-limpiar-filtros'); 
 
-    formFiltros.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const formData = new FormData(formFiltros);
-        const params = new URLSearchParams(formData);
-
-        btnFiltrar.disabled = true;
-        btnFiltrar.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
-
-        try {
-            const response = await fetch(`controllers/auditorias/auditorias.controlador.php?action=filtrar`, {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (data.status === 'success' && Array.isArray(data.auditorias)) {
-                actualizarTabla(data.auditorias);
-            } else {
-                tablaBody.innerHTML = `<tr><td colspan="6" class="no-datos">No se encontraron auditorías.</td></tr>`;
-            }
-
-        } catch (error) {
-            console.error("Error al filtrar:", error);
-        } finally {
-            btnFiltrar.disabled = false;
-            btnFiltrar.innerHTML = '<i class="fa fa-search"></i>';
-        }
-    });
-
-    btnLimpiar.addEventListener('click', (e) => {
-        e.preventDefault();
-        formFiltros.reset();
-        $('.select2').val(null).trigger('change');
-        document.querySelectorAll(".flatpickr-input").forEach(i => i._flatpickr.clear());
-        tablaBody.innerHTML = `<tr><td colspan="6" class="no-datos">Seleccione filtros y presione buscar.</td></tr>`;
-    });
-
-    function actualizarTabla(auditorias) {
-        if (!auditorias.length) {
-            tablaBody.innerHTML = `<tr><td colspan="6" class="no-datos">No se encontraron auditorías.</td></tr>`;
-            return;
-        }
-
-        tablaBody.innerHTML = auditorias.map(a => `
-            <tr>
-                <td>${a.id_auditoria}</td>
-                <td>${a.usuario_nombre ?? 'Desconocido'}</td>
-                <td>${a.perfil_nombre ?? ''}</td>
-                <td>${a.accion}</td>
-                <td>${a.descripcion}</td>
-                <td>${new Date(a.fecha).toLocaleString('es-AR')}</td>
-            </tr>
-        `).join('');
+    function getFiltrosData(page) {
+        $currentPageInput.val(page);
+        let data = $formFiltros.serialize();
+        return data + '&ajax=true';
     }
+
+    function cargarTabla(page) {
+        let data = getFiltrosData(page);
+
+        $resultados.html('<p class="loading-message" style="text-align: center; padding: 20px;"><i class="fa fa-spinner fa-spin"></i> Cargando registros...</p>');
+
+        $.ajax({
+            url: base_url, 
+            type: 'GET',
+            data: data, 
+            success: function(response) {
+                $resultados.html(response);
+            },
+            error: function() {
+                $resultados.html('<p class="error-message" style="color: red; text-align: center; padding: 20px;">Error al cargar los datos. Por favor, inténtelo de nuevo.</p>');
+            }
+        });
+    }
+
+    
+    $formFiltros.on('submit', function(e) {
+        e.preventDefault(); 
+        cargarTabla(0); 
+    });
+
+    $resultados.on('click', '.btn-paginacion', function(e) {
+        e.preventDefault(); 
+        
+        if ($(this).hasClass('disabled')) {
+            return; 
+        }
+
+        let newPage = $(this).data('page'); 
+        if (newPage !== undefined) {
+            cargarTabla(newPage); 
+        }
+    });
+
+    $btnLimpiar.on('click', function(e) {
+        e.preventDefault(); 
+        
+        $formFiltros.get(0).reset(); 
+        
+        $('#usuario').val('').trigger('change'); 
+        $('#accion').val('').trigger('change'); 
+
+        document.querySelectorAll(".flatpickr-input").forEach(i => {
+            if (i._flatpickr) i._flatpickr.clear();
+        });
+
+        cargarTabla(0); 
+    });
 
 });
