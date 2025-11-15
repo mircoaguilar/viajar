@@ -95,3 +95,82 @@ p {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.estado-pendiente {
+    background: #ffeaa7;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: #8a6d00;
+}
+
+.estado-aprobado {
+    background: #c8e6c9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: #2e7d32;
+}
+
+.estado-rechazado {
+    background: #ffcdd2;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: #b71c1c;
+}
+
+.btn-motivo {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 5px;
+    transition: background-color 0.2s;
+}
+
+.btn-motivo:hover {
+    background-color: #c0392b;
+}
+
+/* Modal de motivo de rechazo */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.modal-content p {
+    font-size: 14px;
+    color: #333;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+
+

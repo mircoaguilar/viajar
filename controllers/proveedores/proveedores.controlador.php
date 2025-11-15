@@ -1,5 +1,6 @@
 <?php
-session_start(); 
+if (session_status() === PHP_SESSION_NONE) session_start();
+
 require_once(__DIR__ . '/../../models/proveedor.php');
 
 if (isset($_POST["action"])) {
@@ -87,7 +88,8 @@ class ProveedoresControlador {
         require_once(__DIR__ . '/../../models/hotel.php');
         $hotelModel = new Hotel();
 
-        return $hotelModel->traer_hoteles_por_usuario($id_usuario);
+        return $hotelModel->traer_hoteles_proveedor_completo($id_usuario);
+
     }
 
     public function mis_transportes($id_usuario) {

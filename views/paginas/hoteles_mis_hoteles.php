@@ -20,6 +20,7 @@ $hoteles = $controlador->mis_hoteles($id_usuario);
     <title>Mis Hoteles</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/hoteles_mis_hoteles.css">
+    </style>
 </head>
 <body>
 
@@ -41,44 +42,63 @@ $hoteles = $controlador->mis_hoteles($id_usuario);
                     <th>Nombre</th>
                     <th>Provincia</th>
                     <th>Ciudad</th>
-                    <th>Descripción</th>
+                    <th>Habitaciones</th>
+                    <th>Reservas activas</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
+
             <tbody>
-                <?php foreach ($hoteles as $h): ?>
-                    <tr>
-                        <td>
-                            <?php if (!empty($h['imagen_principal'])): ?>
-                                <img src="assets/images/<?= htmlspecialchars($h['imagen_principal']) ?>" alt="Imagen <?= htmlspecialchars($h['hotel_nombre']) ?>" style="width:100px; height:auto;">
-                            <?php else: ?>
-                                <span>Sin imagen</span>
-                            <?php endif; ?>
-                        </td>
-                        <td><?= htmlspecialchars($h['hotel_nombre']) ?></td>
-                        <td><?= htmlspecialchars($h['provincia_nombre']) ?></td>
-                        <td><?= htmlspecialchars($h['ciudad_nombre']) ?></td>
-                        <td><?= htmlspecialchars($h['descripcion'] ?? '-') ?></td>
-                        <td>
-                            <?php
-                                $estado = strtolower($h['estado_revision'] ?? 'pendiente');
-                                $clase_estado = 'estado-' . $estado;
-                                echo "<span class='estado $clase_estado'>$estado</span>";
+            <?php foreach ($hoteles as $h): ?>
+                <tr>
+                    <td>
+                        <?php if (!empty($h['imagen_principal'])): ?>
+                            <img src="assets/images/<?= htmlspecialchars($h['imagen_principal']) ?>" 
+                                 alt="Imagen <?= htmlspecialchars($h['hotel_nombre']) ?>" 
+                                 style="width:100px; height:auto;">
+                        <?php else: ?>
+                            <span>Sin imagen</span>
+                        <?php endif; ?>
+                    </td>
+
+                    <td><?= htmlspecialchars($h['hotel_nombre']) ?></td>
+                    <td><?= htmlspecialchars($h['provincia_nombre']) ?></td>
+                    <td><?= htmlspecialchars($h['ciudad_nombre']) ?></td>
+                    <td><?= (int)$h['total_habitaciones'] ?></td>
+                    <td><?= (int)$h['total_reservas_activas'] ?></td>
+
+                    <td>
+                        <?php
+                            $estado = strtolower($h['estado_revision'] ?? 'pendiente');
+                            $clase = "estado-" . $estado;
+                            echo "<span class='$clase'>".ucfirst($estado)."</span>";
+                        ?>
+                    </td>
+
+                    <td>
+                        <?php 
+                            $esRechazado = ($estado === 'rechazado');
+                            $textoBoton = $esRechazado ? "Volver a enviar" : "Editar";
                             ?>
-                        </td>
 
-                        <td>
-                            <a href="index.php?page=hoteles_editar&id_hotel=<?= $h['id_hotel'] ?>" class="btn">Editar</a>
+                            <a href="index.php?page=hoteles_editar&id_hotel=<?= $h['id_hotel'] ?>" 
+                            class="btn <?= $esRechazado ? 'btn-warning' : '' ?>">
+                                <?= $textoBoton ?>
+                            </a>
 
-                            <?php if ($estado === 'aprobado'): ?>
-                                <a href="index.php?page=hoteles_habitaciones&id_hotel=<?= $h['id_hotel'] ?>" class="btn secondary">Ver Habitaciones</a>
-                            <?php else: ?>
-                                <a class="btn secondary disabled" title="Disponible solo cuando el hotel esté aprobado">Ver Habitaciones</a>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                        <?php if ($estado === 'aprobado'): ?>
+                            <a href="index.php?page=hoteles_habitaciones&id_hotel=<?= $h['id_hotel'] ?>" class="btn secondary">Ver Habitaciones</a>
+                        <?php else: ?>
+                            <a class="btn secondary disabled" title="Disponible solo cuando el hotel esté aprobado">Ver Habitaciones</a>
+                        <?php endif; ?>
+
+                        <?php if ($estado === 'rechazado' && !empty($h['motivo_rechazo'])): ?>
+                            <button class="btn secondary" onclick="mostrarMotivo('<?= htmlspecialchars($h['motivo_rechazo']) ?>')">Ver motivo de rechazo</button>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
         <?php else: ?>
@@ -91,5 +111,13 @@ $hoteles = $controlador->mis_hoteles($id_usuario);
     </div>
 </main>
 
+<div id="modalMotivo" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="cerrarModal()">&times;</span>
+        <p id="textoMotivo"></p>
+    </div>
+</div>
+
+<script src="assets/js/mis_hoteles.js"></script>
 </body>
 </html>

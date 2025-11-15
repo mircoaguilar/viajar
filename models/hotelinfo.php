@@ -34,7 +34,7 @@ class HotelInfo {
     }
 
     public function actualizar() {
-        $fotos_json = !empty($this->fotos) ? $this->fotos : json_encode([]);
+        $fotos_json = $this->fotos !== null ? $this->fotos : null;
         $query = "UPDATE hoteles_info SET
             direccion='{$this->direccion}',
             descripcion='{$this->descripcion}',

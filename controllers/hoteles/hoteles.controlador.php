@@ -1,9 +1,32 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 require_once(__DIR__ . '/../../models/hotel.php');
 require_once(__DIR__ . '/../../models/hotelInfo.php');
+require_once(__DIR__ . '/../../models/provincia.php'); 
+
 
 class HotelesControlador {
+
+    public function obtenerCiudadesPorProvincia($id_provincia) {
+        $provinciaModel = new Provincia(); 
+        return $provinciaModel->traer_ciudades_por_provincia($id_provincia);
+    }
+
+    public function obtenerDatosHotel($id_hotel) {
+        $hotel = new Hotel();
+        $hotelInfo = new HotelInfo();
+        $provinciaModel = new Provincia();
+
+        $hotelData = $hotel->traer_hotel($id_hotel);
+        $hotelInfoData = $hotelInfo->traer_por_hotel($id_hotel);
+        $provincias = $provinciaModel->traer_provincias();
+
+        return [
+            'hotelData' => $hotelData[0] ?? null,
+            'hotelInfoData' => $hotelInfoData[0] ?? null,
+            'provincias' => $provincias
+        ];
+    }
 
     public function guardar() {
         header('Content-Type: application/json; charset=utf-8');
@@ -16,15 +39,7 @@ class HotelesControlador {
             exit;
         }
 
-        $imagen_principal_nombre = null;
-        if (isset($_FILES['imagen_principal']) && $_FILES['imagen_principal']['error'] === UPLOAD_ERR_OK) {
-            $directorio_destino = __DIR__ . "/../../assets/images/";
-            $nombre_archivo = uniqid() . '_' . basename($_FILES['imagen_principal']['name']);
-            $ruta_destino = $directorio_destino . $nombre_archivo;
-            if (move_uploaded_file($_FILES['imagen_principal']['tmp_name'], $ruta_destino)) {
-                $imagen_principal_nombre = $nombre_archivo;
-            }
-        }
+        $imagen_principal_nombre = $this->subirImagen('imagen_principal');
 
         $hotel = new Hotel();
         $hotel->setHotel_nombre($_POST['hotel_nombre']);
@@ -44,19 +59,7 @@ class HotelesControlador {
             exit;
         }
 
-        $fotos_nombres = [];
-        if (isset($_FILES['fotos']) && is_array($_FILES['fotos']['name'])) {
-            $directorio_destino = __DIR__ . "/../../assets/images/";
-            foreach ($_FILES['fotos']['name'] as $key => $nombre) {
-                if ($_FILES['fotos']['error'][$key] === UPLOAD_ERR_OK) {
-                    $nombre_archivo = uniqid() . '_' . basename($nombre);
-                    $ruta_destino = $directorio_destino . $nombre_archivo;
-                    if (move_uploaded_file($_FILES['fotos']['tmp_name'][$key], $ruta_destino)) {
-                        $fotos_nombres[] = $nombre_archivo;
-                    }
-                }
-            }
-        }
+        $fotos_nombres = $this->subirFotos('fotos');
 
         $info = new HotelInfo();
         $info->setRela_hotel($id_hotel);
@@ -76,7 +79,7 @@ class HotelesControlador {
         exit;
     }
 
-    public function actualizar() {
+     public function actualizar() {
         if (empty($_POST['id_hotel']) || empty($_POST['hotel_nombre']) || empty($_POST['rela_ciudad'])) {
             $id = htmlspecialchars($_POST['id_hotel'] ?? '');
             header("Location: ../../index.php?page=hoteles_editar&id=$id&message=Datos obligatorios incompletos&status=danger");
@@ -91,12 +94,7 @@ class HotelesControlador {
         $hotel->setActivo(1);
 
         if (isset($_FILES['imagen_principal']) && $_FILES['imagen_principal']['error'] === UPLOAD_ERR_OK) {
-            $directorio_destino = __DIR__ . "/../../assets/images/";
-            $nombre_archivo = uniqid() . '_' . basename($_FILES['imagen_principal']['name']);
-            $ruta_destino = $directorio_destino . $nombre_archivo;
-            if (move_uploaded_file($_FILES['imagen_principal']['tmp_name'], $ruta_destino)) {
-                $hotel->setImagen_principal($nombre_archivo);
-            }
+            $hotel->setImagen_principal($this->subirImagen('imagen_principal'));
         }
 
         $hotel_actualizado = $hotel->actualizar();
@@ -109,32 +107,45 @@ class HotelesControlador {
         $info->setPoliticas_cancelacion($_POST['politicas_cancelacion'] ?? '');
         $info->setReglas($_POST['reglas'] ?? '');
 
-        $fotos_nombres = [];
-        if (isset($_FILES['fotos']) && is_array($_FILES['fotos']['name'])) {
-            $directorio_destino = __DIR__ . "/../../assets/images/";
-            foreach ($_FILES['fotos']['name'] as $key => $nombre) {
-                if ($_FILES['fotos']['error'][$key] === UPLOAD_ERR_OK) {
-                    $nombre_archivo = uniqid() . '_' . basename($nombre);
-                    $ruta_destino = $directorio_destino . $nombre_archivo;
-                    if (move_uploaded_file($_FILES['fotos']['tmp_name'][$key], $ruta_destino)) {
-                        $fotos_nombres[] = $nombre_archivo;
-                    }
-                }
+        $hotelInfoData = $info->traer_por_hotel($_POST['id_hotel']);
+        $fotos = [];
+        if (!empty($hotelInfoData[0]['fotos'])) {
+            $fotos = json_decode($hotelInfoData[0]['fotos'], true);
+            if (!is_array($fotos)) {
+                $fotos = [];
             }
         }
 
+        $fotos_nombres = $this->subirFotos('fotos');
         if (!empty($fotos_nombres)) {
-            $info->setFotos(json_encode($fotos_nombres));
+            $fotos = array_merge($fotos, $fotos_nombres);
         }
+
+        if (!empty($_POST['borrar_fotos'])) {
+            $fotos_a_borrar = $_POST['borrar_fotos'];
+            foreach ($fotos_a_borrar as $foto) {
+                $this->eliminarFoto($foto);
+            }
+            $fotos = array_diff($fotos, $fotos_a_borrar);
+        }
+
+        $info->setFotos(!empty($fotos) ? json_encode($fotos) : null);
 
         $info_actualizado = $info->actualizar();
 
         if ($hotel_actualizado && $info_actualizado) {
-            header("Location: ../../index.php?page=proveedores_perfil&message=Hotel actualizado correctamente&status=success");
+            header("Location: /viajar/index.php?page=hoteles_mis_hoteles&message=Hotel actualizado correctamente&status=success");
         } else {
-            header("Location: ../../index.php?page=hoteles_editar&id=".htmlspecialchars($_POST['id_hotel'])."&message=Error al actualizar&status=danger");
+            header("Location: ../../index.php?page=hoteles_editar&id=" . htmlspecialchars($_POST['id_hotel']) . "&message=Error al actualizar&status=danger");
         }
         exit;
+    }
+
+    private function eliminarFoto($foto) {
+        $ruta = __DIR__ . "/../../assets/images/" . $foto;
+        if (file_exists($ruta)) {
+            unlink($ruta); 
+        }
     }
 
     public function eliminar() {
@@ -158,6 +169,36 @@ class HotelesControlador {
             header("Location: ../../index.php?page=proveedores_perfil&message=Error al eliminar&status=danger");
         }
         exit;
+    }
+
+    private function subirImagen($campo) {
+        $imagen_nombre = null;
+        if (isset($_FILES[$campo]) && $_FILES[$campo]['error'] === UPLOAD_ERR_OK) {
+            $directorio_destino = __DIR__ . "/../../assets/images/";
+            $nombre_archivo = uniqid() . '_' . basename($_FILES[$campo]['name']);
+            $ruta_destino = $directorio_destino . $nombre_archivo;
+            if (move_uploaded_file($_FILES[$campo]['tmp_name'], $ruta_destino)) {
+                $imagen_nombre = $nombre_archivo;
+            }
+        }
+        return $imagen_nombre;
+    }
+
+    private function subirFotos($campo) {
+        $fotos_nombres = [];
+        if (isset($_FILES[$campo]) && is_array($_FILES[$campo]['name'])) {
+            $directorio_destino = __DIR__ . "/../../assets/images/";
+            foreach ($_FILES[$campo]['name'] as $key => $nombre) {
+                if ($_FILES[$campo]['error'][$key] === UPLOAD_ERR_OK) {
+                    $nombre_archivo = uniqid() . '_' . basename($nombre);
+                    $ruta_destino = $directorio_destino . $nombre_archivo;
+                    if (move_uploaded_file($_FILES[$campo]['tmp_name'][$key], $ruta_destino)) {
+                        $fotos_nombres[] = $nombre_archivo;
+                    }
+                }
+            }
+        }
+        return $fotos_nombres;
     }
 }
 
