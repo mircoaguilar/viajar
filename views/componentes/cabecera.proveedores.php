@@ -13,7 +13,7 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [3, 
             case 3: 
                 echo '<li><a href="index.php?page=hoteles_mis_hoteles"><i class="fa-solid fa-hotel"></i> Mis hospedajes</a></li>';
                 echo '<li><a href="index.php?page=hoteles_reservas"><i class="fa-solid fa-calendar-check"></i> Reservas</a></li>';
-                echo '<li><a href="index.php?page=hoteles_carga"><i class="fa-solid fa-plus"></i> Cargar Hotel / Habitaciones</a></li>';
+                echo '<li><a href="index.php?page=hoteles_carga"><i class="fa-solid fa-plus"></i> Cargar Hotel</a></li>';
                 break;
             case 5: 
                 echo '<li><a href="index.php?page=transportes_mis_transportes"><i class="fa-solid fa-bus"></i> Mis transportes</a></li>';
