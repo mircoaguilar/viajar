@@ -42,6 +42,13 @@ $BASE_URL = '/viajar/';
     .actions button, .actions a { margin-right: 5px; }
     .status-active { color: green; font-weight: bold; }
     .status-inactive { color: red; font-weight: bold; }
+
+    .modal { position: fixed; top:0; left:0; width:100%; height:100%; 
+             background: rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; display:none;}
+    .modal-content { background:#fff; padding:20px; border-radius:6px; max-height:80%; overflow-y:auto; width:400px; }
+    .modal-content table { width:100%; border-collapse:collapse; }
+    .modal-content th, td { padding:6px; border-bottom:1px solid #ccc; text-align:left; }
+    .close { float:right; cursor:pointer; font-size:18px; font-weight:bold; }
 </style>
 </head>
 <body>
@@ -68,17 +75,11 @@ $BASE_URL = '/viajar/';
                 <?php if (!empty($habitaciones)): ?>
                     <?php foreach ($habitaciones as $h): 
                         $fotos = $h['fotos'];
-                        
-                        if (is_string($fotos)) {
-                            $fotos = json_decode($fotos, true);
-                        }
-                        
+                        if (is_string($fotos)) $fotos = json_decode($fotos, true);
                         $fotos = is_array($fotos) ? $fotos : [];
-
                         $fotoPrincipal = $fotos[0] ?? ''; 
                         $statusClass = ($h['activo'] == 1) ? 'status-active' : 'status-inactive';
                     ?>
-                    
                     <tr>
                         <td>
                             <?php if ($fotoPrincipal): ?>
@@ -96,13 +97,25 @@ $BASE_URL = '/viajar/';
                         <td class="<?= $statusClass ?>"><?= ($h['activo']==1)?'Activo':'Inactivo' ?></td>
 
                         <td class="actions">
-                            <a href="index.php?page=hoteles_habitaciones_editar&id_habitacion=<?= $h['id_hotel_habitacion'] ?>" class="btn" title="Editar habitación">Editar</a>
-
-                            <a href="index.php?page=hoteles_stock&id_habitacion=<?= $h['id_hotel_habitacion'] ?>" class="btn secondary" title="Gestionar stock">Stock</a>
-
-                            <a href="index.php?page=toggle_habitacion&id_habitacion=<?= $h['id_hotel_habitacion'] ?>" class="btn" title="<?= ($h['activo']==1)?'Desactivar':'Activar' ?>">
-                                <?= ($h['activo']==1)?'Desactivar':'Activar' ?>
+                            <a href="index.php?page=hoteles_habitaciones_editar&id_habitacion=<?= $h['id_hotel_habitacion'] ?>" 
+                            class="btn" 
+                            title="Editar habitación">
+                                Editar
                             </a>
+                            <a href="controllers/habitaciones/toggle_habitacion.php?id_habitacion=<?= $h['id_hotel_habitacion'] ?>" 
+                                class="btn" 
+                                title="<?= ($h['activo']==1)?'Desactivar':'Activar' ?>">
+                                    <?= ($h['activo']==1)?'Desactivar':'Activar' ?>
+                            </a>
+                            <a href="index.php?page=hoteles_stock&id_habitacion=<?= $h['id_hotel_habitacion'] ?>" 
+                            class="btn secondary" 
+                            title="Gestionar stock">
+                                Cargar stock
+                            </a>
+                            <button class="btn secondary ver-stock-btn" 
+                                    data-id-habitacion="<?= $h['id_hotel_habitacion'] ?>">
+                                Ver stock
+                            </button>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -114,5 +127,23 @@ $BASE_URL = '/viajar/';
         </div>
     </div>
 </main>
+
+<div id="modal-stock" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Stock de la habitación</h3>
+        <table id="stock-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Cantidad disponible</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="assets/js/mis_habitaciones.js"></script>
 </body>
 </html>

@@ -72,8 +72,6 @@ switch ($action) {
         }
         break;
 
-
-
     case 'actualizar':
 
         $id_hab = $_POST['id_hotel_habitacion'] ?? null;

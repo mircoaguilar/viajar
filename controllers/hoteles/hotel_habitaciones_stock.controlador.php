@@ -42,7 +42,7 @@ switch ($action) {
 
         $rela_hotel = $habitacion['rela_hotel'] ?? 0;
         $hotelModel = new Hotel();
-        $hoteles_usuario = $hotelModel->traer_hoteles_por_usuario($id_usuario_actual);
+        $hoteles_usuario = $hotelModel->traer_hoteles_proveedor_completo($id_usuario_actual);
         $es_propietario = false;
         
         foreach ($hoteles_usuario as $hotel) {
@@ -77,6 +77,19 @@ switch ($action) {
         }
 
         break;
+
+    case 'traer_stock':
+        $id_habitacion = $_POST['id_habitacion'] ?? 0;
+        if (!$id_habitacion) {
+            echo json_encode(['status'=>'error','message'=>'Habitación no especificada']);
+            exit;
+        }
+
+        $stockModel = new Hotel_Habitaciones_Stock();
+        $stock = $stockModel->traer_por_habitacion($id_habitacion);
+
+        echo json_encode(['status'=>'success','stock'=>$stock]);
+        exit;
 
     default:
         echo json_encode(['status' => 'error', 'message' => 'Acción no válida']);
