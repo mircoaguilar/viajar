@@ -11,7 +11,7 @@ $hotelModel = new Hotel();
 $habitacionModel = new Hotel_Habitaciones();
 
 $id_usuario = $_SESSION['id_usuarios'];
-$hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
+$hoteles = $hotelModel->traer_hoteles_proveedor_completo($id_usuario);
 ?>
 <!DOCTYPE html>
 <html lang="es">

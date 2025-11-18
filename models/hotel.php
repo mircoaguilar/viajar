@@ -106,7 +106,7 @@ class Hotel {
             AND h.estado_revision = 'aprobado'
             ORDER BY h.fecha_alta DESC
         ";
-        return $conexion->consultar($query);  // Asumiendo que 'consultar' es un método para ejecutar consultas
+        return $conexion->consultar($query);  
     }
 
     public function eliminar_logico() {

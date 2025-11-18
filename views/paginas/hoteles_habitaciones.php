@@ -25,6 +25,7 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
 $hotelData = $hotelModel->traer_hotel($id_hotel)[0] ?? null;
 $habitaciones = $habitacionModel->traer_por_hotel($id_hotel);
 
+$BASE_URL = '/viajar/'; 
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -35,79 +36,83 @@ $habitaciones = $habitacionModel->traer_por_hotel($id_hotel);
 <link rel="stylesheet" href="assets/css/mi_perfil_proveedor.css">
 <link rel="stylesheet" href="assets/css/hotel_carga.css">
 <style>
-  table { width: 100%; border-collapse: collapse; }
-  th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ccc; }
-  img.thumb { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; }
-  .actions button, .actions a { margin-right: 5px; }
-  .status-active { color: green; font-weight: bold; }
-  .status-inactive { color: red; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ccc; }
+    img.thumb { width: 80px; height: 60px; object-fit: cover; border-radius: 4px; }
+    .actions button, .actions a { margin-right: 5px; }
+    .status-active { color: green; font-weight: bold; }
+    .status-inactive { color: red; font-weight: bold; }
 </style>
 </head>
 <body>
 <main class="contenido-principal">
-  <div class="container">
-    <div class="panel">
-      <h2>Habitaciones del Hotel: <?= htmlspecialchars($hotelData['hotel_nombre'] ?? '') ?></h2>
+    <div class="container">
+        <div class="panel">
+            <h2>Habitaciones del Hotel: <?= htmlspecialchars($hotelData['hotel_nombre'] ?? '') ?></h2>
 
-      <a href="index.php?page=hoteles_habitaciones_carga&id_hotel=<?= $id_hotel ?>" class="btn">Agregar nueva habitación</a>
+            <a href="index.php?page=hoteles_habitaciones_carga&id_hotel=<?= $id_hotel ?>" class="btn">Agregar nueva habitación</a>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Foto</th>
-            <th>Tipo</th>
-            <th>Capacidad</th>
-            <th>Precio por noche</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>Tipo</th>
+                        <th>Capacidad</th>
+                        <th>Precio por noche</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
 
-        <tbody>
-        <?php if (!empty($habitaciones)): ?>
-          <?php foreach ($habitaciones as $h): 
-            $fotos = (is_string($h['fotos']) ? json_decode($h['fotos'], true) : []);
-            $fotoPrincipal = $fotos[0] ?? ''; 
-            $statusClass = ($h['activo'] == 1) ? 'status-active' : 'status-inactive';
-          ?>
-          <tr>
-            <td>
-              <?php if ($fotoPrincipal): ?>
-                <img src="<?= htmlspecialchars($fotoPrincipal) ?>" 
-                     class="thumb"
-                     onerror="this.src='assets/images/sin-foto.jpg'">
-              <?php else: ?>
-                <img src="assets/images/sin-foto.jpg" class="thumb">
-              <?php endif; ?>
-            </td>
+                <tbody>
+                <?php if (!empty($habitaciones)): ?>
+                    <?php foreach ($habitaciones as $h): 
+                        $fotos = $h['fotos'];
+                        
+                        if (is_string($fotos)) {
+                            $fotos = json_decode($fotos, true);
+                        }
+                        
+                        $fotos = is_array($fotos) ? $fotos : [];
 
-            <td><?= htmlspecialchars($h['tipo_nombre']) ?></td>
-            <td><?= htmlspecialchars($h['capacidad_maxima']) ?></td>
-            <td>$ <?= number_format($h['precio_base_noche'], 2) ?></td>
-            <td class="<?= $statusClass ?>"><?= ($h['activo']==1)?'Activo':'Inactivo' ?></td>
+                        $fotoPrincipal = $fotos[0] ?? ''; 
+                        $statusClass = ($h['activo'] == 1) ? 'status-active' : 'status-inactive';
+                    ?>
+                    
+                    <tr>
+                        <td>
+                            <?php if ($fotoPrincipal): ?>
+                                <img src="<?= $BASE_URL . htmlspecialchars($fotoPrincipal) ?>" 
+                                     class="thumb"
+                                     onerror="this.src='<?= $BASE_URL ?>assets/images/sin-foto.jpg'">
+                            <?php else: ?>
+                                <img src="<?= $BASE_URL ?>assets/images/sin-foto.jpg" class="thumb">
+                            <?php endif; ?>
+                        </td>
 
-            <td class="actions">
-              <a href="index.php?page=editar_habitacion&id_habitacion=<?= $h['id_hotel_habitacion'] ?>" class="btn">Editar</a>
+                        <td><?= htmlspecialchars($h['tipo_nombre']) ?></td>
+                        <td><?= htmlspecialchars($h['capacidad_maxima']) ?></td>
+                        <td>$ <?= number_format($h['precio_base_noche'], 2) ?></td>
+                        <td class="<?= $statusClass ?>"><?= ($h['activo']==1)?'Activo':'Inactivo' ?></td>
 
-              <a href="index.php?page=toggle_habitacion&id_habitacion=<?= $h['id_hotel_habitacion'] ?>" class="btn">
-                <?= ($h['activo']==1)?'Desactivar':'Activar' ?>
-              </a>
+                        <td class="actions">
+                            <a href="index.php?page=hoteles_habitaciones_editar&id_habitacion=<?= $h['id_hotel_habitacion'] ?>" class="btn" title="Editar habitación">Editar</a>
 
-              <a href="index.php?page=eliminar_habitacion&id_habitacion=<?= $h['id_hotel_habitacion'] ?>" 
-                 class="btn btn-danger" 
-                 onclick="return confirm('¿Seguro que querés eliminar esta habitación?')">
-                 Eliminar
-              </a>
-            </td>
-          </tr>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <tr><td colspan="6">No hay habitaciones cargadas para este hotel.</td></tr>
-        <?php endif; ?>
-        </tbody>
-      </table>
+                            <a href="index.php?page=hoteles_stock&id_habitacion=<?= $h['id_hotel_habitacion'] ?>" class="btn secondary" title="Gestionar stock">Stock</a>
+
+                            <a href="index.php?page=toggle_habitacion&id_habitacion=<?= $h['id_hotel_habitacion'] ?>" class="btn" title="<?= ($h['activo']==1)?'Desactivar':'Activar' ?>">
+                                <?= ($h['activo']==1)?'Desactivar':'Activar' ?>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><td colspan="6">No hay habitaciones cargadas para este hotel.</td></tr>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </main>
 </body>
 </html>

@@ -1,19 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     const form = document.getElementById('form-habitaciones');
+    if (!form) return;
+
     const inputs = form.querySelectorAll("input, select, textarea");
+
     const descripcion = document.getElementById("descripcion_unidad");
     const contador = document.getElementById("contador-descripcion");
+
     const alertBox = document.getElementById("form-alert");
+
     const tabla = document.getElementById("tabla-preview");
-    const tbody = tabla.querySelector("tbody");
+    const tbody = tabla ? tabla.querySelector("tbody") : null;
 
     const customAlert = document.getElementById("custom-alert");
     const customMessage = document.getElementById("custom-alert-message");
     const customBtn = document.getElementById("custom-alert-btn");
 
-    descripcion.addEventListener("input", () => {
-        contador.textContent = `${descripcion.value.length}/200 caracteres`;
-    });
+    const fotosActualesContainer = document.getElementById("fotos-actuales");
+    const nuevasFotosInput = document.getElementById("fotos_habitacion");
+    const nuevasFotosPreview = document.getElementById("preview-nuevas-fotos");
+
+    const esEdicion = document.getElementById("id_habitacion") !== null;
+
+
+    if (descripcion && contador) {
+        descripcion.addEventListener("input", () => {
+            contador.textContent = `${descripcion.value.length}/200 caracteres`;
+        });
+    }
 
     function validarFormulario() {
         let valido = true;
@@ -55,11 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (input.id === "fotos_habitacion" && input.files.length > 0) {
+
                 if (input.files.length > 5) {
                     errorDiv.textContent = "Máx. 5 imágenes permitidas.";
                     input.classList.add("is-invalid");
                     valido = false;
                 }
+
                 for (let file of input.files) {
                     if (!["image/jpeg", "image/png"].includes(file.type)) {
                         errorDiv.textContent = "Solo se permiten imágenes JPEG o PNG.";
@@ -78,54 +95,78 @@ document.addEventListener('DOMContentLoaded', () => {
         return valido;
     }
 
-    inputs.forEach(input => {
-        input.addEventListener("input", () => {
-            input.classList.remove("is-invalid");
-            const errorDiv = input.parentElement.querySelector(".error");
-            if (errorDiv) errorDiv.textContent = "";
-        });
-    });
+    if (nuevasFotosInput && nuevasFotosPreview) {
+        nuevasFotosInput.addEventListener("change", () => {
 
-    const btnPrev = document.getElementById("previsualizar");
-    btnPrev.addEventListener("click", () => {
-        if (!validarFormulario()) return;
+            nuevasFotosPreview.innerHTML = "";
 
-        const tipoSelect = document.getElementById("nombre_tipo_habitacion");
-        const tipoTexto = tipoSelect.options[tipoSelect.selectedIndex].text;
-        const cap = document.getElementById("capacidad_maxima").value.trim();
-        const precio = document.getElementById("precio_base_noche").value.trim();
-        const desc = descripcion.value.trim();
-        const fotosInput = document.getElementById("fotos_habitacion");
-
-        if (tabla.style.display === "none") tabla.style.display = "table";
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${tipoTexto}</td>
-            <td>${cap}</td>
-            <td>${precio ? "$" + precio : "—"}</td>
-            <td>${desc}</td>
-            <td></td>
-        `;
-
-        if (fotosInput.files.length > 0) {
-            const tdFotos = tr.querySelector("td:last-child");
-            Array.from(fotosInput.files).forEach(file => {
+            Array.from(nuevasFotosInput.files).forEach(file => {
                 const img = document.createElement("img");
                 img.src = URL.createObjectURL(file);
-                img.style.maxWidth = "60px";
-                img.style.maxHeight = "60px";
-                img.style.objectFit = "cover";
-                img.style.marginRight = "5px";
-                tdFotos.appendChild(img);
+                img.classList.add("thumb");
+
+                nuevasFotosPreview.appendChild(img);
             });
-        }
+        });
+    }
 
-        tbody.appendChild(tr);
-    });
 
+    if (fotosActualesContainer) {
+        fotosActualesContainer.addEventListener("change", (e) => {
+            if (e.target.classList.contains("chk-borrar-foto")) {
+
+                const contenedor = e.target.closest(".foto-item");
+
+                if (e.target.checked) {
+                    contenedor.classList.add("marcar-borrar");
+                } else {
+                    contenedor.classList.remove("marcar-borrar");
+                }
+            }
+        });
+    }
+
+    const btnPrev = document.getElementById("previsualizar");
+    if (btnPrev && tabla && tbody) {
+        btnPrev.addEventListener("click", () => {
+
+            if (!validarFormulario()) return;
+
+            const tipoTexto = document.getElementById("nombre_tipo_habitacion").selectedOptions[0].text;
+            const cap = document.getElementById("capacidad_maxima").value.trim();
+            const precio = document.getElementById("precio_base_noche").value.trim();
+            const desc = descripcion.value.trim();
+            const fotosInput = document.getElementById("fotos_habitacion");
+
+            tabla.style.display = "table";
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${tipoTexto}</td>
+                <td>${cap}</td>
+                <td>${precio ? "$" + precio : "—"}</td>
+                <td>${desc}</td>
+                <td></td>
+            `;
+
+            if (fotosInput.files.length > 0) {
+                const tdFotos = tr.querySelector("td:last-child");
+
+                Array.from(fotosInput.files).forEach(file => {
+                    const img = document.createElement("img");
+                    img.src = URL.createObjectURL(file);
+                    img.classList.add("thumb-small");
+                    tdFotos.appendChild(img);
+                });
+            }
+
+            tbody.appendChild(tr);
+        });
+    }
+    
     form.addEventListener("submit", (e) => {
         e.preventDefault();
+
         if (!validarFormulario()) {
             alertBox.textContent = "Por favor, corrija los errores antes de enviar.";
             alertBox.className = "alert alert-danger";
@@ -134,16 +175,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const formData = new FormData(form);
-        formData.append('action', 'guardar');
+        formData.append("action", esEdicion ? "actualizar" : "guardar");
 
         fetch("controllers/habitaciones/habitaciones.controlador.php", {
             method: "POST",
             body: formData
         })
-        .then(res => res.json())
+        .then(r => r.json())
         .then(data => {
+
             if (data.status === "success") {
-                customMessage.textContent = "¡Habitación guardada con éxito! Serás redirigido para cargar la disponibilidad.";
+
+                customMessage.textContent = esEdicion
+                    ? "¡Cambios guardados con éxito!"
+                    : "¡Habitación creada! Ahora cargá la disponibilidad.";
+
                 customAlert.style.display = "flex";
 
                 customBtn.onclick = () => {
@@ -152,18 +198,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 setTimeout(() => {
                     window.location.href = `index.php?page=hoteles_stock&id_habitacion=${data.id}`;
-                }, 3000);
+                }, 2000);
+
             } else {
-                alertBox.textContent = data.message || "Error al guardar la habitación.";
-                alertBox.className = "alert alert-danger";
+                alertBox.textContent = data.message || "Error al guardar.";
                 alertBox.style.display = "block";
             }
-        })
-        .catch(err => {
-            console.error("Error en la conexión:", err);
-            alertBox.textContent = "Error en la conexión con el servidor.";
-            alertBox.className = "alert alert-danger";
-            alertBox.style.display = "block";
         });
+
     });
+
 });
