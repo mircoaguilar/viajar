@@ -111,12 +111,18 @@ $hoteles = $controlador->mis_hoteles($id_usuario);
     </div>
 </main>
 
+        
 <div id="modalMotivo" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="cerrarModal()">&times;</span>
-        <p id="textoMotivo"></p>
+        <button class="modal-close" onclick="cerrarModal()">✖</button>
+        
+        <h3 class="modal-title">Motivo del rechazo</h3>
+        <p id="textoMotivo" class="modal-text"></p>
+
+        <button class="modal-btn" onclick="cerrarModal()">Entendido</button>
     </div>
 </div>
+
 
 <script src="assets/js/mis_hoteles.js"></script>
 </body>

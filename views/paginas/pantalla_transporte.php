@@ -47,7 +47,7 @@ if ($destino || $desde || $hasta) {
 
       <div class="form-group">
         <label>Origen</label>
-        <select id="origen" name="origen" style="width: 100%;">
+        <select id="origen" name="origen">
             <option value=""></option>
             <?php foreach ($ciudades as $ciudad): ?>
                 <option value="<?= htmlspecialchars($ciudad['id_ciudad']) ?>" 
@@ -60,7 +60,7 @@ if ($destino || $desde || $hasta) {
 
       <div class="form-group">
         <label>Destino</label>
-        <select id="destino" name="destino" style="width: 100%;">
+        <select id="destino" name="destino">
             <option value=""></option>
             <?php foreach ($ciudades as $ciudad): ?>
                 <option value="<?= htmlspecialchars($ciudad['id_ciudad']) ?>" 

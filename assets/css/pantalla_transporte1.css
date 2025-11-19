@@ -166,12 +166,12 @@ body {
 .search-form input[type="number"],
 .search-form input[type="date"] {
   width: 100%;
+  height: 4px; /* un poco más alto */
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 15px;
   background-color: #fff;
-  /* sombra fija y sutil */
   box-shadow: 0 0 6px rgba(5, 248, 175, 0.4);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -188,26 +188,21 @@ body {
   background-color: #2943b9;
   color: #fff;
   padding: 12px;
-  border: 2px solid transparent;
+  border: 2px solid #fff;
   border-radius: 6px;
   font-size: 18px;
   cursor: pointer;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   /* sombra fija y sutil */
-  box-shadow: 0 0 6px rgba(5, 248, 175, 0.5);
+
   transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-.search-form button:hover {
-  background-color: #1f3499;
-  transform: scale(1.1);
-  /* sombra un poco más intensa al pasar mouse */
-  box-shadow: 0 0 10px rgba(5, 248, 175, 0.7);
-}
+
 
 /* Listado de viajes */
 .viajes {
