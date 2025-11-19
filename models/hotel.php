@@ -95,19 +95,28 @@ class Hotel {
         return $conexion->actualizar($query);
     }
 
-    public function traer_hoteles() {
+    public function traer_hoteles($id_usuario) {
         $conexion = new Conexion();
+        $proveedorModel = new Proveedor();
+        $proveedor = $proveedorModel->obtenerPorUsuario($id_usuario);
+
+        if (!$proveedor) {
+            return [];
+        }
+        $id_proveedor = (int)$proveedor['id_proveedores'];
         $query = "
             SELECT h.id_hotel, h.hotel_nombre, h.imagen_principal, i.descripcion, 
-                   h.rela_ciudad, h.estado_revision, h.motivo_rechazo
+                h.rela_ciudad, h.estado_revision, h.motivo_rechazo
             FROM hotel h
             LEFT JOIN hoteles_info i ON i.rela_hotel = h.id_hotel
             WHERE h.activo = 1
             AND h.estado_revision = 'aprobado'
+            AND h.rela_proveedor = $id_proveedor
             ORDER BY h.fecha_alta DESC
         ";
         return $conexion->consultar($query);  
     }
+
 
     public function eliminar_logico() {
         $conexion = new Conexion();
@@ -181,6 +190,20 @@ class Hotel {
         ";
 
         return $conexion->consultar($query);
+    }
+
+    public function traer_hoteles_aprobados() {
+        $conexion = new Conexion();
+        $query = "
+            SELECT h.id_hotel, h.hotel_nombre, h.imagen_principal, i.descripcion, 
+                   h.rela_ciudad, h.estado_revision, h.motivo_rechazo
+            FROM hotel h
+            LEFT JOIN hoteles_info i ON i.rela_hotel = h.id_hotel
+            WHERE h.activo = 1
+            AND h.estado_revision = 'aprobado'
+            ORDER BY h.fecha_alta DESC
+        ";
+        return $conexion->consultar($query);  
     }
 
     public function getId_hotel() { return $this->id_hotel; }

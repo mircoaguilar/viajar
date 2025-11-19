@@ -11,7 +11,8 @@ $hotelModel = new Hotel();
 $habitacionModel = new Hotel_Habitaciones();
 
 $id_usuario = $_SESSION['id_usuarios'];
-$hoteles = $hotelModel->traer_hoteles();
+$hoteles = $hotelModel->traer_hoteles($id_usuario);
+
 
 $id_habitacion_url = $_GET['id_habitacion'] ?? null;
 $habitacion_info = null;

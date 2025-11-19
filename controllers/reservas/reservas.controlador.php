@@ -8,100 +8,155 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../models/hotel_habitaciones.php';
 require_once __DIR__ . '/../../models/hotel_habitaciones_stock.php';
-require_once __DIR__ . '/../../models/reserva.php'; 
+require_once __DIR__ . '/../../models/reserva.php';
 require_once __DIR__ . '/../../models/pago.php';
 require_once __DIR__ . '/../../models/factura.php';
 require_once __DIR__ . '/../../models/usuarios.php';
-require __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../../models/conexion.php';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['status'=>'error','message'=>'Método no permitido']);
+$action = $_REQUEST['action'] ?? '';
+
+if (!$action) {
+    echo json_encode(['status'=>'error','message'=>'Acción no especificada']);
     exit;
 }
 
-$action = $_POST['action'] ?? '';
-if ($action !== 'crear_reserva') {
-    echo json_encode(['status'=>'error','message'=>'Acción no válida']);
-    exit;
-}
-
-$userId = $_SESSION['id_usuarios'] ?? null;
-if (!$userId) {
-    echo json_encode(['status'=>'error','message'=>'No autenticado']);
-    exit;
-}
-
-$idhab = (int)($_POST['id_habitacion'] ?? 0);
-$checkin = $_POST['checkin'] ?? '';
-$checkout = $_POST['checkout'] ?? '';
-$personas = (int)($_POST['personas'] ?? 1);
-$metodo_pago = $_POST['metodo_pago'] ?? '';
-$monto_pagado = floatval($_POST['monto'] ?? 0);
-
-if (!$idhab || !$checkin || !$checkout) {
-    echo json_encode(['status'=>'error','message'=>'Faltan datos']);
-    exit;
-}
-
-$inicio = new DateTime($checkin);
-$fin = new DateTime($checkout);
-$noches = max(1, $inicio->diff($fin)->days);
-
-$habModel = new Hotel_Habitaciones();
-$stockModel = new Hotel_Habitaciones_Stock();
 $reservaModel = new Reserva();
-$pagoModel = new Pago();
-$facturaModel = new Factura();
+$usuarioModel = new Usuario();
 
-$conexion = new Conexion();
-$mysqli = $conexion->getConexion();
-$mysqli->begin_transaction();
+switch ($action) {
 
-try {
-    $fecha = clone $inicio;
-    $fechas = [];
-    while ($fecha < $fin) {
-        $f = $fecha->format('Y-m-d');
-        $fechas[] = $f;
-        $stock = $stockModel->get_stock_fecha($idhab, $f);
-        if ($stock === null || $stock < 1) throw new Exception("No hay stock en fecha $f");
-        $fecha->modify('+1 day');
-    }
+    case 'ver':
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+            echo json_encode([
+                'status'  => 'error',
+                'message' => 'Método no permitido (usar GET)'
+            ]);
+            exit;
+        }
 
-    $precio_base = $habModel->traer_por_id($idhab)['precio_base_noche'] ?? 0;
-    $total = $precio_base * $noches * $personas;
-    $estadoReserva = 'pendiente';
+        $id = intval($_GET['id'] ?? 0);
 
-    $id_reserva = $reservaModel->crear_reserva($userId, $total, $estadoReserva);
+        if ($id <= 0) {
+            echo json_encode(['status'=>'error','message'=>'ID inválido']);
+            exit;
+        }
 
-    $id_detalle_reserva = $reservaModel->crear_detalle($id_reserva, 'hotel', $personas, $precio_base, $total);
+        $reservaModel = new Reserva();
+        $usuarioModel = new Usuario();
 
-    $reservaModel->crear_detalle_hotel($id_detalle_reserva, $idhab, $checkin, $checkout, $noches);
+        $reserva = $reservaModel->ver_reserva_completa($id);
 
-    if (!empty($_POST['id_tour']) && !empty($_POST['fecha_tour'])) {
-        $id_tour = (int)$_POST['id_tour'];
-        $fecha_tour = $_POST['fecha_tour'];
-        $reservaModel->crear_detalle_tour($id_detalle_reserva, $id_tour, $fecha_tour);
-    }
+        if (!$reserva) {
+            echo json_encode([
+                'status'=>'error',
+                'message'=>'Reserva no encontrada'
+            ]);
+            exit;
+        }
 
-    foreach ($fechas as $f) {
-        $stockModel->decrementar_stock($idhab, $f, $mysqli);
-    }
+        $userArray = $usuarioModel->traer_usuarios_por_id($reserva['rela_usuarios']);
+        $user = !empty($userArray) ? $userArray[0] : null;
 
-    $_SESSION['id_reserva'] = $id_reserva;
+        if ($user && !empty($user['rela_personas'])) {
+            $conexion = new Conexion();
+            $persona = $conexion->consultar("SELECT personas_nombre, personas_apellido FROM personas WHERE id_personas = ".$user['rela_personas']);
+            $reserva['cliente'] = !empty($persona) ? $persona[0]['personas_nombre'].' '.$persona[0]['personas_apellido'] : 'No disponible';
+        } else {
+            $reserva['cliente'] = 'No disponible';
+        }
 
-    $factura_numero = 'F-' . str_pad($id_reserva, 6, '0', STR_PAD_LEFT);
-    $facturaModel->crear_factura($factura_numero, $id_reserva);
 
-    $mysqli->commit();
+        echo json_encode([
+            'status'=>'success',
+            'data'=>$reserva
+        ]);
+        exit;
+    break;
 
-    echo json_encode([
-        'status' => 'success',
-        'message' => 'Reserva creada. Redirigiendo a pago...',
-        'id_reserva' => $id_reserva
-    ]);
+    case 'crear_reserva':
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['status'=>'error','message'=>'Método no permitido']);
+            exit;
+        }
 
-} catch (Exception $e) {
-    $mysqli->rollback();
-    echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        $userId = $_SESSION['id_usuarios'] ?? null;
+        if (!$userId) {
+            echo json_encode(['status'=>'error','message'=>'No autenticado']);
+            exit;
+        }
+
+        $idhab = (int)($_POST['id_habitacion'] ?? 0);
+        $checkin = $_POST['checkin'] ?? '';
+        $checkout = $_POST['checkout'] ?? '';
+        $personas = (int)($_POST['personas'] ?? 1);
+
+        if (!$idhab || !$checkin || !$checkout) {
+            echo json_encode(['status'=>'error','message'=>'Faltan datos']);
+            exit;
+        }
+
+        $inicio = new DateTime($checkin);
+        $fin = new DateTime($checkout);
+        $noches = max(1, $inicio->diff($fin)->days);
+
+        $habModel = new Hotel_Habitaciones();
+        $stockModel = new Hotel_Habitaciones_Stock();
+        $pagoModel = new Pago();
+        $facturaModel = new Factura();
+
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+        $mysqli->begin_transaction();
+
+        try {
+            $fecha = clone $inicio;
+            $fechas = [];
+            while ($fecha < $fin) {
+                $f = $fecha->format('Y-m-d');
+                $fechas[] = $f;
+                $stock = $stockModel->get_stock_fecha($idhab, $f);
+                if ($stock === null || $stock < 1) throw new Exception("No hay stock en fecha $f");
+                $fecha->modify('+1 day');
+            }
+
+            $precio_base = $habModel->traer_por_id($idhab)['precio_base_noche'] ?? 0;
+            $total = $precio_base * $noches * $personas;
+
+            $estadoReserva = 'pendiente';
+            $id_reserva = $reservaModel->crear_reserva($userId, $total, $estadoReserva);
+            $id_detalle_reserva = $reservaModel->crear_detalle($id_reserva, 'hotel', $personas, $precio_base, $total);
+            $reservaModel->crear_detalle_hotel($id_detalle_reserva, $idhab, $checkin, $checkout, $noches);
+
+            if (!empty($_POST['id_tour']) && !empty($_POST['fecha_tour'])) {
+                $id_tour = intval($_POST['id_tour']);
+                $fecha_tour = $_POST['fecha_tour'];
+                $reservaModel->crear_detalle_tour($id_detalle_reserva, $id_tour, $fecha_tour);
+            }
+
+            foreach ($fechas as $f) {
+                $stockModel->decrementar_stock($idhab, $f, $mysqli);
+            }
+
+            $factura_numero = 'F-' . str_pad($id_reserva, 6, '0', STR_PAD_LEFT);
+            $facturaModel->crear_factura($factura_numero, $id_reserva);
+
+            $mysqli->commit();
+
+            echo json_encode([
+                'status'=>'success',
+                'message'=>'Reserva creada. Redirigiendo a pago...',
+                'id_reserva'=>$id_reserva
+            ]);
+
+        } catch (Exception $e) {
+            $mysqli->rollback();
+            echo json_encode(['status'=>'error','message'=>$e->getMessage()]);
+        }
+
+    break;
+
+    default:
+        echo json_encode(['status'=>'error','message'=>'Acción no válida']);
+        exit;
 }

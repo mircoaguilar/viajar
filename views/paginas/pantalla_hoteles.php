@@ -16,7 +16,7 @@ $hotelModel = new Hotel();
 if ($destino || $desde || $hasta) {
     $hoteles = $hotelModel->buscar($destino, $desde, $hasta);
 } else {
-    $hoteles = $hotelModel->traer_hoteles();
+    $hoteles = $hotelModel->traer_hoteles_aprobados();
 }
 ?>
 <!DOCTYPE html>

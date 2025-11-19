@@ -38,7 +38,6 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
 
 $tipos = $tipoModel->traer_tipos_habitaciones();
 
-// Aseguramos fotos en array
 $fotos_existentes = [];
 if (!empty($habitacion["fotos"])) {
     $fotos_existentes = is_array($habitacion["fotos"])

@@ -30,6 +30,11 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                 case 3: 
                     echo '
                     <div class="card">
+                        <h3>Dashboard</h3>
+                        <p>Estadísticas y métricas de tus hoteles.</p>
+                        <a href="index.php?page=hoteles_dashboard" class="btn">Ver</a>
+                    </div>
+                    <div class="card">
                         <h3>Mis Hoteles</h3>
                         <p>Gestiona tus hospedajes registrados.</p>
                         <a href="index.php?page=hoteles_mis_hoteles" class="btn">Ver</a>
@@ -45,6 +50,7 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                         <a href="index.php?page=hoteles_carga" class="btn">Cargar</a>
                     </div>';
                     break;
+
 
                 case 5: 
                     echo '

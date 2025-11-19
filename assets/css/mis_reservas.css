@@ -221,6 +221,139 @@ p {
     font-size: 1rem;
 }
 
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+    display: none; /* ESENCIAL: Oculto por defecto, se muestra con JS */
+    justify-content: center;
+    align-items: center;
+    z-index: 1050; /* Por encima de otros elementos */
+}
+
+/* Contenido del modal */
+.modal-detalle {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px 15px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.12);
+    width: 90%; /* Ancho del modal */
+    max-width: 700px; /* Ancho máximo */
+    transform: translateY(0); /* Simula la animación */
+}
+
+/* CABECERA DEL MODAL */
+.modal-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: none;
+    padding-bottom: 5px;
+}
+
+.modal-title-custom {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+}
+
+.btn-cerrar {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    color: #000;
+    opacity: 0.7;
+}
+
+.btn-cerrar:hover {
+    opacity: 1;
+}
+
+/* BODY DEL MODAL */
+.modal-body-custom {
+    padding: 5px 10px 15px 10px;
+    font-size: 15px;
+}
+
+.modal-body-custom h6 {
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #222;
+}
+
+/* INFO DE RESERVA */
+#info-reserva {
+    background: #f7f7f7;
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+/* TABLA DE SERVICIOS */
+.tabla-servicios { /* Se cambió de 'table' a 'tabla-servicios' */
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+.tabla-servicios thead {
+    background: #f0f0f0;
+}
+
+.tabla-servicios th,
+.tabla-servicios td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.tabla-servicios th {
+    font-weight: bold;
+    text-align: left;
+}
+
+.tabla-servicios tbody tr:hover {
+    background: #fafafa;
+}
+
+/* DETALLES EXTRAS */
+#detalles-extra {
+    margin-top: 10px;
+    background: #fafafa;
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 4px solid #28a745;
+    line-height: 1.6;
+}
+
+/* FOOTER */
+.modal-footer-custom {
+    border-top: none;
+    padding-top: 0;
+    text-align: right;
+}
+
+.btn-secondary {
+    background: #555;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #333;
+}
+
 /* Responsivo */
 @media (max-width: 768px) {
     .tabla-reservas th, .tabla-reservas td {

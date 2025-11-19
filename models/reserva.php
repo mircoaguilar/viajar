@@ -183,6 +183,7 @@ class Reserva {
     public function traer_por_hotel($id_hotel) {
         $conexion = new Conexion();
         $id_hotel = (int)$id_hotel;
+
         $query = "
             SELECT 
                 r.id_reservas,
@@ -190,23 +191,44 @@ class Reserva {
                 r.total,
                 r.reservas_estado,
                 r.fecha_creacion,
+
                 dr.id_detalle_reserva,
                 dr.tipo_servicio,
                 dr.subtotal AS importe_total,
+
                 drh.check_in AS fecha_inicio,
                 drh.check_out AS fecha_fin,
-                th.nombre AS habitacion_nombre 
+
+                th.nombre AS habitacion_nombre,
+
+                p.personas_nombre AS cliente_nombre,
+                p.personas_apellido AS cliente_apellido,
+                CONCAT(p.personas_nombre, ' ', p.personas_apellido) AS cliente
+
             FROM reservas r
-            INNER JOIN detalle_reservas dr ON dr.rela_reservas = r.id_reservas
-            INNER JOIN detalle_reserva_hotel drh ON drh.rela_detalle_reserva = dr.id_detalle_reserva
-            INNER JOIN hotel_habitaciones hh ON hh.id_hotel_habitacion = drh.rela_habitacion
-            INNER JOIN tipos_habitacion th ON th.id_tipo_habitacion = hh.rela_tipo_habitacion
+            INNER JOIN detalle_reservas dr 
+                ON dr.rela_reservas = r.id_reservas
+            INNER JOIN detalle_reserva_hotel drh 
+                ON drh.rela_detalle_reserva = dr.id_detalle_reserva
+            INNER JOIN hotel_habitaciones hh 
+                ON hh.id_hotel_habitacion = drh.rela_habitacion
+            INNER JOIN tipos_habitacion th 
+                ON th.id_tipo_habitacion = hh.rela_tipo_habitacion
+
+            INNER JOIN usuarios u 
+                ON u.id_usuarios = r.rela_usuarios
+            INNER JOIN personas p 
+                ON p.id_personas = u.rela_personas
+
             WHERE dr.tipo_servicio = 'hotel'
             AND hh.rela_hotel = $id_hotel
+
             ORDER BY r.fecha_creacion DESC
         ";
+
         return $conexion->consultar($query);
     }
+
 
     public function traerPorId($id_reserva) {
         $conexion = new Conexion();
@@ -235,6 +257,80 @@ class Reserva {
 
         return $resultado;
     }
+
+    public function ver_reserva_completa($id_reserva) {
+        $conexion = new Conexion();
+        $id = (int)$id_reserva;
+
+        $sqlReserva = "
+            SELECT *
+            FROM reservas
+            WHERE id_reservas = $id
+            LIMIT 1
+        ";
+        $reserva = $conexion->consultar($sqlReserva);
+
+        if (empty($reserva)) return null;
+        $reserva = $reserva[0];
+
+        $sqlDetalles = "
+            SELECT *
+            FROM detalle_reservas
+            WHERE rela_reservas = $id
+        ";
+        $detalles = $conexion->consultar($sqlDetalles);
+
+        $reserva['detalles'] = $detalles;
+
+        foreach ($detalles as $d) {
+
+            if ($d['tipo_servicio'] === 'hotel') {
+                $id_det = (int)$d['id_detalle_reserva'];
+
+                $sqlHotel = "
+                    SELECT drh.*, t.nombre AS tipo_habitacion, hh.descripcion AS habitacion_descripcion
+                    FROM detalle_reserva_hotel drh
+                    INNER JOIN hotel_habitaciones hh 
+                        ON hh.id_hotel_habitacion = drh.rela_habitacion
+                    INNER JOIN tipos_habitacion t 
+                        ON t.id_tipo_habitacion = hh.rela_tipo_habitacion
+                    WHERE drh.rela_detalle_reserva = $id_det
+                    LIMIT 1
+                ";
+                $hotel = $conexion->consultar($sqlHotel);
+                $reserva['hotel'] = $hotel[0] ?? null;
+            }
+
+            if ($d['tipo_servicio'] === 'transporte') {
+                $id_det = (int)$d['id_detalle_reserva'];
+
+                $sqlTransp = "
+                    SELECT drt.*, v.origen, v.destino, v.hora_salida, v.hora_llegada
+                    FROM detalle_reserva_transporte drt
+                    INNER JOIN viaje v ON v.id_viaje = drt.id_viaje
+                    WHERE drt.rela_detalle_reserva = $id_det
+                ";
+                $reserva['transporte'] = $conexion->consultar($sqlTransp);
+            }
+
+            if ($d['tipo_servicio'] === 'tour') {
+                $id_det = (int)$d['id_detalle_reserva'];
+
+                $sqlTour = "
+                    SELECT drt.*, t.nombre AS tour_nombre
+                    FROM detalle_reserva_tour drt
+                    INNER JOIN tours t ON t.id_tour = drt.rela_tour
+                    WHERE drt.rela_detalle_reserva = $id_det
+                    LIMIT 1
+                ";
+                $tour = $conexion->consultar($sqlTour);
+                $reserva['tour'] = $tour[0] ?? null;
+            }
+        }
+
+        return $reserva;
+    }
+
 
     public function getId_reservas() { return $this->id_reservas; }
     public function setId_reservas($id) { $this->id_reservas = $id; return $this; }
