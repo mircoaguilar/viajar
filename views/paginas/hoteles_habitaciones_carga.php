@@ -43,7 +43,7 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
 
             <div id="form-alert" style="display:none;" class="alert"></div>
 
-            <form id="form-habitaciones" class="grid grid-2" method="POST" enctype="multipart/form-data" action="controllers/hotel_habitaciones/hotel_habitaciones.controlador.php">
+            <form id="form-habitaciones" class="grid grid-2" method="POST" enctype="multipart/form-data" action="controllers/habitaciones/habitaciones.controlador.php">
                 <input type="hidden" name="action" value="guardar">
                 <input type="hidden" name="rela_hotel" value="<?= htmlspecialchars($id_hotel) ?>">
 

@@ -108,7 +108,7 @@ class Hotel_Habitaciones {
                 FROM hotel_habitaciones hh
                 INNER JOIN tipos_habitacion th 
                         ON hh.rela_tipo_habitacion = th.id_tipo_habitacion
-                WHERE hh.id_hotel_habitacion = $id_habitacion AND hh.activo = 1
+                WHERE hh.id_hotel_habitacion = $id_habitacion
                 LIMIT 1";
 
         $habitaciones = $conexion->consultar($query);
@@ -141,6 +141,23 @@ class Hotel_Habitaciones {
         }
         return true;
     }
+
+    public function cambiar_estado($nuevo_estado = null) {
+        $conexion = new Conexion();
+        if ($nuevo_estado === null) {
+            $nuevo_estado = (int)$this->activo;
+        } else {
+            $nuevo_estado = (int)$nuevo_estado;
+        }
+        $id = (int)$this->id_hotel_habitacion;
+
+        $query = "UPDATE hotel_habitaciones 
+                SET activo = $nuevo_estado
+                WHERE id_hotel_habitacion = $id";
+
+        return $conexion->actualizar($query);
+    }
+
 
     public function getFotosArray() {
         return !empty($this->fotos) ? json_decode($this->fotos, true) : [];

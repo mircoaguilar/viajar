@@ -11,7 +11,19 @@ $hotelModel = new Hotel();
 $habitacionModel = new Hotel_Habitaciones();
 
 $id_usuario = $_SESSION['id_usuarios'];
-$hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
+$hoteles = $hotelModel->traer_hoteles();
+
+$id_habitacion_url = $_GET['id_habitacion'] ?? null;
+$habitacion_info = null;
+$hotel_preseleccionado = null;
+
+if ($id_habitacion_url) {
+    $habitacion_info = $habitacionModel->traer_por_id($id_habitacion_url);
+
+    if ($habitacion_info) {
+        $hotel_preseleccionado = $habitacion_info['rela_hotel'];
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -46,7 +58,12 @@ $hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
           <select id="rela_hotel" name="rela_hotel">
             <option value="">Seleccionar hotel...</option>
             <?php foreach ($hoteles as $h): ?>
-              <option value="<?= $h['id_hotel'] ?>"><?= htmlspecialchars($h['hotel_nombre']) ?></option>
+              <option 
+                value="<?= $h['id_hotel'] ?>" 
+                <?= ($hotel_preseleccionado == $h['id_hotel']) ? 'selected' : '' ?>
+              >
+                <?= htmlspecialchars($h['hotel_nombre']) ?>
+              </option>
             <?php endforeach; ?>
           </select>
           <div class="error"></div>
@@ -110,13 +127,22 @@ $hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+
+<script>
+    const idHabitacionUrl = "<?= $id_habitacion_url ?>";
+    const hotelPreseleccionado = "<?= $hotel_preseleccionado ?>";
+</script>
+
 <script src="assets/js/hoteles_stock.js"></script>
+
 <script>
   flatpickr("#fecha_inicio", {
       dateFormat: "Y-m-d",
       minDate: "today",
       locale: "es",
-      onChange: function(selectedDates, dateStr, instance) {
+      onChange: function(selectedDates, dateStr) {
           fechaFinPicker.set('minDate', dateStr);
       }
   });
@@ -126,6 +152,7 @@ $hoteles = $hotelModel->traer_hoteles_por_usuario($id_usuario);
       minDate: "today",
       locale: "es"
   });
+
 </script>
 
 </body>

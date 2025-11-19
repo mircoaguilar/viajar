@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     const hotelSelect = document.getElementById('rela_hotel');
     const habitacionSelect = document.getElementById('rela_habitacion');
     const form = document.getElementById('form-stock');
@@ -6,23 +7,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const previewTable = document.getElementById('tabla-preview');
     const tbody = previewTable.querySelector('tbody');
     const alertBox = document.getElementById('form-alert');
+    const HAB_URL = idHabitacionUrl || "";    
+    const HOTEL_PRE = hotelPreseleccionado || "";
 
-    hotelSelect.addEventListener('change', () => {
-        const idHotel = hotelSelect.value;
+    function cargarHabitaciones(idHotel, callback = null) {
         habitacionSelect.innerHTML = '<option value="">Cargando...</option>';
 
         fetch('controllers/habitaciones/habitaciones.controlador.php?action=traer_por_hotel&id_hotel=' + idHotel)
             .then(res => res.json())
             .then(data => {
                 habitacionSelect.innerHTML = '<option value="">Seleccionar habitación...</option>';
+
                 data.forEach(hab => {
                     const option = document.createElement('option');
                     option.value = hab.id_hotel_habitacion;
                     option.textContent = hab.tipo_nombre + ' - Capacidad ' + hab.capacidad_maxima;
                     habitacionSelect.appendChild(option);
                 });
+
+                if (typeof callback === "function") callback();
             });
+    }
+
+    hotelSelect.addEventListener('change', () => {
+        const idHotel = hotelSelect.value;
+        if (idHotel) {
+            cargarHabitaciones(idHotel);
+        } else {
+            habitacionSelect.innerHTML = '<option value="">Seleccionar habitación...</option>';
+        }
     });
+
+    if (HOTEL_PRE !== "") {
+        hotelSelect.value = HOTEL_PRE;
+        cargarHabitaciones(HOTEL_PRE, () => {
+            if (HAB_URL !== "") {
+                habitacionSelect.value = HAB_URL;
+            }
+        });
+    }
 
     function validarFormulario() {
         let valido = true;
