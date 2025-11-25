@@ -93,12 +93,12 @@ $reservas = $id_hotel ? $reservaModel->traer_por_hotel($id_hotel) : [];
                         Ver
                     </button>
 
-                    <?php if (in_array($r['reservas_estado'], ['confirmada','pendiente_pago'])): ?>
-                    <a href="index.php?page=cancelar_reserva&id_reserva=<?= $r['id_reservas'] ?>"
-                       class="btn-accion btn-cancelar"
-                       onclick="return confirm('¿Seguro que querés cancelar esta reserva?')">
-                        Cancelar
-                    </a>
+                    <?php if (in_array($r['detalle_hotel_estado'], ['confirmada','pendiente_pago'])): ?>
+                        <a href="controllers/reservas/cancelar_detalle_hotel.php?id_detalle=<?= $r['id_detalle_hotel'] ?>"
+                        class="btn-accion btn-cancelar"
+                        onclick="return confirm('¿Seguro que querés cancelar este servicio de hotel?')">
+                            Cancelar
+                        </a>
                     <?php endif; ?>
 
                 </td>

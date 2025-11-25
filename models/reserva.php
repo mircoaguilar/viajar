@@ -161,6 +161,26 @@ class Reserva {
         return !empty($resultado) ? $resultado[0] : [];
     }
 
+    public function traer_detalle_hotel_por_id($id_detalle_hotel) {
+        $conexion = new Conexion();
+        $id_detalle_hotel = (int)$id_detalle_hotel;
+
+        $query = "
+            SELECT drh.*, hh.rela_hotel
+            FROM detalle_reserva_hotel drh
+            INNER JOIN hotel_habitaciones hh
+                ON hh.id_hotel_habitacion = drh.rela_habitacion
+            WHERE drh.id_detalle_hotel = $id_detalle_hotel
+            LIMIT 1
+        ";
+
+        $resultado = $conexion->consultar($query);
+
+        return !empty($resultado) ? $resultado[0] : [];
+    }
+
+
+
     public function traerDetalleTransporte($id_detalle_reserva) {
         $conexion = new Conexion();
         $id_detalle_reserva = (int)$id_detalle_reserva;
@@ -196,8 +216,10 @@ class Reserva {
                 dr.tipo_servicio,
                 dr.subtotal AS importe_total,
 
+                drh.id_detalle_hotel,             
                 drh.check_in AS fecha_inicio,
                 drh.check_out AS fecha_fin,
+                drh.estado AS detalle_hotel_estado,  
 
                 th.nombre AS habitacion_nombre,
 
@@ -279,16 +301,18 @@ class Reserva {
             WHERE rela_reservas = $id
         ";
         $detalles = $conexion->consultar($sqlDetalles);
-
         $reserva['detalles'] = $detalles;
 
         foreach ($detalles as $d) {
 
             if ($d['tipo_servicio'] === 'hotel') {
+
                 $id_det = (int)$d['id_detalle_reserva'];
 
                 $sqlHotel = "
-                    SELECT drh.*, t.nombre AS tipo_habitacion, hh.descripcion AS habitacion_descripcion
+                    SELECT drh.*, 
+                        t.nombre AS tipo_habitacion, 
+                        hh.descripcion AS habitacion_descripcion
                     FROM detalle_reserva_hotel drh
                     INNER JOIN hotel_habitaciones hh 
                         ON hh.id_hotel_habitacion = drh.rela_habitacion
@@ -297,23 +321,63 @@ class Reserva {
                     WHERE drh.rela_detalle_reserva = $id_det
                     LIMIT 1
                 ";
+
                 $hotel = $conexion->consultar($sqlHotel);
                 $reserva['hotel'] = $hotel[0] ?? null;
             }
 
             if ($d['tipo_servicio'] === 'transporte') {
+
                 $id_det = (int)$d['id_detalle_reserva'];
 
                 $sqlTransp = "
-                    SELECT drt.*, v.origen, v.destino, v.hora_salida, v.hora_llegada
+                    SELECT 
+                        drt.*,
+
+                        v.id_viajes,
+                        v.viaje_fecha,
+                        v.hora_salida,
+                        v.hora_llegada,
+
+                        r.rela_ciudad_origen AS id_origen,
+                        r.rela_ciudad_destino AS id_destino,
+
+                        c1.nombre AS origen,
+                        c2.nombre AS destino,
+
+                        t.transporte_matricula AS matricula,
+                        t.transporte_capacidad AS capacidad,
+                        t.nombre_servicio,
+                        tt.descripcion AS tipo_transporte
+
                     FROM detalle_reserva_transporte drt
-                    INNER JOIN viaje v ON v.id_viaje = drt.id_viaje
+
+                    INNER JOIN viajes v
+                        ON v.id_viajes = drt.id_viaje
+
+                    INNER JOIN transporte_rutas r
+                        ON r.id_ruta = v.rela_transporte_rutas
+
+                    INNER JOIN transporte t
+                        ON t.id_transporte = r.rela_transporte
+
+                    INNER JOIN tipo_transporte tt
+                        ON tt.id_tipo_transporte = t.rela_tipo_transporte
+
+                    LEFT JOIN ciudades c1 
+                        ON c1.id_ciudad = r.rela_ciudad_origen
+
+                    LEFT JOIN ciudades c2 
+                        ON c2.id_ciudad = r.rela_ciudad_destino
+
                     WHERE drt.rela_detalle_reserva = $id_det
                 ";
+
                 $reserva['transporte'] = $conexion->consultar($sqlTransp);
             }
 
             if ($d['tipo_servicio'] === 'tour') {
+
                 $id_det = (int)$d['id_detalle_reserva'];
 
                 $sqlTour = "
@@ -323,12 +387,124 @@ class Reserva {
                     WHERE drt.rela_detalle_reserva = $id_det
                     LIMIT 1
                 ";
+
                 $tour = $conexion->consultar($sqlTour);
                 $reserva['tour'] = $tour[0] ?? null;
             }
         }
-
         return $reserva;
+    }
+
+
+    public function cancelar_detalle_hotel($id_detalle) {
+        $conexion = new Conexion();
+        $query = "UPDATE detalle_reserva_hotel 
+                SET estado = 'cancelada' 
+                WHERE id_detalle_hotel = $id_detalle";
+        return $conexion->actualizar($query);
+    }
+
+    public function traer_por_transporte($id_transporte) {
+        $conexion = new Conexion();
+        $id_transporte = (int)$id_transporte;
+
+        $query = "
+            SELECT 
+                r.id_reservas,
+                r.reservas_estado,
+                r.total AS total_reserva,
+                r.fecha_creacion,
+
+                CONCAT(p.personas_nombre, ' ', p.personas_apellido) AS cliente,
+                p.personas_nombre AS cliente_nombre,
+                p.personas_apellido AS cliente_apellido,
+
+                dr.id_detalle_reserva,
+                dr.tipo_servicio,
+                dr.subtotal AS importe_total,
+
+                drt.id_detalle_transporte,
+                drt.piso,
+                drt.numero_asiento,
+                drt.fila,
+                drt.columna,
+                drt.fecha_servicio,
+                drt.precio_unitario,
+                drt.estado AS detalle_transporte_estado,
+
+                v.id_viajes,
+                CONCAT(ci_origen.nombre, ' → ', ci_destino.nombre) AS viaje_info,
+                v.hora_salida,
+                v.hora_llegada,
+
+                t.id_transporte,
+                t.nombre_servicio,
+                t.transporte_matricula
+
+            FROM reservas r
+
+            INNER JOIN detalle_reservas dr 
+                ON dr.rela_reservas = r.id_reservas
+
+            INNER JOIN detalle_reserva_transporte drt 
+                ON drt.rela_detalle_reserva = dr.id_detalle_reserva
+
+            INNER JOIN viajes v
+                ON v.id_viajes = drt.id_viaje
+
+            INNER JOIN transporte_rutas tr
+                ON tr.id_ruta = v.rela_transporte_rutas
+
+            INNER JOIN ciudades ci_origen
+                ON ci_origen.id_ciudad = tr.rela_ciudad_origen
+
+            INNER JOIN ciudades ci_destino
+                ON ci_destino.id_ciudad = tr.rela_ciudad_destino
+
+            INNER JOIN transporte t
+                ON t.id_transporte = tr.rela_transporte
+
+            INNER JOIN usuarios u
+                ON u.id_usuarios = r.rela_usuarios
+
+            INNER JOIN personas p
+                ON p.id_personas = u.rela_personas
+
+            WHERE dr.tipo_servicio = 'transporte'
+            AND t.id_transporte = $id_transporte
+            ORDER BY r.fecha_creacion DESC, drt.piso ASC, drt.numero_asiento ASC
+        ";
+
+        return $conexion->consultar($query);
+    }
+
+    public function traer_detalle_transporte_por_id($id_detalle){
+        $conexion = new Conexion();
+        $id = (int)$id_detalle;
+
+        $query = "
+            SELECT drt.*, v.*
+            FROM detalle_reserva_transporte drt
+            INNER JOIN viajes v ON v.id_viajes = drt.id_viaje
+            WHERE drt.id_detalle_transporte = $id
+            LIMIT 1
+        ";
+
+        $res = $conexion->consultar($query);
+        return !empty($res) ? $res[0] : null;
+    }
+
+    public function cancelar_detalle_transporte($id_detalle){
+        $conexion = new Conexion();
+        $id = (int)$id_detalle;
+
+        $query = "
+            UPDATE detalle_reserva_transporte 
+            SET estado = 'cancelada'
+            WHERE id_detalle_transporte = $id
+        ";
+
+        return $conexion->actualizar($query);
     }
 
 

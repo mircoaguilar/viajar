@@ -20,8 +20,7 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [3, 
                 echo '<li><a href="index.php?page=transportes_mis_transportes"><i class="fa-solid fa-bus"></i> Mis transportes</a></li>';
                 echo '<li><a href="index.php?page=reservas_transporte"><i class="fa-solid fa-calendar-check"></i> Reservas</a></li>';
                 echo '<li><a href="index.php?page=transportes_carga"><i class="fa-solid fa-plus"></i> Agregar Transporte</a></li>';
-                echo '<li><a href="index.php?page=transportes_rutas_carga"><i class="fa-solid fa-route"></i> Crear Nueva Ruta</a></li>';
-                echo '<li><a href="index.php?page=transportes_viajes_carga"><i class="fa-solid fa-map-location-dot"></i> Agregar Viaje</a></li>';
+                echo '<li><a href="index.php?page=transportes_dashboard"><i class="fa fa-chart-line"></i> Dashboard</a></li>';
                 break;
            case 14: 
                 echo '

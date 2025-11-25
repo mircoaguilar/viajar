@@ -529,6 +529,32 @@ textarea {
   margin-top: 14px;
 }
 
+.alerta-rutas {
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    animation: fadeIn 0.3s ease;
+}
+
+.alerta-rutas.success {
+    background: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.alerta-rutas.danger {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+
 /* Responsive */
 @media(max-width: 800px){
   .grid {

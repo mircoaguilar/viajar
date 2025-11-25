@@ -51,12 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const duracion = form.duracion;
     const precio = form.precio_por_persona;
 
-    if (!/^[\w\s-]{3,}$/.test(nombre.value.trim())) {
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9\s-]{3,}$/.test(nombre.value.trim())) {
       crearError(nombre, 'Ingrese un nombre válido (mínimo 3 caracteres).');
       valido = false;
     }
 
-    if (!/^[\w\s-]{10,}$/.test(trayecto.value.trim()) || !trayecto.value.includes('-')) {
+    if (!/^[\p{L}0-9\s-]{10,}$/u.test(trayecto.value.trim()) || !trayecto.value.includes('-')) {
       crearError(trayecto, 'El trayecto debe tener al menos 10 caracteres y contener guiones (-).');
       valido = false;
     }

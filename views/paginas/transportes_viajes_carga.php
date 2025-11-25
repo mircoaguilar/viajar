@@ -8,6 +8,8 @@ require_once('models/transporte.php');
 
 $transporteModel = new Transporte();
 $rutas = $transporteModel->traer_rutas_por_usuario($_SESSION['id_usuarios']); 
+
+$id_ruta_url = (int)($_GET['id_ruta'] ?? 0);
 ?>
 
 <!DOCTYPE html>
@@ -28,15 +30,15 @@ $rutas = $transporteModel->traer_rutas_por_usuario($_SESSION['id_usuarios']);
       <h2>Programar Viaje</h2>
       <p class="hint">Completá la información para programar un nuevo viaje en una de tus rutas.</p>
 
-      <form id="formViaje" class="grid grid-2">
-        <input type="hidden" name="action" value="guardar">
+      <form id="formViaje" class="grid grid-2" method="POST" action="controllers/transportes/viajes.controlador.php">
+        <input type="hidden" name="action" value="guardar_viaje">
 
         <div>
           <label for="rela_transporte_rutas">Ruta</label>
-          <select id="rela_transporte_rutas" name="rela_transporte_rutas" >
+          <select id="rela_transporte_rutas" name="rela_transporte_rutas">
             <option value="">Seleccionar ruta...</option>
             <?php foreach ($rutas as $r): ?>
-              <option value="<?= $r['id_ruta'] ?>">
+              <option value="<?= $r['id_ruta'] ?>" <?= $r['id_ruta'] == $id_ruta_url ? 'selected' : '' ?>>
                 <?= htmlspecialchars($r['nombre']) ?> (<?= htmlspecialchars($r['trayecto']) ?>)
               </option>
             <?php endforeach; ?>

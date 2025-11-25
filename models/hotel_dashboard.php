@@ -371,7 +371,4 @@ class HotelDashboard {
         return $row['ocupadas'] ?? 0;
     }
 
-
-
-
 }

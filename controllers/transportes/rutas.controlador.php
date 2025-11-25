@@ -1,6 +1,5 @@
 <?php
-
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 require_once(__DIR__ . '/../../models/transporte_rutas.php');
 require_once(__DIR__ . '/../../models/transporte.php');
 require_once(__DIR__ . '/../../models/proveedor.php');
@@ -34,83 +33,43 @@ class RutasControlador {
         $rela_transporte = (int)($_POST['rela_transporte'] ?? 0);
 
         if (!$nombre || !$trayecto || !$origen || !$destino || !$rela_transporte) {
-            $this->responder(['status'=>'error', 'message'=>'Faltan datos obligatorios']);
+            header("Location: ../../index.php?page=transportes_rutas&id_transporte={$rela_transporte}&message=Faltan datos obligatorios&status=danger");
+            exit;
         }
+
         if ($origen === $destino) {
-            $this->responder(['status'=>'error', 'message'=>'La ciudad de origen y destino no pueden ser iguales']);
+            header("Location: ../../index.php?page=transportes_rutas&id_transporte={$rela_transporte}&message=Origen y destino no pueden ser iguales&status=danger");
+            exit;
         }
+
         if ($precio < 0) {
-            $this->responder(['status'=>'error', 'message'=>'El precio debe ser positivo']);
+            header("Location: ../../index.php?page=transportes_rutas&id_transporte={$rela_transporte}&message=El precio debe ser positivo&status=danger");
+            exit;
         }
 
         $transporteModel = new Transporte();
         if (!$transporteModel->verificar_propietario($rela_transporte, $id_proveedor)) {
-            $this->responder(['status'=>'error', 'message'=>'El vehículo no pertenece a tu cuenta']);
+            header("Location: ../../index.php?page=transportes_rutas&id_transporte={$rela_transporte}&message=El vehículo no pertenece a tu cuenta&status=danger");
+            exit;
         }
 
         $ruta = new Transporte_Rutas();
         $ruta->setNombre($nombre)
-             ->setTrayecto($trayecto)
-             ->setRela_ciudad_origen($origen)
-             ->setRela_ciudad_destino($destino)
-             ->setDuracion($duracion)
-             ->setDescripcion($descripcion)
-             ->setPrecio_por_persona($precio)
-             ->setRela_transporte($rela_transporte);
-             
-        
+            ->setTrayecto($trayecto)
+            ->setRela_ciudad_origen($origen)
+            ->setRela_ciudad_destino($destino)
+            ->setDuracion($duracion)
+            ->setDescripcion($descripcion)
+            ->setPrecio_por_persona($precio)
+            ->setRela_transporte($rela_transporte);
+
         $id = $ruta->guardar();
-        if ($id) $this->responder(['status'=>'success', 'message'=>'Ruta guardada', 'id'=>$id]);
-        else $this->responder(['status'=>'error', 'message'=>'Error al guardar la ruta']);
-    }
 
-    public function editar() {
-        $this->verificarSesionProveedor();
-        $this->validarMetodoPOST();
+        $status = $id ? 'success' : 'danger';
+        $mensaje = $id ? 'Ruta guardada correctamente' : 'Error al guardar la ruta';
 
-        $id_ruta = (int)($_POST['id_ruta'] ?? 0);
-        if (!$id_ruta) $this->responder(['status'=>'error', 'message'=>'ID de ruta inválido']);
-
-        $id_proveedor = $this->obtenerIdProveedorSesion();
-
-        $rutaModel = new Transporte_Rutas();
-        $ruta = $rutaModel->traer_por_id($id_ruta);
-        if (!$ruta) $this->responder(['status'=>'error','message'=>'Ruta no encontrada']);
-
-        $transporteModel = new Transporte();
-        if (!$transporteModel->verificar_propietario($ruta['rela_transporte'], $id_proveedor)) {
-            $this->responder(['status'=>'error','message'=>'No autorizado para editar esta ruta']);
-        }
-
-        $nombre = trim($_POST['nombre'] ?? '');
-        $trayecto = trim($_POST['trayecto'] ?? '');
-        $origen = (int)($_POST['rela_ciudad_origen'] ?? 0);
-        $destino = (int)($_POST['rela_ciudad_destino'] ?? 0);
-        $precio = floatval($_POST['precio_por_persona'] ?? 0);
-
-        if (!$nombre || !$trayecto || !$origen || !$destino) {
-            $this->responder(['status'=>'error', 'message'=>'Faltan datos obligatorios']);
-        }
-        if ($origen === $destino) {
-            $this->responder(['status'=>'error', 'message'=>'La ciudad de origen y destino no pueden ser iguales']);
-        }
-        if ($precio < 0) {
-            $this->responder(['status'=>'error', 'message'=>'El precio debe ser positivo']);
-        }
-
-        $rutaModel->setId_ruta($id_ruta)
-                  ->setNombre($nombre)
-                  ->setTrayecto($trayecto)
-                  ->setRela_ciudad_origen($origen)
-                  ->setRela_ciudad_destino($destino)
-                  ->setDuracion(trim($_POST['duracion'] ?? '00:00'))
-                  ->setDescripcion(trim($_POST['descripcion'] ?? ''))
-                  ->setPrecio_por_persona($precio)
-                  ->setRela_transporte((int)($_POST['rela_transporte'] ?? 0));
-
-        $ok = $rutaModel->actualizar();
-        if ($ok) $this->responder(['status'=>'success','message'=>'Ruta actualizada']);
-        else $this->responder(['status'=>'error','message'=>'Error al actualizar ruta']);
+        header("Location: ../../index.php?page=transportes_rutas&id_transporte={$rela_transporte}&message={$mensaje}&status={$status}");
+        exit;
     }
 
     public function eliminar() {
@@ -177,11 +136,152 @@ class RutasControlador {
             $this->responder(['status'=>'error','message'=>'Método inválido']);
         }
     }
+
+    public function obtenerDatosRuta($id_ruta){
+        $this->verificarSesionProveedor();
+
+        $id_proveedor = $this->obtenerIdProveedorSesion();
+
+        $rutaModel = new Transporte_Rutas();
+        $transporteModel = new Transporte();
+
+        $ruta = $rutaModel->traer_por_id($id_ruta);
+        if (!$ruta) {
+            header("Location: ../../index.php?page=mis_transportes&message=Ruta no encontrada&status=danger");
+            exit;
+        }
+
+        if (!$transporteModel->verificar_propietario($ruta['rela_transporte'], $id_proveedor)) {
+            header("Location: ../../index.php?page=mis_transportes&message=No autorizado&status=danger");
+            exit;
+        }
+
+        $transportes = $transporteModel->traer_por_proveedor($id_proveedor);
+
+        require_once(__DIR__ . '/../../models/ciudad.php');
+        $ciudadModel = new Ciudad();
+        $ciudades = $ciudadModel->traer_ciudades();
+
+        return [
+            'ruta'        => $ruta,
+            'transportes' => $transportes,
+            'ciudades'    => $ciudades
+        ];
+    }
+
+    public function actualizar(){
+        $this->verificarSesionProveedor();
+        $this->validarMetodoPOST();
+
+        $id_ruta = (int)($_POST['id_ruta'] ?? 0);
+        if (!$id_ruta) {
+            header("Location: /viajar/index.php?page=mis_transportes&status=danger&message=ID inválido");
+            exit;
+        }
+
+        $id_proveedor = $this->obtenerIdProveedorSesion();
+
+        $rutaModel = new Transporte_Rutas();
+        $rutaActual = $rutaModel->traer_por_id($id_ruta);
+
+        if (!$rutaActual) {
+            header("Location: /viajar/index.php?page=mis_transportes&status=danger&message=Ruta no encontrada");
+            exit;
+        }
+
+        $transporteModel = new Transporte();
+        if (!$transporteModel->verificar_propietario($rutaActual['rela_transporte'], $id_proveedor)) {
+            header("Location: /viajar/index.php?page=mis_transportes&message=No autorizado&status=danger");
+            exit;
+        }
+
+        $nombre   = trim($_POST['nombre'] ?? '');
+        $trayecto = trim($_POST['trayecto'] ?? '');
+        $origen   = (int)($_POST['rela_ciudad_origen'] ?? 0);
+        $destino  = (int)($_POST['rela_ciudad_destino'] ?? 0);
+        $duracion = trim($_POST['duracion'] ?? '00:00');
+        $desc     = trim($_POST['descripcion'] ?? '');
+        $precio   = floatval($_POST['precio_por_persona'] ?? 0);
+        $rela_transporte = (int)($_POST['rela_transporte'] ?? 0);
+
+        if (!$nombre || !$trayecto || !$origen || !$destino) {
+            header("Location: /viajar/index.php?page=transportes_ruta_editar&id_ruta={$id_ruta}&message=Faltan datos&status=danger");
+            exit;
+        }
+
+        if ($origen === $destino) {
+            header("Location: /viajar/index.php?page=transportes_ruta_editar&id_ruta={$id_ruta}&message=Origen y destino no pueden ser iguales&status=danger");
+            exit;
+        }
+
+        if ($precio < 0) {
+            header("Location: /viajar/index.php?page=transportes_ruta_editar&id_ruta={$id_ruta}&message=Precio inválido&status=danger");
+            exit;
+        }
+
+        $rutaModel->setId_ruta($id_ruta)
+                ->setNombre($nombre)
+                ->setTrayecto($trayecto)
+                ->setRela_ciudad_origen($origen)
+                ->setRela_ciudad_destino($destino)
+                ->setDuracion($duracion)
+                ->setDescripcion($desc)
+                ->setPrecio_por_persona($precio)
+                ->setRela_transporte($rela_transporte);
+
+        $ok = $rutaModel->actualizar();
+
+        $status = $ok ? 'success' : 'danger';
+        $msg    = $ok ? 'Ruta actualizada' : 'Error al actualizar ruta';
+
+        header("Location: /viajar/index.php?page=transportes_rutas&id_transporte={$rela_transporte}&status={$status}&message={$msg}");
+        exit;
+    }
+
+    public function toggle() {
+        $this->verificarSesionProveedor();
+
+        $id_ruta = (int)($_GET['id_ruta'] ?? 0);
+        if (!$id_ruta) {
+            header("Location: /viajar/index.php?page=mis_transportes&status=danger&message=ID inválido");
+            exit;
+        }
+
+        $id_proveedor = $this->obtenerIdProveedorSesion();
+
+        $rutaModel = new Transporte_Rutas();
+        $actual = $rutaModel->traer_por_id($id_ruta);
+
+        if (!$actual) {
+            header("Location: /viajar/index.php?page=mis_transportes&status=danger&message=Ruta no encontrada");
+            exit;
+        }
+
+        $transporteModel = new Transporte();
+        if (!$transporteModel->verificar_propietario($actual['rela_transporte'], $id_proveedor)) {
+            header("Location: /viajar/index.php?page=mis_transportes&status=danger&message=No autorizado");
+            exit;
+        }
+
+        $nuevo_estado = ($actual['activo'] == 1) ? 0 : 1;
+
+        $ok = $rutaModel->cambiar_estado($id_ruta, $nuevo_estado);
+
+        if ($ok) {
+            header("Location: /viajar/index.php?page=transportes_rutas&id_transporte=".$actual['rela_transporte']);
+        } else {
+            header("Location: /viajar/index.php?page=transportes_rutas&id_transporte=".$actual['rela_transporte']."&status=danger&message=Error al cambiar estado");
+        }
+
+        exit;
+    }
+
 }
 
 $action = $_REQUEST['action'] ?? null;
 $ctrl = new RutasControlador();
 
+if (!isset($_REQUEST['action'])) return;
 switch ($action) {
     case 'listar':
         $ctrl->listar();
@@ -189,11 +289,14 @@ switch ($action) {
     case 'guardar':
         $ctrl->guardar();
         break;
-    case 'editar':
-        $ctrl->editar();
-        break;
     case 'eliminar':
         $ctrl->eliminar();
+        break;
+    case 'actualizar':
+        $ctrl->actualizar();
+        break;
+    case 'toggle':
+        $ctrl->toggle();
         break;
     default:
         header('HTTP/1.1 400 Bad Request');

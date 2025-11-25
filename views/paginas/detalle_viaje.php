@@ -5,29 +5,28 @@ require_once('models/transporte_rutas.php');
 require_once('models/viaje.php');
 
 if (!isset($_GET['id'])) {
-    die("Transporte no especificado.");
+    die("Viaje no especificado.");
 }
 
-$idTransporte = intval($_GET['id']);
+$idViaje = intval($_GET['id']);
 
+$viajesModel = new Viaje();
+$viaje = $viajesModel->traer_viaje_por_id($idViaje);
+if (!$viaje) die("Viaje no encontrado.");
+
+$idTransporte = $viaje['rela_transporte'];
 $transporteModel = new Transporte();
-$transporte = $transporteModel->traer_transporte($idTransporte);
+$transporte = $transporteModel->traer_transporte_por_id($idTransporte);
 if (!$transporte) die("Transporte no encontrado.");
 
 $transportePisoModel = new TransportePiso();
 $pisos = $transportePisoModel->traer_pisos_por_transporte($idTransporte);
 
-$viajesModel = new Viaje();
-$primerViaje = $viajesModel->traer_primer_viaje_por_transporte($idTransporte);
-if (!$primerViaje) die("No hay viajes para este transporte.");
-
-$idViaje = $primerViaje['id_viajes'];
-$viaje = $viajesModel->traer_viaje_por_id($idViaje);
-
 $rutaModel = new Transporte_Rutas();
 $ruta = $rutaModel->traer_por_id($viaje['rela_transporte_rutas']);
 if (!$ruta) die("Ruta no encontrada.");
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -119,6 +118,7 @@ if (!$ruta) die("Ruta no encontrada.");
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="assets/js/asientos.js"></script>
 
 </body>

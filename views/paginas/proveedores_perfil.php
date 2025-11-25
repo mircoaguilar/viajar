@@ -51,9 +51,13 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                     </div>';
                     break;
 
-
                 case 5: 
                     echo '
+                    <div class="card">
+                        <h3>Dashboard</h3>
+                        <p>Estadísticas y métricas de tus transportes.</p>
+                        <a href="index.php?page=transportes_dashboard" class="btn">Ver</a>
+                    </div>
                     <div class="card">
                         <h3>Mis Transportes</h3>
                         <p>Gestiona tus vehículos y rutas.</p>
@@ -62,25 +66,14 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                     <div class="card">
                         <h3>Reservas Transporte</h3>
                         <p>Consulta reservas y disponibilidad.</p>
-                        <a href="index.php?page=reservas_transporte" class="btn">Ver</a>
+                        <a href="index.php?page=transportes_reservas" class="btn">Ver</a>
                     </div>
                     <div class="card">
                         <h3>Agregar Transporte</h3>
                         <p>Registrá un nuevo vehículo para tus rutas.</p>
                         <a href="index.php?page=transportes_carga" class="btn">Agregar</a>
-                    </div>
-                    <div class="card">
-                        <h3>Crear Nueva Ruta</h3>
-                        <p>Configurá una nueva ruta para tus transportes.</p>
-                        <a href="index.php?page=transportes_rutas_carga" class="btn">Crear</a>
-                    </div>
-                    <div class="card">
-                        <h3>Agregar Viaje</h3>
-                        <p>Publicá un nuevo viaje disponible para los pasajeros.</p>
-                        <a href="index.php?page=transportes_viajes_carga" class="btn">Agregar</a>
                     </div>';
                     break;
-
                 case 14:
                     echo '
                     <div class="card">

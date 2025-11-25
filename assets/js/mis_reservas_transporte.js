@@ -43,6 +43,8 @@ function cargarReserva(idReserva) {
 }
 
 function renderizarModalReserva(data) {
+
+
     document.getElementById("info-reserva").innerHTML = `
         <strong>ID:</strong> ${data.id_reservas}<br>
         <strong>Fecha:</strong> ${data.fecha_creacion}<br>
@@ -50,6 +52,7 @@ function renderizarModalReserva(data) {
         <strong>Total:</strong> $${parseFloat(data.total).toLocaleString('es-AR')}<br>
         <strong>Cliente:</strong> ${data.cliente || 'No disponible'}
     `;
+
 
     let filas = "";
     data.detalles.forEach(det => {
@@ -65,32 +68,22 @@ function renderizarModalReserva(data) {
     document.getElementById("tabla-detalles").innerHTML = filas;
 
     let detallesExtra = "";
-    if (data.hotel) {
-        detallesExtra += `
-            <h6>Detalles de hotel</h6>
-            <strong>Check-in:</strong> ${data.hotel.check_in}<br>
-            <strong>Check-out:</strong> ${data.hotel.check_out}<br>
-            <strong>Noches:</strong> ${data.hotel.noches}<br>
-            <strong>Habitación:</strong> ${data.hotel.tipo_habitacion}<br>
-            <strong>Descripción:</strong> ${data.hotel.habitacion_descripcion}<br>
-        `;
-    }
+
     if (data.transporte && data.transporte.length > 0) {
-        detallesExtra += `<h6>Detalles de transporte</h6>`;
+        detallesExtra += `<h6>Detalles de Transporte</h6>`;
+
         data.transporte.forEach(t => {
             detallesExtra += `
                 <strong>Origen:</strong> ${t.origen}<br>
                 <strong>Destino:</strong> ${t.destino}<br>
                 <strong>Salida:</strong> ${t.hora_salida}<br>
-                <strong>Llegada:</strong> ${t.hora_llegada}<br><br>
+                <strong>Llegada:</strong> ${t.hora_llegada}<br>
+                <strong>Piso:</strong> ${t.piso}<br>
+                <strong>Asiento:</strong> ${t.numero_asiento} (Fila ${t.fila}, Columna ${t.columna})<br>
+                <strong>Precio:</strong> $${parseFloat(t.precio_unitario).toLocaleString('es-AR')}<br>
+                <strong>Estado:</strong> ${t.estado}<br><br>
             `;
         });
-    }
-    if (data.tour) {
-        detallesExtra += `
-            <h6>Detalles de tour</h6>
-            <strong>Nombre:</strong> ${data.tour.tour_nombre}<br>
-        `;
     }
 
     document.getElementById("detalles-extra").innerHTML = detallesExtra;

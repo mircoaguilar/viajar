@@ -61,12 +61,13 @@ class Transporte_Rutas {
             JOIN transporte t ON r.rela_transporte = t.id_transporte
             JOIN ciudades c1 ON r.rela_ciudad_origen = c1.id_ciudad
             JOIN ciudades c2 ON r.rela_ciudad_destino = c2.id_ciudad
-            WHERE r.id_ruta = $id_ruta AND r.activo = 1
+            WHERE r.id_ruta = $id_ruta
             LIMIT 1
         ";
         $res = $conexion->consultar($query);
         return $res ? $res[0] : null;
     }
+
 
     public function guardar() {
         $conexion = new Conexion();
@@ -141,6 +142,42 @@ class Transporte_Rutas {
         $query = "UPDATE transporte_rutas SET activo=0 WHERE id_ruta=$id";
         return $conexion->actualizar($query);
     }
+
+    public function traer_rutas_por_transporte($id_transporte) {
+        $conexion = new Conexion();
+        $id_transporte = (int)$id_transporte;
+
+        $query = "
+            SELECT 
+                r.*,
+                c1.nombre AS ciudad_origen,
+                c2.nombre AS ciudad_destino,
+                COUNT(v.id_viajes) AS total_viajes
+            FROM transporte_rutas r
+            JOIN ciudades c1 ON r.rela_ciudad_origen = c1.id_ciudad
+            JOIN ciudades c2 ON r.rela_ciudad_destino = c2.id_ciudad
+            LEFT JOIN viajes v ON v.rela_transporte_rutas = r.id_ruta
+            WHERE r.rela_transporte = $id_transporte
+            GROUP BY r.id_ruta
+            ORDER BY r.id_ruta DESC
+        ";
+
+        return $conexion->consultar($query);
+    }
+
+    public function cambiar_estado($id_ruta, $estado){
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+
+        $id_ruta = (int)$id_ruta;
+        $estado  = (int)$estado;
+
+        $query = "UPDATE transporte_rutas SET activo = $estado WHERE id_ruta = $id_ruta";
+        return $mysqli->query($query);
+    }
+
+
+
 
     public function getId_ruta() { return $this->id_ruta; }
     public function setId_ruta($id_ruta) { $this->id_ruta = $id_ruta; return $this; }

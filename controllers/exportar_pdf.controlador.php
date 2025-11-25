@@ -79,20 +79,37 @@ switch ($tipo) {
             break;
         }
 
-        $html .= '<table>
-                    <tr><th>Nombre</th><th>Tipo</th><th>Capacidad</th><th>Descripción</th></tr>';
+        $html .= '<table border="1" cellspacing="0" cellpadding="5">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Capacidad</th>
+                        <th>Pisos</th>
+                        <th>Rutas</th>
+                        <th>Viajes</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                    </tr>';
 
         foreach ($transportes as $t) {
+
+            $estado = ucfirst(strtolower($t['estado_revision'] ?? 'Pendiente'));
+
             $html .= "<tr>
                         <td>".htmlspecialchars($t['nombre_servicio'])."</td>
                         <td>".htmlspecialchars($t['tipo_transporte'])."</td>
                         <td>".htmlspecialchars($t['transporte_capacidad'])."</td>
-                        <td>".htmlspecialchars($t['descripcion'])."</td>
-                      </tr>";
+                        <td>".(int)($t['total_pisos'] ?? 0)."</td>
+                        <td>".(int)($t['total_rutas'] ?? 0)."</td>
+                        <td>".(int)($t['total_viajes'] ?? 0)."</td>
+                        <td>".htmlspecialchars($t['descripcion'] ?? '-')."</td>
+                        <td>".$estado."</td>
+                    </tr>";
         }
 
         $html .= "</table>";
         break;
+
 
     case 'tour':
         $tours = $controlador->mis_tours($id_usuario);

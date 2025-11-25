@@ -74,16 +74,33 @@ class Transporte {
         $id_proveedor = (int)$proveedor['id_proveedores'];
 
         $query = "
-            SELECT t.*, tt.descripcion AS tipo_transporte, p.razon_social AS proveedor_nombre
+            SELECT 
+                t.*, 
+                t.transporte_matricula AS matricula,
+                tt.descripcion AS tipo_transporte, 
+                p.razon_social AS proveedor_nombre,
+                (SELECT COUNT(*) 
+                FROM transporte_pisos tp 
+                WHERE tp.rela_transporte = t.id_transporte) AS total_pisos,
+                (SELECT COUNT(*) 
+                FROM transporte_rutas tr 
+                WHERE tr.rela_transporte = t.id_transporte 
+                AND tr.activo = 1) AS total_rutas,
+                (SELECT COUNT(*) 
+                FROM viajes v
+                JOIN transporte_rutas tr2 ON v.rela_transporte_rutas = tr2.id_ruta
+                WHERE tr2.rela_transporte = t.id_transporte
+                AND v.activo = 1) AS total_viajes
             FROM transporte t
             JOIN tipo_transporte tt ON t.rela_tipo_transporte = tt.id_tipo_transporte
             JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
             WHERE t.rela_proveedor = $id_proveedor
-              AND t.activo = 1
+            AND t.activo = 1
             ORDER BY t.id_transporte DESC
         ";
         return $conexion->consultar($query);
     }
+
 
     public function traer_transporte($id) {
         $conexion = new Conexion();
@@ -96,7 +113,28 @@ class Transporte {
             WHERE t.id_transporte = $id AND t.activo = 1
         ";
         $res = $conexion->consultar($query);
-        return $res ? $res[0] : null;
+        return $res; 
+    }
+
+    public function traer_transporte_por_id($id) {
+        $conexion = new Conexion();
+        $id = (int)$id;
+
+        $query = "
+            SELECT 
+                t.*, 
+                tt.descripcion AS tipo_transporte, 
+                p.razon_social AS proveedor_nombre
+            FROM transporte t
+            LEFT JOIN tipo_transporte tt ON t.rela_tipo_transporte = tt.id_tipo_transporte
+            LEFT JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
+            WHERE t.id_transporte = $id
+            AND t.activo = 1
+            LIMIT 1
+        ";
+
+        $resultado = $conexion->consultar($query);
+        return $resultado ? $resultado[0] : null;
     }
 
     public function guardar() {
@@ -164,27 +202,71 @@ class Transporte {
         }
     }
 
-    public function actualizar() {
+   public function actualizar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
 
-        $matricula = $mysqli->real_escape_string($this->transporte_matricula);
-        $capacidad = (int)$this->transporte_capacidad;
-        $tipo = (int)$this->rela_tipo_transporte;
-        $nombre = $mysqli->real_escape_string($this->nombre_servicio);
-        $desc = $mysqli->real_escape_string($this->descripcion);
-        $imagen = $this->imagen_principal ? ", imagen_principal='" . $mysqli->real_escape_string($this->imagen_principal) . "'" : "";
+        $actual = $this->traer_transporte($this->id_transporte);
+        if (!$actual) return false;
 
-        $query = "UPDATE transporte SET
-            transporte_matricula = '$matricula',
-            transporte_capacidad = $capacidad,
-            rela_tipo_transporte = $tipo,
-            nombre_servicio = '$nombre',
-            descripcion = '$desc'
-            $imagen
+        $estado_actual = $actual[0]['estado_revision'];
+
+        $matricula = $mysqli->real_escape_string($this->transporte_matricula ?? '');
+        $capacidad = (int)($this->transporte_capacidad ?? 0);
+        $tipo = (int)($this->rela_tipo_transporte ?? 0);
+        $nombre = $mysqli->real_escape_string($this->nombre_servicio ?? '');
+        $desc = $mysqli->real_escape_string($this->descripcion ?? '');
+
+        if ($tipo <= 0) {
+            return false;
+        }
+
+        $imagen = !empty($this->imagen_principal)
+            ? ", imagen_principal='" . $mysqli->real_escape_string($this->imagen_principal) . "'"
+            : "";
+
+        if ($estado_actual === 'rechazado') {
+            $revision_sql = ",
+                estado_revision='pendiente',
+                motivo_rechazo=NULL,
+                fecha_revision=NULL,
+                revisado_por=NULL
+            ";
+        } else {
+            $revision_sql = "";
+        }
+
+        $query = "
+            UPDATE transporte SET
+                transporte_matricula = '$matricula',
+                transporte_capacidad = $capacidad,
+                rela_tipo_transporte = $tipo,
+                nombre_servicio = '$nombre',
+                descripcion = '$desc'
+                $imagen
+                $revision_sql
             WHERE id_transporte = " . (int)$this->id_transporte;
 
         return $conexion->actualizar($query);
+    }
+
+    public function es_propietario_de_ruta($id_ruta, $id_usuario){
+        $conexion = new Conexion();
+        $id_ruta = (int)$id_ruta;
+        $id_usuario = (int)$id_usuario;
+
+        $query = "
+            SELECT r.id_ruta
+            FROM transporte_rutas r
+            JOIN transporte t ON r.rela_transporte = t.id_transporte
+            JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
+            WHERE r.id_ruta = $id_ruta
+            AND p.rela_usuario = $id_usuario
+            LIMIT 1
+        ";
+
+        $res = $conexion->consultar($query);
+        return !empty($res);
     }
 
     public function eliminar_logico() {
@@ -195,17 +277,22 @@ class Transporte {
 
     public function verificar_propietario($id_transporte, $id_proveedor) {
         $conexion = new Conexion();
+
         $id_transporte = (int)$id_transporte;
         $id_proveedor = (int)$id_proveedor;
+
         $query = "SELECT id_transporte 
-                  FROM transporte 
-                  WHERE id_transporte = $id_transporte 
+                FROM transporte 
+                WHERE id_transporte = $id_transporte 
                     AND rela_proveedor = $id_proveedor
                     AND activo = 1
-                  LIMIT 1";
+                LIMIT 1";
+
         $res = $conexion->consultar($query);
         return !empty($res);
     }
+
+
 
     public function buscar($destino = '', $desde = '', $hasta = '') {
         $conexion = new Conexion();
@@ -262,6 +349,93 @@ class Transporte {
         ";
 
         return $conexion->consultar($query);
+    }
+
+    public function traer_por_proveedor($id_proveedor){
+        $conexion = new Conexion();
+        $id_proveedor = (int)$id_proveedor;
+
+        $query = "
+            SELECT 
+                t.*, 
+                t.transporte_matricula AS matricula,
+                tt.descripcion AS tipo_transporte, 
+                p.razon_social AS proveedor_nombre,
+                (SELECT COUNT(*) 
+                    FROM transporte_pisos tp 
+                    WHERE tp.rela_transporte = t.id_transporte) AS total_pisos,
+                (SELECT COUNT(*) 
+                    FROM transporte_rutas tr 
+                    WHERE tr.rela_transporte = t.id_transporte 
+                    AND tr.activo = 1) AS total_rutas,
+                (SELECT COUNT(*) 
+                    FROM viajes v
+                    JOIN transporte_rutas tr2 ON v.rela_transporte_rutas = tr2.id_ruta
+                    WHERE tr2.rela_transporte = t.id_transporte
+                    AND v.activo = 1) AS total_viajes
+            FROM transporte t
+            JOIN tipo_transporte tt ON t.rela_tipo_transporte = tt.id_tipo_transporte
+            JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
+            WHERE t.rela_proveedor = $id_proveedor
+            AND t.activo = 1
+            ORDER BY t.id_transporte DESC
+        ";
+
+        return $conexion->consultar($query);
+    }
+
+    public function traer_viaje_por_id($id_viaje) {
+        $conexion = new Conexion();
+        $id_viaje = (int)$id_viaje;
+
+        $query = "
+            SELECT 
+                v.*,
+
+                tr.id_ruta,
+                tr.nombre AS ruta_nombre,
+                tr.trayecto,
+                tr.rela_ciudad_origen,
+                tr.rela_ciudad_destino,
+                tr.duracion,
+                tr.descripcion AS ruta_descripcion,
+                tr.precio_por_persona,
+                tr.rela_transporte,
+
+                t.id_transporte,
+                t.nombre_servicio AS transporte_nombre,
+                t.transporte_matricula,
+
+                tt.descripcion AS tipo_transporte,
+
+                c1.nombre AS origen_nombre,
+                c2.nombre AS destino_nombre
+
+            FROM viajes v
+
+            INNER JOIN transporte_rutas tr 
+                ON v.rela_transporte_rutas = tr.id_ruta
+
+            INNER JOIN transporte t 
+                ON tr.rela_transporte = t.id_transporte
+
+            LEFT JOIN tipo_transporte tt 
+                ON t.rela_tipo_transporte = tt.id_tipo_transporte
+
+            LEFT JOIN ciudades c1 
+                ON tr.rela_ciudad_origen = c1.id_ciudad
+
+            LEFT JOIN ciudades c2 
+                ON tr.rela_ciudad_destino = c2.id_ciudad
+
+            WHERE v.id_viajes = $id_viaje
+            AND v.activo = 1
+
+            LIMIT 1
+        ";
+
+        $resultado = $conexion->consultar($query);
+        return $resultado ? $resultado[0] : null;
     }
 
 

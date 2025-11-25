@@ -12,6 +12,8 @@ $ciudades = $ciudadModel->traer_ciudades();
 
 $transporteModel = new Transporte();
 $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usuarios']);
+
+$id_transporte_url = (int)($_GET['id_transporte'] ?? 0);
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -31,7 +33,7 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
       <h2>Crear Ruta</h2>
       <p class="hint">Ingresá la información de la ruta para tu transporte.</p>
 
-      <form id="formRuta" class="grid grid-2">
+      <form id="formRuta" class="grid grid-2" action="controllers/transportes/rutas.controlador.php?action=guardar" method="POST">
         <input type="hidden" name="action" value="guardar">
 
         <div>
@@ -46,10 +48,12 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
 
         <div>
           <label for="rela_transporte">Transporte</label>
-          <select id="rela_transporte" name="rela_transporte" >
+          <select id="rela_transporte" name="rela_transporte">
             <option value="">Seleccionar transporte...</option>
+
             <?php foreach ($transportes as $t): ?>
               <option value="<?= $t['id_transporte'] ?>"
+                <?= ($t['id_transporte'] == $id_transporte_url) ? 'selected' : '' ?>
                 data-nombre="<?= htmlspecialchars($t['nombre_servicio']) ?>"
                 data-tipo="<?= htmlspecialchars($t['tipo_transporte']) ?>"
                 data-matricula="<?= htmlspecialchars($t['transporte_matricula']) ?>"
@@ -58,6 +62,7 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
                 <?= htmlspecialchars($t['nombre_servicio']) ?> (<?= htmlspecialchars($t['transporte_matricula']) ?>)
               </option>
             <?php endforeach; ?>
+
           </select>
 
           <div id="previewTransporte" class="preview-transporte"></div>
@@ -90,7 +95,7 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
 
         <div>
           <label for="precio_por_persona">Precio por persona</label>
-          <input type="number" id="precio_por_persona" name="precio_por_persona" min="0" step="0.01" >
+          <input type="number" id="precio_por_persona" name="precio_por_persona" min="0" step="0.01">
         </div>
 
         <div class="grid" style="grid-column: 1 / -1;">
@@ -109,17 +114,17 @@ $transportes = $transporteModel->traer_transportes_por_usuario($_SESSION['id_usu
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
 <script src="assets/js/rutas_carga.js"></script>
 <script>
-  flatpickr("#duracion", {
+flatpickr("#duracion", {
     enableTime: true,
     noCalendar: true,
     dateFormat: "H:i",
     time_24hr: true,
     defaultHour: 2,
     defaultMinute: 0
-  });
+});
 </script>
+
 </body>
 </html>

@@ -103,5 +103,27 @@ class ProveedoresControlador {
         $tourModel = new Tour();
         return $tourModel->traer_tours_por_usuario($id_usuario);
     }
+
+    public function verificar_propietario_transporte($id_transporte, $id_usuario) {
+        require_once(__DIR__ . '/../../models/transporte.php');
+        require_once(__DIR__ . '/../../models/proveedor.php');
+
+        $proveedorModel = new Proveedor();
+        $proveedor = $proveedorModel->obtenerPorUsuario($id_usuario);
+
+        if (!$proveedor) return false;
+
+        $id_proveedor = (int)$proveedor['id_proveedores'];
+
+        $transporteModel = new Transporte();
+        return $transporteModel->verificar_propietario($id_transporte, $id_proveedor);
+    }
+
+    public function verificar_propietario_ruta($id_ruta, $id_usuario) {
+        $model = new Transporte();
+        return $model->es_propietario_de_ruta($id_ruta, $id_usuario);
+    }
+
+
 }
 ?>
