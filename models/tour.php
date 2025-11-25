@@ -121,27 +121,50 @@ class Tour {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
 
-        $nombre = $mysqli->real_escape_string($this->nombre_tour);
-        $desc = $mysqli->real_escape_string($this->descripcion);
-        $precio = floatval($this->precio_por_persona);
-        $lugar = $mysqli->real_escape_string($this->lugar_encuentro);
-        $direccion = $mysqli->real_escape_string($this->direccion ?? '');
-        $duracion = $this->duracion_horas ?: '00:00:00';
-        $hora = $this->hora_encuentro ? $mysqli->real_escape_string($this->hora_encuentro) : null;
-        $imagen = $this->imagen_principal ? ", imagen_principal='" . $mysqli->real_escape_string($this->imagen_principal) . "'" : "";
+        $actual = $this->traer_tour($this->id_tour);
+        if (!$actual) return false;
+        if (empty($this->imagen_principal) && !empty($actual['imagen_principal'])) {
+            $this->imagen_principal = $actual['imagen_principal'];
+        }
 
-        $query = "UPDATE tours SET
-                    nombre_tour = '$nombre',
-                    descripcion = '$desc',
-                    duracion_horas = '$duracion',
-                    precio_por_persona = $precio,
-                    hora_encuentro = " . ($hora ? "'$hora'" : "NULL") . ",
-                    lugar_encuentro = '$lugar',
-                    direccion = '$direccion'
-                    $imagen,
-                    estado_revision = 'pendiente',
-                    motivo_rechazo = NULL
-                  WHERE id_tour = " . (int)$this->id_tour;
+        $estado_actual = $actual['estado_revision'] ?? 'pendiente';
+
+        $toString = function($val) {
+            if (is_array($val)) return reset($val); 
+            if (is_null($val)) return '';
+            return (string)$val;
+        };
+
+        $nombre    = $mysqli->real_escape_string($toString($this->nombre_tour));
+        $desc      = $mysqli->real_escape_string($toString($this->descripcion));
+        $precio    = floatval($this->precio_por_persona);
+        $lugar     = $mysqli->real_escape_string($toString($this->lugar_encuentro));
+        $direccion = $mysqli->real_escape_string($toString($this->direccion ?? ''));
+        $duracion  = $toString($this->duracion_horas) ?: '00:00:00';
+        $hora      = $this->hora_encuentro 
+                    ? $mysqli->real_escape_string($toString($this->hora_encuentro))
+                    : null;
+        $imagen_sql = !empty($this->imagen_principal) 
+            ? ", imagen_principal='" . $mysqli->real_escape_string($toString($this->imagen_principal)) . "'" 
+            : ", imagen_principal=NULL"; 
+
+        $revision_sql = '';
+        if ($estado_actual === 'rechazado') {
+            $revision_sql = ", estado_revision='pendiente', motivo_rechazo=NULL, fecha_revision=NULL, revisado_por=NULL";
+        }
+
+        $query = "
+            UPDATE tours SET
+                nombre_tour = '$nombre',
+                descripcion = '$desc',
+                duracion_horas = '$duracion',
+                precio_por_persona = $precio,
+                hora_encuentro = " . ($hora ? "'$hora'" : "NULL") . ",
+                lugar_encuentro = '$lugar',
+                direccion = '$direccion'
+                $imagen_sql 
+                $revision_sql
+            WHERE id_tour = " . (int)$this->id_tour;
 
         return $conexion->actualizar($query);
     }
@@ -165,6 +188,42 @@ class Tour {
         $query = "SELECT t.* FROM tours t WHERE t.activo = 1 AND t.estado_revision = 'aprobado'";
         if ($destino) $query .= " AND t.nombre_tour LIKE '%$destino%'";
         $query .= " ORDER BY t.id_tour DESC";
+
+        return $conexion->consultar($query);
+    }
+
+    public function traer_tours_aprobados_por_usuario($id_usuario) {
+        $conexion = new Conexion();
+        $proveedor = (new Proveedor())->obtenerPorUsuario((int)$id_usuario);
+        if (!$proveedor) return [];
+        $id_proveedor = (int)$proveedor['id_proveedores'];
+
+        $query = "SELECT t.*, p.razon_social AS proveedor_nombre
+                FROM tours t
+                JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
+                WHERE t.rela_proveedor = $id_proveedor
+                    AND t.activo = 1
+                    AND t.estado_revision = 'aprobado'
+                ORDER BY t.id_tour DESC";
+
+        return $conexion->consultar($query);
+    }
+
+    public function traer_tours_proveedor($id_usuario, $estado = 'aprobado') {
+        $conexion = new Conexion();
+        $proveedor = (new Proveedor())->obtenerPorUsuario((int)$id_usuario);
+        if (!$proveedor) return [];
+        $id_proveedor = (int)$proveedor['id_proveedores'];
+
+        $estado_sql = $estado ? " AND t.estado_revision = '$estado'" : "";
+
+        $query = "SELECT t.*, p.razon_social AS proveedor_nombre
+                FROM tours t
+                JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
+                WHERE t.rela_proveedor = $id_proveedor
+                    AND t.activo = 1
+                    $estado_sql
+                ORDER BY t.id_tour DESC";
 
         return $conexion->consultar($query);
     }

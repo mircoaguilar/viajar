@@ -25,9 +25,9 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [3, 
            case 14: 
                 echo '
                     <li><a href="index.php?page=tours_mis_tours"><i class="fa-solid fa-map-location-dot"></i> Mis tours</a></li>
-                    <li><a href="index.php?page=tours_proximos"><i class="fa-solid fa-calendar-days"></i> Próximos tours</a></li>
                     <li><a href="index.php?page=reservas_tours"><i class="fa-solid fa-users"></i> Reservas de tours</a></li>
                     <li><a href="index.php?page=tours_carga"><i class="fa-solid fa-plus"></i> Crear nuevo tour</a></li>
+                    <li><a href="index.php?page=tours_dashboard"><i class="fa fa-chart-line"></i> Dashboard</a></li>
                 ';
                 break;
 

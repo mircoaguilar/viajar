@@ -77,6 +77,11 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                 case 14:
                     echo '
                     <div class="card">
+                        <h3>Dashboard</h3>
+                        <p>Estadísticas y métricas de tus tours.</p>
+                        <a href="index.php?page=tours_dashboard" class="btn">Ver</a>
+                    </div>
+                    <div class="card">
                         <h3>Mis Tours</h3>
                         <p>Gestiona tus tours creados.</p>
                         <a href="index.php?page=tours_mis_tours" class="btn">Ver</a>
@@ -84,17 +89,12 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
                     <div class="card">
                         <h3>Reservas de Tours</h3>
                         <p>Visualiza las reservas recibidas para cada tour.</p>
-                        <a href="index.php?page=reservas_tours" class="btn">Ver</a>
+                        <a href="index.php?page=tours_reservas" class="btn">Ver</a>
                     </div>
                     <div class="card">
                         <h3>Crear Nuevo Tour</h3>
                         <p>Publica un tour guiado con detalles de lugar, fechas y cupos.</p>
                         <a href="index.php?page=tours_carga" class="btn">Crear</a>
-                    </div>
-                    <div class="card">
-                        <h3>Gestionar Stock</h3>
-                        <p>Agregá fechas y cupos disponibles para tus tours.</p>
-                        <a href="index.php?page=tours_stock" class="btn">Ir</a>
                     </div>';
                     break;
 

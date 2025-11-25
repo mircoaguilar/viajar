@@ -10,7 +10,7 @@ if (!isset($_SESSION['id_usuarios']) || !in_array($_SESSION['id_perfiles'], [1, 
     exit;
 }
 
-$action = $_GET['action'] ?? '';
+$action = $_GET['action'] ?? $_POST['action'] ?? '';
 $stockModel = new Tour_Stock();
 $tourModel = new Tour();
 
@@ -36,13 +36,22 @@ try {
             break;
 
         case 'traer_stock':
-            $rela_tour = $_GET['rela_tour'] ?? '';
+            $rela_tour = $_POST['rela_tour'] ?? '';
             if (!$rela_tour) {
                 throw new Exception('ID de tour no especificado.');
             }
 
             $data = $stockModel->traer_por_tour($rela_tour);
-            echo json_encode(['status' => 'success', 'data' => $data]);
+
+            $stock = [];
+            foreach ($data as $row) {
+                $stock[] = [
+                    'fecha' => $row['fecha'],
+                    'cantidad_disponible' => $row['cupos_disponibles']
+                ];
+            }
+
+            echo json_encode(['status' => 'success', 'stock' => $stock]);
             break;
 
         case 'actualizar_stock':

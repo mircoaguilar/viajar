@@ -507,6 +507,108 @@ class Reserva {
         return $conexion->actualizar($query);
     }
 
+    public function traer_por_tour($id_tour) {
+        $conexion = new Conexion();
+        $id_tour = (int)$id_tour;
+
+        $query = "
+            SELECT 
+                r.id_reservas,
+                r.rela_usuarios,
+                r.total,
+                r.reservas_estado,
+                r.fecha_creacion,
+
+                CONCAT(p.personas_nombre, ' ', p.personas_apellido) AS cliente,
+
+                dr.id_detalle_reserva,
+                dr.tipo_servicio,
+                dr.cantidad,
+                dr.precio_unitario,
+                dr.subtotal,
+
+                drt.id_detalle_tour,
+                drt.fecha AS fecha_tour,
+                drt.estado AS detalle_tour_estado,
+
+                t.id_tour,
+                t.nombre_tour
+
+            FROM reservas r
+            INNER JOIN detalle_reservas dr ON dr.rela_reservas = r.id_reservas
+            INNER JOIN detalle_reserva_tour drt ON drt.rela_detalle_reserva = dr.id_detalle_reserva
+            INNER JOIN tours t ON t.id_tour = drt.rela_tour
+            INNER JOIN usuarios u ON u.id_usuarios = r.rela_usuarios
+            INNER JOIN personas p ON p.id_personas = u.rela_personas
+            WHERE dr.tipo_servicio = 'tour'
+            AND drt.rela_tour = $id_tour
+            ORDER BY r.fecha_creacion DESC
+        ";
+
+        return $conexion->consultar($query);
+    }
+
+    public function ver_reserva_tour($id_reserva) {
+        $conexion = new Conexion();
+        $id_reserva = (int)$id_reserva;
+
+        $query = "
+            SELECT 
+                r.id_reservas,
+                r.rela_usuarios,
+                r.total,
+                r.reservas_estado,
+                r.fecha_creacion,
+                CONCAT(p.personas_nombre, ' ', p.personas_apellido) AS cliente,
+                dr.id_detalle_reserva,
+                dr.tipo_servicio,
+                dr.cantidad,
+                dr.precio_unitario,
+                dr.subtotal AS importe_total,
+                drt.id_detalle_tour,
+                drt.rela_tour,
+                drt.fecha AS fecha_tour,
+                t.nombre_tour
+            FROM reservas r
+            INNER JOIN detalle_reservas dr ON dr.rela_reservas = r.id_reservas
+            INNER JOIN detalle_reserva_tour drt ON drt.rela_detalle_reserva = dr.id_detalle_reserva
+            INNER JOIN tours t ON t.id_tour = drt.rela_tour
+            INNER JOIN usuarios u ON u.id_usuarios = r.rela_usuarios
+            INNER JOIN personas p ON p.id_personas = u.rela_personas
+            WHERE r.id_reservas = $id_reserva
+        ";
+
+        return $conexion->consultar($query);
+    }
+
+    public function traer_detalle_tour_por_id($id_detalle){
+        $conexion = new Conexion();
+        $id = (int)$id_detalle;
+
+        $query = "
+            SELECT drt.*, t.nombre_tour AS tour_nombre
+            FROM detalle_reserva_tour drt
+            INNER JOIN tours t ON t.id_tour = drt.rela_tour
+            WHERE drt.id_detalle_tour = $id
+            LIMIT 1
+        ";
+
+        $res = $conexion->consultar($query);
+        return !empty($res) ? $res[0] : null;
+    }
+
+    public function cancelar_detalle_tour($id_detalle){
+        $conexion = new Conexion();
+        $id = (int)$id_detalle;
+
+        $query = "
+            UPDATE detalle_reserva_tour
+            SET estado = 'cancelada'
+            WHERE id_detalle_tour = $id
+        ";
+
+        return $conexion->actualizar($query);
+    }
 
     public function getId_reservas() { return $this->id_reservas; }
     public function setId_reservas($id) { $this->id_reservas = $id; return $this; }

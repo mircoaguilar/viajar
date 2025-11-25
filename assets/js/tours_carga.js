@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const descripcion = document.getElementById('descripcion');
   const descripcionCount = document.getElementById('descripcion-count');
 
- 
+
   function mostrarError(input, mensaje) {
     input.classList.add('input-error');
     let errorSpan = input.nextElementSibling;
@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     errorSpan.textContent = mensaje;
   }
-
 
   function limpiarError(input) {
     input.classList.remove('input-error');
@@ -30,17 +29,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const val = input.value.trim();
 
     switch(input.id) {
+
       case 'nombre_tour':
         if (!val) mostrarError(input, 'El nombre del tour no puede estar vacío.');
         break;
+
       case 'precio_por_persona':
         const num = parseFloat(val);
-        if (isNaN(num) || num <= 0) mostrarError(input, 'El precio por persona debe ser un número positivo.');
+        if (isNaN(num) || num <= 0)
+          mostrarError(input, 'El precio por persona debe ser un número positivo.');
         break;
+
       case 'imagen_principal':
-        if (input.files.length === 0) {
-          mostrarError(input, 'Debe seleccionar una imagen principal.');
-        } else {
+        if (input.files.length > 0) {
           const file = input.files[0];
           const tiposValidos = ["image/jpeg", "image/png", "image/jpg"];
           if (!tiposValidos.includes(file.type)) {
@@ -48,30 +49,35 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
         break;
+
       case 'descripcion':
         if (!val) mostrarError(input, 'La descripción no puede estar vacía.');
-        else if (val.length > 1000) mostrarError(input, 'La descripción no puede superar los 1000 caracteres.');
+        else if (val.length > 1000)
+          mostrarError(input, 'La descripción no puede superar los 1000 caracteres.');
         break;
+
       case 'direccion':
         if (!val) mostrarError(input, 'La dirección no puede estar vacía.');
         break;
+
       case 'lugar_encuentro':
         if (!val) mostrarError(input, 'El lugar de encuentro no puede estar vacío.');
         break;
+
       case 'duracion_horas':
         if (!val) mostrarError(input, 'La duración no puede estar vacía.');
-        else if (!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(val)) {
+        else if (!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(val))
           mostrarError(input, 'La duración debe tener formato HH:MM (00:00 a 23:59).');
-        }
         break;
+
       case 'hora_encuentro':
         if (!val) mostrarError(input, 'La hora de encuentro no puede estar vacía.');
-        else if (!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(val)) {
+        else if (!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(val))
           mostrarError(input, 'La hora de encuentro debe tener formato HH:MM (00:00 a 23:59).');
-        }
         break;
     }
   }
+
 
   if (formTour) {
 
@@ -85,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
       descripcion.addEventListener('input', () => {
         let longitud = descripcion.value.length;
 
-       
         if (longitud > 1000) {
           descripcion.value = descripcion.value.substring(0, 1000);
           longitud = 1000;
@@ -111,19 +116,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let errores = [];
 
- 
       formTour.querySelectorAll('input, textarea').forEach(input => {
         limpiarError(input);
         validarCampo(input);
         if (input.classList.contains('input-error')) errores.push(input.id);
       });
 
-     
       if (errores.length > 0) return;
 
-     
       const formData = new FormData(formTour);
-      formData.append('action', 'guardar');
+
+      const actionOriginal = formTour.querySelector('input[name="action"]').value;
+      formData.set('action', actionOriginal);
 
       let durVal = formData.get('duracion_horas');
       if (!durVal.includes(':')) durVal = '00:' + durVal;
@@ -135,7 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (horaVal.split(':').length === 2) horaVal += ':00';
       formData.set('hora_encuentro', horaVal);
 
-
       fetch('controllers/tours/tours.controlador.php', {
         method: 'POST',
         body: formData
@@ -144,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(data => {
         if (data.status === 'success' || data.status === 'ok') {
           alert('Tu tour fue enviado correctamente y será revisado por el equipo.');
-          window.location.href = 'index.php?page=proveedores_perfil';
+          window.location.href = 'index.php?page=tours_mis_tours';
         } else {
           alert(data.mensaje || data.message || 'No se pudo guardar el tour.');
         }

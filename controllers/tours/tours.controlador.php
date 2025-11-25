@@ -1,9 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 require_once(__DIR__ . '/../../models/Tour.php');
 require_once(__DIR__ . '/../../models/proveedor.php');
-
-header('Content-Type: application/json');
 
 class ToursControlador {
 
@@ -96,7 +94,6 @@ class ToursControlador {
         }
 
         $direccion = trim($_POST['direccion'] ?? ''); 
-
         $tour = new Tour(
             $id,
             $_POST['nombre_tour'] ?? '',
@@ -106,6 +103,7 @@ class ToursControlador {
             $_POST['hora_encuentro'] ?? '',
             $_POST['lugar_encuentro'] ?? '',
             $direccion, 
+            '', 
             $_SESSION['id_proveedores'] ?? null
         );
 
@@ -142,6 +140,23 @@ class ToursControlador {
             "mensaje" => $resultado ? "Tour eliminado" : "Error al eliminar"
         ]);
         exit;
+    }
+
+    public function obtenerDatosTour($id_tour){
+        $tourModel = new Tour();
+        $tourData = $tourModel->traer_tour($id_tour);
+
+        if (!$tourData) {
+            return null;
+        }
+
+        $proveedorModel = new Proveedor();
+        $proveedor = $proveedorModel->obtenerPorId($tourData['rela_proveedor']);
+
+        return [
+            "tourData"   => $tourData,
+            "proveedor"  => $proveedor
+        ];
     }
 }
 

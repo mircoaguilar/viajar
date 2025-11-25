@@ -122,24 +122,43 @@ switch ($tipo) {
         }
 
         $html .= '<table>
-                    <tr><th>Nombre</th><th>Duración</th><th>Precio</th><th>Fecha Inicio</th></tr>';
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Duración</th>
+                        <th>Precio</th>
+                        <th>Hora</th>
+                        <th>Punto de encuentro</th>
+                        <th>Dirección</th>
+                        <th>Estado</th>
+                    </tr>';
 
         foreach ($tours as $tour) {
+            
+            $duracion = $tour['duracion_horas'];
+            list($h, $m) = explode(':', substr($duracion, 0, 5));
+            $duracionTexto = intval($h) . "h";
+            if (intval($m) > 0) $duracionTexto .= " " . intval($m) . "m";
+
+            $estado = ucfirst($tour['estado_revision'] ?? "Pendiente");
+
             $html .= "<tr>
                         <td>".htmlspecialchars($tour['nombre_tour'])."</td>
-                        <td>".htmlspecialchars($tour['duracion_horas'])." hrs</td>
+                        <td>{$duracionTexto}</td>
                         <td>$".number_format($tour['precio_por_persona'], 0, ',', '.')."</td>
-                        <td>".htmlspecialchars($tour['fecha_inicio'])."</td>
-                      </tr>";
+                        <td>".htmlspecialchars(substr($tour['hora_encuentro'], 0, 5))." hs</td>
+                        <td>".htmlspecialchars($tour['lugar_encuentro'])."</td>
+                        <td>".htmlspecialchars($tour['direccion'])."</td>
+                        <td>{$estado}</td>
+                    </tr>";
         }
 
         $html .= "</table>";
         break;
 
-    default:
-        $html .= "<p class='no-data'>Tipo de listado no reconocido.</p>";
-        break;
-}
+        default:
+            $html .= "<p class='no-data'>Tipo de listado no reconocido.</p>";
+            break;
+    }
 
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'landscape');

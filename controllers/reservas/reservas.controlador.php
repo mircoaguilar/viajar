@@ -74,6 +74,60 @@ switch ($action) {
         exit;
     break;
 
+    case 'ver_tour':
+        if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+            echo json_encode(['status'=>'error','message'=>'Método no permitido']);
+            exit;
+        }
+
+        $id = intval($_GET['id'] ?? 0);
+        if ($id <= 0) {
+            echo json_encode(['status'=>'error','message'=>'ID inválido']);
+            exit;
+        }
+
+        $reserva = $reservaModel->ver_reserva_tour($id);
+        if (!$reserva) {
+            echo json_encode(['status'=>'error','message'=>'Reserva no encontrada']);
+            exit;
+        }
+
+        $userArray = $usuarioModel->traer_usuarios_por_id($reserva[0]['rela_usuarios'] ?? 0);
+        $user = !empty($userArray) ? $userArray[0] : null;
+        if ($user && !empty($user['rela_personas'])) {
+            $conexion = new Conexion();
+            $persona = $conexion->consultar("SELECT personas_nombre, personas_apellido FROM personas WHERE id_personas = ".$user['rela_personas']);
+            $clienteNombre = !empty($persona) ? $persona[0]['personas_nombre'].' '.$persona[0]['personas_apellido'] : 'No disponible';
+        } else {
+            $clienteNombre = 'No disponible';
+        }
+
+        $detalles = [];
+        foreach ($reserva as $r) {
+            $detalles[] = [
+                'id_detalle_tour' => $r['id_detalle_tour'] ?? null,
+                'fecha_tour' => $r['fecha_tour'] ?? '',
+                'nombre_tour' => $r['nombre_tour'] ?? '',
+                'tipo_servicio' => $r['tipo_servicio'] ?? 'tour',
+                'cantidad' => $r['cantidad'] ?? 1,
+                'precio_unitario' => $r['precio_unitario'] ?? 0,
+                'subtotal' => $r['importe_total'] ?? 0,
+                'estado' => $r['reservas_estado'] ?? $r['estado'] ?? ''
+            ];
+        }
+
+        $reservaObj = $reserva[0];
+        $reservaObj['cliente'] = $clienteNombre;
+        $reservaObj['detalles'] = $detalles;
+
+        echo json_encode([
+            'status'=>'success',
+            'data'=>$reservaObj
+        ]);
+        exit;
+    break;
+
+
     case 'crear_reserva':
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             echo json_encode(['status'=>'error','message'=>'Método no permitido']);

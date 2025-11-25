@@ -10,7 +10,10 @@ require_once('models/Tour.php');
 $tourModel = new Tour();
 
 $id_usuario = $_SESSION['id_usuarios'];
-$tours = $tourModel->traer_tours_por_usuario($id_usuario);
+$id_tour_seleccionado = intval($_GET['id_tour'] ?? 0); 
+
+$tours = $tourModel->traer_tours_aprobados_por_usuario($id_usuario);
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -40,7 +43,14 @@ $tours = $tourModel->traer_tours_por_usuario($id_usuario);
           <select id="rela_tour" name="rela_tour">
             <option value="">Seleccionar tour...</option>
             <?php foreach ($tours as $t): ?>
-              <option value="<?= $t['id_tour'] ?>"><?= htmlspecialchars($t['nombre_tour']) ?></option>
+              <option value="<?= $t['id_tour'] ?>" 
+                <?php 
+                  if ((int)$t['id_tour'] === $id_tour_seleccionado) {
+                      echo 'selected';
+                  }
+                ?>>
+                <?= htmlspecialchars($t['nombre_tour']) ?>
+              </option>
             <?php endforeach; ?>
           </select>
         </div>

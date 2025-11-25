@@ -44,6 +44,14 @@ class Proveedor {
         return $conexion->consultar($query);
     }
 
+    public function obtenerPorId($id) {
+        $conexion = new Conexion();
+        $id = (int)$id;
+        $query = "SELECT * FROM proveedores WHERE id_proveedores = $id AND activo = 1 LIMIT 1";
+        $resultado = $conexion->consultar($query);
+        return $resultado ? $resultado[0] : null;
+    }
+
     public function guardar() {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
