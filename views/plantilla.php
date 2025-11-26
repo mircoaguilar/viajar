@@ -87,12 +87,20 @@ if (isset($_GET['page'])) {
         'detalle_hotel',
         'detalle_tour',
         'detalle_viaje',
-        'pantalla_habitaciones'
+        'pantalla_habitaciones',
+        'ganancias',
+        'tours_editar'
     ];
+if (in_array($pagina, $paginas_publicas)) {
 
-    if (in_array($pagina, $paginas_publicas)) {
-        include('views/paginas/' . $pagina . '.php');
+    if ($pagina === 'ganancias') {
+        include('controllers/ganancias.php');  // ← ESTE ES EL CONTROLADOR
     } else {
+        include('views/paginas/' . $pagina . '.php');
+    }
+
+}
+ else {
         if (isset($_SESSION['usuarios_nombre_usuario'])) {
             if (isset($_SESSION['id_perfiles']) && guard($_SESSION['id_perfiles'])) {
                 if (file_exists('views/paginas/' . $pagina . '.php')) {

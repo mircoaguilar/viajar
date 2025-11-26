@@ -36,6 +36,7 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [2])
         <li><a href="index.php?page=dashboard_admin"><i class="fa fa-chart-line"></i> Dashboard</a></li>
         <li><a href="index.php?page=revision_servicios"><i class="fa-solid fa-check-square"></i> Revisión de servicios</a></li>
         <li><a href="index.php?page=listado_auditorias"><i class="fa-solid fa-clipboard-list"></i> Auditorías</a></li>
+        <li><a href="index.php?page=ganancias_listado"><i class="fa-solid fa-dollar-sign"></i> Ganancias</a></li>
         <li><a href="views/paginas/salida.php"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a></li>
     </ul>
 </div>

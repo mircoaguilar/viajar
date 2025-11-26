@@ -7,7 +7,8 @@ header('Content-Type: application/json');
 
 class ToursControlador {
 
-    public function listar_tours() {
+    public function listar_tours() 
+    {
         if (!isset($_SESSION['id_usuarios']) || !in_array($_SESSION['id_perfiles'], [13, 14])) {
             header('Location: index.php?page=login&message=Acceso no autorizado.&status=danger');
             exit;
@@ -15,9 +16,11 @@ class ToursControlador {
 
         $id_usuario = $_SESSION['id_usuarios'];
 
+        
         if (!isset($_SESSION['id_proveedores'])) {
             $proveedorModel = new Proveedor();
             $proveedor = $proveedorModel->obtenerPorUsuario($id_usuario);
+
             if ($proveedor) {
                 $_SESSION['id_proveedores'] = $proveedor['id_proveedores'];
             } else {
@@ -32,7 +35,10 @@ class ToursControlador {
         require('views/paginas/tours_mis_tours.php');
     }
 
-    public function guardar() {
+
+    
+    public function guardar() 
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
         $nombre = trim($_POST['nombre_tour'] ?? '');
@@ -44,19 +50,19 @@ class ToursControlador {
             exit;
         }
 
+        
         if (!str_contains($duracion, ':')) $duracion = '00:' . $duracion;
         if (substr_count($duracion, ':') === 1) $duracion .= ':00';
 
-        $hora_encuentro = trim($_POST['hora_encuentro'] ?? '');
+        $hora_encuentro = trim($_POST['hora_encuentro'] ?? null);
         if ($hora_encuentro) {
             if (!str_contains($hora_encuentro, ':')) $hora_encuentro = '00:' . $hora_encuentro;
             if (substr_count($hora_encuentro, ':') === 1) $hora_encuentro .= ':00';
-        } else {
-            $hora_encuentro = null;
         }
 
-        $direccion = trim($_POST['direccion'] ?? ''); 
+        $direccion = trim($_POST['direccion'] ?? '');
 
+       
         $tour = new Tour(
             null,
             $nombre,
@@ -65,13 +71,16 @@ class ToursControlador {
             $precio,
             $hora_encuentro,
             $_POST['lugar_encuentro'] ?? '',
-            $direccion, 
+            $direccion,
+            '',
             $_SESSION['id_proveedores'] ?? null
         );
 
+       
         if (!empty($_FILES['imagen_principal']['name'])) {
             $nombreArchivo = time() . "_" . basename($_FILES['imagen_principal']['name']);
             $rutaDestino = __DIR__ . '/../../assets/images/' . $nombreArchivo;
+
             if (move_uploaded_file($_FILES['imagen_principal']['tmp_name'], $rutaDestino)) {
                 $tour->setImagen_principal($nombreArchivo);
             }
@@ -86,7 +95,10 @@ class ToursControlador {
         exit;
     }
 
-    public function editar() {
+
+   
+    public function editar() 
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
         $id = $_POST['id_tour'] ?? null;
@@ -95,8 +107,9 @@ class ToursControlador {
             exit;
         }
 
-        $direccion = trim($_POST['direccion'] ?? ''); 
+        $direccion = trim($_POST['direccion'] ?? '');
 
+       
         $tour = new Tour(
             $id,
             $_POST['nombre_tour'] ?? '',
@@ -105,19 +118,28 @@ class ToursControlador {
             floatval($_POST['precio_por_persona'] ?? 0),
             $_POST['hora_encuentro'] ?? '',
             $_POST['lugar_encuentro'] ?? '',
-            $direccion, 
+            $direccion,
+            '', // imagen nueva si hay
             $_SESSION['id_proveedores'] ?? null
         );
 
+        
         if (!empty($_FILES['imagen_principal']['name'])) {
             $nombreArchivo = time() . "_" . basename($_FILES['imagen_principal']['name']);
             $rutaDestino = __DIR__ . '/../../assets/images/' . $nombreArchivo;
+
             if (move_uploaded_file($_FILES['imagen_principal']['tmp_name'], $rutaDestino)) {
                 $tour->setImagen_principal($nombreArchivo);
             }
         }
 
+        
         $resultado = $tour->actualizar();
+
+        
+        if ($resultado) {
+            $tour->reenviarTour($id);
+        }
 
         echo json_encode([
             "status" => $resultado ? "ok" : "error",
@@ -126,7 +148,10 @@ class ToursControlador {
         exit;
     }
 
-    public function eliminar() {
+
+   
+    public function eliminar() 
+    {
         $id = $_POST['id_tour'] ?? null;
         if (!$id) {
             echo json_encode(["status" => "error", "mensaje" => "ID inválido"]);
@@ -143,7 +168,25 @@ class ToursControlador {
         ]);
         exit;
     }
+
+
+    
+    public function reenviar_tour($id_tour)
+    {
+        $tour = new Tour();
+        $resultado = $tour->reenviarTour($id_tour);
+
+        if ($resultado) {
+            header('Location: index.php?page=tours_mis_tours&status=success&message=El tour se envió nuevamente para revisión.');
+        } else {
+            header('Location: index.php?page=tours_mis_tours&status=danger&message=No se pudo reenviar el tour.');
+        }
+        exit;
+    }
+
 }
+
+
 
 if (isset($_POST['action'])) {
     $controlador = new ToursControlador();
@@ -152,12 +195,15 @@ if (isset($_POST['action'])) {
         case 'guardar':
             $controlador->guardar();
             break;
+
         case 'editar':
             $controlador->editar();
             break;
+
         case 'eliminar':
             $controlador->eliminar();
             break;
+
         default:
             echo json_encode(["status" => "error", "mensaje" => "Acción no válida"]);
     }

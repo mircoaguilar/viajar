@@ -50,6 +50,15 @@ if ($pagoData['pago_estado'] === 'aprobado') {
     $reservaModel->setTotal($monto_total);
     $reservaModel->actualizar();
 
+
+   
+require_once('../../models/ganancias.php');
+
+$gananciaModel = new Ganancias();
+$gananciaModel->setRelaReserva($id_reserva);
+$gananciaModel->insertarGanancia();
+    
+
     $carrito_activo = $carritoModel->traer_carrito_activo($id_usuario);
     if ($carrito_activo) {
         $carritoModel->setId_carrito($carrito_activo['id_carrito']);

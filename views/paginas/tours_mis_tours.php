@@ -45,39 +45,69 @@ $tours = $controlador->mis_tours($id_usuario);
                     <th>Acciones</th>
                 </tr>
             </thead>
+
             <tbody>
                 <?php foreach ($tours as $t): ?>
+                    <?php
+                        $estado = strtolower($t['estado_revision'] ?? 'pendiente');
+                        $clase_estado = 'estado-' . $estado;
+                    ?>
+
                     <tr>
                         <td>
                             <?php if (!empty($t['imagen_principal'])): ?>
-                                <img src="assets/images/<?= htmlspecialchars($t['imagen_principal']) ?>" alt="Imagen <?= htmlspecialchars($t['nombre_tour']) ?>" style="width:100px; height:auto;">
+                                <img src="assets/images/<?= htmlspecialchars($t['imagen_principal']) ?>"
+                                     alt="Imagen <?= htmlspecialchars($t['nombre_tour']) ?>"
+                                     style="width:100px;">
                             <?php else: ?>
                                 <span>Sin imagen</span>
                             <?php endif; ?>
                         </td>
+
                         <td><?= htmlspecialchars($t['nombre_tour']) ?></td>
                         <td><?= htmlspecialchars($t['duracion_horas']) ?></td>
                         <td>$<?= number_format($t['precio_por_persona'], 2) ?></td>
-                        <td>
-                            <?php
-                                $estado = strtolower($t['estado_revision'] ?? 'pendiente');
-                                $clase_estado = 'estado-' . $estado;
-                                echo "<span class='estado $clase_estado'>$estado</span>";
-                            ?>
-                        </td>
-                        <td>
-                            <a href="index.php?page=tours_editar&id_tour=<?= $t['id_tour'] ?>" class="btn">Editar</a>
 
+                        <td>
+                            <span class="estado <?= $clase_estado ?>"><?= $estado ?></span>
+                        </td>
+
+                        <td>
+                          
+                            <a href="index.php?page=tours_editar&id_tour=<?= $t['id_tour'] ?>" class="btn">
+                                Editar
+                            </a>
+
+<button class="btn secondary"
+        onclick="alert('Motivo de rechazo: <?= htmlspecialchars($t['motivo_rechazo']) ?>')">
+    Ver motivo
+</button>
+
+<form action="controllers/tours/tours_acciones.controlador.php" method="POST" style="display:inline;">
+    <input type="hidden" name="id_tour" value="<?= $t['id_tour'] ?>">
+    <input type="hidden" name="action" value="reenviar">
+    <button type="submit" class="btn warning">Volver a enviar</button>
+</form>
+
+
+                            
                             <?php if ($estado === 'aprobado'): ?>
-                                <a href="index.php?page=tours_stock&id_tour=<?= $t['id_tour'] ?>" class="btn secondary">Gestionar Stock</a>
+                                <a href="index.php?page=tours_stock&id_tour=<?= $t['id_tour'] ?>" class="btn secondary">
+                                    Gestionar Stock
+                                </a>
                             <?php else: ?>
-                                <a class="btn secondary disabled" title="Disponible solo cuando el tour esté aprobado">Gestionar Stock</a>
+                                <a class="btn secondary disabled"
+                                   title="Disponible solo cuando el tour esté aprobado">
+                                   Gestionar Stock
+                                </a>
                             <?php endif; ?>
                         </td>
                     </tr>
+
                 <?php endforeach; ?>
             </tbody>
         </table>
+
         <?php else: ?>
             <p>No tenés tours registrados aún.</p>
         <?php endif; ?>
@@ -85,6 +115,7 @@ $tours = $controlador->mis_tours($id_usuario);
         <div style="margin-top:20px;">
             <a href="index.php?page=tours_carga" class="btn">Agregar Nuevo Tour</a>
         </div>
+
     </div>
 </main>
 
