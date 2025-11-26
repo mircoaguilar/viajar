@@ -18,7 +18,6 @@ class CarritoItem {
         $this->db = new Conexion();
     }
 
-    /** GUARDAR ITEM */
     public function guardar() {
         if (!$this->subtotal) {
             $this->subtotal = $this->cantidad * $this->precio_unitario;
@@ -40,7 +39,6 @@ class CarritoItem {
         return $this->db->insertar($query);
     }
 
-    /** ACTUALIZAR ITEM */
     public function actualizar($id_item = null) {
         if ($id_item) $this->id_item = $id_item;
         $this->subtotal = $this->cantidad * $this->precio_unitario;
@@ -56,7 +54,6 @@ class CarritoItem {
         return $this->db->actualizar($query);
     }
 
-    /** ELIMINAR ITEM */
     public function eliminar($id_item) {
         $query = "DELETE FROM carrito_items WHERE id_item = '{$id_item}'";
         return $this->db->eliminar($query);

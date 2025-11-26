@@ -18,8 +18,6 @@ if (isset($_GET['id'])) {
         $editing_mode = true;
         $form_action = 'actualizar';
         $nombre_form = htmlspecialchars($tipo_data[0]['nombre']);
-        $descripcion_form = htmlspecialchars($tipo_data[0]['descripcion']);
-        $capacidad_form = htmlspecialchars($tipo_data[0]['capacidad']);
     } else {
         header("Location: index.php?page=tipos_habitaciones&message=Tipo de habitación no encontrado&status=danger");
         exit;
@@ -50,12 +48,6 @@ if (isset($_GET['id'])) {
         <label for="nombre">Nombre</label>
         <input type="text" id="nombre" name="nombre" placeholder="Ingrese nombre" value="<?php echo $nombre_form; ?>" >
 
-        <label for="descripcion">Descripcion</label>
-        <input type="text" id="descripcion" name="descripcion" placeholder="Ingrese descripcion" value="<?php echo $descripcion_form; ?>" >
-        
-        <label for="capacidad">Capacidad</label>
-        <input type="number" id="capacidad" name="capacidad" min="1" value="<?php echo $capacidad_form; ?>" >
-
         <button type="submit"><?php echo $editing_mode ? 'Actualizar' : 'Guardar'; ?></button>
         <?php if ($editing_mode): ?>
             <a href="index.php?page=tipos_habitaciones" class="button" style="margin-left: 10px;">Cancelar</a>
@@ -70,8 +62,6 @@ if (isset($_GET['id'])) {
             <tr>
                 <th>ID</th>
                 <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Capacidad</th>
                 <th >Acciones</th>
             </tr>
         </thead>
@@ -83,8 +73,6 @@ if (isset($_GET['id'])) {
                     <tr>
                         <td><?php echo htmlspecialchars($tipo['id_tipo_habitacion']); ?></td>
                         <td><?php echo htmlspecialchars($tipo['nombre']); ?></td>
-                        <td><?php echo htmlspecialchars($tipo['descripcion']); ?></td>
-                        <td><?php echo htmlspecialchars($tipo['capacidad']); ?></td>
                         <td class="acciones-botones">
                             <a id="editar" href="index.php?page=tipos_habitaciones&id=<?php echo htmlspecialchars($tipo['id_tipo_habitacion']); ?>">
                                 <i class="fa-solid fa-pen-to-square"></i>

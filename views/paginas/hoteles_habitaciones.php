@@ -23,7 +23,7 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
 }
 
 $hotelData = $hotelModel->traer_hotel($id_hotel)[0] ?? null;
-$habitaciones = $habitacionModel->traer_por_hotel($id_hotel);
+$habitaciones = $habitacionModel->traer_todos($id_hotel);
 
 $BASE_URL = '/viajar/'; 
 ?>

@@ -209,24 +209,64 @@ switch ($action) {
 
     case 'detalle':
         $id_item = (int)($_GET['id_item'] ?? 0);
+
         if (!$id_item) {
             echo json_encode(['status' => 'error', 'message' => 'ID de ítem requerido']);
             exit;
         }
 
         $item = $itemModel->traer_por_id($id_item);
+
         if (!$item) {
             echo json_encode(['status' => 'error', 'message' => 'Ítem no encontrado']);
             exit;
         }
-
         if ($item['tipo_servicio'] === 'transporte' && isset($_SESSION['carrito_extra'][$item['id_servicio']])) {
             $item['asientos'] = $_SESSION['carrito_extra'][$item['id_servicio']]['asientos'] ?? [];
             $item['fecha_servicio'] = $_SESSION['carrito_extra'][$item['id_servicio']]['fecha_servicio'] ?? null;
         }
 
+        if ($item['tipo_servicio'] === 'hotel') {
+
+            $id_habitacion = (int)$item['id_servicio']; 
+
+            $sql = "
+                SELECT 
+                    h.id_hotel,
+                    h.hotel_nombre,
+                    info.direccion,
+
+                    hab.id_hotel_habitacion,
+                    hab.descripcion AS habitacion_descripcion,
+                    hab.capacidad_maxima,
+                    hab.precio_base_noche,
+
+                    tipo.nombre AS tipo_habitacion
+
+                FROM hotel_habitaciones hab
+                INNER JOIN hotel h ON h.id_hotel = hab.rela_hotel
+                INNER JOIN hoteles_info info ON info.rela_hotel = h.id_hotel
+                INNER JOIN tipos_habitacion tipo ON tipo.id_tipo_habitacion = hab.rela_tipo_habitacion
+
+                WHERE hab.id_hotel_habitacion = {$id_habitacion}
+                LIMIT 1
+            ";
+
+            $db = new Conexion();
+            $extra = $db->consultar($sql);
+
+            if ($extra && count($extra) > 0) {
+                $item['hotel_nombre']          = $extra[0]['hotel_nombre'];
+                $item['direccion']             = $extra[0]['direccion'];
+                $item['tipo_habitacion']       = $extra[0]['tipo_habitacion'];
+                $item['habitacion_descripcion']= $extra[0]['habitacion_descripcion'];
+                $item['capacidad_maxima']      = $extra[0]['capacidad_maxima'];
+            }
+        }
+
         echo json_encode(['status' => 'success', 'item' => $item]);
         break;
+
 
     case 'crear_reserva':
         require_once(__DIR__ . '/../../models/reserva.php');

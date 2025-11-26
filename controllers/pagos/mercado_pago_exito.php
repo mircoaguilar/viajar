@@ -49,6 +49,33 @@ if ($pagoData['pago_estado'] === 'aprobado') {
     $reservaModel->setReservas_estado('confirmada');
     $reservaModel->setTotal($monto_total);
     $reservaModel->actualizar();
+    $detalles = $reservaModel->traerDetallesPorId($id_reserva);
+
+    foreach ($detalles as $detalle) {
+        if ($detalle['tipo_servicio'] === 'hotel') {
+
+            $id_detalle = $detalle['id_detalle_reserva'];
+
+            $infoHotel = $reservaModel->traerDetalleHotel($id_detalle);
+            $id_habitacion = $infoHotel['rela_habitacion'];
+            $check_in      = $infoHotel['check_in'];
+            $check_out     = $infoHotel['check_out'];
+            $cantidad      = $detalle['cantidad']; 
+            $reservaModel->confirmar_detalle_hotel($id_detalle);
+
+            $fecha = new DateTime($check_in);
+            $fecha_fin = new DateTime($check_out);
+
+            while ($fecha < $fecha_fin) {
+                $dia = $fecha->format("Y-m-d");
+
+                $reservaModel->descontar_stock_hotel($id_habitacion, $dia, $cantidad);
+
+                $fecha->modify("+1 day");
+            }
+        }
+    }
+    
 
     $carrito_activo = $carritoModel->traer_carrito_activo($id_usuario);
     if ($carrito_activo) {

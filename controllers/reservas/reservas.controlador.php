@@ -30,7 +30,7 @@ switch ($action) {
         if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
             echo json_encode([
                 'status'  => 'error',
-                'message' => 'Método no permitido (usar GET)'
+                'message' => 'Método no permitido'
             ]);
             exit;
         }
@@ -187,13 +187,6 @@ switch ($action) {
                 $fecha_tour = $_POST['fecha_tour'];
                 $reservaModel->crear_detalle_tour($id_detalle_reserva, $id_tour, $fecha_tour);
             }
-
-            foreach ($fechas as $f) {
-                $stockModel->decrementar_stock($idhab, $f, $mysqli);
-            }
-
-            $factura_numero = 'F-' . str_pad($id_reserva, 6, '0', STR_PAD_LEFT);
-            $facturaModel->crear_factura($factura_numero, $id_reserva);
 
             $mysqli->commit();
 

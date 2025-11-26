@@ -158,6 +158,24 @@ class Hotel_Habitaciones {
         return $conexion->actualizar($query);
     }
 
+    public function traer_todos($id_hotel) {
+        $conexion = new Conexion();
+        $id_hotel = (int)$id_hotel;
+
+        $query = "SELECT hh.*, th.nombre AS tipo_nombre
+                  FROM hotel_habitaciones hh
+                  INNER JOIN tipos_habitacion th 
+                        ON hh.rela_tipo_habitacion = th.id_tipo_habitacion
+                  ORDER BY hh.fecha_creacion ASC";
+
+        $habitaciones = $conexion->consultar($query);
+
+        foreach ($habitaciones as &$hab) {
+            $hab['fotos'] = !empty($hab['fotos']) ? json_decode($hab['fotos'], true) : [];
+        }
+
+        return $habitaciones;
+    }
 
     public function getFotosArray() {
         return !empty($this->fotos) ? json_decode($this->fotos, true) : [];

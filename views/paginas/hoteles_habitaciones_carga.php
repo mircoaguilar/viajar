@@ -32,6 +32,9 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
     <title>Cargar Habitaciones</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/habitaciones.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body>
 
@@ -49,7 +52,7 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
 
                 <div>
                     <label for="nombre_tipo_habitacion">Tipo de Habitación</label>
-                    <select id="nombre_tipo_habitacion" name="rela_tipo_habitacion" >
+                    <select id="nombre_tipo_habitacion" name="rela_tipo_habitacion" class="select2">
                         <option value="">Seleccionar tipo...</option>
                         <?php foreach ($tipos as $tipo): ?>
                             <option value="<?= $tipo['id_tipo_habitacion'] ?>"><?= htmlspecialchars($tipo['nombre']) ?></option>
@@ -118,5 +121,14 @@ if (!$hotelModel->verificar_propietario($id_hotel, $id_usuario)) {
 </div>
 
 <script src="assets/js/habitaciones_carga.js"></script>
+<script>
+$(document).ready(function() {
+    $('.select2').select2({
+        placeholder: "Seleccionar tipo...",
+        allowClear: true,
+        width: '100%' 
+    });
+});
+</script>
 </body>
 </html>

@@ -60,15 +60,24 @@ class Reserva {
         $mysqli = $conexion->getConexion();
 
         $stmt = $mysqli->prepare("
-            INSERT INTO detalle_reserva_hotel (rela_detalle_reserva, rela_habitacion, check_in, check_out, noches) 
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO detalle_reserva_hotel (
+                rela_detalle_reserva, rela_habitacion, check_in, check_out, noches, estado
+            ) VALUES (?, ?, ?, ?, ?, 'pendiente')
         ");
-        $stmt->bind_param("iissi", $id_detalle_reserva, $id_habitacion, $check_in, $check_out, $noches);
+
+        $stmt->bind_param("iissi",
+            $id_detalle_reserva,
+            $id_habitacion,
+            $check_in,
+            $check_out,
+            $noches
+        );
+
         $stmt->execute();
-        $id_detalle_hotel = $stmt->insert_id;
+        $id = $stmt->insert_id;
         $stmt->close();
 
-        return $id_detalle_hotel;
+        return $id;
     }
 
     public function crear_detalle_tour($id_detalle_reserva, $id_tour, $fecha_tour) {
@@ -179,8 +188,6 @@ class Reserva {
         return !empty($resultado) ? $resultado[0] : [];
     }
 
-
-
     public function traerDetalleTransporte($id_detalle_reserva) {
         $conexion = new Conexion();
         $id_detalle_reserva = (int)$id_detalle_reserva;
@@ -250,7 +257,6 @@ class Reserva {
 
         return $conexion->consultar($query);
     }
-
 
     public function traerPorId($id_reserva) {
         $conexion = new Conexion();
@@ -394,7 +400,6 @@ class Reserva {
         }
         return $reserva;
     }
-
 
     public function cancelar_detalle_hotel($id_detalle) {
         $conexion = new Conexion();
@@ -609,6 +614,47 @@ class Reserva {
 
         return $conexion->actualizar($query);
     }
+
+    public function confirmar_detalle_hotel($id_detalle_reserva) {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+
+        $stmt = $mysqli->prepare("
+            UPDATE detalle_reserva_hotel
+            SET estado = 'confirmada'
+            WHERE rela_detalle_reserva = ?
+        ");
+
+        $stmt->bind_param("i", $id_detalle_reserva);
+        $stmt->execute();
+        $stmt->close();
+
+        return true;
+    }
+
+    public function descontar_stock_hotel($id_habitacion, $dia, $cantidad) {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+
+        $stmt = $mysqli->prepare("
+            UPDATE hotel_habitaciones_stock
+            SET cantidad_disponible = cantidad_disponible - ?
+            WHERE rela_habitacion = ?
+            AND fecha = ?
+            AND activo = 1
+            AND cantidad_disponible >= ?
+        ");
+
+        $stmt->bind_param("iisi", $cantidad, $id_habitacion, $dia, $cantidad);
+        $stmt->execute();
+
+        $afectadas = $stmt->affected_rows; 
+        $stmt->close();
+
+        return $afectadas > 0;
+    }
+
+
 
     public function getId_reservas() { return $this->id_reservas; }
     public function setId_reservas($id) { $this->id_reservas = $id; return $this; }

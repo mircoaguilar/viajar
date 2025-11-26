@@ -97,15 +97,34 @@ async function abrirModalCarrito(id_item) {
 
         if (data.status === 'success' && data.item) {
             const it = data.item;
-
-            let fechas = '-';
             if (it.tipo_servicio === 'hotel') {
-                fechas = `${it.fecha_inicio ?? '-'}${it.fecha_fin ? ' → ' + it.fecha_fin : ''}`;
-            } else if (it.tipo_servicio === 'tour') {
-                fechas = it.fecha_tour ?? '-';
-            } else if (it.tipo_servicio === 'transporte') {
-                fechas = it.fecha_servicio ?? '-';
+
+                const noches = calcularNoches(it.fecha_inicio, it.fecha_fin);
+
+                body.innerHTML = `
+                    <h3>Datos del Hotel</h3>
+                    <p><strong>Hotel:</strong> ${it.hotel_nombre}</p>
+                    <p><strong>Dirección:</strong> ${it.direccion}</p>
+
+                    <h3>Habitación</h3>
+                    <p><strong>Tipo:</strong> ${it.tipo_habitacion}</p>
+                    <p><strong>Descripción:</strong> ${it.habitacion_descripcion}</p>
+                    <p><strong>Capacidad máxima:</strong> ${it.capacidad_maxima} personas</p>
+
+                    <h3>Reserva</h3>
+                    <p><strong>Check-in:</strong> ${it.fecha_inicio}</p>
+                    <p><strong>Check-out:</strong> ${it.fecha_fin}</p>
+                    <p><strong>Noches:</strong> ${noches}</p>
+
+                    <h3>Precio</h3>
+                    <p><strong>Precio por noche:</strong> $ ${formatoPrecio(it.precio_unitario)}</p>
+                    <p><strong>Subtotal:</strong> $ ${formatoPrecio(it.subtotal)}</p>
+                `;
+                return;
             }
+            let fechas = '-';
+            if (it.tipo_servicio === 'tour') fechas = it.fecha_tour ?? '-';
+            if (it.tipo_servicio === 'transporte') fechas = it.fecha_servicio ?? '-';
 
             let htmlDetalle = `
                 <p><strong>Servicio:</strong> ${it.tipo_servicio}</p>
@@ -138,6 +157,13 @@ document.getElementById('cerrarModalCarrito').addEventListener('click', () => {
 document.getElementById('cerrarModalCarritoFooter').addEventListener('click', () => {
     document.getElementById('modalVerCarrito').style.display = 'none';
 });
+
+function calcularNoches(inicio, fin) {
+    const i = new Date(inicio);
+    const f = new Date(fin);
+    return Math.ceil((f - i) / (1000 * 60 * 60 * 24));
+}
+
 
 
 function formatoPrecio(valor) {
