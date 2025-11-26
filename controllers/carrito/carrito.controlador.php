@@ -1,8 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
 
 require_once(__DIR__ . '/../../models/carrito.php');
@@ -211,6 +207,26 @@ switch ($action) {
         echo json_encode(['status' => 'success', 'items' => $items]);
         break;
 
+    case 'detalle':
+        $id_item = (int)($_GET['id_item'] ?? 0);
+        if (!$id_item) {
+            echo json_encode(['status' => 'error', 'message' => 'ID de ítem requerido']);
+            exit;
+        }
+
+        $item = $itemModel->traer_por_id($id_item);
+        if (!$item) {
+            echo json_encode(['status' => 'error', 'message' => 'Ítem no encontrado']);
+            exit;
+        }
+
+        if ($item['tipo_servicio'] === 'transporte' && isset($_SESSION['carrito_extra'][$item['id_servicio']])) {
+            $item['asientos'] = $_SESSION['carrito_extra'][$item['id_servicio']]['asientos'] ?? [];
+            $item['fecha_servicio'] = $_SESSION['carrito_extra'][$item['id_servicio']]['fecha_servicio'] ?? null;
+        }
+
+        echo json_encode(['status' => 'success', 'item' => $item]);
+        break;
 
     case 'crear_reserva':
         require_once(__DIR__ . '/../../models/reserva.php');

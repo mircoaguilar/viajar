@@ -32,11 +32,11 @@ async function cargarCarrito() {
             total += parseFloat(it.subtotal);
 
             let fechas = '-';
-            if(it.tipo_servicio === 'hotel') {
+            if (it.tipo_servicio === 'hotel') {
                 fechas = `${it.fecha_inicio ?? '-'}${it.fecha_fin ? ' → ' + it.fecha_fin : ''}`;
-            } else if(it.tipo_servicio === 'tour') {
+            } else if (it.tipo_servicio === 'tour') {
                 fechas = it.fecha_tour ?? '-';
-            } else if(it.tipo_servicio === 'transporte') {
+            } else if (it.tipo_servicio === 'transporte') {
                 fechas = it.fecha_servicio ?? '-';
             }
 
@@ -45,13 +45,13 @@ async function cargarCarrito() {
                     <td>${it.tipo_servicio.charAt(0).toUpperCase() + it.tipo_servicio.slice(1)}</td>
                     <td>${it.nombre_servicio ?? it.id_servicio}</td>
                     <td>${fechas}</td>
-                    <td>
-                        <input type="number" min="1" value="${it.cantidad}" 
-                            onchange="actualizarItem(${it.id_item}, this.value, ${it.precio_unitario}, '${it.fecha_inicio ?? ''}', '${it.fecha_fin ?? ''}', '${it.fecha_tour ?? ''}')">
-                    </td>
+                    <td>${it.cantidad}</td>
                     <td>$ ${formatoPrecio(it.precio_unitario)}</td>
                     <td>$ ${formatoPrecio(it.subtotal)}</td>
                     <td>
+                        <button class="btn-accion btn-ver-reserva" data-id="${it.id_item}">
+                            Ver
+                        </button>
                         <button class="btn-accion" onclick="quitarItem(${it.id_item})">
                             <i class="fa-solid fa-trash"></i>
                         </button>
@@ -71,11 +71,74 @@ async function cargarCarrito() {
 
         cont.innerHTML = html;
         actualizarContadorCarrito(data.items.length);
+        document.querySelectorAll('.btn-ver-reserva').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const idItem = e.currentTarget.dataset.id;
+                await abrirModalCarrito(idItem);
+            });
+        });
+
     } catch (err) {
         console.error('Error cargando carrito:', err);
         Swal.fire('Error', 'No se pudo cargar el carrito. Revisa la consola.', 'error');
     }
 }
+
+async function abrirModalCarrito(id_item) {
+    const modal = document.getElementById('modalVerCarrito');
+    const body = document.getElementById('modal-body-carrito');
+
+    body.innerHTML = '<p>Cargando detalles...</p>';
+    modal.style.display = 'flex';
+
+    try {
+        const resp = await fetch(`controllers/carrito/carrito.controlador.php?action=detalle&id_item=${id_item}`);
+        const data = await resp.json();
+
+        if (data.status === 'success' && data.item) {
+            const it = data.item;
+
+            let fechas = '-';
+            if (it.tipo_servicio === 'hotel') {
+                fechas = `${it.fecha_inicio ?? '-'}${it.fecha_fin ? ' → ' + it.fecha_fin : ''}`;
+            } else if (it.tipo_servicio === 'tour') {
+                fechas = it.fecha_tour ?? '-';
+            } else if (it.tipo_servicio === 'transporte') {
+                fechas = it.fecha_servicio ?? '-';
+            }
+
+            let htmlDetalle = `
+                <p><strong>Servicio:</strong> ${it.tipo_servicio}</p>
+                <p><strong>Detalle:</strong> ${it.nombre_servicio ?? it.id_servicio}</p>
+                <p><strong>Fecha:</strong> ${fechas}</p>
+                <p><strong>Cantidad:</strong> ${it.cantidad}</p>
+                <p><strong>Precio Unitario:</strong> $ ${formatoPrecio(it.precio_unitario)}</p>
+                <p><strong>Subtotal:</strong> $ ${formatoPrecio(it.subtotal)}</p>
+            `;
+
+            if (it.tipo_servicio === 'transporte' && it.asientos) {
+                htmlDetalle += `<p><strong>Asientos:</strong> ${it.asientos.join(', ')}</p>`;
+            }
+
+            body.innerHTML = htmlDetalle;
+
+        } else {
+            body.innerHTML = '<p>No se encontraron detalles del ítem.</p>';
+        }
+
+    } catch (err) {
+        console.error('Error cargando detalle:', err);
+        body.innerHTML = '<p>Error al cargar los detalles.</p>';
+    }
+}
+
+document.getElementById('cerrarModalCarrito').addEventListener('click', () => {
+    document.getElementById('modalVerCarrito').style.display = 'none';
+});
+document.getElementById('cerrarModalCarritoFooter').addEventListener('click', () => {
+    document.getElementById('modalVerCarrito').style.display = 'none';
+});
+
 
 function formatoPrecio(valor) {
     const numero = Number(valor) || 0;

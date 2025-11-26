@@ -381,7 +381,7 @@ class Reserva {
                 $id_det = (int)$d['id_detalle_reserva'];
 
                 $sqlTour = "
-                    SELECT drt.*, t.nombre AS tour_nombre
+                    SELECT drt.*, t.nombre_tour AS tour_nombre
                     FROM detalle_reserva_tour drt
                     INNER JOIN tours t ON t.id_tour = drt.rela_tour
                     WHERE drt.rela_detalle_reserva = $id_det
