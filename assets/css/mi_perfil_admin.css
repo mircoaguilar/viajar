@@ -7,53 +7,52 @@
 
 /* Body general */
 body {
-    font-family: sans-serif;
-    background-color: #f0f0f0;
-    padding-top: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7fc;
     color: #333;
+    padding-top: 0;
     background-size: cover;
-    background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
-/* Cabecera */
+/* Cabecera (top-bar - Asumimos que está fuera del .container) */
 .top-bar {
     background-color: #2943b9;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 15px 20px;
     font-family: sans-serif;
-    position: relative;
-    top: 0;
-    left: 0;
-    right: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* Logo */
 .logo a, .logo-link {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    font-size: 1.5em;
+    font-size: 1.6em;
 }
 
+/* Enlaces de la derecha */
 .right-links a {
     text-decoration: none;
     margin-left: 15px;
-    font-size: 0.9em;
+    font-size: 1em;
+    color: white;
 }
 
 /* Botones generales */
 .button {
     background-color: white;
     color: #003580;
-    padding: 8px 12px;
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     text-decoration: none;
-    font-size: 0.9em;
+    font-size: 1em;
     font-weight: normal;
 }
 
@@ -61,229 +60,248 @@ body {
     background-color: #f0f0f0;
 }
 
-.button.secondary,
-.button.cancel {
+/* Botones secundarios */
+.button.secondary, .button.cancel {
     background-color: #6c757d;
     color: white;
 }
 
-.button.secondary:hover,
-.button.cancel:hover {
+.button.secondary:hover, .button.cancel:hover {
     background-color: #5a6268;
 }
 
-/* Contenedor principal */
+/* Contenedor principal: Sin padding interno */
 .container {
-    max-width: 900px;
-    margin: 5px auto 20px auto; 
-    padding: 3px;
-    background-color: white;
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Formularios */
-form h1 {
-    font-size: 26px;
-    margin-bottom: 20px;
-    color: #2943b9;
+/* Cabecera del perfil: Aplica el padding que antes tenía el .container */
+.perfil-header {
+    text-align: left;
+    padding: 30px 30px 20px 30px; 
+    background-color: transparent;
+    box-shadow: none; 
+    border-radius: 0; 
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eeeeee;
 }
 
-form label {
-    display: block; 
-    margin-bottom: 5px; 
-    font-weight: bold;
+.perfil-header h1 {
+    margin: 0;
+    font-size: 32px;
+    color: #333;
 }
 
-form input[type="text"],
-form input[type="email"],
-form input[type="password"],
-form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.perfil-header p {
+    color: #777;
     font-size: 16px;
 }
 
-form select[multiple] {
-    height: 150px; 
-    overflow-y: auto;
+/* --- REGLAS CRÍTICAS PARA EL WRAP Y MARGEN DE FILAS --- */
+
+/* Contenedor principal de las 4/5/n tarjetas */
+.tarjetas-principales {
+    display: flex;
+    flex-wrap: wrap; /* <--- CAMBIO: Permite que las tarjetas bajen a una nueva línea */
+    justify-content: flex-start; /* CAMBIO: Alineamos a la izquierda para que el margen sea consistente */
+    gap: 20px;
+    padding: 0 30px 30px 30px; 
+    margin-top: 30px; 
 }
 
-form input[type="submit"],
-form button[type="submit"] {
-    background-color: #2943b9;
-    color: white;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
+/* Estilo unificado para TODAS las tarjetas (Perfil y Accesos) */
+.perfil-card, .acceso-card {
+    /* Ajuste de ancho para 4 tarjetas en una fila con gap */
+    width: calc(25% - 15px); 
+    min-width: 200px; 
+    
+    /* Fondo, borde sutil y sombra */
+    background-color: #ffffff;
+    border: 1px solid #ddd; /* Borde sutil solicitado */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
+    transition: all 0.3s ease;
+
+    /* Aseguramos la consistencia de márgenes verticales entre filas */
+    margin-bottom: 20px; /* <--- CAMBIO: Añadimos margen inferior para separar las filas */
+    max-width: none; 
+    display: flex;
+    flex-direction: column;
 }
 
-form input[type="submit"]:hover,
-form button[type="submit"]:hover {
-    background-color: #1e32a0;
+/* Efectos Hover unificados */
+.perfil-card:hover, .acceso-card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
 }
 
-/* Títulos */
-h2 {
-    font-size: 22px;
-    color: #2943b9;
-    margin-bottom: 15px;
+/* Estilos específicos de la Tarjeta de Perfil */
+.perfil-card {
+    justify-content: flex-start; 
+    text-align: left; 
 }
 
-/* Tablas */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
+/* Estilos específicos de las Tarjetas de Acceso Rápido */
+.acceso-card {
+    justify-content: space-between; 
+    text-align: center; 
+}
+.acceso-card i {
+    font-size: 40px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+.acceso-card h3 {
+    margin-top: 0;
 }
 
-thead tr {
-    background-color: #2943b9;
-    color: white;
+
+/* Reajuste de elementos internos de perfil */
+.perfil-card .perfil-header-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-th, td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-    font-size: 15px;
+.perfil-card .perfil-header-info i {
+    font-size: 30px;
+    margin-right: 10px;
+    color: #007bff;
 }
 
-tbody tr:hover {
-    background-color: #f2f5ff;
-}
-
-td.acciones, #acciones {
-    text-align: center;
-}
-
-/* Botones de acción en tablas */
-a {
-    color: #2943b9;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-#eliminar {
-    color: white;
-    background-color: red;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-#eliminar:hover {
-    background-color: darkred;
-}
-
-#editar {
-    color: white;
-    background-color: #d78a0e;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-#editar:hover {
-    background-color: #b76f0c;
-}
-
-#reset {
-    color: white;
-    background-color: #17a2b8; 
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-weight: bold;
-    display: inline-block;
-}
-
-#reset:hover {
-    background-color: #138496; 
-}
-
-/* Paginación */
-.paginacion {
-    text-align: center;
-    margin: 20px 0;
-}
-
-.paginacion ul {
-    list-style: none;
-    padding: 0;
-    display: inline-flex;
-    overflow: hidden; 
-}
-
-.paginacion ul li {
-    margin-right: 5px;
-}
-
-.paginacion ul li:last-child {
-    margin-right: 0;
-}
-
-.paginacion ul li a,
-.paginacion ul li .numero-pagina-actual {
-    display: block;
-    padding: 8px 12px;
-    text-decoration: none;
-    background-color: white;
+.perfil-card h2 {
+    font-size: 24px;
     color: #333;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
 }
 
-.paginacion ul li a:hover:not(.disabled) {
-    background-color: #f0f0f0;
+.perfil-card p {
+    color: #555;
+    font-size: 16px;
 }
 
-.paginacion ul li .numero-pagina-actual {
+.perfil-card .perfil-rol {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Botón de Perfil */
+.perfil-card .btn-editar {
+    display: inline-block;
+    padding: 10px 20px;
     background-color: #007bff;
     color: white;
-    font-weight: bold;
-    cursor: default;
-    border-color: #007bff;
-}
-
-.paginacion ul li a.disabled {
-    color: #aaa;
-    pointer-events: none;
-    background-color: #f8f9fa;
-    cursor: not-allowed;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    align-self: flex-start; 
 }
 
 
-/* Select2 */
-.select2-container {
-    width: 100% !important;
-}
-
-.select2-container--default .select2-selection--single {
-    height: 40px; 
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    color: #333;
-    background-color: white;
-    cursor: pointer;
-    box-sizing: border-box;
-}
-
-.select2-container--default.select2-container--focus .select2-selection--single {
-    border-color: #2943b9;
-    outline: none;
-    box-shadow: 0 0 3px #2943b9;
-}
-
-.select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: #2943b9;
+/* Botón de Acceso */
+.acceso-card .btn-acceso {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #007bff;
     color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+/* Estilo de botones */
+.btn-editar, .btn-acceso {
+    transition: background-color 0.3s ease;
+}
+
+.btn-editar:hover, .btn-acceso:hover {
+    background-color: #0056b3;
+}
+
+
+/* --- SECCIONES OBSOLETAS (Mantenemos por si se usan en otra parte) --- */
+
+.perfil-info {
+    /* Removido o no usado */
+}
+
+.accesos-rapidos {
+    /* Removido o no usado */
+}
+
+/* --- OTRAS SECCIONES (Mantener) --- */
+
+/* Info box */
+.info-box {
+    background-color: #e9f7ef;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+/* Separadores */
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #eee;
+    margin: 30px 0;
+}
+
+/* Card en dashboard (mantener si se usa en otra parte) */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+.card ul li {
+    margin-bottom: 8px;
+}
+
+.card ul li a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    display: block;
+    padding: 5px 0;
+}
+
+.card ul li a:hover {
+    text-decoration: underline;
+    color: #0056b3;
 }
 
 /* Dropdown cabecera */
@@ -354,72 +372,4 @@ a {
 
 .dropdown-menu li a:hover {
     background-color: #f0f0f0;
-}
-
-/* Dashboard cards admin */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.card {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.card h3 {
-    margin-top: 0;
-    color: #333;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.card ul {
-    list-style: none;
-    padding: 0;
-    margin-top: 15px;
-}
-
-.card ul li {
-    margin-bottom: 8px;
-}
-
-.card ul li a {
-    text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
-    display: block;
-    padding: 5px 0;
-}
-
-.card ul li a:hover {
-    text-decoration: underline;
-    color: #0056b3;
-}
-
-/* Info box */
-.info-box {
-    background-color: #e9f7ef;
-    border: 1px solid #c3e6cb;
-    color: #155724;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
-/* Separadores */
-hr {
-    border: 0;
-    height: 1px;
-    background-color: #eee;
-    margin: 30px 0;
 }

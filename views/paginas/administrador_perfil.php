@@ -3,10 +3,10 @@ if (!isset($_SESSION['id_usuarios']) || (isset($_SESSION['perfiles_nombre']) && 
     header('Location: index.php?page=login&message=Acceso no autorizado. Inicie sesión como administrador.&status=danger');
     exit;
 }
+
 $nombre_admin = $_SESSION['usuarios_nombre_usuario'] ?? 'Administrador';
 $email_admin = $_SESSION['usuarios_email'] ?? 'N/A';
 $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
-
 ?>
 
 <!DOCTYPE html>
@@ -16,68 +16,65 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil - Administrador</title>
     <link rel="stylesheet" href="assets/css/mi_perfil_admin.css">
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
 </head>
 <body>
 
-    <div class="container">
+<div class="container">
 
+    <div class="perfil-header">
         <h1>Bienvenido, <?php echo htmlspecialchars($nombre_admin); ?></h1>
-        <p>Este es tu panel de control como Administrador de ViajAR. Aca podes acceder rápidamente a las herramientas de gestión del sistema.</p>
+        <p>Este es tu panel de control como Administrador de ViajAR. Desde aca podes gestionar y acceder a todas las funciones del sistema.</p>
         <p>Fecha y hora actual: <?php echo date('d/m/Y H:i'); ?></p>
+    </div>
 
-        <h2>Información de tu Perfil</h2>
-        <div class="info-box">
+    <div class="tarjetas-principales"> 
+
+        <div class="perfil-card">
+            <div class="perfil-header-info">
+                <i class="fa-solid fa-user"></i>
+                <h2>Información de tu Perfil</h2>
+            </div>
             <p><strong>Nombre de Usuario:</strong> <?php echo htmlspecialchars($nombre_admin); ?></p>
             <p><strong>Correo Electrónico:</strong> <?php echo htmlspecialchars($email_admin); ?></p>
-            <p><strong>Rol Asignado:</strong> <span style="font-weight: bold; color: #007bff;"><?php echo htmlspecialchars($perfil_admin); ?></span></p>
-            <a href="index.php?page=usuarios&id=<?php echo $_SESSION['id_usuarios']; ?>">Editar mis datos</a>
+            <p><strong>Rol Asignado:</strong> <span class="perfil-rol"><?php echo htmlspecialchars($perfil_admin); ?></span></p>
+            <a class="btn-editar" href="index.php?page=usuarios&id=<?php echo $_SESSION['id_usuarios']; ?>">Editar mis datos</a>
         </div>
 
+        <div class="acceso-card">
+            <i class="fa fa-chart-line"></i>
+            <h3>Dashboard</h3>
+            <p>Accede al resumen general de estadísticas del sistema.</p>
+            <a href="index.php?page=dashboard_admin" class="btn-acceso">Ver Dashboard</a>
+        </div>
 
-        <h2>Accesos Rápidos a la Gestión</h2>
-        <div class="dashboard-grid">
-            <div class="card">
-                <h3><i class="fas fa-users"></i> Gestión de Usuarios</h3>
-                <ul>
-                    <li><a href="index.php?page=usuarios">Ver y Editar Usuarios</a></li>
-                    <li><a href="index.php?page=usuarios&action=create">Crear Nuevo Usuario</a></li>
-                </ul>
-            </div>
+        <div class="acceso-card">
+            <i class="fa-solid fa-check-square"></i>
+            <h3>Revisión de Servicios</h3>
+            <p>Gestiona los servicios pendientes de revisión y apruébalos.</p>
+            <a href="index.php?page=revision_servicios" class="btn-acceso">Revisar Servicios</a>
+        </div>
 
-            <div class="card">
-                <h3><i class="fas fa-user-tag"></i> Gestión de Perfiles</h3>
-                <ul>
-                    <li><a href="index.php?page=perfiles">Ver y Editar Perfiles</a></li>
-                    <li><a href="index.php?page=perfiles&action=create">Crear Nuevo Perfil</a></li>
-                </ul>
-            </div>
-            
-            <div class="card">
-                <h3><i class="fas fa-receipt"></i> Tipos de Pago</h3>
-                <ul>
-                    <li><a href="index.php?page=tipo_pagos">Ver y Editar Tipos de Pago</a></li>
-                    <li><a href="index.php?page=tipo_pagos&action=create">Crear Nuevo Tipo de Pago</a></li>
-                </ul>
-            </div>
+        <div class="acceso-card">
+            <i class="fa-solid fa-clipboard-list"></i>
+            <h3>Auditorías</h3>
+            <p>Consulta las auditorías realizadas en el sistema.</p>
+            <a href="index.php?page=listado_auditorias" class="btn-acceso">Ver Auditorías</a>
+        </div>   
+        
+        <div class="acceso-card">
+            <i class="fa-solid fa-wallet"></i>
+            <h3>Ganancias</h3>
+            <p>Consulta el resumen de las ganancias del sistema y los detalles por servicio.</p>
+            <a href="index.php?page=ganancias_dashboard" class="btn-acceso">Ver Ganancias</a>
+        </div>
 
-            <div class="card">
-                <h3><i class="fas fa-address-book"></i> Tipos de Contacto</h3>
-                <ul>
-                    <li><a href="index.php?page=tipo_contactos">Ver y Editar Tipos de Contacto</a></li>
-                    <li><a href="index.php?page=tipo_contactos&action=create">Crear Nuevo Tipo de Contacto</a></li>
-                </ul>
-            </div>
-
-            <div class="card">
-                <h3><i class="fas fa-clipboard-list"></i> Historial de Auditorías</h3>
-                <ul>
-                    <li><a href="index.php?page=listado_auditorias">Ver Auditorías</a></li>
-                </ul>
-            </div>
-
-            </div>
     </div>
+    </div>
+
 </body>
 </html>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="assets/js/toast.js"></script>

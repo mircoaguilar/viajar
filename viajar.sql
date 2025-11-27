@@ -33,7 +33,7 @@ CREATE TABLE `auditoria` (
   PRIMARY KEY (`id_auditoria`),
   KEY `rela_usuario` (`rela_usuario`),
   CONSTRAINT `auditoria_ibfk_1` FOREIGN KEY (`rela_usuario`) REFERENCES `usuarios` (`id_usuarios`)
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `auditoria` (
 
 LOCK TABLES `auditoria` WRITE;
 /*!40000 ALTER TABLE `auditoria` DISABLE KEYS */;
-INSERT INTO `auditoria` VALUES (70,66,'Alta de usuario','Se creó el usuario: poc7','2025-09-12 19:17:06'),(71,72,'Alta de perfil','Se creó el perfil: Prueba','2025-11-09 19:17:16'),(75,66,'Alta de tipo de pago','Se creó un nuevo tipo de pago: Prueba','2025-11-12 19:20:48'),(76,66,'Actualización de tipo de pago','Se actualizó el tipo de pago (ID: 13) a \'Prueba2\'','2025-11-12 19:21:04'),(77,66,'Alta de tipo de contacto','Se creó el tipo de contacto: Prueba','2025-11-12 19:21:12'),(78,66,'Alta de provincia','Se creó la provincia: prueba','2025-11-12 19:21:17'),(79,66,'Baja lógica de perfil','Se desactivó el perfil (ID 26)','2025-11-13 14:19:53'),(80,NULL,'Envío de email','Se envió un email de restablecimiento de contraseña a mircoaguilar02@gmail.com','2025-11-13 14:41:56'),(81,NULL,'Cambio de contraseña','El usuario ID 74 cambió su contraseña','2025-11-13 14:43:06'),(100,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #154 por $15000 (Mercado Pago ID: 133108998693)','2025-11-13 16:34:14'),(101,NULL,'Envío de email','Se envió un email de restablecimiento de contraseña a Mircoaguilar02@gmail.com','2025-11-13 16:40:10'),(109,74,'Reserva creada','El usuario ID 74 creó la reserva #166 por $15000','2025-11-14 13:01:48'),(110,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #166 por $15000 (Mercado Pago ID: 133834933882)','2025-11-14 13:02:06'),(111,66,'Actualización de tipo de pago','Se actualizó el tipo de pago (ID: 13) a \'Prueba\'','2025-11-14 13:34:32'),(112,66,'Baja lógica de tipo de pago','Se eliminó lógicamente el tipo de pago (ID: 13)','2025-11-14 13:34:34'),(113,66,'Alta de tipo de pago','Se creó un nuevo tipo de pago: Prueba','2025-11-14 13:34:35'),(114,66,'Actualización de tipo de pago','Se actualizó el tipo de pago (ID: 14) a \'Prueba2\'','2025-11-14 13:34:38'),(115,66,'Actualización de tipo de pago','Se actualizó el tipo de pago (ID: 14) a \'Prueba22\'','2025-11-14 13:34:40'),(116,66,'Actualización de tipo de pago','Se actualizó el tipo de pago (ID: 14) a \'Prueba222\'','2025-11-14 13:34:41'),(117,66,'Actualización de tipo de pago','Se actualizó el tipo de pago (ID: 14) a \'Prueba2222\'','2025-11-14 13:34:41'),(118,66,'Actualización de tipo de pago','Se actualizó el tipo de pago (ID: 14) a \'Prueba22222\'','2025-11-14 13:34:42'),(119,66,'Baja lógica de tipo de pago','Se eliminó lógicamente el tipo de pago (ID: 14)','2025-11-14 13:34:44'),(120,66,'Alta de tipo de pago','Se creó un nuevo tipo de pago: Prueba','2025-11-14 13:34:46'),(121,66,'Baja lógica de tipo de pago','Se eliminó lógicamente el tipo de pago (ID: 15)','2025-11-14 13:34:47'),(122,66,'Alta de tipo de pago','Se creó un nuevo tipo de pago: Prueba','2025-11-14 13:34:49'),(123,66,'Alta de tipo de pago','Se creó un nuevo tipo de pago: Prueba','2025-11-14 13:34:50'),(124,66,'Alta de tipo de pago','Se creó un nuevo tipo de pago: Prueba','2025-11-14 13:34:52'),(125,66,'Alta de tipo de pago','Se creó un nuevo tipo de pago: Prueba','2025-11-14 13:34:53'),(126,66,'Alta de tipo de pago','Se creó un nuevo tipo de pago: Prueba','2025-11-14 13:34:54'),(127,66,'Alta de tipo de pago','Se creó un nuevo tipo de pago: Prueba','2025-11-14 13:34:56'),(128,66,'Alta de perfil','Se creó el perfil: Prueba','2025-11-14 13:36:41'),(129,66,'Baja lógica de provincia','Se eliminó lógicamente la provincia (ID: 7)','2025-11-15 00:03:13'),(130,66,'Baja lógica de perfil','Se desactivó el perfil (ID 27)','2025-11-15 13:03:00'),(131,74,'Reserva creada','El usuario ID 74 creó la reserva #167 por $100000','2025-11-18 22:03:19'),(132,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #167 por $100000 (Mercado Pago ID: 133792754809)','2025-11-18 22:03:40'),(133,74,'Reserva creada','El usuario ID 74 creó la reserva #168 por $450000','2025-11-18 22:04:26'),(134,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #168 por $450000 (Mercado Pago ID: 133792785735)','2025-11-18 22:04:48'),(135,74,'Reserva creada','El usuario ID 74 creó la reserva #169 por $20000','2025-11-18 22:14:00'),(136,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #169 por $20000 (Mercado Pago ID: 134404424658)','2025-11-18 22:14:35'),(137,74,'Reserva creada','El usuario ID 74 creó la reserva #170 por $150000','2025-11-18 22:37:20'),(138,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #170 por $150000 (Mercado Pago ID: 133795765665)','2025-11-18 22:37:40'),(139,74,'Reserva creada','El usuario ID 74 creó la reserva #183 por $210000','2025-11-19 19:41:30'),(140,74,'Reserva creada','El usuario ID 74 creó la reserva #184 por $18000','2025-11-24 09:51:13'),(141,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #184 por $18000 (Mercado Pago ID: 134438576937)','2025-11-24 09:51:42'),(142,74,'Reserva creada','El usuario ID 74 creó la reserva #186 por $33000','2025-11-24 10:22:49'),(143,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #186 por $33000 (Mercado Pago ID: 135055858044)','2025-11-24 10:23:14'),(144,74,'Reserva creada','El usuario ID 74 creó la reserva #187 por $18000','2025-11-24 10:25:40'),(145,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #187 por $18000 (Mercado Pago ID: 134441849637)','2025-11-24 10:25:57'),(146,74,'Reserva creada','El usuario ID 74 creó la reserva #190 por $450000','2025-11-24 23:14:05'),(147,74,'Reserva creada','El usuario ID 74 creó la reserva #191 por $45000','2025-11-25 16:58:57'),(148,74,'Reserva creada','El usuario ID 74 creó la reserva #192 por $45000','2025-11-25 17:01:50'),(149,74,'Reserva creada','El usuario ID 74 creó la reserva #193 por $45000','2025-11-25 17:04:16'),(150,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #193 por $45000 (Mercado Pago ID: 135226550608)','2025-11-25 17:04:30'),(151,74,'Reserva creada','El usuario ID 74 creó la reserva #194 por $10000','2025-11-25 17:08:27'),(152,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #194 por $10000 (Mercado Pago ID: 135227184102)','2025-11-25 17:08:48'),(153,74,'Reserva creada','El usuario ID 74 creó la reserva #196 por $468000','2025-11-25 18:22:17'),(154,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #196 por $468000 (Mercado Pago ID: 135237172214)','2025-11-25 18:22:49'),(155,74,'Reserva creada','El usuario ID 74 creó la reserva #197 por $18000','2025-11-25 18:24:47'),(156,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #197 por $18000 (Mercado Pago ID: 134622565473)','2025-11-25 18:25:18');
+INSERT INTO `auditoria` VALUES (157,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Doble, capacidad: 2','2025-11-26 10:51:35'),(158,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Matrimonial, capacidad: 2','2025-11-26 10:51:59'),(159,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Cuádruple, capacidad: 4','2025-11-26 10:52:40'),(160,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Ejecutiva , capacidad: 2','2025-11-26 10:53:13'),(161,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Superior, capacidad: 2','2025-11-26 10:53:58'),(162,66,'Actualización de tipo de habitación','Se actualizó la habitación (ID: 20) a nombre: Habitación Ejecutiva , capacidad: 2','2025-11-26 10:54:06'),(163,66,'Actualización de tipo de habitación','Se actualizó la habitación (ID: 19) a nombre: Habitación Cuádruple, capacidad: 4','2025-11-26 10:54:14'),(164,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Deluxe, capacidad: 2','2025-11-26 10:54:50'),(165,66,'Alta de tipo de habitación','Se creó la habitación: prueba','2025-11-26 11:24:16'),(166,66,'Actualización de tipo de habitación','Se actualizó la habitación (ID: 27) a nombre: prueba2','2025-11-26 11:25:10'),(167,66,'Baja lógica de tipo de habitación','Se eliminó lógicamente la habitación (ID: 27)','2025-11-26 11:25:14'),(168,74,'Reserva creada','El usuario ID 74 creó la reserva #198 por $19000','2025-11-26 11:48:37'),(169,74,'Reserva creada','El usuario ID 74 creó la reserva #199 por $19000','2025-11-26 15:57:43'),(170,74,'Reserva creada','El usuario ID 74 creó la reserva #200 por $19000','2025-11-26 16:10:40'),(171,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #200 por $19000 (Mercado Pago ID: 134737782789)','2025-11-26 16:12:08'),(172,74,'Reserva creada','El usuario ID 74 creó la reserva #201 por $21000','2025-11-26 21:50:43'),(173,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #201 por $21000 (Mercado Pago ID: 134780333031)','2025-11-26 21:51:14'),(174,74,'Reserva creada','El usuario ID 74 creó la reserva #202 por $21000','2025-11-26 21:56:14'),(175,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #202 por $21000 (Mercado Pago ID: 135396202124)','2025-11-26 21:56:33'),(176,74,'Reserva creada','El usuario ID 74 creó la reserva #203 por $15000','2025-11-27 03:20:03'),(177,74,'Reserva creada','El usuario ID 74 creó la reserva #204 por $15000','2025-11-27 03:25:53'),(178,74,'Reserva creada','El usuario ID 74 creó la reserva #205 por $15000','2025-11-27 10:53:03'),(179,74,'Reserva creada','El usuario ID 74 creó la reserva #206 por $15000','2025-11-27 11:00:23'),(180,74,'Reserva creada','El usuario ID 74 creó la reserva #207 por $15000','2025-11-27 11:02:38'),(181,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #207 por $15000 (Mercado Pago ID: 134834060415)','2025-11-27 11:03:08'),(182,74,'Reserva creada','El usuario ID 74 creó la reserva #213 por $15000','2025-11-27 11:14:11'),(183,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #213 por $15000 (Mercado Pago ID: 134835375561)','2025-11-27 11:14:33'),(184,74,'Reserva creada','El usuario ID 74 creó la reserva #217 por $15000','2025-11-27 11:37:08'),(185,74,'Reserva creada','El usuario ID 74 creó la reserva #218 por $15000','2025-11-27 11:39:18'),(186,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #218 por $15000 (Mercado Pago ID: 135454295304)','2025-11-27 11:39:48'),(187,74,'Reserva creada','El usuario ID 74 creó la reserva #224 por $15000','2025-11-27 12:05:33'),(188,74,'Reserva creada','El usuario ID 74 creó la reserva #227 por $15000','2025-11-27 12:13:35'),(189,74,'Reserva creada','El usuario ID 74 creó la reserva #238 por $15000','2025-11-27 13:03:26'),(190,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #238 por $15000 (Mercado Pago ID: 134850237473)','2025-11-27 13:04:36'),(191,74,'Reserva creada','El usuario ID 74 creó la reserva #239 por $15000','2025-11-27 13:15:08'),(192,74,'Reserva creada','El usuario ID 74 creó la reserva #240 por $15000','2025-11-27 13:20:40'),(193,74,'Reserva creada','El usuario ID 74 creó la reserva #241 por $15000','2025-11-27 13:21:01'),(194,74,'Reserva creada','El usuario ID 74 creó la reserva #242 por $15000','2025-11-27 13:24:26'),(195,74,'Reserva creada','El usuario ID 74 creó la reserva #243 por $15000','2025-11-27 13:24:34'),(196,74,'Reserva creada','El usuario ID 74 creó la reserva #244 por $15000','2025-11-27 13:25:24'),(197,74,'Reserva creada','El usuario ID 74 creó la reserva #245 por $15000','2025-11-27 13:33:59'),(198,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #245 por $15000 (Mercado Pago ID: 134854142773)','2025-11-27 13:34:32'),(199,74,'Reserva creada','El usuario ID 74 creó la reserva #246 por $30000','2025-11-27 13:37:54'),(200,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #246 por $30000 (Mercado Pago ID: 135469968498)','2025-11-27 13:38:12'),(201,74,'Reserva creada','El usuario ID 74 creó la reserva #247 por $30000','2025-11-27 15:35:57'),(202,74,'Reserva creada','El usuario ID 74 creó la reserva #248 por $70000','2025-11-27 15:50:34'),(203,74,'Reserva creada','El usuario ID 74 creó la reserva #249 por $70000','2025-11-27 15:53:18'),(204,74,'Reserva creada','El usuario ID 74 creó la reserva #250 por $30000','2025-11-27 15:56:45'),(205,74,'Reserva creada','El usuario ID 74 creó la reserva #251 por $30000','2025-11-27 16:04:50'),(206,74,'Reserva creada','El usuario ID 74 creó la reserva #252 por $15000','2025-11-27 16:05:54'),(207,74,'Reserva creada','El usuario ID 74 creó la reserva #253 por $15000','2025-11-27 16:12:01'),(208,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #253 por $15000 (Mercado Pago ID: 135486768390)','2025-11-27 16:12:17'),(209,74,'Reserva creada','El usuario ID 74 creó la reserva #254 por $15000','2025-11-27 16:14:44'),(210,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #254 por $15000 (Mercado Pago ID: 135487062438)','2025-11-27 16:14:58'),(211,74,'Reserva creada','El usuario ID 74 creó la reserva #255 por $38500','2025-11-27 18:05:27'),(212,74,'Reserva creada','El usuario ID 74 creó la reserva #256 por $7000','2025-11-27 18:09:01'),(213,74,'Reserva creada','El usuario ID 74 creó la reserva #257 por $21000','2025-11-27 18:13:11'),(214,74,'Reserva creada','El usuario ID 74 creó la reserva #258 por $21000','2025-11-27 18:17:07'),(215,74,'Reserva creada','El usuario ID 74 creó la reserva #259 por $21000','2025-11-27 18:18:52'),(216,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #259 por $21000 (MP ID: 135502828336)','2025-11-27 18:19:30'),(217,74,'Reserva creada','El usuario ID 74 creó la reserva #260 por $55000','2025-11-27 18:21:45'),(218,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #260 por $55000 (MP ID: 134887597925)','2025-11-27 18:22:32'),(219,74,'Reserva creada','El usuario ID 74 creó la reserva #261 por $48000','2025-11-27 18:25:00'),(220,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #261 por $48000 (MP ID: 135503467614)','2025-11-27 18:25:18');
 /*!40000 ALTER TABLE `auditoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +90,7 @@ CREATE TABLE `carrito` (
   PRIMARY KEY (`id_carrito`),
   KEY `carrito_ibfk_1` (`rela_usuario`),
   CONSTRAINT `carrito_ibfk_1` FOREIGN KEY (`rela_usuario`) REFERENCES `usuarios` (`id_usuarios`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `carrito_items` (
   PRIMARY KEY (`id_item`),
   KEY `carrito_items_ibfk_1` (`rela_carrito`),
   CONSTRAINT `carrito_items_ibfk_1` FOREIGN KEY (`rela_carrito`) REFERENCES `carrito` (`id_carrito`)
-) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,7 +212,7 @@ CREATE TABLE `detalle_reserva_hotel` (
   KEY `fk_detalle_hotel_habitacion` (`rela_habitacion`),
   CONSTRAINT `fk_detalle_hotel_habitacion` FOREIGN KEY (`rela_habitacion`) REFERENCES `hotel_habitaciones` (`id_hotel_habitacion`),
   CONSTRAINT `fk_hotel_detalle_reserva` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`)
-) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,7 +221,7 @@ CREATE TABLE `detalle_reserva_hotel` (
 
 LOCK TABLES `detalle_reserva_hotel` WRITE;
 /*!40000 ALTER TABLE `detalle_reserva_hotel` DISABLE KEYS */;
-INSERT INTO `detalle_reserva_hotel` VALUES (110,284,16,'2025-11-25','2025-11-28',3,'cancelada');
+INSERT INTO `detalle_reserva_hotel` VALUES (116,348,20,'2025-11-27','2025-11-28',1,'pendiente'),(117,355,20,'2025-11-27','2025-11-29',2,'confirmada'),(118,358,20,'2025-11-27','2025-11-29',2,'confirmada');
 /*!40000 ALTER TABLE `detalle_reserva_hotel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -243,7 +243,7 @@ CREATE TABLE `detalle_reserva_tour` (
   KEY `fk_tour_detalle` (`rela_tour`),
   CONSTRAINT `fk_tour_detalle` FOREIGN KEY (`rela_tour`) REFERENCES `tours` (`id_tour`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_tour_detalle_reserva` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,7 +252,7 @@ CREATE TABLE `detalle_reserva_tour` (
 
 LOCK TABLES `detalle_reserva_tour` WRITE;
 /*!40000 ALTER TABLE `detalle_reserva_tour` DISABLE KEYS */;
-INSERT INTO `detalle_reserva_tour` VALUES (100,281,6,'2025-12-01','cancelada'),(101,282,14,'2025-11-25','confirmada'),(102,283,6,'2025-12-01','confirmada');
+INSERT INTO `detalle_reserva_tour` VALUES (107,349,15,'2025-11-30','pendiente'),(108,351,15,'2025-11-29','pendiente'),(109,352,15,'2025-11-30','pendiente'),(110,353,15,'2025-11-30','pendiente'),(111,354,15,'2025-11-30','confirmada'),(112,357,15,'2025-11-29','confirmada'),(113,360,15,'2025-11-28','confirmada');
 /*!40000 ALTER TABLE `detalle_reserva_tour` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -269,8 +269,6 @@ CREATE TABLE `detalle_reserva_transporte` (
   `id_viaje` int NOT NULL,
   `piso` int NOT NULL,
   `numero_asiento` int NOT NULL,
-  `fila` int DEFAULT NULL,
-  `columna` int DEFAULT NULL,
   `fecha_servicio` date DEFAULT NULL,
   `precio_unitario` decimal(10,2) DEFAULT NULL,
   `rela_pasajero` int DEFAULT NULL,
@@ -282,7 +280,7 @@ CREATE TABLE `detalle_reserva_transporte` (
   CONSTRAINT `detalle_reserva_transporte_ibfk_1` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`),
   CONSTRAINT `detalle_reserva_transporte_ibfk_2` FOREIGN KEY (`id_viaje`) REFERENCES `viajes` (`id_viajes`),
   CONSTRAINT `detalle_reserva_transporte_ibfk_3` FOREIGN KEY (`rela_pasajero`) REFERENCES `pasajeros` (`id_pasajeros`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,7 +289,7 @@ CREATE TABLE `detalle_reserva_transporte` (
 
 LOCK TABLES `detalle_reserva_transporte` WRITE;
 /*!40000 ALTER TABLE `detalle_reserva_transporte` DISABLE KEYS */;
-INSERT INTO `detalle_reserva_transporte` VALUES (23,285,8,1,7,2,3,'2025-11-30',18000.00,NULL,'confirmada'),(24,286,8,1,12,3,4,'2025-11-30',18000.00,NULL,'cancelada');
+INSERT INTO `detalle_reserva_transporte` VALUES (57,356,10,2,12,'2025-11-27',15000.00,32,'confirmada'),(58,359,10,1,7,'2025-11-27',15000.00,32,'confirmada');
 /*!40000 ALTER TABLE `detalle_reserva_transporte` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -312,7 +310,7 @@ CREATE TABLE `detalle_reservas` (
   PRIMARY KEY (`id_detalle_reserva`),
   KEY `rela_reservas` (`rela_reservas`),
   CONSTRAINT `detalle_reservas_ibfk_1` FOREIGN KEY (`rela_reservas`) REFERENCES `reservas` (`id_reservas`)
-) ENGINE=InnoDB AUTO_INCREMENT=287 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=361 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -321,7 +319,7 @@ CREATE TABLE `detalle_reservas` (
 
 LOCK TABLES `detalle_reservas` WRITE;
 /*!40000 ALTER TABLE `detalle_reservas` DISABLE KEYS */;
-INSERT INTO `detalle_reservas` VALUES (281,193,'tour',3,15000.00,45000.00),(282,194,'tour',1,10000.00,10000.00),(283,195,'tour',1,15000.00,15000.00),(284,196,'hotel',1,150000.00,450000.00),(285,196,'transporte',1,18000.00,18000.00),(286,197,'transporte',1,18000.00,18000.00);
+INSERT INTO `detalle_reservas` VALUES (348,255,'hotel',1,9500.00,9500.00),(349,255,'tour',2,7000.00,14000.00),(350,255,'transporte',1,15000.00,15000.00),(351,256,'tour',1,7000.00,7000.00),(352,257,'tour',3,7000.00,21000.00),(353,258,'tour',3,7000.00,21000.00),(354,259,'tour',3,7000.00,21000.00),(355,260,'hotel',1,9500.00,19000.00),(356,260,'transporte',1,15000.00,15000.00),(357,260,'tour',3,7000.00,21000.00),(358,261,'hotel',1,9500.00,19000.00),(359,261,'transporte',1,15000.00,15000.00),(360,261,'tour',2,7000.00,14000.00);
 /*!40000 ALTER TABLE `detalle_reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -408,6 +406,35 @@ LOCK TABLES `factura` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `ganancias`
+--
+
+DROP TABLE IF EXISTS `ganancias`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ganancias` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_reserva` int NOT NULL,
+  `tipo_servicio` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `ganancia_neta` decimal(10,2) NOT NULL,
+  `fecha_calculo` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `id_reserva` (`id_reserva`),
+  CONSTRAINT `ganancias_ibfk_1` FOREIGN KEY (`id_reserva`) REFERENCES `reservas` (`id_reservas`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ganancias`
+--
+
+LOCK TABLES `ganancias` WRITE;
+/*!40000 ALTER TABLE `ganancias` DISABLE KEYS */;
+INSERT INTO `ganancias` VALUES (1,259,'reserva',2100.00,'2025-11-27 18:19:30'),(2,260,'reserva',5500.00,'2025-11-27 18:22:32'),(3,261,'reserva',4800.00,'2025-11-27 18:25:18');
+/*!40000 ALTER TABLE `ganancias` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `hotel`
 --
 
@@ -436,7 +463,7 @@ CREATE TABLE `hotel` (
   CONSTRAINT `fk_hotel_proveedor` FOREIGN KEY (`rela_proveedor`) REFERENCES `proveedores` (`id_proveedores`),
   CONSTRAINT `fk_hotel_provincia` FOREIGN KEY (`rela_provincia`) REFERENCES `provincias` (`id_provincia`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_hotel_revisado_por` FOREIGN KEY (`revisado_por`) REFERENCES `usuarios` (`id_usuarios`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -445,7 +472,7 @@ CREATE TABLE `hotel` (
 
 LOCK TABLES `hotel` WRITE;
 /*!40000 ALTER TABLE `hotel` DISABLE KEYS */;
-INSERT INTO `hotel` VALUES (2,'Hotel Internacional de Turismo','2025-08-05 19:31:13','internacional1.jpg',1,1,1,1,'aprobado',NULL,'2025-10-29 10:14:20',66),(58,'Howard Johnson Formosa','2025-09-25 14:24:15','hotel_58.jpg',1,1,3,1,'aprobado',NULL,'2025-10-29 10:14:20',66),(59,'Hotel regina','2025-10-21 17:43:17','6918ac8c0eb83_190136777.jpg',1,1,3,1,'aprobado',NULL,'2025-10-29 10:47:43',66),(70,'Esto es una prueba1','2025-11-14 23:03:38','6918a8cf9afb6_gallery-14.jpg',1,5,3,1,'pendiente',NULL,NULL,NULL);
+INSERT INTO `hotel` VALUES (71,'Howard Johnson Formosa','2025-11-26 11:06:46','692709760bd03_howard1.jpg',1,1,3,1,'aprobado',NULL,'2025-11-26 11:07:23',66);
 /*!40000 ALTER TABLE `hotel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -471,7 +498,7 @@ CREATE TABLE `hotel_habitaciones` (
   KEY `rela_tipo_habitacion` (`rela_tipo_habitacion`),
   CONSTRAINT `hotel_habitaciones_ibfk_1` FOREIGN KEY (`rela_hotel`) REFERENCES `hotel` (`id_hotel`),
   CONSTRAINT `hotel_habitaciones_ibfk_2` FOREIGN KEY (`rela_tipo_habitacion`) REFERENCES `tipos_habitacion` (`id_tipo_habitacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -480,7 +507,7 @@ CREATE TABLE `hotel_habitaciones` (
 
 LOCK TABLES `hotel_habitaciones` WRITE;
 /*!40000 ALTER TABLE `hotel_habitaciones` DISABLE KEYS */;
-INSERT INTO `hotel_habitaciones` VALUES (15,58,1,2,30000.00,'Habitación luminosa y bien distribuida, ideal para quienes buscan un espacio cómodo y funcional. Está equipada con una cama matrimonial, según el , mesa de luz con velador, y placard amplio para guardar pertenencias de forma ordenada. Espacio sencillo pero bien cuidado, pensado para ofrecer una estadía confortable.',1,'2025-09-25 17:26:22','[\"assets/images/hab_68d57b3e4211c_ostrovok-445092-243d61-859914.jpg\",\"assets/images/hab_68d57b3e422ca_ostrovok-445092-367310-933479.jpg\",\"assets/images/425150400.jpg\"]'),(16,58,4,4,150000.00,'Elegante y confortable suite equipada con mobiliario de alta calidad, ideal para una estadía placentera. Cuenta con cama king size, área de estar, baño privado, climatización, TV por cable y Wi-Fi. Perfecta para quienes buscan comodidad y privacidad en un ambiente distinguido.',1,'2025-09-25 17:44:08','[\"assets/images/hab_68d57f68ad0c2_46586885.jpg\",\"assets/images/hab_68d57f68ad26e_532056808.jpg\",\"assets/images/544661146.jpg\"]'),(17,59,1,2,50000.00,'Una habitación simple, un espacio pequeño y acogedor, con lo esencial para descansar.',1,'2025-10-21 21:17:40','[\"assets/images/hab_68f7f8749a95b_Habitacion-Sencilla_P1-1200x600.jpg\",\"assets/images/hab_68f7f8749aafd_Habitacion-Sencilla_P2-1200x600.jpg\",\"assets/images/hab_68f7f8749acb6_Habitacion-Sencilla_P3-1200x600.jpg\",\"assets/images/hab_68f7f8749ae45_Habitacion-Sencilla_P4-1200x600.jpg\"]'),(18,59,4,10,5000.00,'Prueba',0,'2025-11-18 02:19:46','[\"assets/images/hab_691bd9b94dd44_415730882.jpg\"]'),(19,2,1,2,20000.00,'Esto es una prueba',1,'2025-11-19 01:06:59','[\"assets/images/hab_691d18337d7f1_Habitacion-Sencilla_P4-1200x600.jpg\",\"assets/images/hab_691d18337daf3_Habitacion-Sencilla_P1-1200x600.jpg\",\"assets/images/hab_691d18337dd30_Habitacion-Sencilla_P2-1200x600.jpg\",\"assets/images/hab_691d18337df17_Habitacion-Sencilla_P3-1200x600.jpg\"]');
+INSERT INTO `hotel_habitaciones` VALUES (20,71,1,2,9500.00,'Habitación cómoda y funcional, ideal para dos personas. Cuenta con una cama matrimonial, baño privado, aire acondicionado, TV de pantalla plana, conexión Wi-Fi gratuita.',1,'2025-11-26 14:29:25','[\"assets/images/hab_692712f74f445_WhatsApp-Image-2022-03-22-at-21.42.07-3.jpeg\",\"assets/images/hab_692712f74f66a_WhatsApp-Image-2022-03-22-at-21.42.07-4.jpeg\",\"assets/images/hab_692712f74f7ec_WhatsApp-Image-2022-03-22-at-21.42.07.jpeg\",\"assets/images/hab_692712f74fbcc_WhatsApp-Image-2022-03-22-at-21.42.07-2.jpeg\"]');
 /*!40000 ALTER TABLE `hotel_habitaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -500,7 +527,7 @@ CREATE TABLE `hotel_habitaciones_stock` (
   PRIMARY KEY (`id_stock`),
   UNIQUE KEY `unica_fecha_habitacion` (`rela_habitacion`,`fecha`),
   CONSTRAINT `hotel_habitaciones_stock_ibfk_1` FOREIGN KEY (`rela_habitacion`) REFERENCES `hotel_habitaciones` (`id_hotel_habitacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -509,7 +536,7 @@ CREATE TABLE `hotel_habitaciones_stock` (
 
 LOCK TABLES `hotel_habitaciones_stock` WRITE;
 /*!40000 ALTER TABLE `hotel_habitaciones_stock` DISABLE KEYS */;
-INSERT INTO `hotel_habitaciones_stock` VALUES (64,16,'2025-11-04',3,1),(65,16,'2025-11-05',3,1),(66,16,'2025-11-06',3,1),(67,16,'2025-11-07',3,1),(68,16,'2025-11-08',3,1),(69,16,'2025-11-09',3,1),(70,16,'2025-11-10',3,1),(71,16,'2025-11-11',3,1),(72,16,'2025-11-12',3,1),(73,16,'2025-11-13',3,1),(74,16,'2025-11-14',3,1),(75,16,'2025-11-15',3,1),(76,16,'2025-11-16',3,1),(77,16,'2025-11-17',3,1),(78,16,'2025-11-18',3,1),(79,16,'2025-11-19',3,1),(80,16,'2025-11-20',3,1),(81,16,'2025-11-21',3,1),(82,16,'2025-11-22',3,1),(83,16,'2025-11-23',3,1),(84,16,'2025-11-24',3,1),(85,16,'2025-11-25',3,1),(86,16,'2025-11-26',3,1),(87,16,'2025-11-27',3,1),(88,16,'2025-11-28',3,1),(89,16,'2025-11-29',3,1),(90,16,'2025-11-30',3,1),(91,15,'2025-11-04',3,1),(92,15,'2025-11-05',3,1),(93,15,'2025-11-06',3,1),(94,15,'2025-11-07',3,1),(95,15,'2025-11-08',3,1),(96,15,'2025-11-09',3,1),(97,15,'2025-11-10',3,1),(98,15,'2025-11-11',3,1),(99,15,'2025-11-12',3,1),(100,15,'2025-11-13',3,1),(101,15,'2025-11-14',3,1),(102,15,'2025-11-15',3,1),(103,15,'2025-11-16',3,1),(104,15,'2025-11-17',3,1),(105,15,'2025-11-18',3,1),(106,15,'2025-11-19',3,1),(107,15,'2025-11-20',3,1),(108,15,'2025-11-21',3,1),(109,15,'2025-11-22',3,1),(110,15,'2025-11-23',3,1),(111,15,'2025-11-24',3,1),(112,15,'2025-11-25',3,1),(113,15,'2025-11-26',3,1),(114,15,'2025-11-27',3,1),(115,15,'2025-11-28',3,1),(116,15,'2025-11-29',3,1),(117,15,'2025-11-30',3,1),(118,17,'2025-11-18',3,1),(119,17,'2025-11-19',3,1),(120,17,'2025-11-20',3,1),(121,17,'2025-11-21',3,1),(122,17,'2025-11-22',3,1),(123,17,'2025-11-23',3,1),(124,17,'2025-11-24',3,1),(125,17,'2025-11-25',3,1),(126,17,'2025-11-26',3,1),(127,17,'2025-11-27',3,1),(128,17,'2025-11-28',3,1),(129,17,'2025-11-29',3,1),(130,17,'2025-11-30',3,1),(131,17,'2025-12-01',2,1),(132,17,'2025-12-02',2,1),(133,17,'2025-12-03',2,1),(134,17,'2025-12-04',2,1),(135,17,'2025-12-05',2,1),(136,17,'2025-12-06',2,1),(137,17,'2025-12-07',2,1),(138,17,'2025-12-08',2,1),(139,17,'2025-12-09',2,1),(140,17,'2025-12-10',2,1),(141,17,'2025-12-11',2,1),(142,17,'2025-12-12',2,1),(143,17,'2025-12-13',2,1),(144,17,'2025-12-14',2,1),(145,17,'2025-12-15',2,1),(146,17,'2025-12-16',2,1),(147,17,'2025-12-17',2,1),(148,17,'2025-12-18',2,1),(149,17,'2025-12-19',2,1),(150,17,'2025-12-20',2,1),(151,17,'2025-12-21',2,1),(152,17,'2025-12-22',2,1),(153,17,'2025-12-23',2,1),(154,17,'2025-12-24',2,1),(155,17,'2025-12-25',2,1),(156,17,'2025-12-26',2,1),(157,17,'2025-12-27',2,1),(158,17,'2025-12-28',2,1),(159,17,'2025-12-29',2,1),(160,17,'2025-12-30',2,1),(161,17,'2025-12-31',2,1),(162,19,'2025-11-18',3,1),(163,19,'2025-11-19',3,1),(164,19,'2025-11-20',3,1),(165,19,'2025-11-21',3,1),(166,19,'2025-11-22',3,1),(167,19,'2025-11-23',3,1),(168,19,'2025-11-24',3,1),(169,19,'2025-11-25',3,1),(170,19,'2025-11-26',3,1),(171,19,'2025-11-27',3,1),(172,19,'2025-11-28',3,1),(173,19,'2025-11-29',3,1),(174,19,'2025-11-30',3,1);
+INSERT INTO `hotel_habitaciones_stock` VALUES (175,20,'2025-11-26',2,1),(176,20,'2025-11-27',0,1),(177,20,'2025-11-28',0,1),(178,20,'2025-11-29',2,1),(179,20,'2025-11-30',2,1);
 /*!40000 ALTER TABLE `hotel_habitaciones_stock` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -567,7 +594,7 @@ CREATE TABLE `hoteles_info` (
   PRIMARY KEY (`id_info`),
   KEY `fk_hoteles_info_hotel_idx` (`rela_hotel`),
   CONSTRAINT `fk_hoteles_info_hotel` FOREIGN KEY (`rela_hotel`) REFERENCES `hotel` (`id_hotel`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -576,7 +603,7 @@ CREATE TABLE `hoteles_info` (
 
 LOCK TABLES `hoteles_info` WRITE;
 /*!40000 ALTER TABLE `hoteles_info` DISABLE KEYS */;
-INSERT INTO `hoteles_info` VALUES (2,2,'San Martín 1001, P3600 Formosa','Hotel Internacional de Turismo, ubicado estratégicamente para brindar comodidad y excelente atención a turistas y visitantes.','Wi-Fi, desayuno buffet, estacionamiento, servicio a la habitación, aire acondicionado','Cancelación gratuita hasta 72 horas antes de la fecha de llegada.','No se permiten fiestas ni eventos, se debe respetar el horario de silencio después de las 22 hs.',NULL),(39,58,'Av. Dr. Luis Gutnisky 3754','El Hotel Howard Johnson Formosa ofrece confort y excelente ubicación en la ciudad, ideal para turistas y viajeros de negocios.','Wi-Fi gratis, pileta, gimnasio, desayuno incluido, estacionamiento','Cancelación sin costo hasta 48 horas antes de la llegada.','No se permiten mascotas. Prohibido fumar en habitaciones.','{\"2\":\"6918ae0138ab3_ostrovok-445092-f26b12-029944.jpg\"}'),(40,59,'San Martín 535, P3600 Formosa','Es un alojamiento de categorización media, ideal para quienes buscan comodidad y accesibilidad en el corazón de la ciudad.','Wi-Fi gratuito en todo el hotel, Desayuno buffet incluido, Restaurante con una variada oferta gastronómica regional e internacional, Sala de reuniones y espacios para eventos, Estacionamiento privado para huéspedes.','Cancelación gratuita hasta 24 horas antes de la fecha de check-in.','Los huéspedes deben tener al menos 18 años para realizar el check-in sin la presencia de un adulto responsable, No se permiten mascotas en el hotel, excepto en casos especiales con autorización previa, Prohibido fumar dentro de las habitaciones y en áreas cerradas. El hotel dispone de espacios habilitados para fumadores, El hotel se reserva el derecho de solicitar la salida de cualquier huésped cuyo comportamiento sea considerado inapropiado o que cause molestias a otros huéspedes.',''),(47,70,'Puchini 5000','Hola 1234','hola 1234','Hola 1234','hola 1234','');
+INSERT INTO `hoteles_info` VALUES (48,71,'Avenida Gutnisky 3754, Formosa Capital, 3600','El Hotel Howard Johnson Formosa ofrece una experiencia de alojamiento cómoda y moderna para quienes visitan la región. Con una excelente ubicación cerca de las principales atracciones turísticas y zonas comerciales, el hotel cuenta con amplias y bien equipadas habitaciones, ideales tanto para viajeros de negocios como para aquellos en busca de descanso. Además, dispone de servicios exclusivos como restaurante, gimnasio, pileta y salas de reuniones, todo en un ambiente relajado y acogedor. Con su atención al detalle y hospitalidad, el Howard Johnson Formosa es la opción perfecta para una estancia placentera y sin preocupaciones.','Wifi, Desayuno buffet, Piscina exterior, Gimnasio, Restaurante y bar, Estacionamiento gratuito, Sala de reuniones y eventos, Servicio de habitación 24 horas, Recepción 24 horas, Aire acondicionado y Calefacción, Lavandería y tintorería, Caja de seguridad, Transporte al aeropuerto, Zona de juegos para niños.','La cancelación gratuita es posible hasta 24 horas antes de la fecha de llegada. Si la cancelación se realiza menos de 24 horas antes de la llegada o en caso de no presentación, se aplicará un cargo equivalente a la primera noche de la reserva.','El check-in se realiza a partir de las 14:00 horas y el check-out debe ser antes de las 12:00 horas. Se requiere presentar un documento de identidad válido al momento del check-in. El hotel es un establecimiento libre de humo en todas sus áreas. No se permiten mascotas, excepto en casos especiales y con autorización previa. Las personas adicionales no registradas en la reserva deben ser notificadas al hotel antes de su llegada y pueden generar cargos adicionales.','[\"692709760e499_11307308.jpg\",\"692709760e669_11307326.jpg\",\"692709760e7b8_138957414.jpg\",\"692709760e902_560131983.jpg\",\"692709760ea4b_560131994.jpg\",\"692709760eb8b_ostrovok-445092-0c1a5a-825552.jpg\",\"692709760ecdc_ostrovok-445092-4e791c-079585.jpg\",\"692709760ee3a_ostrovok-445092-f26b12-029944.jpg\"]');
 /*!40000 ALTER TABLE `hoteles_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -702,7 +729,7 @@ CREATE TABLE `notificaciones` (
   KEY `idx_destinario` (`destinario_usuario`),
   CONSTRAINT `fk_notificaciones_usuario` FOREIGN KEY (`destinario_usuario`) REFERENCES `usuarios` (`id_usuarios`) ON DELETE CASCADE,
   CONSTRAINT `notificaciones_chk_1` CHECK (json_valid(`metadata`))
-) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -711,7 +738,7 @@ CREATE TABLE `notificaciones` (
 
 LOCK TABLES `notificaciones` WRITE;
 /*!40000 ALTER TABLE `notificaciones` DISABLE KEYS */;
-INSERT INTO `notificaciones` VALUES (87,'Pago aprobado #119','Tu pago por $100000 fue aprobado y la reserva #167 ha sido confirmada.','pago',74,1,'{\"reserva\":\"167\",\"pago\":\"119\",\"tipo_pago\":\"mercadopago\"}','2025-11-18 22:03:40'),(88,'Pago aprobado #120','Tu pago por $450000 fue aprobado y la reserva #168 ha sido confirmada.','pago',74,1,'{\"reserva\":\"168\",\"pago\":\"120\",\"tipo_pago\":\"mercadopago\"}','2025-11-18 22:04:48'),(89,'Pago aprobado #121','Tu pago por $20000 fue aprobado y la reserva #169 ha sido confirmada.','pago',74,1,'{\"reserva\":\"169\",\"pago\":\"121\",\"tipo_pago\":\"mercadopago\"}','2025-11-18 22:14:35'),(90,'Pago aprobado #122','Tu pago por $150000 fue aprobado y la reserva #170 ha sido confirmada.','pago',74,1,'{\"reserva\":\"170\",\"pago\":\"122\",\"tipo_pago\":\"mercadopago\"}','2025-11-18 22:37:40'),(91,'Pago aprobado #124','Tu pago por $18000 fue aprobado y la reserva #184 ha sido confirmada.','pago',74,1,'{\"reserva\":\"184\",\"pago\":\"124\",\"tipo_pago\":\"mercadopago\"}','2025-11-24 09:51:42'),(92,'Pago aprobado #125','Tu pago por $33000 fue aprobado y la reserva #186 ha sido confirmada.','pago',74,1,'{\"reserva\":\"186\",\"pago\":\"125\",\"tipo_pago\":\"mercadopago\"}','2025-11-24 10:23:14'),(93,'Pago aprobado #126','Tu pago por $18000 fue aprobado y la reserva #187 ha sido confirmada.','pago',74,1,'{\"reserva\":\"187\",\"pago\":\"126\",\"tipo_pago\":\"mercadopago\"}','2025-11-24 10:25:57'),(94,'Pago aprobado #131','Tu pago por $45000 fue aprobado y la reserva #193 ha sido confirmada.','pago',74,1,'{\"reserva\":\"193\",\"pago\":\"131\",\"tipo_pago\":\"mercadopago\"}','2025-11-25 17:04:30'),(95,'Pago aprobado #132','Tu pago por $10000 fue aprobado y la reserva #194 ha sido confirmada.','pago',74,0,'{\"reserva\":\"194\",\"pago\":\"132\",\"tipo_pago\":\"mercadopago\"}','2025-11-25 17:08:48'),(96,'Pago aprobado #133','Tu pago por $468000 fue aprobado y la reserva #196 ha sido confirmada.','pago',74,0,'{\"reserva\":\"196\",\"pago\":\"133\",\"tipo_pago\":\"mercadopago\"}','2025-11-25 18:22:49'),(97,'Pago aprobado #134','Tu pago por $18000 fue aprobado y la reserva #197 ha sido confirmada.','pago',74,0,'{\"reserva\":\"197\",\"pago\":\"134\",\"tipo_pago\":\"mercadopago\"}','2025-11-25 18:25:18');
+INSERT INTO `notificaciones` VALUES (98,'Pago aprobado #137','Tu pago por $19000 fue aprobado y la reserva #200 ha sido confirmada.','pago',74,1,'{\"reserva\":\"200\",\"pago\":\"137\",\"tipo_pago\":\"mercadopago\"}','2025-11-26 16:12:08'),(99,'Pago aprobado #138','Tu pago por $21000 fue aprobado y la reserva #201 ha sido confirmada.','pago',74,1,'{\"reserva\":\"201\",\"pago\":\"138\",\"tipo_pago\":\"mercadopago\"}','2025-11-26 21:51:14'),(100,'Pago aprobado #139','Tu pago por $21000 fue aprobado y la reserva #202 ha sido confirmada.','pago',74,1,'{\"reserva\":\"202\",\"pago\":\"139\",\"tipo_pago\":\"mercadopago\"}','2025-11-26 21:56:33'),(101,'Pago aprobado #144','Tu pago por $15000 fue aprobado y la reserva #207 ha sido confirmada.','pago',74,0,'{\"reserva\":\"207\",\"pago\":\"144\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 11:03:08'),(102,'Pago aprobado #145','Tu pago por $15000 fue aprobado y la reserva #213 ha sido confirmada.','pago',74,0,'{\"reserva\":\"213\",\"pago\":\"145\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 11:14:33'),(103,'Pago aprobado #146','Tu pago por $15000 fue aprobado y la reserva #218 ha sido confirmada.','pago',74,0,'{\"reserva\":\"218\",\"pago\":\"146\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 11:39:48'),(104,'Pago aprobado #147','Tu pago por $15000 fue aprobado y la reserva #238 ha sido confirmada.','pago',74,0,'{\"reserva\":\"238\",\"pago\":\"147\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 13:04:36'),(105,'Pago aprobado #154','Tu pago por $15000 fue aprobado y la reserva #245 ha sido confirmada.','pago',74,0,'{\"reserva\":\"245\",\"pago\":\"154\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 13:34:32'),(106,'Pago aprobado #155','Tu pago por $30000 fue aprobado y la reserva #246 ha sido confirmada.','pago',74,0,'{\"reserva\":\"246\",\"pago\":\"155\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 13:38:12'),(107,'Pago aprobado #162','Tu pago por $15000 fue aprobado y la reserva #253 ha sido confirmada.','pago',74,0,'{\"reserva\":\"253\",\"pago\":\"162\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 16:12:17'),(108,'Pago aprobado #163','Tu pago por $15000 fue aprobado y la reserva #254 ha sido confirmada.','pago',74,0,'{\"reserva\":\"254\",\"pago\":\"163\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 16:14:58'),(109,'Pago aprobado #168','Tu pago por $21000 fue aprobado y la reserva #259 ha sido confirmada.','pago',74,0,'{\"reserva\":\"259\",\"pago\":\"168\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 18:19:30'),(110,'Pago aprobado #169','Tu pago por $55000 fue aprobado y la reserva #260 ha sido confirmada.','pago',74,0,'{\"reserva\":\"260\",\"pago\":\"169\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 18:22:32'),(111,'Pago aprobado #170','Tu pago por $48000 fue aprobado y la reserva #261 ha sido confirmada.','pago',74,0,'{\"reserva\":\"261\",\"pago\":\"170\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 18:25:18');
 /*!40000 ALTER TABLE `notificaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -738,7 +765,7 @@ CREATE TABLE `pago` (
   CONSTRAINT `fk_pago_moneda` FOREIGN KEY (`rela_monedas`) REFERENCES `monedas` (`id_moneda`),
   CONSTRAINT `fk_pago_reservas1` FOREIGN KEY (`rela_reservas`) REFERENCES `reservas` (`id_reservas`),
   CONSTRAINT `fk_pago_tipo_pago1` FOREIGN KEY (`rela_tipo_pago`) REFERENCES `tipo_pago` (`id_tipo_pago`)
-) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -747,7 +774,7 @@ CREATE TABLE `pago` (
 
 LOCK TABLES `pago` WRITE;
 /*!40000 ALTER TABLE `pago` DISABLE KEYS */;
-INSERT INTO `pago` VALUES (131,'2025-11-25',45000,'aprobado',193,8,'135226550608',3),(132,'2025-11-25',10000,'aprobado',194,8,'135227184102',3),(133,'2025-11-25',468000,'aprobado',196,8,'135237172214',3),(134,'2025-11-25',18000,'aprobado',197,8,'134622565473',3);
+INSERT INTO `pago` VALUES (164,'2025-11-27',38500,'pendiente',255,8,NULL,3),(165,'2025-11-27',7000,'pendiente',256,8,NULL,3),(166,'2025-11-27',21000,'aprobado',257,8,'134886519213',3),(167,'2025-11-27',21000,'aprobado',258,8,'135502437228',3),(168,'2025-11-27',21000,'aprobado',259,8,'135502828336',3),(169,'2025-11-27',55000,'aprobado',260,8,'134887597925',3),(170,'2025-11-27',48000,'aprobado',261,8,'135503467614',3);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -771,12 +798,12 @@ CREATE TABLE `pasajeros` (
   `creado_en` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_pasajeros`),
   UNIQUE KEY `idx_pasajeros_documento` (`rela_tipo_documento`,`numero_documento`),
-  KEY `rela_usuario` (`rela_usuario`),
+  UNIQUE KEY `ux_pasajeros_usuario_documento` (`rela_usuario`,`numero_documento`),
   KEY `rela_nacionalidad` (`rela_nacionalidad`),
   CONSTRAINT `pasajeros_ibfk_1` FOREIGN KEY (`rela_usuario`) REFERENCES `usuarios` (`id_usuarios`),
   CONSTRAINT `pasajeros_ibfk_2` FOREIGN KEY (`rela_nacionalidad`) REFERENCES `nacionalidad` (`id_nacionalidad`),
   CONSTRAINT `pasajeros_ibfk_3` FOREIGN KEY (`rela_tipo_documento`) REFERENCES `tipos_documento` (`id_tipo_documento`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -785,7 +812,7 @@ CREATE TABLE `pasajeros` (
 
 LOCK TABLES `pasajeros` WRITE;
 /*!40000 ALTER TABLE `pasajeros` DISABLE KEYS */;
-INSERT INTO `pasajeros` VALUES (26,74,'Mirco','Aguilar',1,1,'45817260','Masculino','2004-06-06','2025-11-25 18:22:13'),(27,74,'Mirco','Aguilar',1,1,'123456789','Masculino','2025-11-07','2025-11-25 18:24:44');
+INSERT INTO `pasajeros` VALUES (32,74,'Mirco','Aguilar',1,1,'45817260','Masculino','2004-06-06','2025-11-27 01:41:30');
 /*!40000 ALTER TABLE `pasajeros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -814,7 +841,6 @@ CREATE TABLE `password_resets` (
 
 LOCK TABLES `password_resets` WRITE;
 /*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
-INSERT INTO `password_resets` VALUES (27,72,'9221ac9afb6f08f5f10986aa3d11fc7c63c153d4514c13b21cca15fa981841ce','2025-09-12 17:41:54','2025-09-12 19:41:54'),(29,74,'82ec91f6d57f251b636ea0cf78403ea701d59520bbec0eb82477fb311d81bfe4','2025-11-13 20:40:06','2025-11-13 22:40:06');
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1002,7 +1028,7 @@ CREATE TABLE `reservas` (
   PRIMARY KEY (`id_reservas`),
   KEY `fk_reservas_usuarios1_idx` (`rela_usuarios`),
   CONSTRAINT `fk_reservas_usuarios1` FOREIGN KEY (`rela_usuarios`) REFERENCES `usuarios` (`id_usuarios`)
-) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=262 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1011,7 +1037,7 @@ CREATE TABLE `reservas` (
 
 LOCK TABLES `reservas` WRITE;
 /*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
-INSERT INTO `reservas` VALUES (193,'2025-11-25 17:04:16',45000.00,'confirmada',74,1),(194,'2025-11-25 17:08:27',10000.00,'confirmada',74,1),(195,'2025-10-25 17:08:27',15000.00,'confirmada',74,1),(196,'2025-11-25 18:22:17',468000.00,'confirmada',74,1),(197,'2025-11-25 18:24:47',18000.00,'confirmada',74,1);
+INSERT INTO `reservas` VALUES (255,'2025-11-27 18:05:27',38500.00,'pendiente',74,1),(256,'2025-11-27 18:09:01',7000.00,'pendiente',74,1),(257,'2025-11-27 18:13:11',21000.00,'confirmada',74,1),(258,'2025-11-27 18:17:07',21000.00,'confirmada',74,1),(259,'2025-11-27 18:18:52',21000.00,'confirmada',74,1),(260,'2025-11-27 18:21:45',55000.00,'confirmada',74,1),(261,'2025-11-27 18:25:00',48000.00,'confirmada',74,1);
 /*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1034,7 +1060,7 @@ CREATE TABLE `stock_tour` (
   PRIMARY KEY (`id_stock_tour`),
   KEY `rela_tour` (`rela_tour`),
   CONSTRAINT `stock_tour_ibfk_1` FOREIGN KEY (`rela_tour`) REFERENCES `tours` (`id_tour`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1043,7 +1069,7 @@ CREATE TABLE `stock_tour` (
 
 LOCK TABLES `stock_tour` WRITE;
 /*!40000 ALTER TABLE `stock_tour` DISABLE KEYS */;
-INSERT INTO `stock_tour` VALUES (13,6,'2025-10-25',10,0,1,'2025-10-13 22:37:05','2025-10-13 22:37:05'),(14,6,'2025-10-26',10,0,1,'2025-10-13 22:37:05','2025-10-13 22:37:05'),(15,6,'2025-10-27',10,0,1,'2025-10-13 22:37:05','2025-10-13 22:37:05'),(16,6,'2025-10-28',10,0,1,'2025-10-13 22:37:05','2025-10-13 22:37:05'),(17,6,'2025-10-29',10,0,1,'2025-10-13 22:37:05','2025-10-13 22:37:05'),(18,6,'2025-10-30',10,0,1,'2025-10-13 22:37:05','2025-10-13 22:37:05'),(19,6,'2025-10-31',10,0,1,'2025-10-13 22:37:05','2025-10-13 22:37:05'),(20,6,'2025-11-25',10,0,1,'2025-11-25 16:46:27','2025-11-25 16:46:27'),(21,6,'2025-11-26',10,0,1,'2025-11-25 16:46:27','2025-11-25 16:46:27'),(22,6,'2025-11-27',10,0,1,'2025-11-25 16:46:27','2025-11-25 16:46:27'),(23,6,'2025-11-28',10,0,1,'2025-11-25 16:46:27','2025-11-25 16:46:27'),(24,6,'2025-11-29',10,0,1,'2025-11-25 16:46:27','2025-11-25 16:46:27'),(25,6,'2025-11-30',10,0,1,'2025-11-25 16:46:27','2025-11-25 16:46:27'),(26,6,'2025-12-01',10,0,1,'2025-11-25 16:47:48','2025-11-25 16:47:48'),(27,14,'2025-11-25',10,0,1,'2025-11-25 17:08:08','2025-11-25 17:08:08'),(28,14,'2025-11-26',10,0,1,'2025-11-25 17:08:08','2025-11-25 17:08:08'),(29,14,'2025-11-27',10,0,1,'2025-11-25 17:08:08','2025-11-25 17:08:08'),(30,14,'2025-11-28',10,0,1,'2025-11-25 17:08:08','2025-11-25 17:08:08'),(31,14,'2025-11-29',10,0,1,'2025-11-25 17:08:08','2025-11-25 17:08:08'),(32,14,'2025-11-30',10,0,1,'2025-11-25 17:08:08','2025-11-25 17:08:08');
+INSERT INTO `stock_tour` VALUES (33,15,'2025-11-26',10,0,1,'2025-11-26 21:47:23','2025-11-26 21:47:23'),(34,15,'2025-11-27',10,0,1,'2025-11-26 21:47:23','2025-11-26 21:47:23'),(35,15,'2025-11-28',8,2,1,'2025-11-26 21:47:23','2025-11-27 18:25:18'),(36,15,'2025-11-29',7,3,1,'2025-11-26 21:47:23','2025-11-27 18:22:32'),(37,15,'2025-11-30',1,9,1,'2025-11-26 21:47:23','2025-11-27 18:19:30');
 /*!40000 ALTER TABLE `stock_tour` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1171,7 +1197,7 @@ CREATE TABLE `tipo_transporte` (
 
 LOCK TABLES `tipo_transporte` WRITE;
 /*!40000 ALTER TABLE `tipo_transporte` DISABLE KEYS */;
-INSERT INTO `tipo_transporte` VALUES (1,'Cama',1),(2,'Semi Cama',1),(3,'Vip',1),(6,'Común',1),(7,'Prueba2',0);
+INSERT INTO `tipo_transporte` VALUES (1,'Cama',1),(2,'Semi Cama',1),(3,'Vip',1),(6,'Común',1);
 /*!40000 ALTER TABLE `tipo_transporte` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1210,11 +1236,9 @@ DROP TABLE IF EXISTS `tipos_habitacion`;
 CREATE TABLE `tipos_habitacion` (
   `id_tipo_habitacion` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `capacidad` int NOT NULL,
   `activo` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_tipo_habitacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1223,7 +1247,7 @@ CREATE TABLE `tipos_habitacion` (
 
 LOCK TABLES `tipos_habitacion` WRITE;
 /*!40000 ALTER TABLE `tipos_habitacion` DISABLE KEYS */;
-INSERT INTO `tipos_habitacion` VALUES (1,'Habitación Simple','Habitación para una persona',1,1),(3,'Habitación Triple','Ideal para tres personas',3,1),(4,'Suite','Habitación de lujo con sala de estar',2,1),(16,'prueba2','Prueba344',232,0);
+INSERT INTO `tipos_habitacion` VALUES (1,'Habitación Simple',1),(3,'Habitación Triple',1),(4,'Suite',1),(17,'Habitación Doble',1),(18,'Habitación Matrimonial',1),(19,'Habitación Cuádruple',1),(20,'Habitación Ejecutiva ',1),(21,'Habitación Superior',1),(22,'Habitación Deluxe',1),(23,'Habitación Familiar',1),(24,'Habitación Adaptada o Accesible',1),(25,'Habitación con Balcón',1),(26,'Penthouse',1),(27,'prueba2',0);
 /*!40000 ALTER TABLE `tipos_habitacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1256,7 +1280,7 @@ CREATE TABLE `tours` (
   KEY `fk_tour_revisado_por` (`revisado_por`),
   CONSTRAINT `fk_tour_revisado_por` FOREIGN KEY (`revisado_por`) REFERENCES `usuarios` (`id_usuarios`),
   CONSTRAINT `tours_ibfk_1` FOREIGN KEY (`rela_proveedor`) REFERENCES `proveedores` (`id_proveedores`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1265,7 +1289,7 @@ CREATE TABLE `tours` (
 
 LOCK TABLES `tours` WRITE;
 /*!40000 ALTER TABLE `tours` DISABLE KEYS */;
-INSERT INTO `tours` VALUES (6,'Paseo en el museo','Un paseo breve por el museo de nuestra provincia','01:00:00',15000.00,'10:00:00','El mastil de la costanera','museo_formosa.jpg',5,1,'2025-09-22 23:36:53','Belgrano 836, P3600ENN Formosa','aprobado',NULL,'2025-10-29 10:47:56',66),(11,'prueba1','Esto es una prueba','02:00:00',1000.00,'12:00:00','Prueba1','1764082223_415730882.jpg',5,1,'2025-11-25 13:25:33','Martha Salotti 400, C1107 CMB, Cdad. Autónoma de Buenos Aires','pendiente',NULL,NULL,NULL),(14,'Paseo por la plaza','Esto es una prueba','02:00:00',10000.00,'12:00:00','Capitulo','1764101233_Plaza_San_Martín_Formosa.jpg',1,1,'2025-11-25 20:07:13','Avenida 25 de Mayo y Avenida 9 de Julio','aprobado',NULL,'2025-11-25 17:07:29',66);
+INSERT INTO `tours` VALUES (15,'Paseo en el museo','Embárcate en un fascinante recorrido por el Museo de Formosa con un tour guiado que te permitirá conocer la historia, el arte y la cultura de la región en profundidad. A lo largo del tour, un guía especializado te acompañará a través de las diversas salas del museo, explicando las colecciones y los contextos históricos de cada exhibición. Desde las piezas arqueológicas de los pueblos originarios hasta las obras de arte contemporáneo, descubrirás cómo la identidad formoseña se ha forjado a lo largo del tiempo. Este recorrido es ideal para quienes desean conocer más sobre la riqueza cultural de Formosa y explorar sus raíces históricas de manera amena y educativa.','01:00:00',7000.00,'18:00:00','El mastil de la costanera','1764204385_museo-duffard.jpg',5,1,'2025-11-27 00:46:25','Belgrano 836, P3600ENN Formosa','aprobado',NULL,'2025-11-26 21:46:53',66);
 /*!40000 ALTER TABLE `tours` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1298,7 +1322,7 @@ CREATE TABLE `transporte` (
   CONSTRAINT `fk_proveedor_transporte` FOREIGN KEY (`rela_proveedor`) REFERENCES `proveedores` (`id_proveedores`),
   CONSTRAINT `fk_tipo_transporte` FOREIGN KEY (`rela_tipo_transporte`) REFERENCES `tipo_transporte` (`id_tipo_transporte`),
   CONSTRAINT `fk_transporte_revisado_por` FOREIGN KEY (`revisado_por`) REFERENCES `usuarios` (`id_usuarios`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1307,8 +1331,41 @@ CREATE TABLE `transporte` (
 
 LOCK TABLES `transporte` WRITE;
 /*!40000 ALTER TABLE `transporte` DISABLE KEYS */;
-INSERT INTO `transporte` VALUES (3,'ABC123',42,2,'Colectivo Formosa','Servicio de colectivo interurbano en Formosa','1763742747_colectivo_formosa.jpg',4,'2025-08-05 19:31:13',1,'aprobado',NULL,'2025-10-29 10:47:54',66),(12,'wyz123',0,2,'Prueba','prueba','1763749700_532056808.jpg',4,'2025-11-05 22:19:35',1,'pendiente',NULL,NULL,NULL),(13,'RCT582',56,2,'Viaje del Norte','Este transporte ofrece un servicio cómodo para grupos medianos, ideal para viajes de media y larga distancia. Con asientos tipo Semi Cama, los pasajeros pueden disfrutar de un viaje más relajado y confortable, mientras el vehículo, con capacidad para 56 personas, asegura un desplazamiento eficiente para excursiones, traslados turísticos o rutas regulares. El servicio “Viaje del Norte” está diseñado para combinar seguridad, comodidad y eficiencia en cada trayecto.','1763984463_flechabusjpg.webp',1,'2025-11-24 08:41:03',1,'aprobado',NULL,'2025-11-24 08:41:40',66);
+INSERT INTO `transporte` VALUES (14,'AHJ823',40,2,'Colectivo Formosa','Colectivo Semi Cama con asientos reclinables, aire acondicionado, servicio de Wi-Fi gratuito y pantallas individuales','1764185238_321612905_1227429697843065_3729564296211320379_n.jpg',4,'2025-11-26 16:27:18',1,'aprobado',NULL,'2025-11-26 16:27:42',66);
 /*!40000 ALTER TABLE `transporte` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `transporte_asientos_bloqueados`
+--
+
+DROP TABLE IF EXISTS `transporte_asientos_bloqueados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `transporte_asientos_bloqueados` (
+  `id_block` int NOT NULL AUTO_INCREMENT,
+  `id_viaje` int NOT NULL,
+  `piso` int NOT NULL,
+  `numero_asiento` int NOT NULL,
+  `id_usuario` int NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `expires_at` datetime NOT NULL,
+  PRIMARY KEY (`id_block`),
+  UNIQUE KEY `ux_viaje_piso_asiento` (`id_viaje`,`piso`,`numero_asiento`),
+  KEY `fk_bloqueo_usuario` (`id_usuario`),
+  CONSTRAINT `fk_bloqueo_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuarios`),
+  CONSTRAINT `fk_bloqueo_viaje` FOREIGN KEY (`id_viaje`) REFERENCES `viajes` (`id_viajes`)
+) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `transporte_asientos_bloqueados`
+--
+
+LOCK TABLES `transporte_asientos_bloqueados` WRITE;
+/*!40000 ALTER TABLE `transporte_asientos_bloqueados` DISABLE KEYS */;
+INSERT INTO `transporte_asientos_bloqueados` VALUES (178,10,2,12,74,'2025-11-27 18:21:28','2025-11-27 18:26:28'),(179,10,1,7,74,'2025-11-27 18:24:45','2025-11-27 18:29:45');
+/*!40000 ALTER TABLE `transporte_asientos_bloqueados` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1327,7 +1384,7 @@ CREATE TABLE `transporte_pisos` (
   PRIMARY KEY (`id_piso`),
   KEY `rela_transporte` (`rela_transporte`),
   CONSTRAINT `transporte_pisos_ibfk_1` FOREIGN KEY (`rela_transporte`) REFERENCES `transporte` (`id_transporte`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1336,7 +1393,7 @@ CREATE TABLE `transporte_pisos` (
 
 LOCK TABLES `transporte_pisos` WRITE;
 /*!40000 ALTER TABLE `transporte_pisos` DISABLE KEYS */;
-INSERT INTO `transporte_pisos` VALUES (8,12,1,5,3),(9,12,2,4,4),(10,3,1,6,4),(11,3,2,8,4),(12,13,1,7,4),(13,13,2,7,4);
+INSERT INTO `transporte_pisos` VALUES (14,14,1,4,4),(15,14,2,6,4);
 /*!40000 ALTER TABLE `transporte_pisos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1365,7 +1422,7 @@ CREATE TABLE `transporte_rutas` (
   CONSTRAINT `fk_ruta_destino` FOREIGN KEY (`rela_ciudad_destino`) REFERENCES `ciudades` (`id_ciudad`),
   CONSTRAINT `fk_ruta_origen` FOREIGN KEY (`rela_ciudad_origen`) REFERENCES `ciudades` (`id_ciudad`),
   CONSTRAINT `fk_transporte_rutas` FOREIGN KEY (`rela_transporte`) REFERENCES `transporte` (`id_transporte`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1374,7 +1431,7 @@ CREATE TABLE `transporte_rutas` (
 
 LOCK TABLES `transporte_rutas` WRITE;
 /*!40000 ALTER TABLE `transporte_rutas` DISABLE KEYS */;
-INSERT INTO `transporte_rutas` VALUES (10,'Formosa - Clorinda','Formosa - Herradura - Clorinda',1,3,'02:00:00','Viaje premium a Clorinda',15000.00,3,1),(14,'prueba22','Prueba2 - Prueba21',7,8,'01:40:00','Viaje directo de capital a prueba',9000.00,3,1),(23,'Formosa - Clorinda','Formosa - Herradura - Clorinda',1,3,'02:00:00','Viaje a clorinda con una parada en Herradura.',18000.00,13,1),(24,'Formosa - Clorinda','Formosa - Herradura - Clorinda',1,3,'02:00:00','Viaje a clorinda con una parada en Herradura.',18000.00,12,1);
+INSERT INTO `transporte_rutas` VALUES (25,'Formosa - Clorinda','Formosa - Herradura - Clorinda',1,3,'03:00:00','Este viaje te lleva de Formosa Capital a Clorinda, con una parada opcional en Herradura. Viaja cómodo, con asientos reclinables y aire acondicionado, disfrutando del paisaje mientras avanzas hacia tu destino',15000.00,14,1);
 /*!40000 ALTER TABLE `transporte_rutas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1408,40 +1465,8 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (66,'jperez','juan@gmail.com','2025-06-27 17:00:20','$2y$10$EP9hGHC3LErzPlsgN7J70e85ER.Hdjx.txhmABH6XsIHNefkfL3OW',1,1,2),(72,'marcosgimenez','hola@gmail.com','2025-07-08 10:59:17','$2y$10$oRZ4l80wAB8A/lzXtKwbq.fa9SxYB9n5acruXxcMQUKe27TpD0O1.',1,369,3),(74,'migueledesma','mircoaguilar02@gmail.com','2025-08-20 20:18:17','$2y$10$BEGQ4j2oTfff6k/WhvRkVe.OXBmwGKLMuxMJqD12biy8in/HWFmXK',1,370,1),(78,'prueba','prueba','2025-08-20 20:18:17','$2y$10$BEGQ4j2oTfff6k/WhvRkVe.OXBmwGKLMuxMJqD12biy8in/HWFmXK',1,1,5),(79,'lucasdominguez','lucas@gmail.com','2025-09-16 20:43:46','$2y$10$mnYo.CXZM7GA6x8tUtN/CeyRDLbrKPGpagUFAmXHYdeqeAv5dU7Ou',1,373,5),(80,'carlosayala','carlos@gmail.com','2025-09-22 14:04:40','$2y$10$GTR8UEy2mIvSKS9wFREbY.1WvdocRCyocYMeWyceyRJwx0iCsDrT.',1,374,14),(83,'maguilar','mircoaguilar@gmail.com','2025-11-05 22:22:35','$2y$10$yLy2lk349tdFT1/ajepIh.eLVmk8/bIjcey0FadEPxvc5yhktLrLu',1,377,1),(86,'poc75','lucia2@gmail.com','2025-11-12 17:41:46','$2y$10$A9MQw9kOHp1/BObq5zWpy.PDRURIz.FhLRjlGnJlCGN9/S6Gpshtm',0,35,1),(87,'poc7','lucia@gmail.com','2025-11-12 19:17:06','$2y$10$/iNRNPOFowoLXPgJMdfV.OXnFgSgGKDaiLc9m4G7.DGB0xm499e7.',1,35,1);
+INSERT INTO `usuarios` VALUES (66,'jperez','juan@gmail.com','2025-06-27 17:00:20','$2y$10$EP9hGHC3LErzPlsgN7J70e85ER.Hdjx.txhmABH6XsIHNefkfL3OW',1,1,2),(72,'marcosgimenez','hola@gmail.com','2025-07-08 10:59:17','$2y$10$oRZ4l80wAB8A/lzXtKwbq.fa9SxYB9n5acruXxcMQUKe27TpD0O1.',1,369,3),(74,'migueledesma','mircoaguilar02@gmail.com','2025-08-20 20:18:17','$2y$10$BEGQ4j2oTfff6k/WhvRkVe.OXBmwGKLMuxMJqD12biy8in/HWFmXK',1,370,1),(78,'prueba','prueba','2025-08-20 20:18:17','$2y$10$BEGQ4j2oTfff6k/WhvRkVe.OXBmwGKLMuxMJqD12biy8in/HWFmXK',1,1,1),(79,'lucasdominguez','lucas@gmail.com','2025-09-16 20:43:46','$2y$10$mnYo.CXZM7GA6x8tUtN/CeyRDLbrKPGpagUFAmXHYdeqeAv5dU7Ou',1,373,5),(80,'carlosayala','carlos@gmail.com','2025-09-22 14:04:40','$2y$10$GTR8UEy2mIvSKS9wFREbY.1WvdocRCyocYMeWyceyRJwx0iCsDrT.',1,374,14),(83,'maguilar','mircoaguilar@gmail.com','2025-11-05 22:22:35','$2y$10$yLy2lk349tdFT1/ajepIh.eLVmk8/bIjcey0FadEPxvc5yhktLrLu',1,377,1),(86,'poc75','lucia2@gmail.com','2025-11-12 17:41:46','$2y$10$A9MQw9kOHp1/BObq5zWpy.PDRURIz.FhLRjlGnJlCGN9/S6Gpshtm',0,35,1),(87,'poc7','lucia@gmail.com','2025-11-12 19:17:06','$2y$10$/iNRNPOFowoLXPgJMdfV.OXnFgSgGKDaiLc9m4G7.DGB0xm499e7.',1,35,1);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `viaje_asientos`
---
-
-DROP TABLE IF EXISTS `viaje_asientos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `viaje_asientos` (
-  `id_asiento` int NOT NULL AUTO_INCREMENT,
-  `rela_viaje` int NOT NULL,
-  `piso` tinyint DEFAULT '1',
-  `fila` int NOT NULL,
-  `columna` char(1) COLLATE utf8mb4_general_ci NOT NULL,
-  `ocupado` tinyint(1) DEFAULT '0',
-  `rela_reserva` int DEFAULT NULL,
-  PRIMARY KEY (`id_asiento`),
-  KEY `rela_viaje` (`rela_viaje`),
-  KEY `rela_reserva` (`rela_reserva`),
-  CONSTRAINT `viaje_asientos_ibfk_1` FOREIGN KEY (`rela_viaje`) REFERENCES `viajes` (`id_viajes`),
-  CONSTRAINT `viaje_asientos_ibfk_2` FOREIGN KEY (`rela_reserva`) REFERENCES `reservas` (`id_reservas`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `viaje_asientos`
---
-
-LOCK TABLES `viaje_asientos` WRITE;
-/*!40000 ALTER TABLE `viaje_asientos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `viaje_asientos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1461,7 +1486,7 @@ CREATE TABLE `viajes` (
   PRIMARY KEY (`id_viajes`),
   KEY `fk_viajes_transporte_rutas` (`rela_transporte_rutas`),
   CONSTRAINT `fk_viajes_transporte_rutas` FOREIGN KEY (`rela_transporte_rutas`) REFERENCES `transporte_rutas` (`id_ruta`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1470,7 +1495,7 @@ CREATE TABLE `viajes` (
 
 LOCK TABLES `viajes` WRITE;
 /*!40000 ALTER TABLE `viajes` DISABLE KEYS */;
-INSERT INTO `viajes` VALUES (3,'2025-12-20',10,'08:00:00','10:00:00',1),(6,'2025-11-29',14,'12:00:00','13:40:00',1),(7,'2025-11-27',14,'09:00:00','10:40:00',1),(8,'2025-11-30',23,'09:00:00','11:00:00',1),(9,'2025-11-30',24,'09:00:00','10:40:00',1);
+INSERT INTO `viajes` VALUES (10,'2025-11-29',25,'08:00:00','11:00:00',1);
 /*!40000 ALTER TABLE `viajes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1491,4 +1516,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-25 18:41:32
+-- Dump completed on 2025-11-27 18:25:47

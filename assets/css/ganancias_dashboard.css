@@ -1,0 +1,112 @@
+.contenido-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #003580;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Estilo para las métricas */
+.dashboard-metrics {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.card {
+    background-color: #f4f7f9;
+    padding: 20px;
+    border-radius: 8px;
+    width: 30%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.card h2 {
+    color: #003580;
+    font-size: 1.5em;
+}
+
+.card p {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Estilos para las tablas */
+table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #003580;
+    color: #fff;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+a {
+    color: #003580;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Estilos para la gráfica */
+.chart-container {
+    margin-top: 40px;
+    text-align: center;
+}
+
+canvas {
+    border-radius: 10px;
+}
+
+/* Estilos para exportación */
+.dashboard-section {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.dashboard-section a {
+    color: #fff;
+    background-color: #007bff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.dashboard-section a:hover {
+    background-color: #0056b3;
+}
