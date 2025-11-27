@@ -1,0 +1,101 @@
+/* pantalla_guias.css */
+
+/* Reset básico y Body */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; background-color: #f5f5f5; color: #333; }
+
+/* Cabecera */
+.top-bar { background-color: #2943b9; padding: 12px 20px; color: white; display: flex; justify-content: space-between; align-items: center; position: fixed; top:0; left:0; right:0; z-index:100; }
+.top-bar .logo a { color:white; font-size:1.5rem; text-decoration:none; font-weight:bold; }
+.top-bar .nav-links, .top-bar .right-links { display:flex; gap:20px; }
+.top-bar .nav-links a, .top-bar .right-links a { color:white; text-decoration:none; font-size:1rem; }
+.top-bar .nav-links a:hover, .top-bar .right-links a:hover { text-decoration:underline; }
+
+/* Compensar cabecera fija */
+.content { padding-top: 100px; max-width:1200px; margin:0 auto; }
+
+/* Hero / título buscador */
+.hero-section { text-align:center; padding:60px 20px 20px; }
+.hero-section h1 { font-family:'Poppins', sans-serif; font-size:2.5rem; font-weight:700; color:#2943b9; margin-bottom:30px; }
+
+/* Buscador */
+.search-section { background-color:#f9f9ff; padding:20px 20px 40px; text-align:center; border-bottom:1px solid #eee; }
+.search-container { max-width:600px; margin:0 auto; }
+.search-form { display:flex; justify-content:center; align-items:flex-end; gap:10px; flex-wrap: wrap; }
+.form-group { flex:1; min-width:150px; display:flex; flex-direction:column; text-align:left; margin-bottom:10px; }
+.form-group label { font-size:14px; font-weight:500; color:#333; margin-bottom:6px; }
+.search-form input[type="text"],
+.search-form input[type="number"] { width:100%; padding:12px; border:1px solid #ccc; border-radius:6px; font-size:15px; background-color:#fff; transition:border-color 0.3s ease; }
+.search-form input:focus { border-color:#2943b9; outline:none; }
+.search-form button { background-color:#2943b9; color:#fff; padding:12px; border:none; border-radius:6px; font-size:18px; cursor:pointer; width:50px; height:50px; display:flex; align-items:center; justify-content:center; transition:background-color 0.3s ease, transform 0.2s ease; }
+.search-form button:hover { background-color:#1f3499; transform:scale(1.1); }
+
+/* Listado de tours */
+.tours { padding:40px 20px; background-color:#fdfdfd; border-top:1px solid #eee; border-bottom:1px solid #eee; }
+.tours h2 { text-align:center; font-size:2rem; color:#2943b9; margin-bottom:30px; }
+.tarjetas { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; }
+.tarjeta { background-color:#fff; border:1px solid #ddd; border-radius:12px; overflow:hidden; width:280px; box-shadow:0 2px 6px rgba(0,0,0,0.1); transition:transform 0.3s ease; }
+.tarjeta:hover { transform:translateY(-5px); }
+.tarjeta img { width:100%; height:180px; object-fit:cover; }
+.tarjeta .contenido { padding:16px; }
+.tarjeta h3 { font-size:18px; color:#333; margin:0 0 10px; }
+.tarjeta p { font-size:14px; color:#666; margin-bottom:10px; }
+.boton-ver-mas { display:inline-block; padding:10px 20px; background-color:#2943b9; color:#fff; font-weight:bold; text-decoration:none; border-radius:6px; font-size:14px; transition:background-color 0.3s ease; }
+.boton-ver-mas:hover { background-color:#1f3499; }
+/* Footer */
+.footer {
+  background: #2943b9; 
+  margin-top: 40px;
+  padding: 30px 0 10px;
+  color: #fff; 
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 0 20px;
+}
+
+.footer-section h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #fff;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 6px;
+}
+
+.footer-section ul li a {
+    color: #ddd; /* más claro para fondo oscuro */
+    text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 15px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ccc;
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Responsive */
+@media (max-width:768px) {
+  .form-group { flex:1 1 100%; }
+  .tarjeta { width:100%; }
+}

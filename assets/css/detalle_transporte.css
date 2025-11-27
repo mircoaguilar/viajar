@@ -542,14 +542,13 @@ h3 {
   font-weight: 500;
 }
 
-
 /* Footer */
 .footer {
-    background: #34499e; 
-    margin-top: 40px;
-    padding: 30px 0 10px;
-    color: #fff; 
-    border-top: 1px solid rgba(255,255,255,0.15); 
+  background: #2943b9; 
+  margin-top: 40px;
+  padding: 30px 0 10px;
+  color: #fff; 
+  border-top: 1px solid rgba(255,255,255,0.15);
 }
 
 .footer-container {
@@ -578,7 +577,7 @@ h3 {
 }
 
 .footer-section ul li a {
-    color: #fff; 
+    color: #ddd; /* más claro para fondo oscuro */
     text-decoration: none;
 }
 
@@ -591,6 +590,6 @@ h3 {
     padding-top: 15px;
     margin-top: 10px;
     font-size: 14px;
-    color: #fff; 
+    color: #ccc;
     border-top: 1px solid rgba(255,255,255,0.2);
 }

@@ -77,11 +77,19 @@ if ($pagoData['pago_estado'] === 'aprobado') {
         } elseif ($detalle['tipo_servicio'] === 'tour') {
 
             $id_detalle = $detalle['id_detalle_reserva'];
-            $id_stock_tour = $detalle['rela_stock_tour']; 
             $cantidad = $detalle['cantidad']; 
-            $reservaModel->confirmar_detalle_tour($id_detalle); 
-            $reservaModel->descontar_stock_tour($id_stock_tour, $cantidad);
+
+            $stock = $reservaModel->traerStockTour($id_detalle);
+            $id_stock_tour = $stock['id_stock_tour'] ?? null;
+
+            if ($id_stock_tour) {
+                $reservaModel->confirmar_detalle_tour($id_detalle); 
+                $reservaModel->descontar_stock_tour($id_stock_tour, $cantidad);
+            } else {
+                error_log("No se encontró stock para el detalle $id_detalle");
+            }
         }
+
     }
 
     $carrito_activo = $carritoModel->traer_carrito_activo($id_usuario);

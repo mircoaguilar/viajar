@@ -698,6 +698,25 @@ class Reserva {
         return $stmt->affected_rows > 0;
     }
 
+    public function traerStockTour($id_detalle_reserva) {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+
+        $sql = "SELECT st.id_stock_tour
+                FROM detalle_reserva_tour dt
+                JOIN stock_tour st 
+                ON st.rela_tour = dt.rela_tour
+                AND st.fecha = dt.fecha
+                WHERE dt.rela_detalle_reserva = ?";
+
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $id_detalle_reserva);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
+
+
     public function getId_reservas() { return $this->id_reservas; }
     public function setId_reservas($id) { $this->id_reservas = $id; return $this; }
 

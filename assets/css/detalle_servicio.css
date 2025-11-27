@@ -313,13 +313,13 @@ body {
   height: 350px;
 }
 
-* Footer */
+/* Footer */
 .footer {
-    background: inherit; /* mantiene el color que ya usás */
-    margin-top: 40px;
-    padding: 30px 0 10px;
-    color: #fff; /* texto blanco si tu fondo es oscuro */
-    border-top: 1px solid rgba(255,255,255,0.15);
+  background: #2943b9; 
+  margin-top: 40px;
+  padding: 30px 0 10px;
+  color: #fff; 
+  border-top: 1px solid rgba(255,255,255,0.15);
 }
 
 .footer-container {
