@@ -479,6 +479,23 @@ h3 {
     transform: translateY(-2px);
 }
 
+#loader-asientos {
+  display: none;
+  text-align: center;
+  margin: 10px 0;
+  font-weight: bold;
+  color: #444;
+}
+
+.loader-visible {
+  display: block !important;
+}
+
+.loader-oculto {
+  display: none !important;
+}
+
+
 @media (max-width: 900px) {
     #modal-completo .modal-content > div {
         flex-direction: column;

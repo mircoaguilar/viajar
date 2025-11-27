@@ -114,8 +114,8 @@ class Reserva {
 
         $stmt = $mysqli->prepare("
             INSERT INTO detalle_reserva_transporte 
-            (rela_detalle_reserva, id_viaje, piso, numero_asiento, fila, columna, fecha_servicio, precio_unitario)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            (rela_detalle_reserva, id_viaje, piso, numero_asiento, fila, columna, fecha_servicio, precio_unitario, estado)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pendiente')
         ");
 
         if (!$stmt) {
@@ -124,9 +124,10 @@ class Reserva {
         }
 
         foreach ($asientosArray as $a) {
-            $piso = isset($a['piso']) ? (int)$a['piso'] : null;
-            $numero = isset($a['numero']) ? (int)$a['numero'] : null;
-            $fila = isset($a['fila']) ? (int)$a['fila'] : null;
+
+            $piso    = isset($a['piso']) ? (int)$a['piso'] : null;
+            $numero  = isset($a['numero']) ? (int)$a['numero'] : null;
+            $fila    = isset($a['fila']) ? (int)$a['fila'] : null;
             $columna = isset($a['columna']) ? (int)$a['columna'] : null;
 
             if ($piso === null || $numero === null) {
@@ -134,14 +135,15 @@ class Reserva {
                 continue;
             }
 
-            $stmt->bind_param("iiiiissd", 
-                $id_detalle_reserva, 
-                $id_viaje, 
-                $piso, 
-                $numero, 
-                $fila, 
-                $columna, 
-                $fecha_servicio, 
+            $stmt->bind_param(
+                "iiiiissd",
+                $id_detalle_reserva,
+                $id_viaje,
+                $piso,
+                $numero,
+                $fila,
+                $columna,
+                $fecha_servicio,
                 $precio_unitario
             );
 

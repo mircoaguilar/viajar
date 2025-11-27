@@ -77,6 +77,8 @@ if (!$ruta) die("Ruta no encontrada.");
     <?php endforeach; ?>
   </div>
 
+  <div id="loader-asientos" class="loader-oculto">Cargando...</div>
+
   <div class="info">
     <p>🟩 Disponible &nbsp; 🟦 Seleccionado &nbsp; 🟥 Ocupado</p>
 
@@ -114,10 +116,11 @@ if (!$ruta) die("Ruta no encontrada.");
       </div>
     </div>
   </div>
-
+  
   <?php include_once(__DIR__ . '/../componentes/pie.php'); ?>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="assets/js/asientos.js"></script>

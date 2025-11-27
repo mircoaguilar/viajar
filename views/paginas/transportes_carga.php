@@ -51,7 +51,7 @@ $tipos = $tipoModel->traer_tipos_transportes();
         </div>
 
         <div>
-          <label for="nombre_servicio">Nombre del servicio</label>
+          <label for="nombre_servicio">Nombre del transporte</label>
           <input type="text" id="nombre_servicio" name="nombre_servicio">
         </div>
 

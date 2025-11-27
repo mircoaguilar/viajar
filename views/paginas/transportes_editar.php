@@ -57,7 +57,7 @@ $data = $controlador->obtenerDatosTransporte($id_transporte);
                 </div>
 
                 <div>
-                    <label for="nombre_servicio">Nombre del servicio</label>
+                    <label for="nombre_servicio">Nombre del transporte</label>
                     <input type="text" id="nombre_servicio" name="nombre_servicio"
                         value="<?= htmlspecialchars($data['transporteData']['nombre_servicio'] ?? '') ?>" required>
                 </div>
