@@ -37,26 +37,33 @@ class Pasajero {
     }
     
     public function guardar() {
+        if (!empty($this->id_pasajeros)) {
+            return $this->actualizar();
+        }
+        
         $conexion = new Conexion();
 
         $query = "INSERT INTO pasajeros 
                     (rela_usuario, nombre, apellido, rela_nacionalidad, rela_tipo_documento, numero_documento, sexo, fecha_nacimiento)
-                  VALUES (
-                        " . ($this->rela_usuario ? "'$this->rela_usuario'" : "NULL") . ",
-                        '$this->nombre',
-                        '$this->apellido',
-                        '$this->rela_nacionalidad',
-                        '$this->rela_tipo_documento',
-                        '$this->numero_documento',
-                        '$this->sexo',
-                        '$this->fecha_nacimiento'
-                    )";
-
+                VALUES (
+                    " . ($this->rela_usuario ? "'$this->rela_usuario'" : "NULL") . ",
+                    '$this->nombre',
+                    '$this->apellido',
+                    '$this->rela_nacionalidad',
+                    '$this->rela_tipo_documento',
+                    '$this->numero_documento',
+                    '$this->sexo',
+                    '$this->fecha_nacimiento'
+                )";
         return $conexion->insertar($query);
     }
 
     public function actualizar() {
         $conexion = new Conexion();
+        if (empty($this->id_pasajeros)) {
+            error_log("Error: Intentando actualizar un pasajero sin ID.");
+            return false;
+        }
 
         $query = "UPDATE pasajeros SET
                     rela_usuario = " . ($this->rela_usuario ? "'$this->rela_usuario'" : "NULL") . ",
@@ -67,7 +74,7 @@ class Pasajero {
                     numero_documento = '$this->numero_documento',
                     sexo = '$this->sexo',
                     fecha_nacimiento = '$this->fecha_nacimiento'
-                  WHERE id_pasajeros = '$this->id_pasajeros'";
+                WHERE id_pasajeros = '$this->id_pasajeros'";
 
         return $conexion->actualizar($query);
     }

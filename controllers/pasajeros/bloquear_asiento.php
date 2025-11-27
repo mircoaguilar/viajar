@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('America/Argentina/Cordoba');
+
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 header('Content-Type: application/json');
@@ -20,6 +22,8 @@ $id_usuario = $_SESSION['id_usuarios'];
 $id_viaje   = intval($_POST['id_viaje'] ?? 0);
 $piso       = intval($_POST['piso'] ?? 0);
 $numero     = intval($_POST['numero_asiento'] ?? 0);
+
+error_log("Parámetros recibidos: id_viaje=$id_viaje, piso=$piso, numero=$numero");
 
 if ($id_viaje <= 0 || $piso <= 0 || $numero <= 0) {
     echo json_encode([
@@ -65,7 +69,7 @@ if ($stmt->num_rows > 0) {
     exit;
 }
 
-$expires_at = date('Y-m-d H:i:s', strtotime('+5 minutes'));  
+$expires_at = date('Y-m-d H:i:s', strtotime('+5 minutes'));
 
 $sql = "
     INSERT INTO transporte_asientos_bloqueados
@@ -75,6 +79,7 @@ $sql = "
 
 $stmt = $mysqli->prepare($sql);
 if (!$stmt) {
+    error_log("Error al preparar la consulta: " . $mysqli->error);
     echo json_encode([
         'status' => 'error',
         'message' => 'Error interno al preparar la consulta.'
@@ -94,7 +99,7 @@ if ($stmt->execute()) {
 }
 
 $error_code = $mysqli->errno;
-
+error_log("Error al ejecutar la consulta: " . $mysqli->error); 
 echo json_encode([
     'status' => 'error',
     'message' => 'Error inesperado al bloquear asiento. Código: ' . $error_code

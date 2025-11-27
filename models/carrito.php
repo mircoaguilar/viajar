@@ -44,42 +44,33 @@ class Carrito {
                 ci.*,
                 CASE 
                     WHEN ci.tipo_servicio = 'hotel' THEN th.nombre
-                    WHEN ci.tipo_servicio = 'transporte' THEN t.nombre_servicio
+                    WHEN ci.tipo_servicio = 'transporte' THEN t.nombre_servicio 
                     WHEN ci.tipo_servicio = 'tour' THEN g.nombre_tour
                     ELSE ci.id_servicio
                 END AS nombre_servicio,
 
-                CASE 
-                    WHEN ci.tipo_servicio = 'hotel' THEN ci.fecha_inicio
-                    WHEN ci.tipo_servicio = 'tour' THEN ci.fecha_inicio
-                    WHEN ci.tipo_servicio = 'transporte' THEN ci.fecha_inicio
-                    ELSE NULL
-                END AS fecha_inicio,
-
-                CASE 
-                    WHEN ci.tipo_servicio = 'hotel' THEN ci.fecha_fin
-                    ELSE NULL
-                END AS fecha_fin,
-
-                CASE 
-                    WHEN ci.tipo_servicio = 'tour' THEN ci.fecha_inicio
-                    ELSE NULL
-                END AS fecha_tour,
-
-                CASE 
-                    WHEN ci.tipo_servicio = 'transporte' THEN ci.fecha_inicio
-                    ELSE NULL
-                END AS fecha_servicio
+                CASE WHEN ci.tipo_servicio = 'hotel' THEN ci.fecha_inicio ELSE NULL END AS fecha_inicio,
+                CASE WHEN ci.tipo_servicio = 'hotel' THEN ci.fecha_fin ELSE NULL END AS fecha_fin,
+                CASE WHEN ci.tipo_servicio = 'tour' THEN ci.fecha_inicio ELSE NULL END AS fecha_tour,
+                CASE WHEN ci.tipo_servicio = 'transporte' THEN ci.fecha_inicio ELSE NULL END AS fecha_servicio
 
             FROM carrito_items ci
+            
             LEFT JOIN hotel_habitaciones hh 
                 ON ci.tipo_servicio = 'hotel' AND ci.id_servicio = hh.id_hotel_habitacion
             LEFT JOIN tipos_habitacion th 
                 ON hh.rela_tipo_habitacion = th.id_tipo_habitacion
+                
+            LEFT JOIN viajes v
+                ON ci.tipo_servicio = 'transporte' AND ci.id_servicio = v.id_viajes
+            LEFT JOIN transporte_rutas tr
+                ON v.rela_transporte_rutas = tr.id_ruta
             LEFT JOIN transporte t 
-                ON ci.tipo_servicio = 'transporte' AND ci.id_servicio = t.id_transporte
+                ON tr.rela_transporte = t.id_transporte 
+            
             LEFT JOIN tours g 
                 ON ci.tipo_servicio = 'tour' AND ci.id_servicio = g.id_tour
+                
             WHERE ci.rela_carrito = '$id_carrito'
             ORDER BY ci.id_item ASC
         ");

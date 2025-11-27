@@ -52,45 +52,66 @@ if ($pagoData['pago_estado'] === 'aprobado') {
     $detalles = $reservaModel->traerDetallesPorId($id_reserva);
 
     foreach ($detalles as $detalle) {
-        if ($detalle['tipo_servicio'] === 'hotel') {
+    if ($detalle['tipo_servicio'] === 'hotel') {
 
-            $id_detalle = $detalle['id_detalle_reserva'];
+        $id_detalle = $detalle['id_detalle_reserva'];
 
-            $infoHotel = $reservaModel->traerDetalleHotel($id_detalle);
-            $id_habitacion = $infoHotel['rela_habitacion'];
-            $check_in      = $infoHotel['check_in'];
-            $check_out     = $infoHotel['check_out'];
-            $cantidad      = $detalle['cantidad']; 
-            $reservaModel->confirmar_detalle_hotel($id_detalle);
+        $infoHotel = $reservaModel->traerDetalleHotel($id_detalle);
+        $id_habitacion = $infoHotel['rela_habitacion'];
+        $check_in      = $infoHotel['check_in'];
+        $check_out     = $infoHotel['check_out'];
+        $cantidad      = $detalle['cantidad']; 
+        $reservaModel->confirmar_detalle_hotel($id_detalle);
 
-            $fecha = new DateTime($check_in);
-            $fecha_fin = new DateTime($check_out);
+        $fecha = new DateTime($check_in);
+        $fecha_fin = new DateTime($check_out);
 
-            while ($fecha < $fecha_fin) {
-                $dia = $fecha->format("Y-m-d");
+        while ($fecha < $fecha_fin) {
+            $dia = $fecha->format("Y-m-d");
 
-                $reservaModel->descontar_stock_hotel($id_habitacion, $dia, $cantidad);
+            $reservaModel->descontar_stock_hotel($id_habitacion, $dia, $cantidad);
 
-                $fecha->modify("+1 day");
-            }
-
-        } elseif ($detalle['tipo_servicio'] === 'tour') {
-
-            $id_detalle = $detalle['id_detalle_reserva'];
-            $cantidad = $detalle['cantidad']; 
-
-            $stock = $reservaModel->traerStockTour($id_detalle);
-            $id_stock_tour = $stock['id_stock_tour'] ?? null;
-
-            if ($id_stock_tour) {
-                $reservaModel->confirmar_detalle_tour($id_detalle); 
-                $reservaModel->descontar_stock_tour($id_stock_tour, $cantidad);
-            } else {
-                error_log("No se encontró stock para el detalle $id_detalle");
-            }
+            $fecha->modify("+1 day");
         }
 
+    } elseif ($detalle['tipo_servicio'] === 'tour') {
+
+        $id_detalle = $detalle['id_detalle_reserva'];
+        $cantidad = $detalle['cantidad']; 
+        $stock = $reservaModel->traerStockTour($id_detalle);
+        $id_stock_tour = $stock['id_stock_tour'] ?? null;
+
+        if ($id_stock_tour) {
+            $reservaModel->confirmar_detalle_tour($id_detalle); 
+            $reservaModel->descontar_stock_tour($id_stock_tour, $cantidad);
+        } else {
+            error_log("No se encontró stock para el detalle $id_detalle");
+        }
+
+    } elseif ($detalle['tipo_servicio'] === 'transporte') {
+
+        $id_detalle = $detalle['id_detalle_reserva']; 
+        $asientos_a_confirmar = $reservaModel->traerDetallesAsientosTransporte($id_detalle);
+
+        if (empty($asientos_a_confirmar)) {
+            error_log("No se encontraron asientos en detalle_reserva_transporte para el detalle $id_detalle.");
+            return; 
+        }
+        $reservaModel->confirmar_detalle_transporte($id_detalle);
+        foreach ($asientos_a_confirmar as $asiento_info) {
+
+            $id_detalle_transporte = $asiento_info['id_detalle_transporte'];
+
+            $confirmado = $reservaModel->confirmar_asiento_transporte($id_detalle_transporte);
+
+            if (!$confirmado) {
+                $n = $asiento_info['numero_asiento'];
+                $v = $asiento_info['id_viaje'];
+                error_log("Fallo al confirmar asiento N° $n del viaje $v (detalle $id_detalle).");
+            }
+        }
     }
+}
 
     $carrito_activo = $carritoModel->traer_carrito_activo($id_usuario);
     if ($carrito_activo) {
@@ -116,7 +137,6 @@ if ($pagoData['pago_estado'] === 'aprobado') {
         "pago",
         $metadata
     );
-}
 
 $email_usuario = $usuarioModel->traer_usuarios_por_id($id_usuario)[0]['usuarios_email'] ?? null;
 if ($email_usuario) {
@@ -154,8 +174,10 @@ if ($email_usuario) {
         $mail->send();
     } catch (Exception $e) {}
 }
+}
 
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>

@@ -103,59 +103,6 @@ class Reserva {
         return $id_detalle_tour;
     }
 
-    public function crear_detalle_transporte($id_detalle_reserva, $id_viaje, $asientosArray, $fecha_servicio, $precio_unitario) {
-        $conexion = new Conexion();
-        $mysqli = $conexion->getConexion();
-
-        if (empty($asientosArray) || !is_array($asientosArray)) {
-            error_log("crear_detalle_transporte: No se recibieron asientos o no es un array válido.");
-            return false;
-        }
-
-        $stmt = $mysqli->prepare("
-            INSERT INTO detalle_reserva_transporte 
-            (rela_detalle_reserva, id_viaje, piso, numero_asiento, fila, columna, fecha_servicio, precio_unitario, estado)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pendiente')
-        ");
-
-        if (!$stmt) {
-            error_log("Error preparando statement: " . $mysqli->error);
-            return false;
-        }
-
-        foreach ($asientosArray as $a) {
-
-            $piso    = isset($a['piso']) ? (int)$a['piso'] : null;
-            $numero  = isset($a['numero']) ? (int)$a['numero'] : null;
-            $fila    = isset($a['fila']) ? (int)$a['fila'] : null;
-            $columna = isset($a['columna']) ? (int)$a['columna'] : null;
-
-            if ($piso === null || $numero === null) {
-                error_log("crear_detalle_transporte: asiento incompleto: " . print_r($a, true));
-                continue;
-            }
-
-            $stmt->bind_param(
-                "iiiiissd",
-                $id_detalle_reserva,
-                $id_viaje,
-                $piso,
-                $numero,
-                $fila,
-                $columna,
-                $fecha_servicio,
-                $precio_unitario
-            );
-
-            $ok = $stmt->execute();
-            if (!$ok) {
-                error_log("Error al insertar asiento en detalle_reserva_transporte: " . $stmt->error);
-            }
-        }
-
-        $stmt->close();
-        return true;
-    }
 
     public function traerPorUsuario($userId) {
         $conexion = new Conexion();
@@ -204,16 +151,24 @@ class Reserva {
         $query = "
             SELECT 
                 drt.*, 
-                v.origen, 
-                v.destino, 
                 v.hora_salida, 
-                v.hora_llegada
+                v.hora_llegada,
+                r.nombre AS ruta_nombre,
+                co.nombre AS origen, 
+                cd.nombre AS destino 
             FROM detalle_reserva_transporte drt
-            INNER JOIN viaje v ON v.id_viaje = drt.id_viaje
+            
+            INNER JOIN viajes v ON v.id_viajes = drt.id_viaje 
+            INNER JOIN transporte_rutas r ON r.id_ruta = v.rela_transporte_rutas 
+            INNER JOIN ciudades co ON co.id_ciudad = r.rela_ciudad_origen
+            INNER JOIN ciudades cd ON cd.id_ciudad = r.rela_ciudad_destino
+            
             WHERE drt.rela_detalle_reserva = $id_detalle_reserva
+            LIMIT 1
         ";
-
-        return $conexion->consultar($query);
+        
+        $resultado = $conexion->consultar($query);
+        return $resultado[0] ?? null;
     }
 
     public function traer_por_hotel($id_hotel) {
@@ -698,6 +653,7 @@ class Reserva {
         return $stmt->affected_rows > 0;
     }
 
+
     public function traerStockTour($id_detalle_reserva) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -714,6 +670,143 @@ class Reserva {
         $stmt->execute();
         $result = $stmt->get_result();
         return $result->fetch_assoc();
+    }
+
+    public function crear_detalle_transporte_asiento(
+        $id_detalle_reserva,
+        $id_viaje,
+        $piso,
+        $numero_asiento,
+        $fecha_servicio,
+        $precio_unitario,
+        $id_pasajero
+    ) {
+        try {
+            $conexion = new Conexion();
+            $mysqli = $conexion->getConexion();
+
+            $sql = "INSERT INTO detalle_reserva_transporte 
+                    (rela_detalle_reserva, id_viaje, piso, numero_asiento, fecha_servicio, 
+                    precio_unitario, rela_pasajero, estado)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, 'pendiente')";
+
+            $stmt = $mysqli->prepare($sql);
+            if (!$stmt) return false;
+
+            $stmt->bind_param(
+                "iiissdi",
+                $id_detalle_reserva,
+                $id_viaje,
+                $piso,
+                $numero_asiento,
+                $fecha_servicio,
+                $precio_unitario,
+                $id_pasajero
+            );
+
+            if ($stmt->execute()) {
+                return $mysqli->insert_id;
+            }
+
+            return false;
+
+        } catch (Exception $e) {
+            error_log("ERROR crear_detalle_transporte_asiento: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function traerDetallesAsientosTransporte($id_detalle_reserva) {
+        $conexion = new Conexion();
+        $id_detalle_reserva = (int)$id_detalle_reserva;
+        
+        $query = "SELECT * FROM detalle_reserva_transporte 
+                WHERE rela_detalle_reserva = $id_detalle_reserva";
+                
+        return $conexion->consultar($query);
+    }
+
+    public function confirmar_detalle_transporte($id_detalle_reserva) {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+
+        $stmt = $mysqli->prepare("
+            UPDATE detalle_reserva_transporte
+            SET estado = 'confirmada'
+            WHERE rela_detalle_reserva = ?
+        ");
+
+        $stmt->bind_param("i", $id_detalle_reserva);
+        $stmt->execute();
+        
+        $success = $stmt->affected_rows > 0;
+        
+        $stmt->close();
+
+        return $success;
+    }
+
+    public function confirmar_asiento_transporte($id_detalle_transporte){
+        try {
+            $conexion = new Conexion();
+            $mysqli = $conexion->getConexion();
+            $sqlCheck = "SELECT estado FROM detalle_reserva_transporte
+                        WHERE id_detalle_transporte = ? FOR UPDATE";
+            $stmtCheck = $mysqli->prepare($sqlCheck);
+            if (!$stmtCheck) return false;
+
+            $stmtCheck->bind_param("i", $id_detalle_transporte);
+            $stmtCheck->execute();
+            $result = $stmtCheck->get_result()->fetch_assoc();
+
+            if (!$result) {
+                throw new Exception("Asiento no encontrado.");
+            }
+
+            if ($result['estado'] !== 'pendiente') {
+                throw new Exception("El asiento ya fue procesado.");
+            }
+
+            $sql = "UPDATE detalle_reserva_transporte
+                    SET estado = 'confirmada'
+                    WHERE id_detalle_transporte = ?";
+
+            $stmt = $mysqli->prepare($sql);
+            if (!$stmt) return false;
+
+            $stmt->bind_param("i", $id_detalle_transporte);
+
+            return $stmt->execute();
+
+        } catch (Exception $e) {
+            error_log("ERROR confirmar_asiento_transporte: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function bloquear_asiento_temporal($id_viaje, $id_usuario, $piso_asiento, $numero_asiento_seguro) {
+        try {
+            $conexion = new Conexion();
+            $mysqli = $conexion->getConexion();
+            $fecha_bloqueo = date("Y-m-d H:i:s");
+            $fecha_expiracion = date("Y-m-d H:i:s", strtotime("+15 minutes")); 
+
+            $query = "INSERT INTO transporte_asientos_bloqueados 
+                    (id_viaje, id_usuario, piso_asiento, numero_asiento, fecha_bloqueo, fecha_expiracion) 
+                    VALUES (?, ?, ?, ?, ?, ?)";
+
+            $stmt = $mysqli->prepare($query);
+            if (!$stmt) {
+                throw new Exception("Error al preparar la consulta: " . $mysqli->error);
+            }
+            $stmt->bind_param("iiisss", $id_viaje, $id_usuario, $piso_asiento, $numero_asiento_seguro, $fecha_bloqueo, $fecha_expiracion);
+
+            return $stmt->execute();
+            
+        } catch (Exception $e) {
+            error_log("ERROR bloquear_asiento_temporal: " . $e->getMessage());
+            return false;
+        }
     }
 
 

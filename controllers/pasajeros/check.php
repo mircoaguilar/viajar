@@ -1,57 +1,69 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once('../../models/conexion.php'); 
+
+$numero_documento = $_POST['numero_documento'] ?? null;
+$id_usuario = $_SESSION['id_usuarios'] ?? null; 
+$conexion = new Conexion();
+$mysqli = $conexion->getConexion(); 
 
 header('Content-Type: application/json');
 
-if (!isset($_SESSION['id_usuarios'])) {
-    echo json_encode([
-        'error' => true,
-        'message' => 'No autenticado'
-    ]);
+if (!$id_usuario || !$numero_documento || !$mysqli) {
+    echo json_encode(['status' => 'error', 'message' => 'Falta ID de usuario, número de documento, o la conexión DB no está disponible.']);
     exit;
 }
-
-require_once __DIR__ . '/../../models/conexion.php';
-
-$conexion = new Conexion();
-$mysqli = $conexion->getConexion();
-
-$numero_documento = trim($_POST['numero_documento'] ?? '');
-
-if ($numero_documento === '') {
-    echo json_encode(['error' => true, 'message' => 'Documento vacío']);
-    exit;
-}
-
-$id_usuario = $_SESSION['id_usuarios'];
 
 $sql = "SELECT id_pasajeros, rela_usuario, nombre, apellido, rela_nacionalidad,
-               rela_tipo_documento, numero_documento, sexo, fecha_nacimiento
+                rela_tipo_documento, numero_documento, sexo, fecha_nacimiento
         FROM pasajeros
         WHERE numero_documento = ?";
 $stmt = $mysqli->prepare($sql);
-$stmt->bind_param('s', $numero_documento);
-$stmt->execute();
-$res = $stmt->get_result();
 
-if ($res->num_rows > 0) {
-    $row = $res->fetch_assoc();
-
-    if ((int)$row['rela_usuario'] !== (int)$id_usuario) {
-        echo json_encode([
-            'exists_other' => true
-        ]);
-        exit;
-    }
-
-    echo json_encode([
-        'exists' => true,
-        'data' => $row
-    ]);
+if (!$stmt) {
+    echo json_encode(['status' => 'error', 'message' => 'Error al preparar la consulta: ' . $mysqli->error]); 
     exit;
 }
 
+$stmt->bind_param('s', $numero_documento);
+
+if (!$stmt->execute()) {
+    echo json_encode(['status' => 'error', 'message' => 'Error al ejecutar la consulta: ' . $stmt->error]); 
+    exit;
+}
+
+$res = $stmt->get_result();
+
+if ($res->num_rows > 0) { 
+    $row = $res->fetch_assoc();
+    $stmt->close(); 
+    
+    if ((int)$row['rela_usuario'] === (int)$id_usuario) {
+          echo json_encode([
+            'status' => 'success',
+            'found' => true,
+            'owner' => true,
+            'data' => $row
+          ]);
+          exit;
+        } else {
+             echo json_encode([
+                'status' => 'success',
+                'found' => true,
+                'owner' => false,
+                'message' => 'El pasajero ya está registrado por otro usuario.'
+                ]);
+             exit;
+        }
+} 
+
+$stmt->close();
+
 echo json_encode([
-    'exists' => false
+    'status' => 'success',
+    'found' => false
 ]);
 exit;

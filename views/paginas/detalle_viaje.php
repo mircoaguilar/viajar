@@ -117,6 +117,10 @@ if (!$ruta) die("Ruta no encontrada.");
       </div>
     </div>
   </div>
+
+  <div id="countdown-timer" style="display:none; color:red; font-weight:bold;">
+    Tu reserva temporal expira en: <span id="time-left">05:00</span>
+</div>
   
   <?php include_once(__DIR__ . '/../componentes/pie.php'); ?>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
