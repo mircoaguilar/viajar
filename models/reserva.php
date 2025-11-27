@@ -85,10 +85,17 @@ class Reserva {
         $mysqli = $conexion->getConexion();
 
         $stmt = $mysqli->prepare("
-            INSERT INTO detalle_reserva_tour (rela_detalle_reserva, rela_tour, fecha) 
-            VALUES (?, ?, ?)
+            INSERT INTO detalle_reserva_tour (
+                rela_detalle_reserva, rela_tour, fecha, estado
+            ) VALUES (?, ?, ?, 'pendiente')
         ");
-        $stmt->bind_param("iis", $id_detalle_reserva, $id_tour, $fecha_tour);
+
+        $stmt->bind_param("iis",
+            $id_detalle_reserva,
+            $id_tour,
+            $fecha_tour
+        );
+
         $stmt->execute();
         $id_detalle_tour = $stmt->insert_id;
         $stmt->close();
@@ -632,6 +639,23 @@ class Reserva {
         return true;
     }
 
+    public function confirmar_detalle_tour($id_detalle_reserva) {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+
+        $stmt = $mysqli->prepare("
+            UPDATE detalle_reserva_tour
+            SET estado = 'confirmada'
+            WHERE rela_detalle_reserva = ?
+        ");
+
+        $stmt->bind_param("i", $id_detalle_reserva);
+        $stmt->execute();
+        $stmt->close();
+
+        return true;
+    }
+
     public function descontar_stock_hotel($id_habitacion, $dia, $cantidad) {
         $conexion = new Conexion();
         $mysqli = $conexion->getConexion();
@@ -654,7 +678,23 @@ class Reserva {
         return $afectadas > 0;
     }
 
+    public function descontar_stock_tour($id_stock_tour, $cantidad) {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
 
+        $sql = "UPDATE stock_tour 
+                SET cupos_disponibles = cupos_disponibles - ?, 
+                    cupos_reservados = cupos_reservados + ?,
+                    updated_at = NOW()
+                WHERE id_stock_tour = ? 
+                AND cupos_disponibles >= ?";
+        
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("iiii", $cantidad, $cantidad, $id_stock_tour, $cantidad);
+        $stmt->execute();
+
+        return $stmt->affected_rows > 0;
+    }
 
     public function getId_reservas() { return $this->id_reservas; }
     public function setId_reservas($id) { $this->id_reservas = $id; return $this; }

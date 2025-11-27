@@ -73,9 +73,16 @@ if ($pagoData['pago_estado'] === 'aprobado') {
 
                 $fecha->modify("+1 day");
             }
+
+        } elseif ($detalle['tipo_servicio'] === 'tour') {
+
+            $id_detalle = $detalle['id_detalle_reserva'];
+            $id_stock_tour = $detalle['rela_stock_tour']; 
+            $cantidad = $detalle['cantidad']; 
+            $reservaModel->confirmar_detalle_tour($id_detalle); 
+            $reservaModel->descontar_stock_tour($id_stock_tour, $cantidad);
         }
     }
-    
 
     $carrito_activo = $carritoModel->traer_carrito_activo($id_usuario);
     if ($carrito_activo) {

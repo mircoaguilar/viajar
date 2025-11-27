@@ -85,9 +85,7 @@ $fechas_disponibles = $tourStockModel->traer_fechas_disponibles($id_tour);
         </div>
     </div>
 
-    <footer class="footer">
-        <p style="text-align: center; padding: 15px;">&copy; 2025 ViajAR - Todos los derechos reservados.</p>
-    </footer>
+    <?php include_once(__DIR__ . '/../componentes/pie.php'); ?>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>

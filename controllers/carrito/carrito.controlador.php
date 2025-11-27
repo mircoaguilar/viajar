@@ -221,13 +221,13 @@ switch ($action) {
             echo json_encode(['status' => 'error', 'message' => 'Ítem no encontrado']);
             exit;
         }
+
         if ($item['tipo_servicio'] === 'transporte' && isset($_SESSION['carrito_extra'][$item['id_servicio']])) {
             $item['asientos'] = $_SESSION['carrito_extra'][$item['id_servicio']]['asientos'] ?? [];
             $item['fecha_servicio'] = $_SESSION['carrito_extra'][$item['id_servicio']]['fecha_servicio'] ?? null;
         }
 
         if ($item['tipo_servicio'] === 'hotel') {
-
             $id_habitacion = (int)$item['id_servicio']; 
 
             $sql = "
@@ -235,19 +235,15 @@ switch ($action) {
                     h.id_hotel,
                     h.hotel_nombre,
                     info.direccion,
-
                     hab.id_hotel_habitacion,
                     hab.descripcion AS habitacion_descripcion,
                     hab.capacidad_maxima,
                     hab.precio_base_noche,
-
                     tipo.nombre AS tipo_habitacion
-
                 FROM hotel_habitaciones hab
                 INNER JOIN hotel h ON h.id_hotel = hab.rela_hotel
                 INNER JOIN hoteles_info info ON info.rela_hotel = h.id_hotel
                 INNER JOIN tipos_habitacion tipo ON tipo.id_tipo_habitacion = hab.rela_tipo_habitacion
-
                 WHERE hab.id_hotel_habitacion = {$id_habitacion}
                 LIMIT 1
             ";
@@ -264,9 +260,44 @@ switch ($action) {
             }
         }
 
-        echo json_encode(['status' => 'success', 'item' => $item]);
-        break;
+        if ($item['tipo_servicio'] === 'tour') {
 
+                $id_tour = (int)$item['id_servicio'];     
+                $fecha_tour = $item['fecha_inicio'];      
+
+                $sql = "
+                    SELECT 
+                        t.id_tour,
+                        t.nombre_tour,
+                        t.descripcion,
+                        t.duracion_horas,
+                        t.precio_por_persona,
+                        t.hora_encuentro,
+                        t.lugar_encuentro,
+                        t.imagen_principal
+                    FROM tours t
+                    WHERE t.id_tour = {$id_tour}
+                    LIMIT 1
+                ";
+
+                $db = new Conexion();
+                $extra = $db->consultar($sql);
+
+                if ($extra && count($extra) > 0) {
+                    $item['id_tour']            = $id_tour;
+                    $item['nombre_tour']        = $extra[0]['nombre_tour'];
+                    $item['descripcion']        = $extra[0]['descripcion'];
+                    $item['duracion_horas']     = $extra[0]['duracion_horas'];
+                    $item['precio_por_persona'] = $extra[0]['precio_por_persona'];
+                    $item['hora_encuentro']     = $extra[0]['hora_encuentro'];
+                    $item['lugar_encuentro']    = $extra[0]['lugar_encuentro'];
+                    $item['imagen_principal']   = $extra[0]['imagen_principal'];
+                    $item['fecha_tour']         = $fecha_tour;
+                }
+            }
+
+            echo json_encode(['status' => 'success', 'item' => $item]);
+            break;
 
     case 'crear_reserva':
         require_once(__DIR__ . '/../../models/reserva.php');

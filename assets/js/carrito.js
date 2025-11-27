@@ -97,8 +97,8 @@ async function abrirModalCarrito(id_item) {
 
         if (data.status === 'success' && data.item) {
             const it = data.item;
-            if (it.tipo_servicio === 'hotel') {
 
+            if (it.tipo_servicio === 'hotel') {
                 const noches = calcularNoches(it.fecha_inicio, it.fecha_fin);
 
                 body.innerHTML = `
@@ -122,10 +122,23 @@ async function abrirModalCarrito(id_item) {
                 `;
                 return;
             }
-            let fechas = '-';
-            if (it.tipo_servicio === 'tour') fechas = it.fecha_tour ?? '-';
-            if (it.tipo_servicio === 'transporte') fechas = it.fecha_servicio ?? '-';
 
+            if (it.tipo_servicio === 'tour') {
+                body.innerHTML = `
+                    <h3>Datos del Tour</h3>
+                    <p><strong>Nombre:</strong> ${it.nombre_tour}</p>
+                    <p><strong>Descripción:</strong> ${it.descripcion}</p>
+                    <p><strong>Duración:</strong> ${it.duracion_horas}</p>
+                    <p><strong>Fecha:</strong> ${it.fecha_tour ?? '-'}</p>
+                    <p><strong>Hora de encuentro:</strong> ${it.hora_encuentro}</p>
+                    <p><strong>Lugar de encuentro:</strong> ${it.lugar_encuentro}</p>
+                    <p><strong>Cantidad:</strong> ${it.cantidad}</p>
+                    <p><strong>Precio por persona:</strong> $ ${formatoPrecio(it.precio_por_persona)}</p>
+                    <p><strong>Subtotal:</strong> $ ${formatoPrecio(it.subtotal)}</p>`;
+                return;
+            }
+
+            let fechas = it.fecha_servicio ?? '-';
             let htmlDetalle = `
                 <p><strong>Servicio:</strong> ${it.tipo_servicio}</p>
                 <p><strong>Detalle:</strong> ${it.nombre_servicio ?? it.id_servicio}</p>
@@ -134,8 +147,7 @@ async function abrirModalCarrito(id_item) {
                 <p><strong>Precio Unitario:</strong> $ ${formatoPrecio(it.precio_unitario)}</p>
                 <p><strong>Subtotal:</strong> $ ${formatoPrecio(it.subtotal)}</p>
             `;
-
-            if (it.tipo_servicio === 'transporte' && it.asientos) {
+            if (it.asientos) {
                 htmlDetalle += `<p><strong>Asientos:</strong> ${it.asientos.join(', ')}</p>`;
             }
 
@@ -150,6 +162,7 @@ async function abrirModalCarrito(id_item) {
         body.innerHTML = '<p>Error al cargar los detalles.</p>';
     }
 }
+
 
 document.getElementById('cerrarModalCarrito').addEventListener('click', () => {
     document.getElementById('modalVerCarrito').style.display = 'none';
