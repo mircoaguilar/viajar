@@ -137,14 +137,14 @@ body {
   padding: 20px 20px 40px;
   text-align: left;
   border-bottom: 1px solid #eee;
-  margin-left: 850px;
+  margin-left: 620px;
 }
 
 
 
 .search-form {
   display: flex;
-  margin-left: -340px;
+  margin-left: -350px;
   align-items: flex-end;
   gap: 10px;
 }

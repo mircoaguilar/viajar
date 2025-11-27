@@ -131,6 +131,7 @@ body {
   background-color: #2943b9;
   padding: 20px 20px 40px;
   border-bottom: 1px solid #eee;
+  margin-left: -240px;
 }
 .search-section h2 {
   padding-left: 90px;
@@ -144,9 +145,10 @@ body {
 
 .search-form {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-end;
   gap: 10px;
+  margin-left: -10px;
 
 }
 
