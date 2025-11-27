@@ -156,6 +156,23 @@ input::placeholder {
         height: 20px;
         width: 20px;
     }
+     .fa-icon {
+        height: 22px;
+        width: 22px;
+        font-size: 22px;
+        left: 12px !important;   /* 👉 Esto mueve el icono MÁS A LA IZQUIERDA */
+    }
+
+
+
+     .toggle-password {
+        right: 10px !important;  /* 👈 Mueve el ojito a la izquierda */
+        width: auto;
+    }
+
+    .toggle-password i {
+        font-size: 20px; /* opcional: ajusta tamaño en móvil */
+    }
 }
 
 /* Errores en inputs */

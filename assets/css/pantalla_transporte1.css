@@ -118,9 +118,15 @@ body {
 
 
 .hero-section .hero-content h1,
-.hero-section .hero-content p,
+.hero-section .hero-content p {
+  color: #ffffff;
+}
+
+/* Esto va aparte */
 .search-container {
-  color: #ffffff; /* texto blanco */
+  max-width: 600px;
+  margin-left: 0 auto;
+  color: #ffffff; /* si querés que el texto de labels sea blanco */
 }
 
 
@@ -129,18 +135,16 @@ body {
 .search-section {
   background-color: #2943b9;
   padding: 20px 20px 40px;
-  text-align: center;
+  text-align: left;
   border-bottom: 1px solid #eee;
+  margin-left: 850px;
 }
 
-.search-container {
-  max-width: 600px;
-  margin: 0 auto;
-}
+
 
 .search-form {
   display: flex;
-  justify-content: center;
+  margin-left: -340px;
   align-items: flex-end;
   gap: 10px;
 }
@@ -188,7 +192,7 @@ body {
   background-color: #2943b9;
   color: #fff;
   padding: 12px;
-  border: 2px solid #fff;
+  border: none;
   border-radius: 6px;
   font-size: 18px;
   cursor: pointer;
@@ -199,9 +203,20 @@ body {
   justify-content: center;
   /* sombra fija y sutil */
 
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  
 }
 
+.search-form select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #fff;
+  box-shadow: 0 0 6px rgba(5, 248, 175, 0.4);
+  text-align: center; /* <-- centra el texto */
+  text-align-last: center; /* <-- centra la opción seleccionada */
+}
 
 
 /* Listado de viajes */
@@ -329,3 +344,8 @@ body {
     color: #ccc;
     border-top: 1px solid rgba(255,255,255,0.2);
 }
+
+
+
+
+ 

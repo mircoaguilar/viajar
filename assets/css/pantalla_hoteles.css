@@ -31,7 +31,7 @@ body {
 .top-bar .left-links {
   display: flex;
   align-items: center;
-  gap: 40px; /* espacio entre logo y menú */
+  gap: 40px; 
 }
 
 .top-bar .logo a {
@@ -41,7 +41,6 @@ body {
   font-weight: bold;
 }
 
-/* Links en fila */
 .top-bar .nav-links {
   display: flex;
   gap: 25px;
@@ -59,13 +58,11 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hover de los links */
 .top-bar .nav-links a:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: #ffd700;
 }
 
-/* Link activo */
 .top-bar .nav-links a.active {
   background-color: rgba(255, 255, 255, 0.2);
   color: #fff;
@@ -111,8 +108,9 @@ body {
 }
 
 /* ========================= */
-/* BUSCADOR DE HOTELES       */
+/* BUSCADOR DE HOTELES */
 /* ========================= */
+
 .search-section {
   background-color: #2943b9;
   padding: 20px 20px 20px;
@@ -122,7 +120,7 @@ body {
 
 .search-container {
   max-width: 600px;
-  margin-left: 500px;
+  margin-left: 750px;
 }
 
 .search-form {
@@ -138,6 +136,7 @@ body {
   display: flex;
   flex-direction: column;
   text-align: left;
+  
 }
 
 .form-group label {
@@ -147,7 +146,6 @@ body {
   margin-bottom: 6px;
 }
 
-/* Input del buscador */
 .search-form input[type="text"] {
   width: 100%;
   padding: 12px;
@@ -155,11 +153,10 @@ body {
   border-radius: 6px;
   font-size: 15px;
   background-color: #fff;
-  height: 46px; /* misma altura que select y botón */
+  height: 46px;
   box-shadow: none;
 }
 
-/* Select del buscador */
 .search-form select {
   width: 100%;
   padding: 12px 14px;
@@ -167,36 +164,31 @@ body {
   border-radius: 6px;
   font-size: 15px;
   background-color: #fff;
-  height: 46px; /* misma altura */
+  height: 46px;
   box-shadow: none;
-  appearance: none; /* quita el estilo por defecto */
+  appearance: none;
 }
 
-/* Botón de la lupa */
 .search-form button {
-  background-color: #2943b9;      
-  color: #fff;                     
-  padding: 12px;                  
-  border: 2px solid #fff;   
-  border-radius: 6px;            
-  font-size: 18px;                 
-  cursor: pointer;                
-  width: 40px;                     
-  height: 40px;                    
-  display: flex;                  
-  align-items: center;             
-  justify-content: center;         
+  background-color: #2943b9;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Hover del botón */
-.search-form button:hover {
-  background-color: #f1f1f1;
-  transform: scale(1.05);
-}
 
 /* ========================= */
-/* LISTADO DE HOTELES        */
+/* LISTADO DE HOTELES */
 /* ========================= */
+
 .hoteles {
   padding: 40px 20px;
   background-color: #fdfdfd;
