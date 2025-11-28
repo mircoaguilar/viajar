@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const descripcion = document.getElementById("descripcion");
   let contadorPisos = 0;
 
-
+  // ----------------- CONTADOR DESCRIPCIÓN -----------------
   const contador = document.createElement("small");
   contador.id = "contadorDescripcion";
   contador.style.display = "block";
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     eliminarError(descripcion);
   });
 
-  
+  // ----------------- ERRORES -----------------
   function mostrarError(input, mensaje) {
     eliminarError(input);
     input.classList.add("error-input");
@@ -49,12 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
     campo.addEventListener("change", () => eliminarError(campo));
   });
 
- 
+  // ----------------- PISOS -----------------
   const errorPisosMsg = document.createElement("small");
   errorPisosMsg.className = "error-msg";
   errorPisosMsg.style.display = "none";
   btnAgregarPiso.insertAdjacentElement("afterend", errorPisosMsg);
-
 
   btnAgregarPiso.addEventListener("click", () => {
     if (contadorPisos >= 2) {
@@ -92,7 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
     contenedorPisos.appendChild(pisoDiv);
   });
 
-  form.addEventListener("submit", (e) => {
+  // ----------------- VALIDAR Y ENVIAR -----------------
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     let valido = true;
 
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const regexMatricula = /^[A-Z]{3}\d{3}$|^[A-Z]{2}\d{3}[A-Z]{2}$/i;
     const regexNombre = /^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{3,}$/;
 
-    
+    // Matrícula
     if (matricula.value.trim() === "") {
       mostrarError(matricula, "La matrícula es obligatoria.");
       valido = false;
@@ -114,54 +114,40 @@ document.addEventListener("DOMContentLoaded", () => {
       valido = false;
     }
 
-    
+    // Capacidad
     const num = parseInt(capacidad.value, 10);
     if (isNaN(num) || num < 1 || num > 100) {
       mostrarError(capacidad, "Capacidad entre 1 y 100 personas.");
       valido = false;
     }
 
-  
-    if (tipo.value === "" || tipo.value == null) {
+    // Tipo
+    if (tipo.value === "") {
       mostrarError(tipo, "Seleccioná un tipo de transporte.");
       valido = false;
     }
 
-    
+    // Nombre
     if (!regexNombre.test(nombre.value.trim())) {
       mostrarError(nombre, "Mínimo 3 letras. Solo texto y espacios.");
       valido = false;
     }
 
-    
+    // Descripción
     const descVal = descripcion.value.trim();
     if (descVal === "") {
       mostrarError(descripcion, "Falta datos en descripción.");
       valido = false;
-    } else if (descVal.length > 500) {
-      mostrarError(descripcion, "La descripción no puede superar los 500 caracteres.");
-      valido = false;
     }
 
-   
+    // Imagen
     const archivo = imagen.files[0];
     if (!archivo) {
       mostrarError(imagen, "Debes subir una imagen principal.");
       valido = false;
-    } else {
-      const extPermitidas = ["jpg", "jpeg", "png", "webp"];
-      const extension = archivo.name.split(".").pop().toLowerCase();
-      const tamano = archivo.size / 1024 / 1024;
-      if (!extPermitidas.includes(extension)) {
-        mostrarError(imagen, "Formato inválido. Solo JPG, JPEG, PNG o WEBP.");
-        valido = false;
-      } else if (tamano > 2) {
-        mostrarError(imagen, "La imagen no puede superar los 2 MB.");
-        valido = false;
-      }
     }
 
-    
+    // Pisos completos
     const pisos = contenedorPisos.querySelectorAll(".piso-card");
     pisos.forEach((piso) => {
       const filas = piso.querySelector(".filas-input");
@@ -175,10 +161,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!valido) return;
 
-    if (!confirm("¿Deseás guardar este transporte?")) return;
+    // ----------------- SWEET ALERT CONFIRMACIÓN -----------------
+    const confirmacion = await Swal.fire({
+      title: "¿Guardar transporte?",
+      text: "Se enviará para revisión.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Sí, guardar",
+      cancelButtonText: "Cancelar"
+    });
 
+    if (!confirmacion.isConfirmed) return;
+
+    // ----------------- ENVIAR FORM -----------------
     const formData = new FormData(form);
-    formData.append("action", "guardar");
 
     fetch("controllers/transportes/transporte.controlador.php", {
       method: "POST",
@@ -187,12 +183,28 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.status === "success" || data.status === "ok") {
-          alert("Transporte enviado para revisión correctamente.");
-          window.location.href = "index.php?page=proveedores_perfil";
+          Swal.fire({
+            title: "Enviado",
+            text: "Transporte enviado para revisión correctamente.",
+            icon: "success"
+          }).then(() => {
+            window.location.href = "index.php?page=proveedores_perfil";
+          });
         } else {
-          alert("Error: " + (data.mensaje || data.message || "No se pudo guardar."));
+          Swal.fire({
+            title: "Error",
+            text: data.mensaje || "No se pudo guardar.",
+            icon: "error"
+          });
         }
       })
-      .catch(() => alert("Ocurrió un error al guardar el transporte."));
+      .catch(() => {
+        Swal.fire({
+          title: "Error",
+          text: "Ocurrió un error al guardar el transporte.",
+          icon: "error"
+        });
+      });
+
   });
 });

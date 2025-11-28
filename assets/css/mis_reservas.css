@@ -340,6 +340,17 @@ p {
     text-align: right;
 }
 
+
+
+/* SCROLL SOLO EN EL CUERPO DEL MODAL */
+.modal-body-custom {
+    max-height: 60vh; /* el modal ocupa hasta el 60% de la pantalla */
+    overflow-y: auto; /* activa el scroll solo si es necesario */
+    padding-right: 10px; /* evita que tape el scroll */
+}
+
+
+
 .btn-secondary {
     background: #555;
     border: none;

@@ -7,9 +7,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const previewTable = document.getElementById('tabla-preview');
     const tbody = previewTable.querySelector('tbody');
     const alertBox = document.getElementById('form-alert');
+
     const HAB_URL = idHabitacionUrl || "";    
     const HOTEL_PRE = hotelPreseleccionado || "";
 
+const urlParams = new URLSearchParams(window.location.search);
+const idHabitacion = urlParams.get("id_habitacion");
+
+
+    /* =====================================================
+       MODAL PERSONALIZADO — COMPLETAMENTE FUNCIONAL
+       ===================================================== */
+    function mostrarModal(mensaje) {
+    const modal = document.getElementById("custom-alert");
+    const msgBox = document.getElementById("custom-alert-msg");
+    const closeBtn = document.getElementById("custom-alert-btn");
+
+    msgBox.textContent = mensaje;
+    modal.style.display = "flex";
+
+    // Limpio listeners viejos
+    const newCloseBtn = closeBtn.cloneNode(true);
+    closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+
+   newCloseBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+    window.location.href =
+        "http://localhost/viajar/index.php?page=hoteles_habitaciones&id_hotel=71" ;
+});
+
+
+    modal.addEventListener("click", e => {
+    if (e.target === modal) {
+        modal.style.display = "none";
+        window.location.href =
+            "http://localhost/viajar/index.php?page=hoteles_habitaciones&id_hotel=71" ;
+    }
+});
+
+}
+
+
+
+
+    /* =====================================================
+       CARGAR HABITACIONES
+       ===================================================== */
     function cargarHabitaciones(idHotel, callback = null) {
         habitacionSelect.innerHTML = '<option value="">Cargando...</option>';
 
@@ -31,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     hotelSelect.addEventListener('change', () => {
         const idHotel = hotelSelect.value;
+
         if (idHotel) {
             cargarHabitaciones(idHotel);
         } else {
@@ -38,17 +82,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    /* =====================================================
+       PRECARGA AUTOMÁTICA DESDE URL
+       ===================================================== */
     if (HOTEL_PRE !== "") {
         hotelSelect.value = HOTEL_PRE;
         cargarHabitaciones(HOTEL_PRE, () => {
-            if (HAB_URL !== "") {
-                habitacionSelect.value = HAB_URL;
-            }
+            if (HAB_URL !== "") habitacionSelect.value = HAB_URL;
         });
     }
 
+    /* =====================================================
+       VALIDACIONES
+       ===================================================== */
     function validarFormulario() {
         let valido = true;
+
         alertBox.style.display = 'none';
         alertBox.textContent = '';
         alertBox.className = '';
@@ -69,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 errorDiv.className = 'error';
                 parent.appendChild(errorDiv);
             }
+
             errorDiv.textContent = '';
             f.el.classList.remove('is-invalid');
 
@@ -88,8 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return valido;
     }
 
-    const inputs = form.querySelectorAll('input, select');
-    inputs.forEach(input => {
+    form.querySelectorAll('input, select').forEach(input => {
         input.addEventListener('input', () => {
             input.classList.remove('is-invalid');
             const errorDiv = input.parentElement.querySelector('.error');
@@ -98,8 +147,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    /* =====================================================
+       PREVISUALIZACIÓN
+       ===================================================== */
     btnPrev.addEventListener('click', () => {
         tbody.innerHTML = '';
+
         if (!validarFormulario()) return;
 
         const habText = habitacionSelect.options[habitacionSelect.selectedIndex]?.text || '';
@@ -120,11 +173,16 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             tbody.appendChild(tr);
         }
+
         previewTable.style.display = 'table';
     });
 
+    /* =====================================================
+       GUARDAR STOCK VIA AJAX
+       ===================================================== */
     form.addEventListener('submit', e => {
         e.preventDefault();
+
         if (!validarFormulario()) return;
 
         const formData = new FormData(form);
@@ -135,19 +193,19 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(res => res.json())
         .then(data => {
+
             if (data.status === 'success') {
-                alertBox.textContent = data.message || 'Stock guardado correctamente.';
-                alertBox.className = 'success';
-                alertBox.style.display = 'block';
+                mostrarModal(data.message || 'Stock guardado correctamente.');
 
                 form.reset();
                 tbody.innerHTML = '';
                 previewTable.style.display = 'none';
-            } else {
-                alertBox.textContent = data.message || 'Error al guardar stock.';
-                alertBox.className = 'error';
-                alertBox.style.display = 'block';
+                return;
             }
+
+            alertBox.textContent = data.message || 'Error al guardar stock.';
+            alertBox.className = 'error';
+            alertBox.style.display = 'block';
         })
         .catch(err => {
             console.error(err);
@@ -156,4 +214,5 @@ document.addEventListener('DOMContentLoaded', () => {
             alertBox.style.display = 'block';
         });
     });
+
 });
