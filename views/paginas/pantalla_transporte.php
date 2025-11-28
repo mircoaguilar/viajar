@@ -6,19 +6,21 @@ require_once('models/ciudad.php');
 $ciudadModel = new Ciudad();
 $ciudades = $ciudadModel->traer_ciudades();
 
+$origen = trim($_GET['origen'] ?? '');
 $destino = trim($_GET['destino'] ?? '');
-$desde   = $_GET['desde'] ?? '';
-$hasta   = $_GET['hasta'] ?? '';
+$desde = $_GET['desde'] ?? '';
+$hasta = $_GET['hasta'] ?? '';
 
 $viajes = [];
 
 $transporteModel = new Transporte();
-if ($destino || $desde || $hasta) {
-    $viajes = $transporteModel->buscar($destino, $desde, $hasta);
+if ($origen || $destino || $desde || $hasta) {
+    $viajes = $transporteModel->buscar($origen, $destino, $desde, $hasta);
 } else {
     $viajeModel = new Viaje();
     $viajes = $viajeModel->traer_viajes_proximos(10);
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -51,7 +53,7 @@ if ($destino || $desde || $hasta) {
             <option value=""></option>
             <?php foreach ($ciudades as $ciudad): ?>
                 <option value="<?= htmlspecialchars($ciudad['id_ciudad']) ?>" 
-                    <?= ($destino == $ciudad['id_ciudad']) ? 'selected' : '' ?>>
+                    <?= ($origen == $ciudad['id_ciudad']) ? 'selected' : '' ?>>
                     <?= htmlspecialchars($ciudad['nombre']) ?>
                 </option>
             <?php endforeach; ?>
@@ -73,12 +75,12 @@ if ($destino || $desde || $hasta) {
 
       <div class="form-group">
         <label>Desde</label>
-        <input type="text" name="desde" id="desde" placeholder="DD/MM/AAAA" value="<?= htmlspecialchars($_GET['desde'] ?? '') ?>">
+        <input type="text" name="desde" id="desde" placeholder="DD/MM/AAAA" value="<?= htmlspecialchars($desde) ?>">
       </div>
 
       <div class="form-group">
         <label>Hasta</label>
-        <input type="text" name="hasta" id="hasta" placeholder="DD/MM/AAAA" value="<?= htmlspecialchars($_GET['hasta'] ?? '') ?>">
+        <input type="text" name="hasta" id="hasta" placeholder="DD/MM/AAAA" value="<?= htmlspecialchars($hasta) ?>">
       </div>
 
       <div class="form-group full-width">

@@ -294,37 +294,51 @@ class Transporte {
 
 
 
-    public function buscar($destino = '', $desde = '', $hasta = '') {
+    public function buscar($origen, $destino, $desde, $hasta) {
         $conexion = new Conexion();
-        $mysqli = $conexion->getConexion();
-        $destino = $mysqli->real_escape_string($destino);
-
         $query = "
-            SELECT t.id_transporte, t.nombre_servicio, t.imagen_principal,
-                r.precio_por_persona, r.fecha_salida, r.hora_salida,
-                c1.nombre AS origen, c2.nombre AS destino
-            FROM transporte t
-            LEFT JOIN transporte_rutas r ON t.id_transporte = r.rela_transporte
-            LEFT JOIN ciudades c1 ON r.rela_origen = c1.id_ciudad
-            LEFT JOIN ciudades c2 ON r.rela_destino = c2.id_ciudad
-            WHERE t.activo = 1
+            SELECT viajes.id_viajes, 
+                viajes.viaje_fecha, 
+                viajes.hora_salida, 
+                viajes.hora_llegada,
+                c1.nombre AS origen, 
+                c2.nombre AS destino,
+                transporte.nombre_servicio, 
+                transporte_rutas.precio_por_persona, 
+                transporte.imagen_principal
+            FROM viajes
+            JOIN transporte_rutas 
+                ON viajes.rela_transporte_rutas = transporte_rutas.id_ruta
+            JOIN transporte 
+                ON transporte_rutas.rela_transporte = transporte.id_transporte
+            JOIN ciudades c1 
+                ON transporte_rutas.rela_ciudad_origen = c1.id_ciudad
+            JOIN ciudades c2 
+                ON transporte_rutas.rela_ciudad_destino = c2.id_ciudad
+            WHERE viajes.activo = 1
         ";
 
-        if ($destino) {
-            $query .= " AND (c1.nombre LIKE '%$destino%' OR c2.nombre LIKE '%$destino%' OR t.nombre_servicio LIKE '%$destino%')";
-        }
-        if ($desde) {
-            $desde = $mysqli->real_escape_string($desde);
-            $query .= " AND r.fecha_salida >= '$desde'";
-        }
-        if ($hasta) {
-            $hasta = $mysqli->real_escape_string($hasta);
-            $query .= " AND r.fecha_llegada <= '$hasta'";
+        if ($origen) {
+            $query .= " AND transporte_rutas.rela_ciudad_origen = $origen";
         }
 
-        $query .= " ORDER BY r.fecha_salida ASC";
+        if ($destino) {
+            $query .= " AND transporte_rutas.rela_ciudad_destino = $destino";
+        }
+
+        if ($desde) {
+            $query .= " AND viajes.viaje_fecha >= '$desde'";
+        }
+
+        if ($hasta) {
+            $query .= " AND viajes.viaje_fecha <= '$hasta'";
+        }
+
+        $query .= " ORDER BY viajes.viaje_fecha ASC";
+
         return $conexion->consultar($query);
     }
+
 
     public function traer_rutas_por_usuario($id_usuario) {
         $conexion = new Conexion();

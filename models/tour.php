@@ -180,17 +180,29 @@ class Tour {
         return !empty($res);
     }
 
-    public function buscar($destino = '') {
-        $conexion = new Conexion();
-        $mysqli = $conexion->getConexion();
-        $destino = $mysqli->real_escape_string($destino);
+    public function buscar($fecha) {
+    $conexion = new Conexion();
 
-        $query = "SELECT t.* FROM tours t WHERE t.activo = 1 AND t.estado_revision = 'aprobado'";
-        if ($destino) $query .= " AND t.nombre_tour LIKE '%$destino%'";
-        $query .= " ORDER BY t.id_tour DESC";
+    $query = "
+        SELECT t.*, 
+               p.razon_social AS proveedor_nombre, 
+               MIN(st.fecha) AS fecha,  -- Obtener la fecha más temprana para cada tour
+               SUM(st.cupos_disponibles) AS total_cupos_disponibles  -- Sumar los cupos disponibles
+        FROM tours t
+        JOIN proveedores p ON t.rela_proveedor = p.id_proveedores
+        LEFT JOIN stock_tour st ON t.id_tour = st.rela_tour
+        WHERE t.activo = 1
+        AND t.estado_revision = 'aprobado'
+        AND st.fecha >= '$fecha'  -- Filtrar por fecha
+        AND st.cupos_disponibles > 0  -- Solo mostrar tours con cupos disponibles
+        GROUP BY t.id_tour  -- Agrupar por el id del tour
+        ORDER BY fecha ASC  -- Ordenar por la fecha más temprana
+    ";
 
-        return $conexion->consultar($query);
-    }
+    return $conexion->consultar($query);
+}
+
+
 
     public function traer_tours_aprobados_por_usuario($id_usuario) {
         $conexion = new Conexion();

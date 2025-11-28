@@ -70,6 +70,13 @@ $perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
             <a href="index.php?page=ganancias_dashboard" class="btn-acceso">Ver Ganancias</a>
         </div>
 
+        <div class="acceso-card">
+            <i class="fa-solid fa-user-check"></i>
+            <h3>Revisión de Proveedores</h3>
+            <p>Aprueba o rechaza los proveedores que se han registrado en el sistema.</p>
+            <a href="index.php?page=revision_proveedores" class="btn-acceso">Ver Proveedores</a>
+        </div>
+
     </div>
     </div>
 

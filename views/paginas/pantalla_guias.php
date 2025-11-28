@@ -5,17 +5,15 @@ require_once('models/ciudad.php');
 $ciudadModel = new Ciudad();
 $ciudades = $ciudadModel->traer_ciudades();
 
-$destino = trim($_GET['destino'] ?? '');
-$fecha   = $_GET['fecha'] ?? '';
+$fecha = $_GET['fecha'] ?? '';
 
 $tourModel = new Tour();
 
-if ($destino || $fecha) {
-    $tours = $tourModel->buscar($destino, $fecha);
+if ($fecha) {
+    $tours = $tourModel->buscar($fecha);
 } else {
     $tours = $tourModel->traer_tours();
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -40,19 +38,6 @@ if ($destino || $fecha) {
     <h2>Buscar tour guiado</h2>
     <form class="search-form" method="GET">
       <input type="hidden" name="page" value="pantalla_guias">
-
-      <div class="form-group">
-        <label>Ubicación</label>
-        <select id="destino" name="destino" style="width: 100%;">
-            <option value=""></option>
-            <?php foreach ($ciudades as $ciudad): ?>
-                <option value="<?= htmlspecialchars($ciudad['id_ciudad']) ?>" 
-                    <?= ($destino == $ciudad['id_ciudad']) ? 'selected' : '' ?>>
-                    <?= htmlspecialchars($ciudad['nombre']) ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-      </div>
 
       <div class="form-group">
           <label>Fecha</label>

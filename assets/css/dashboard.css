@@ -85,6 +85,28 @@ table tr:hover {
     font-size: 14px;
 }
 
+/* Estilos para el filtro de selección de año */
+.dashboard-section label {
+    font-size: 16px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.dashboard-section select {
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #fff;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.dashboard-section select:focus {
+    border-color: #76c7c0;
+    outline: none;
+}
+
+
 
 
 /* Responsive */

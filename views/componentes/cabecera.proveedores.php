@@ -3,6 +3,17 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [3, 
     header("Location: index.php");
     exit;
 }
+require_once('models/proveedor.php'); 
+$proveedorModel = new Proveedor();
+$estadoProveedor = $proveedorModel->obtenerEstadoProveedor($_SESSION['id_usuarios']);
+$pendiente = ($estadoProveedor && $estadoProveedor['estado'] !== 'aprobado');
+function itemMenu($activo, $link, $icono, $texto) {
+    if ($activo) {
+        return "<li><a href='$link'><i class='$icono'></i> $texto</a></li>";
+    } else {
+        return "<li class='item-disabled'><i class='$icono'></i> $texto</li>";
+    }
+}
 ?>
 
 <div id="menu" class="menu-lateral">
@@ -10,29 +21,29 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [3, 
         <li><strong>Menú proveedor</strong></li>
         <?php
         switch ($_SESSION['id_perfiles']) {
-            case 3: 
-                echo '<li><a href="index.php?page=hoteles_mis_hoteles"><i class="fa-solid fa-hotel"></i> Mis hospedajes</a></li>';
-                echo '<li><a href="index.php?page=hoteles_reservas"><i class="fa-solid fa-calendar-check"></i> Reservas</a></li>';
-                echo '<li><a href="index.php?page=hoteles_carga"><i class="fa-solid fa-plus"></i> Cargar Hotel</a></li>';
-                echo '<li><a href="index.php?page=hoteles_dashboard"><i class="fa fa-chart-line"></i> Dashboard</a></li>';
-                break;
-            case 5: 
-                echo '<li><a href="index.php?page=transportes_mis_transportes"><i class="fa-solid fa-bus"></i> Mis transportes</a></li>';
-                echo '<li><a href="index.php?page=reservas_transporte"><i class="fa-solid fa-calendar-check"></i> Reservas</a></li>';
-                echo '<li><a href="index.php?page=transportes_carga"><i class="fa-solid fa-plus"></i> Agregar Transporte</a></li>';
-                echo '<li><a href="index.php?page=transportes_dashboard"><i class="fa fa-chart-line"></i> Dashboard</a></li>';
-                break;
-           case 14: 
-                echo '
-                    <li><a href="index.php?page=tours_mis_tours"><i class="fa-solid fa-map-location-dot"></i> Mis tours</a></li>
-                    <li><a href="index.php?page=reservas_tours"><i class="fa-solid fa-users"></i> Reservas de tours</a></li>
-                    <li><a href="index.php?page=tours_carga"><i class="fa-solid fa-plus"></i> Crear nuevo tour</a></li>
-                    <li><a href="index.php?page=tours_dashboard"><i class="fa fa-chart-line"></i> Dashboard</a></li>
-                ';
+            case 3:
+                echo itemMenu(!$pendiente, "index.php?page=hoteles_mis_hoteles", "fa-solid fa-hotel", "Mis hospedajes");
+                echo itemMenu(!$pendiente, "index.php?page=hoteles_reservas", "fa-solid fa-calendar-check", "Reservas");
+                echo itemMenu(!$pendiente, "index.php?page=hoteles_carga", "fa-solid fa-plus", "Cargar Hotel");
+                echo itemMenu(!$pendiente, "index.php?page=hoteles_dashboard", "fa fa-chart-line", "Dashboard");
                 break;
 
-            case 13: 
-                echo '<li><a href="index.php?page=mis_servicios"><i class="fa-solid fa-briefcase"></i> Mis servicios</a></li>';
+            case 5:
+                echo itemMenu(!$pendiente, "index.php?page=transportes_mis_transportes", "fa-solid fa-bus", "Mis transportes");
+                echo itemMenu(!$pendiente, "index.php?page=reservas_transporte", "fa-solid fa-calendar-check", "Reservas");
+                echo itemMenu(!$pendiente, "index.php?page=transportes_carga", "fa-solid fa-plus", "Agregar Transporte");
+                echo itemMenu(!$pendiente, "index.php?page=transportes_dashboard", "fa fa-chart-line", "Dashboard");
+                break;
+
+            case 14:
+                echo itemMenu(!$pendiente, "index.php?page=tours_mis_tours", "fa-solid fa-map-location-dot", "Mis tours");
+                echo itemMenu(!$pendiente, "index.php?page=reservas_tours", "fa-solid fa-users", "Reservas de tours");
+                echo itemMenu(!$pendiente, "index.php?page=tours_carga", "fa-solid fa-plus", "Crear nuevo tour");
+                echo itemMenu(!$pendiente, "index.php?page=tours_dashboard", "fa fa-chart-line", "Dashboard");
+                break;
+
+            case 13:
+                echo itemMenu(!$pendiente, "index.php?page=mis_servicios", "fa-solid fa-briefcase", "Mis servicios");
                 break;
         }
         ?>
@@ -42,7 +53,6 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [3, 
 </div>
 
 <div id="overlay" class="overlay"></div>
-
 
 <div id="main" class="contenido">
     <div class="top-bar">
@@ -56,3 +66,30 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [3, 
         </div>
     </div>
 </div>
+
+<style>
+.item-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    padding: 10px;
+}
+.item-disabled i {
+    margin-right: 6px;
+}
+
+.bloqueo-pendiente {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    text-align: center;
+}
+.mensaje-box {
+    background-color: #fff3cd;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #ffeeba;
+    color: #856404;
+    font-size: 1.2rem;
+}
+</style>

@@ -3,9 +3,14 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 
 require_once(__DIR__ . '/../../models/proveedor.php');
 
-if (isset($_POST["action"])) {
-    $controlador = new ProveedoresControlador();
-    switch ($_POST["action"]) {
+$input = json_decode(file_get_contents('php://input'), true);
+
+$action = $_POST['action'] ?? $input['action'] ?? null;
+
+$controlador = new ProveedoresControlador();
+
+if ($action) {
+    switch ($action) {
         case 'guardar':
             $controlador->guardar();
             break;
@@ -15,6 +20,20 @@ if (isset($_POST["action"])) {
         case 'eliminar':
             $controlador->eliminar();
             break;
+        case 'aprobar':
+            $res = $controlador->aprobar($input['id_proveedor'] ?? 0);
+            echo json_encode([
+                'status' => $res ? 'success' : 'error',
+                'message' => $res ? 'Proveedor aprobado correctamente' : 'Error al aprobar proveedor'
+            ]);
+            exit;
+        case 'rechazar':
+            $res = $controlador->rechazar($input['id_proveedor'] ?? 0);
+            echo json_encode([
+                'status' => $res ? 'success' : 'error',
+                'message' => $res ? 'Proveedor rechazado correctamente' : 'Error al rechazar proveedor'
+            ]);
+            exit;
         default:
             header("Location: ../../index.php?page=proveedores&message=Acción no válida&status=danger");
             exit;
@@ -31,7 +50,7 @@ class ProveedoresControlador {
         $prov = new Proveedor();
         $prov->setRazon_social($_POST['razon_social']);
         $prov->setCuit($_POST['cuit']);
-        $prov->setProveedor_domicilio($_POST['proveedor_domicilio'] ?? '');
+        $prov->setProveedor_direccion($_POST['proveedor_direccion'] ?? '');
         $prov->setProveedor_email($_POST['proveedor_email'] ?? '');
         $prov->setRela_tipo_proveedor($_POST['rela_tipo_proveedor']);
 
@@ -55,7 +74,7 @@ class ProveedoresControlador {
         $prov->setId_proveedores($_POST['id_proveedores']);
         $prov->setRazon_social($_POST['razon_social']);
         $prov->setCuit($_POST['cuit']);
-        $prov->setProveedor_domicilio($_POST['proveedor_domicilio'] ?? '');
+        $prov->setProveedor_direccion($_POST['proveedor_direccion'] ?? '');
         $prov->setProveedor_email($_POST['proveedor_email'] ?? '');
         $prov->setRela_tipo_proveedor($_POST['rela_tipo_proveedor']);
 
@@ -84,12 +103,27 @@ class ProveedoresControlador {
         exit;
     }
 
+    public function listarPendientes() {
+        $prov = new Proveedor();
+        return $prov->listarPendientes(); 
+    }
+
+    public function aprobar($id_proveedor) {
+        $prov = new Proveedor();
+        $prov->setId_proveedores((int)$id_proveedor);
+        return $prov->cambiarEstado('aprobado'); 
+    }
+
+    public function rechazar($id_proveedor) {
+        $prov = new Proveedor();
+        $prov->setId_proveedores((int)$id_proveedor);
+        return $prov->cambiarEstado('rechazado'); 
+    }
+
     public function mis_hoteles($id_usuario) {
         require_once(__DIR__ . '/../../models/hotel.php');
         $hotelModel = new Hotel();
-
         return $hotelModel->traer_hoteles_proveedor_completo($id_usuario);
-
     }
 
     public function mis_transportes($id_usuario) {
@@ -123,7 +157,5 @@ class ProveedoresControlador {
         $model = new Transporte();
         return $model->es_propietario_de_ruta($id_ruta, $id_usuario);
     }
-
-
 }
 ?>

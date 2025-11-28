@@ -25,7 +25,7 @@ if (isset($_GET['id'])) {
         $form_action = 'actualizar';
         $razon_form = htmlspecialchars($prov_data[0]['razon_social']);
         $cuit_form = htmlspecialchars($prov_data[0]['cuit']);
-        $domicilio_form = htmlspecialchars($prov_data[0]['proveedor_domicilio']);
+        $domicilio_form = htmlspecialchars($prov_data[0]['proveedor_direccion']);
         $email_form = htmlspecialchars($prov_data[0]['proveedor_email']);
         $rela_tipo_form = htmlspecialchars($prov_data[0]['rela_tipo_proveedor']);
     } else {

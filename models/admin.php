@@ -74,7 +74,7 @@ class Admin {
             FROM reservas r
             JOIN usuarios u ON r.rela_usuarios = u.id_usuarios
             LEFT JOIN detalle_reservas dr ON dr.rela_reservas = r.id_reservas
-            WHERE r.activo = 1
+            WHERE r.activo = 1 AND r.reservas_estado != 'cancelado'  
             GROUP BY r.id_reservas
             ORDER BY r.fecha_creacion DESC
             LIMIT $limite
@@ -83,7 +83,6 @@ class Admin {
         return $conexion->consultar($query);
     }
 
-
     public function obtenerReservasPorMes() {
         $conexion = new Conexion();
         $query = "
@@ -91,7 +90,7 @@ class Admin {
                 DATE_FORMAT(fecha_creacion, '%Y-%m') AS mes,
                 COUNT(*) AS cantidad
             FROM reservas
-            WHERE activo = 1
+            WHERE activo = 1 AND reservas_estado != 'cancelado' 
             GROUP BY mes
             ORDER BY mes ASC
         ";
@@ -102,6 +101,26 @@ class Admin {
         }
         return $res;
     }
+
+    public function obtenerServiciosMasReservados($limite = 5) {
+        $conexion = new Conexion();
+        $limite = (int)$limite;
+
+        $query = "
+            SELECT 
+                dr.tipo_servicio AS servicio,
+                COUNT(*) AS cantidad
+            FROM detalle_reservas dr
+            JOIN reservas r ON r.id_reservas = dr.rela_reservas
+            WHERE r.activo = 1
+            GROUP BY dr.tipo_servicio
+            ORDER BY cantidad DESC
+            LIMIT $limite
+        ";
+
+        return $conexion->consultar($query);
+    }
+
 
     public function listarHotelesPendientes() {
         $conexion = new Conexion();
@@ -243,6 +262,22 @@ class Admin {
             WHERE $id_campo = $id
         ";
         return $conexion->actualizar($query);
+    }
+
+    public function listarProveedoresPendientes() {
+        $conexion = new Conexion();
+        $query = "
+            SELECT 
+                id_proveedores AS id_proveedor,
+                razon_social AS nombre,
+                proveedor_email AS email,
+                created_at AS fecha_registro,
+                estado
+            FROM proveedores
+            WHERE estado = 'pendiente' AND activo = 1
+            ORDER BY created_at ASC
+        ";
+        return $conexion->consultar($query);
     }
 
     public function getId_admin() { return $this->id_admin; }

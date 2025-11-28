@@ -133,14 +133,10 @@ body {
   border-bottom: 1px solid #eee;
   margin-left: -240px;
 }
-.search-section h2 {
-  padding-left: 90px;
-  }
 
 .search-container {
   max-width: 600px;
   margin-left: 750px;
-  
 }
 
 .search-form {

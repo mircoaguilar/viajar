@@ -59,27 +59,35 @@ class LoginControlador {
             exit();
         }
 
-        $id_proveedor = $proveedor->obtenerPorUsuario($row['id_usuarios']);
-        if ($id_proveedor) {
-            $_SESSION['id_proveedores'] = $id_proveedor;
-        }
+        $datos_proveedor = $proveedor->obtenerEstadoProveedor($row['id_usuarios']);
 
+        if ($datos_proveedor) {
+            $_SESSION['id_proveedores'] = $datos_proveedor['id_proveedores'];
+            $_SESSION['estado_proveedor'] = $datos_proveedor['estado'];
+        } else {
+            $_SESSION['estado_proveedor'] = null;
+        }
+        
         switch ($_SESSION['perfiles_nombre']) {
             case 'Administrador':
                 $redirect = "index.php?page=administrador_perfil";
                 break;
+
             case 'Administrador de hospedaje':
             case 'Encargado de transporte':
             case 'Guia':
                 $redirect = "index.php?page=proveedores_perfil";
                 break;
+
             case 'Cliente':
             default:
                 $redirect = "index.php?page=pantalla_hoteles";
                 break;
         }
 
-        $redirect .= (strpos($redirect, '?') === false ? '?' : '&') . "message=" . urlencode("Bienvenido, " . $row['usuarios_nombre_usuario']) . "&status=success";
+        $redirect .= (strpos($redirect, '?') === false ? '?' : '&') .
+            "message=" . urlencode("Bienvenido, " . $row['usuarios_nombre_usuario']) .
+            "&status=success";
 
         header("Location: ../$redirect");
         exit();

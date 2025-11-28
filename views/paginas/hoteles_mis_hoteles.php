@@ -127,3 +127,5 @@ $hoteles = $controlador->mis_hoteles($id_usuario);
 <script src="assets/js/mis_hoteles.js"></script>
 </body>
 </html>
+
+

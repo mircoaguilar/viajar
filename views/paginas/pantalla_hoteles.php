@@ -2,23 +2,20 @@
 require_once('models/hotel.php');
 require_once('models/ciudad.php');
 
-
 $ciudadModel = new Ciudad();
 $ciudades = $ciudadModel->traer_ciudades();
 
-
 $destino = trim($_GET['destino'] ?? '');
-$desde   = $_GET['desde'] ?? '';
-$hasta   = $_GET['hasta'] ?? '';
 
 $hotelModel = new Hotel();
 
-if ($destino || $desde || $hasta) {
-    $hoteles = $hotelModel->buscar($destino, $desde, $hasta);
+if ($destino) {
+    $hoteles = $hotelModel->buscar_por_ciudad($destino);
 } else {
     $hoteles = $hotelModel->traer_hoteles_aprobados();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -35,35 +32,33 @@ if ($destino || $desde || $hasta) {
 <section class="hero-section">
   <div class="hero-content">
     <h1>Encontrá tu alojamiento en Formosa</h1>
+    <p>El descanso perfecto te espera. Reservá con confianza y comodidad.</p>
   </div>
 </section>
 
 <section class="search-section">
   <div class="search-container">
+    <h2>Buscar hotel</h2>
     <form class="search-form" method="GET">
-      <input type="hidden" name="page" value="pantalla_hoteles">
-
-      <div class="form-group">
-          <label for="destino">Ubicación</label>
-          <select id="destino" name="destino" style="width: 100%;">
-              <option value=""></option>
-              <?php
-              foreach ($ciudades as $ciudad) {
-                  $selected = ($destino == $ciudad['id_ciudad']) ? 'selected' : '';
-                  echo '<option value="'.htmlspecialchars($ciudad['id_ciudad']).'" '.$selected.'>'
-                      .htmlspecialchars($ciudad['nombre']).'</option>';
-              }
-              ?>
-          </select>
-      </div>
-
-
-      <div class="form-group full-width">
-        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-      </div>
+        <input type="hidden" name="page" value="pantalla_hoteles">
+        <div class="form-group">
+            <label for="destino">Ubicación</label>
+            <select id="destino" name="destino" style="width: 100%;">
+                <option value="">-- Todas las ciudades --</option>
+                <?php foreach ($ciudades as $ciudad): ?>
+                    <option value="<?= $ciudad['id_ciudad'] ?>" <?= ($destino == $ciudad['id_ciudad']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($ciudad['nombre']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="form-group full-width">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
     </form>
   </div>
 </section>
+
 
 <section class="hoteles">
   <h2>Hoteles disponibles</h2>

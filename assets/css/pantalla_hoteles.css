@@ -93,7 +93,7 @@ body {
   margin: 0 auto;
 }
 
-/* Hero section */
+/* Hero / título buscador */
 .hero-section {
   text-align: center;
   padding: 60px 20px 20px;
@@ -102,32 +102,43 @@ body {
 .hero-section h1 {
   font-family: 'Poppins', sans-serif;
   font-size: 2.5rem;
-  font-weight: 20;
+  font-weight: 700;
   color: #ffffff;
   margin-bottom: 30px;
 }
 
-/* ========================= */
-/* BUSCADOR DE HOTELES */
-/* ========================= */
-
-.search-section {
-  background-color: #2943b9;
-  padding: 20px 20px 20px;
-  text-align: center;
-  border-bottom: 1px solid #eee;
+.hero-section .hero-content h1,
+.hero-section .hero-content p {
+  color: #ffffff;
 }
 
+/* Contenedor del buscador */
 .search-container {
   max-width: 600px;
-  margin-left: 500px;
+  margin: 0 auto; /* Centrado general */
+  margin-left: 550px; /* Ajusta este valor para moverlo hacia la derecha */
+  color: #ffffff;
 }
 
+
+/* Buscador */
+.search-section {
+  background-color: #2943b9;
+  padding: 20px 20px 40px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  display: flex; /* Agregado para usar flexbox */
+  justify-content: center; /* Centra el contenido dentro del section */
+  align-items: center; /* Asegura que el contenido se alinee verticalmente */
+}
+
+/* Formulario de búsqueda */
 .search-form {
   display: flex;
-  justify-content: flex-start;
+  flex-wrap: wrap; /* Esto permite que los elementos se ajusten en pantallas pequeñas */
   align-items: flex-end;
   gap: 10px;
+  width: 100%; /* Asegura que el formulario ocupe el 100% del espacio disponible */
 }
 
 .form-group {
@@ -136,7 +147,6 @@ body {
   display: flex;
   flex-direction: column;
   text-align: left;
-  
 }
 
 .form-group label {
@@ -144,44 +154,58 @@ body {
   font-weight: 500;
   color: #ffffff;
   margin-bottom: 6px;
+  margin-left: 40px; /* Ajusta este valor para moverlo más a la derecha */
 }
 
-.search-form input[type="text"] {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid transparent;
-  border-radius: 6px;
-  font-size: 15px;
-  background-color: #fff;
-  height: 46px;
-  box-shadow: none;
-}
 
+/* Inputs del buscador con sombra sutil fija */
+.search-form input[type="text"],
+.search-form input[type="number"],
+.search-form input[type="date"],
 .search-form select {
   width: 100%;
-  padding: 12px 14px;
-  border: 2px solid transparent;
+  padding: 12px;
+  border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 15px;
   background-color: #fff;
-  height: 46px;
-  box-shadow: none;
-  appearance: none;
+  box-shadow: 0 0 6px rgba(5, 248, 175, 0.4);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.search-form input:focus,
+.search-form select:focus {
+  border-color: #2943b9;
+  outline: none;
+  box-shadow: 0 0 8px rgba(5, 248, 175, 0.5);
+}
+
+/* Botón del buscador con fondo sólido */
 .search-form button {
-  background-color: #2943b9;
-  color: #fff;
+  background-color: #2943b9; /* Fondo sólido del botón */
+  color: #fff; /* Texto (icono) blanco */
   padding: 12px;
-  border: none;
-  border-radius: 6px;
+  border: none; /* Sin borde */
+  border-radius: 50%; /* Para hacerlo redondo */
   font-size: 18px;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
+  width: 40px; /* Tamaño del botón */
+  height: 40px; /* Tamaño del botón */
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.3s ease; /* Transición suave */
+}
+
+/* Botón sin sombra ni borde */
+.search-form button:focus {
+  outline: none; /* Elimina el borde al hacer focus */
+  box-shadow: none; /* Elimina la sombra */
+}
+
+/* Opcional: Estilo para el icono de la lupa */
+.search-form button i {
+  font-size: 18px; /* Ajustar tamaño de la lupa */
 }
 
 

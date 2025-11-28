@@ -179,6 +179,39 @@ input::placeholder {
     display: inline;
 }
 
+select[name="tipo_proveedor"] {
+    width: 100%;
+    /* * Modificación Clave: padding-left 
+     * Aumentamos el padding-left para dejar espacio al ícono de Font Awesome (fa-suitcase-rolling) 
+     * El valor de 50px es un estándar para dejar espacio al ícono (20px de padding + 20px de ícono + 10px de separación)
+     */
+    padding: 18px 20px 18px 50px; 
+    
+    font-size: 16px;
+    color: #0D0D0D;
+    border: 0;
+    border-radius: 25px;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    cursor: pointer;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* La flecha SVG (right 20px center) y el ícono de Font Awesome (posicionado con input-icon-register) NO se superponen ahora. */
+    background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"%3E%3Cpath d="M5.5 8L10 12.5L14.5 8" stroke="%235e5e5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"%3E%3C/path%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 20px center; /* Mantener la flecha SVG a la derecha */
+    background-size: 16px;
+}
+
+select[name="tipo_proveedor"]:focus {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+
 /* Responsive */
 @media(max-width: 991px) {
     body {
