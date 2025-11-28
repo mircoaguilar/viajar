@@ -33,7 +33,7 @@ CREATE TABLE `auditoria` (
   PRIMARY KEY (`id_auditoria`),
   KEY `rela_usuario` (`rela_usuario`),
   CONSTRAINT `auditoria_ibfk_1` FOREIGN KEY (`rela_usuario`) REFERENCES `usuarios` (`id_usuarios`)
-) ENGINE=InnoDB AUTO_INCREMENT=221 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=292 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `auditoria` (
 
 LOCK TABLES `auditoria` WRITE;
 /*!40000 ALTER TABLE `auditoria` DISABLE KEYS */;
-INSERT INTO `auditoria` VALUES (157,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Doble, capacidad: 2','2025-11-26 10:51:35'),(158,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Matrimonial, capacidad: 2','2025-11-26 10:51:59'),(159,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Cuádruple, capacidad: 4','2025-11-26 10:52:40'),(160,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Ejecutiva , capacidad: 2','2025-11-26 10:53:13'),(161,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Superior, capacidad: 2','2025-11-26 10:53:58'),(162,66,'Actualización de tipo de habitación','Se actualizó la habitación (ID: 20) a nombre: Habitación Ejecutiva , capacidad: 2','2025-11-26 10:54:06'),(163,66,'Actualización de tipo de habitación','Se actualizó la habitación (ID: 19) a nombre: Habitación Cuádruple, capacidad: 4','2025-11-26 10:54:14'),(164,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Deluxe, capacidad: 2','2025-11-26 10:54:50'),(165,66,'Alta de tipo de habitación','Se creó la habitación: prueba','2025-11-26 11:24:16'),(166,66,'Actualización de tipo de habitación','Se actualizó la habitación (ID: 27) a nombre: prueba2','2025-11-26 11:25:10'),(167,66,'Baja lógica de tipo de habitación','Se eliminó lógicamente la habitación (ID: 27)','2025-11-26 11:25:14'),(168,74,'Reserva creada','El usuario ID 74 creó la reserva #198 por $19000','2025-11-26 11:48:37'),(169,74,'Reserva creada','El usuario ID 74 creó la reserva #199 por $19000','2025-11-26 15:57:43'),(170,74,'Reserva creada','El usuario ID 74 creó la reserva #200 por $19000','2025-11-26 16:10:40'),(171,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #200 por $19000 (Mercado Pago ID: 134737782789)','2025-11-26 16:12:08'),(172,74,'Reserva creada','El usuario ID 74 creó la reserva #201 por $21000','2025-11-26 21:50:43'),(173,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #201 por $21000 (Mercado Pago ID: 134780333031)','2025-11-26 21:51:14'),(174,74,'Reserva creada','El usuario ID 74 creó la reserva #202 por $21000','2025-11-26 21:56:14'),(175,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #202 por $21000 (Mercado Pago ID: 135396202124)','2025-11-26 21:56:33'),(176,74,'Reserva creada','El usuario ID 74 creó la reserva #203 por $15000','2025-11-27 03:20:03'),(177,74,'Reserva creada','El usuario ID 74 creó la reserva #204 por $15000','2025-11-27 03:25:53'),(178,74,'Reserva creada','El usuario ID 74 creó la reserva #205 por $15000','2025-11-27 10:53:03'),(179,74,'Reserva creada','El usuario ID 74 creó la reserva #206 por $15000','2025-11-27 11:00:23'),(180,74,'Reserva creada','El usuario ID 74 creó la reserva #207 por $15000','2025-11-27 11:02:38'),(181,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #207 por $15000 (Mercado Pago ID: 134834060415)','2025-11-27 11:03:08'),(182,74,'Reserva creada','El usuario ID 74 creó la reserva #213 por $15000','2025-11-27 11:14:11'),(183,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #213 por $15000 (Mercado Pago ID: 134835375561)','2025-11-27 11:14:33'),(184,74,'Reserva creada','El usuario ID 74 creó la reserva #217 por $15000','2025-11-27 11:37:08'),(185,74,'Reserva creada','El usuario ID 74 creó la reserva #218 por $15000','2025-11-27 11:39:18'),(186,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #218 por $15000 (Mercado Pago ID: 135454295304)','2025-11-27 11:39:48'),(187,74,'Reserva creada','El usuario ID 74 creó la reserva #224 por $15000','2025-11-27 12:05:33'),(188,74,'Reserva creada','El usuario ID 74 creó la reserva #227 por $15000','2025-11-27 12:13:35'),(189,74,'Reserva creada','El usuario ID 74 creó la reserva #238 por $15000','2025-11-27 13:03:26'),(190,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #238 por $15000 (Mercado Pago ID: 134850237473)','2025-11-27 13:04:36'),(191,74,'Reserva creada','El usuario ID 74 creó la reserva #239 por $15000','2025-11-27 13:15:08'),(192,74,'Reserva creada','El usuario ID 74 creó la reserva #240 por $15000','2025-11-27 13:20:40'),(193,74,'Reserva creada','El usuario ID 74 creó la reserva #241 por $15000','2025-11-27 13:21:01'),(194,74,'Reserva creada','El usuario ID 74 creó la reserva #242 por $15000','2025-11-27 13:24:26'),(195,74,'Reserva creada','El usuario ID 74 creó la reserva #243 por $15000','2025-11-27 13:24:34'),(196,74,'Reserva creada','El usuario ID 74 creó la reserva #244 por $15000','2025-11-27 13:25:24'),(197,74,'Reserva creada','El usuario ID 74 creó la reserva #245 por $15000','2025-11-27 13:33:59'),(198,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #245 por $15000 (Mercado Pago ID: 134854142773)','2025-11-27 13:34:32'),(199,74,'Reserva creada','El usuario ID 74 creó la reserva #246 por $30000','2025-11-27 13:37:54'),(200,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #246 por $30000 (Mercado Pago ID: 135469968498)','2025-11-27 13:38:12'),(201,74,'Reserva creada','El usuario ID 74 creó la reserva #247 por $30000','2025-11-27 15:35:57'),(202,74,'Reserva creada','El usuario ID 74 creó la reserva #248 por $70000','2025-11-27 15:50:34'),(203,74,'Reserva creada','El usuario ID 74 creó la reserva #249 por $70000','2025-11-27 15:53:18'),(204,74,'Reserva creada','El usuario ID 74 creó la reserva #250 por $30000','2025-11-27 15:56:45'),(205,74,'Reserva creada','El usuario ID 74 creó la reserva #251 por $30000','2025-11-27 16:04:50'),(206,74,'Reserva creada','El usuario ID 74 creó la reserva #252 por $15000','2025-11-27 16:05:54'),(207,74,'Reserva creada','El usuario ID 74 creó la reserva #253 por $15000','2025-11-27 16:12:01'),(208,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #253 por $15000 (Mercado Pago ID: 135486768390)','2025-11-27 16:12:17'),(209,74,'Reserva creada','El usuario ID 74 creó la reserva #254 por $15000','2025-11-27 16:14:44'),(210,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #254 por $15000 (Mercado Pago ID: 135487062438)','2025-11-27 16:14:58'),(211,74,'Reserva creada','El usuario ID 74 creó la reserva #255 por $38500','2025-11-27 18:05:27'),(212,74,'Reserva creada','El usuario ID 74 creó la reserva #256 por $7000','2025-11-27 18:09:01'),(213,74,'Reserva creada','El usuario ID 74 creó la reserva #257 por $21000','2025-11-27 18:13:11'),(214,74,'Reserva creada','El usuario ID 74 creó la reserva #258 por $21000','2025-11-27 18:17:07'),(215,74,'Reserva creada','El usuario ID 74 creó la reserva #259 por $21000','2025-11-27 18:18:52'),(216,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #259 por $21000 (MP ID: 135502828336)','2025-11-27 18:19:30'),(217,74,'Reserva creada','El usuario ID 74 creó la reserva #260 por $55000','2025-11-27 18:21:45'),(218,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #260 por $55000 (MP ID: 134887597925)','2025-11-27 18:22:32'),(219,74,'Reserva creada','El usuario ID 74 creó la reserva #261 por $48000','2025-11-27 18:25:00'),(220,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #261 por $48000 (MP ID: 135503467614)','2025-11-27 18:25:18');
+INSERT INTO `auditoria` VALUES (157,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Doble, capacidad: 2','2025-11-26 10:51:35'),(158,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Matrimonial, capacidad: 2','2025-11-26 10:51:59'),(159,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Cuádruple, capacidad: 4','2025-11-26 10:52:40'),(160,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Ejecutiva , capacidad: 2','2025-11-26 10:53:13'),(161,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Superior, capacidad: 2','2025-11-26 10:53:58'),(162,66,'Actualización de tipo de habitación','Se actualizó la habitación (ID: 20) a nombre: Habitación Ejecutiva , capacidad: 2','2025-11-26 10:54:06'),(163,66,'Actualización de tipo de habitación','Se actualizó la habitación (ID: 19) a nombre: Habitación Cuádruple, capacidad: 4','2025-11-26 10:54:14'),(164,66,'Alta de tipo de habitación','Se creó la habitación: Habitación Deluxe, capacidad: 2','2025-11-26 10:54:50'),(165,66,'Alta de tipo de habitación','Se creó la habitación: prueba','2025-11-26 11:24:16'),(166,66,'Actualización de tipo de habitación','Se actualizó la habitación (ID: 27) a nombre: prueba2','2025-11-26 11:25:10'),(167,66,'Baja lógica de tipo de habitación','Se eliminó lógicamente la habitación (ID: 27)','2025-11-26 11:25:14'),(168,74,'Reserva creada','El usuario ID 74 creó la reserva #198 por $19000','2025-11-26 11:48:37'),(169,74,'Reserva creada','El usuario ID 74 creó la reserva #199 por $19000','2025-11-26 15:57:43'),(170,74,'Reserva creada','El usuario ID 74 creó la reserva #200 por $19000','2025-11-26 16:10:40'),(171,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #200 por $19000 (Mercado Pago ID: 134737782789)','2025-11-26 16:12:08'),(172,74,'Reserva creada','El usuario ID 74 creó la reserva #201 por $21000','2025-11-26 21:50:43'),(173,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #201 por $21000 (Mercado Pago ID: 134780333031)','2025-11-26 21:51:14'),(174,74,'Reserva creada','El usuario ID 74 creó la reserva #202 por $21000','2025-11-26 21:56:14'),(175,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #202 por $21000 (Mercado Pago ID: 135396202124)','2025-11-26 21:56:33'),(176,74,'Reserva creada','El usuario ID 74 creó la reserva #203 por $15000','2025-11-27 03:20:03'),(177,74,'Reserva creada','El usuario ID 74 creó la reserva #204 por $15000','2025-11-27 03:25:53'),(178,74,'Reserva creada','El usuario ID 74 creó la reserva #205 por $15000','2025-11-27 10:53:03'),(179,74,'Reserva creada','El usuario ID 74 creó la reserva #206 por $15000','2025-11-27 11:00:23'),(180,74,'Reserva creada','El usuario ID 74 creó la reserva #207 por $15000','2025-11-27 11:02:38'),(181,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #207 por $15000 (Mercado Pago ID: 134834060415)','2025-11-27 11:03:08'),(182,74,'Reserva creada','El usuario ID 74 creó la reserva #213 por $15000','2025-11-27 11:14:11'),(183,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #213 por $15000 (Mercado Pago ID: 134835375561)','2025-11-27 11:14:33'),(184,74,'Reserva creada','El usuario ID 74 creó la reserva #217 por $15000','2025-11-27 11:37:08'),(185,74,'Reserva creada','El usuario ID 74 creó la reserva #218 por $15000','2025-11-27 11:39:18'),(186,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #218 por $15000 (Mercado Pago ID: 135454295304)','2025-11-27 11:39:48'),(187,74,'Reserva creada','El usuario ID 74 creó la reserva #224 por $15000','2025-11-27 12:05:33'),(188,74,'Reserva creada','El usuario ID 74 creó la reserva #227 por $15000','2025-11-27 12:13:35'),(189,74,'Reserva creada','El usuario ID 74 creó la reserva #238 por $15000','2025-11-27 13:03:26'),(190,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #238 por $15000 (Mercado Pago ID: 134850237473)','2025-11-27 13:04:36'),(191,74,'Reserva creada','El usuario ID 74 creó la reserva #239 por $15000','2025-11-27 13:15:08'),(192,74,'Reserva creada','El usuario ID 74 creó la reserva #240 por $15000','2025-11-27 13:20:40'),(193,74,'Reserva creada','El usuario ID 74 creó la reserva #241 por $15000','2025-11-27 13:21:01'),(194,74,'Reserva creada','El usuario ID 74 creó la reserva #242 por $15000','2025-11-27 13:24:26'),(195,74,'Reserva creada','El usuario ID 74 creó la reserva #243 por $15000','2025-11-27 13:24:34'),(196,74,'Reserva creada','El usuario ID 74 creó la reserva #244 por $15000','2025-11-27 13:25:24'),(197,74,'Reserva creada','El usuario ID 74 creó la reserva #245 por $15000','2025-11-27 13:33:59'),(198,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #245 por $15000 (Mercado Pago ID: 134854142773)','2025-11-27 13:34:32'),(199,74,'Reserva creada','El usuario ID 74 creó la reserva #246 por $30000','2025-11-27 13:37:54'),(200,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #246 por $30000 (Mercado Pago ID: 135469968498)','2025-11-27 13:38:12'),(201,74,'Reserva creada','El usuario ID 74 creó la reserva #247 por $30000','2025-11-27 15:35:57'),(202,74,'Reserva creada','El usuario ID 74 creó la reserva #248 por $70000','2025-11-27 15:50:34'),(203,74,'Reserva creada','El usuario ID 74 creó la reserva #249 por $70000','2025-11-27 15:53:18'),(204,74,'Reserva creada','El usuario ID 74 creó la reserva #250 por $30000','2025-11-27 15:56:45'),(205,74,'Reserva creada','El usuario ID 74 creó la reserva #251 por $30000','2025-11-27 16:04:50'),(206,74,'Reserva creada','El usuario ID 74 creó la reserva #252 por $15000','2025-11-27 16:05:54'),(207,74,'Reserva creada','El usuario ID 74 creó la reserva #253 por $15000','2025-11-27 16:12:01'),(208,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #253 por $15000 (Mercado Pago ID: 135486768390)','2025-11-27 16:12:17'),(209,74,'Reserva creada','El usuario ID 74 creó la reserva #254 por $15000','2025-11-27 16:14:44'),(210,74,'Confirmación de pago','El usuario ID 74 confirmó el pago de la reserva #254 por $15000 (Mercado Pago ID: 135487062438)','2025-11-27 16:14:58'),(211,74,'Reserva creada','El usuario ID 74 creó la reserva #255 por $38500','2025-11-27 18:05:27'),(212,74,'Reserva creada','El usuario ID 74 creó la reserva #256 por $7000','2025-11-27 18:09:01'),(213,74,'Reserva creada','El usuario ID 74 creó la reserva #257 por $21000','2025-11-27 18:13:11'),(214,74,'Reserva creada','El usuario ID 74 creó la reserva #258 por $21000','2025-11-27 18:17:07'),(215,74,'Reserva creada','El usuario ID 74 creó la reserva #259 por $21000','2025-11-27 18:18:52'),(216,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #259 por $21000 (MP ID: 135502828336)','2025-11-27 18:19:30'),(217,74,'Reserva creada','El usuario ID 74 creó la reserva #260 por $55000','2025-11-27 18:21:45'),(218,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #260 por $55000 (MP ID: 134887597925)','2025-11-27 18:22:32'),(219,74,'Reserva creada','El usuario ID 74 creó la reserva #261 por $48000','2025-11-27 18:25:00'),(220,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #261 por $48000 (MP ID: 135503467614)','2025-11-27 18:25:18'),(221,74,'Reserva creada','El usuario ID 74 creó la reserva #262 por $21000','2025-11-27 22:14:09'),(222,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #262 por $21000 (MP ID: 135533470440)','2025-11-27 22:14:27'),(223,74,'Reserva creada','El usuario ID 74 creó la reserva #263 por $34000','2025-11-27 22:15:01'),(224,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #263 por $34000 (MP ID: 135533584294)','2025-11-27 22:15:16'),(225,74,'Reserva creada','El usuario ID 74 creó la reserva #264 por $7000','2025-11-28 00:44:16'),(226,74,'Reserva creada','El usuario ID 74 creó la reserva #265 por $7000','2025-11-28 00:46:24'),(227,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #265 por $7000 (MP ID: 134929890285)','2025-11-28 00:46:47'),(228,74,'Cancelación de reserva','Detalle 365 cancelado por usuario 74','2025-11-28 01:08:32'),(229,74,'Reserva creada','El usuario ID 74 creó la reserva #266 por $7000','2025-11-28 01:10:42'),(230,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #266 por $7000 (MP ID: 135546942322)','2025-11-28 01:11:45'),(231,74,'Cancelación de reserva','Detalle 366 cancelado por usuario 74','2025-11-28 01:14:29'),(232,74,'Reserva creada','El usuario ID 74 creó la reserva #267 por $7000','2025-11-28 01:16:29'),(233,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #267 por $7000 (MP ID: 135547240332)','2025-11-28 01:16:46'),(234,74,'Cancelación de reserva','Detalle 367 cancelado por usuario 74','2025-11-28 01:17:13'),(235,74,'Reserva creada','El usuario ID 74 creó la reserva #268 por $7000','2025-11-28 08:18:29'),(236,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #268 por $7000 (MP ID: 135571348100)','2025-11-28 08:18:45'),(237,74,'Cancelación de reserva','Detalle 368 cancelado por usuario 74','2025-11-28 08:25:30'),(238,74,'Reserva creada','El usuario ID 74 creó la reserva #269 por $7000','2025-11-28 08:29:16'),(239,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #269 por $7000 (MP ID: 135572624784)','2025-11-28 08:29:34'),(240,74,'Reserva creada','El usuario ID 74 creó la reserva #270 por $7000','2025-11-28 08:32:44'),(241,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #270 por $7000 (MP ID: 135572825600)','2025-11-28 08:33:00'),(242,74,'Cancelación de reserva','Detalle 370 cancelado por usuario 74','2025-11-28 08:35:28'),(243,74,'Reserva creada','El usuario ID 74 creó la reserva #271 por $7000','2025-11-28 08:42:09'),(244,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #271 por $7000 (MP ID: 135573833594)','2025-11-28 08:42:26'),(245,74,'Cancelación de reserva','Detalle 371 cancelado por usuario 74','2025-11-28 08:45:23'),(246,74,'Reserva creada','El usuario ID 74 creó la reserva #272 por $14000','2025-11-28 08:46:21'),(247,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #272 por $14000 (MP ID: 135574333222)','2025-11-28 08:46:52'),(248,74,'Cancelación de reserva','Detalle 372 cancelado por usuario 74','2025-11-28 08:47:34'),(249,74,'Reserva creada','El usuario ID 74 creó la reserva #273 por $19000','2025-11-28 08:49:50'),(250,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #273 por $19000 (MP ID: 135574785012)','2025-11-28 08:50:10'),(251,74,'Reserva creada','El usuario ID 74 creó la reserva #274 por $19000','2025-11-28 08:59:12'),(252,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #274 por $19000 (MP ID: 135575886600)','2025-11-28 08:59:28'),(253,74,'Cancelación de reserva','Detalle 374 cancelado por usuario 74','2025-11-28 09:00:25'),(254,74,'Reserva creada','El usuario ID 74 creó la reserva #275 por $19000','2025-11-28 09:06:11'),(255,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #275 por $19000 (MP ID: 135576682586)','2025-11-28 09:06:32'),(256,74,'Cancelación de reserva','Detalle 375 cancelado por usuario 74','2025-11-28 09:06:55'),(257,74,'Reserva creada','El usuario ID 74 creó la reserva #276 por $15000','2025-11-28 09:09:00'),(258,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #276 por $15000 (MP ID: 135576934938)','2025-11-28 09:09:15'),(259,74,'Cancelación de reserva','Detalle 376 cancelado por usuario 74','2025-11-28 09:12:24'),(260,74,'Reserva creada','El usuario ID 74 creó la reserva #277 por $30000','2025-11-28 09:16:03'),(261,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #277 por $30000 (MP ID: 135577763216)','2025-11-28 09:16:18'),(262,74,'Cancelación de reserva','Detalle 377 cancelado por usuario 74','2025-11-28 09:16:39'),(263,74,'Reserva creada','El usuario ID 74 creó la reserva #278 por $22000','2025-11-28 10:14:25'),(264,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #278 por $22000 (MP ID: 135585838744)','2025-11-28 10:16:01'),(265,74,'Cancelación de reserva','Detalle 379 cancelado por usuario 74','2025-11-28 10:16:42'),(266,74,'Reserva creada','El usuario ID 74 creó la reserva #279 por $15000','2025-11-28 10:39:22'),(267,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #279 por $15000 (MP ID: 135589382124)','2025-11-28 10:39:46'),(268,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #279 por $15000 (MP ID: 135589382124)','2025-11-28 10:39:51'),(269,74,'Reserva creada','El usuario ID 74 creó la reserva #280 por $41000','2025-11-28 11:24:46'),(270,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #280 por $41000 (MP ID: 135596161574)','2025-11-28 11:25:01'),(271,74,'Cancelación de reserva','Detalle 381 cancelado por usuario 74','2025-11-28 12:31:55'),(272,74,'Cancelación de reserva','Detalle 382 cancelado por usuario 74','2025-11-28 12:36:14'),(273,74,'Cancelación de reserva','Detalle 383 cancelado por usuario 74','2025-11-28 12:36:40'),(274,NULL,'Alta de usuario','Se creó el usuario: kevinperez','2025-11-28 14:19:45'),(275,NULL,'Alta de usuario Proveedor','Se creó el usuario proveedor: juanpe','2025-11-28 14:30:19'),(276,NULL,'Alta de usuario Proveedor','Se creó el usuario proveedor: juanpe','2025-11-28 14:36:09'),(277,NULL,'Alta de usuario Proveedor','Se creó el usuario proveedor: juanpe22','2025-11-28 14:41:04'),(278,NULL,'Alta de proveedor','Se creó el proveedor: esto es una prueba','2025-11-28 14:41:04'),(279,74,'Reserva creada','El usuario ID 74 creó la reserva #284 por $41000','2025-11-28 17:40:20'),(280,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #284 por $41000 (MP ID: 135036504201)','2025-11-28 17:41:58'),(281,74,'Reserva creada','El usuario ID 74 creó la reserva #285 por $9500','2025-11-28 17:49:47'),(282,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #285 por $9500 (MP ID: 135038133123)','2025-11-28 17:51:36'),(283,74,'Cancelación de reserva','Detalle 387 cancelado por usuario 74','2025-11-28 18:06:54'),(284,74,'Cancelación de reserva','Detalle 381 cancelado por usuario 74','2025-11-28 18:10:34'),(285,74,'Cancelación de reserva','Detalle 381 cancelado por usuario 74','2025-11-28 18:10:46'),(286,74,'Cancelación de reserva','Detalle 384 cancelado por usuario 74','2025-11-28 18:11:48'),(287,74,'Cancelación de reserva','Detalle 385 cancelado por usuario 74','2025-11-28 18:13:02'),(288,74,'Cancelación de reserva','Detalle 386 cancelado por usuario 74','2025-11-28 18:16:13'),(289,74,'Reserva creada','El usuario ID 74 creó la reserva #286 por $21000','2025-11-28 18:17:46'),(290,74,'Reserva creada','El usuario ID 74 creó la reserva #287 por $21000','2025-11-28 18:18:31'),(291,74,'Confirmación de pago','Usuario 74 confirmó pago de reserva #287 por $21000 (MP ID: 135042823165)','2025-11-28 18:18:56');
 /*!40000 ALTER TABLE `auditoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,12 +58,13 @@ CREATE TABLE `cancelacion` (
   `cancelacion_fecha` date DEFAULT NULL,
   `rela_reservas` int NOT NULL,
   `rela_motivo_cancelacion` int NOT NULL,
+  `comentario` text,
   PRIMARY KEY (`id_cancelacion`),
   KEY `fk_cancelacion_reservas1_idx` (`rela_reservas`),
   KEY `fk_cancelacion_motivo` (`rela_motivo_cancelacion`),
   CONSTRAINT `fk_cancelacion_motivo` FOREIGN KEY (`rela_motivo_cancelacion`) REFERENCES `motivos_cancelacion` (`id_motivo_cancelacion`),
   CONSTRAINT `fk_cancelacion_reservas1` FOREIGN KEY (`rela_reservas`) REFERENCES `reservas` (`id_reservas`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,6 +73,7 @@ CREATE TABLE `cancelacion` (
 
 LOCK TABLES `cancelacion` WRITE;
 /*!40000 ALTER TABLE `cancelacion` DISABLE KEYS */;
+INSERT INTO `cancelacion` VALUES (17,'2025-11-28',280,9,'prueba'),(18,'2025-11-28',280,9,'prueba'),(19,'2025-11-28',280,9,'prueba'),(20,'2025-11-28',285,2,'prueba'),(21,'2025-11-28',280,8,'prueba'),(22,'2025-11-28',280,8,'prueba'),(23,'2025-11-28',284,1,'prueba'),(24,'2025-11-28',284,2,'prueba'),(25,'2025-11-28',284,1,'prueba');
 /*!40000 ALTER TABLE `cancelacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,7 +92,7 @@ CREATE TABLE `carrito` (
   PRIMARY KEY (`id_carrito`),
   KEY `carrito_ibfk_1` (`rela_usuario`),
   CONSTRAINT `carrito_ibfk_1` FOREIGN KEY (`rela_usuario`) REFERENCES `usuarios` (`id_usuarios`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,6 +101,7 @@ CREATE TABLE `carrito` (
 
 LOCK TABLES `carrito` WRITE;
 /*!40000 ALTER TABLE `carrito` DISABLE KEYS */;
+INSERT INTO `carrito` VALUES (86,78,'2025-11-28 12:44:38',1);
 /*!40000 ALTER TABLE `carrito` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +125,7 @@ CREATE TABLE `carrito_items` (
   PRIMARY KEY (`id_item`),
   KEY `carrito_items_ibfk_1` (`rela_carrito`),
   CONSTRAINT `carrito_items_ibfk_1` FOREIGN KEY (`rela_carrito`) REFERENCES `carrito` (`id_carrito`)
-) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=321 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,6 +134,7 @@ CREATE TABLE `carrito_items` (
 
 LOCK TABLES `carrito_items` WRITE;
 /*!40000 ALTER TABLE `carrito_items` DISABLE KEYS */;
+INSERT INTO `carrito_items` VALUES (293,86,'transporte',10,'2025-11-28',NULL,1,15000.00,15000.00),(306,86,'transporte',10,'2025-11-28',NULL,1,15000.00,15000.00),(307,86,'transporte',10,'2025-11-28',NULL,1,15000.00,15000.00),(309,86,'transporte',10,'2025-11-28',NULL,1,15000.00,15000.00);
 /*!40000 ALTER TABLE `carrito_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,7 +183,7 @@ CREATE TABLE `contacto` (
   KEY `fk_contacto_tipo_contacto1_idx` (`rela_tipo_contacto`),
   CONSTRAINT `fk_contacto_personas1` FOREIGN KEY (`rela_personas`) REFERENCES `personas` (`id_personas`),
   CONSTRAINT `fk_contacto_tipo_contacto1` FOREIGN KEY (`rela_tipo_contacto`) REFERENCES `tipo_contacto` (`id_tipo_contacto`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +192,7 @@ CREATE TABLE `contacto` (
 
 LOCK TABLES `contacto` WRITE;
 /*!40000 ALTER TABLE `contacto` DISABLE KEYS */;
-INSERT INTO `contacto` VALUES (2,'3704687824',366,1),(4,'3705786843',367,1),(6,'3705000777',368,1),(8,'3705287463',369,1),(9,'3705786845',370,1),(10,'3705786845',371,1),(11,'3705786845',372,1),(12,'3704876934',373,1),(13,'3704859273',374,1),(14,'3704687834',375,1),(15,'3704000000',376,1),(16,'3704687824',377,1);
+INSERT INTO `contacto` VALUES (2,'3704687824',366,1),(4,'3705786843',367,1),(6,'3705000777',368,1),(8,'3705287463',369,1),(9,'3705786845',370,1),(10,'3705786845',371,1),(11,'3705786845',372,1),(12,'3704876934',373,1),(13,'3704859273',374,1),(14,'3704687834',375,1),(15,'3704000000',376,1),(16,'3704687824',377,1),(17,'3705786845',378,1);
 /*!40000 ALTER TABLE `contacto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -212,7 +216,7 @@ CREATE TABLE `detalle_reserva_hotel` (
   KEY `fk_detalle_hotel_habitacion` (`rela_habitacion`),
   CONSTRAINT `fk_detalle_hotel_habitacion` FOREIGN KEY (`rela_habitacion`) REFERENCES `hotel_habitaciones` (`id_hotel_habitacion`),
   CONSTRAINT `fk_hotel_detalle_reserva` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`)
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,7 +225,7 @@ CREATE TABLE `detalle_reserva_hotel` (
 
 LOCK TABLES `detalle_reserva_hotel` WRITE;
 /*!40000 ALTER TABLE `detalle_reserva_hotel` DISABLE KEYS */;
-INSERT INTO `detalle_reserva_hotel` VALUES (116,348,20,'2025-11-27','2025-11-28',1,'pendiente'),(117,355,20,'2025-11-27','2025-11-29',2,'confirmada'),(118,358,20,'2025-11-27','2025-11-29',2,'confirmada');
+INSERT INTO `detalle_reserva_hotel` VALUES (123,381,20,'2025-11-28','2025-11-30',2,'cancelada'),(124,384,20,'2025-11-28','2025-11-30',2,'cancelada'),(125,387,20,'2025-11-28','2025-11-29',1,'cancelada');
 /*!40000 ALTER TABLE `detalle_reserva_hotel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -243,7 +247,7 @@ CREATE TABLE `detalle_reserva_tour` (
   KEY `fk_tour_detalle` (`rela_tour`),
   CONSTRAINT `fk_tour_detalle` FOREIGN KEY (`rela_tour`) REFERENCES `tours` (`id_tour`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_tour_detalle_reserva` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`)
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,7 +256,7 @@ CREATE TABLE `detalle_reserva_tour` (
 
 LOCK TABLES `detalle_reserva_tour` WRITE;
 /*!40000 ALTER TABLE `detalle_reserva_tour` DISABLE KEYS */;
-INSERT INTO `detalle_reserva_tour` VALUES (107,349,15,'2025-11-30','pendiente'),(108,351,15,'2025-11-29','pendiente'),(109,352,15,'2025-11-30','pendiente'),(110,353,15,'2025-11-30','pendiente'),(111,354,15,'2025-11-30','confirmada'),(112,357,15,'2025-11-29','confirmada'),(113,360,15,'2025-11-28','confirmada');
+INSERT INTO `detalle_reserva_tour` VALUES (125,383,15,'2025-11-30','cancelada'),(126,385,15,'2025-11-26','cancelada'),(127,388,15,'2025-11-30','pendiente'),(128,389,15,'2025-11-30','confirmada');
 /*!40000 ALTER TABLE `detalle_reserva_tour` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,11 +280,11 @@ CREATE TABLE `detalle_reserva_transporte` (
   PRIMARY KEY (`id_detalle_transporte`),
   KEY `rela_detalle_reserva` (`rela_detalle_reserva`),
   KEY `id_viaje` (`id_viaje`),
-  KEY `rela_pasajero` (`rela_pasajero`),
+  KEY `fk_detalle_pasajero` (`rela_pasajero`),
   CONSTRAINT `detalle_reserva_transporte_ibfk_1` FOREIGN KEY (`rela_detalle_reserva`) REFERENCES `detalle_reservas` (`id_detalle_reserva`),
   CONSTRAINT `detalle_reserva_transporte_ibfk_2` FOREIGN KEY (`id_viaje`) REFERENCES `viajes` (`id_viajes`),
-  CONSTRAINT `detalle_reserva_transporte_ibfk_3` FOREIGN KEY (`rela_pasajero`) REFERENCES `pasajeros` (`id_pasajeros`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  CONSTRAINT `fk_detalle_pasajero` FOREIGN KEY (`rela_pasajero`) REFERENCES `pasajeros` (`id_pasajeros`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -289,7 +293,7 @@ CREATE TABLE `detalle_reserva_transporte` (
 
 LOCK TABLES `detalle_reserva_transporte` WRITE;
 /*!40000 ALTER TABLE `detalle_reserva_transporte` DISABLE KEYS */;
-INSERT INTO `detalle_reserva_transporte` VALUES (57,356,10,2,12,'2025-11-27',15000.00,32,'confirmada'),(58,359,10,1,7,'2025-11-27',15000.00,32,'confirmada');
+INSERT INTO `detalle_reserva_transporte` VALUES (65,382,10,1,7,'2025-11-28',15000.00,1,'cancelada'),(66,386,10,1,8,'2025-10-28',15000.00,1,'cancelada');
 /*!40000 ALTER TABLE `detalle_reserva_transporte` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -307,10 +311,11 @@ CREATE TABLE `detalle_reservas` (
   `cantidad` int DEFAULT '1',
   `precio_unitario` decimal(10,2) DEFAULT NULL,
   `subtotal` decimal(10,2) DEFAULT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_detalle_reserva`),
   KEY `rela_reservas` (`rela_reservas`),
   CONSTRAINT `detalle_reservas_ibfk_1` FOREIGN KEY (`rela_reservas`) REFERENCES `reservas` (`id_reservas`)
-) ENGINE=InnoDB AUTO_INCREMENT=361 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=390 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -319,7 +324,7 @@ CREATE TABLE `detalle_reservas` (
 
 LOCK TABLES `detalle_reservas` WRITE;
 /*!40000 ALTER TABLE `detalle_reservas` DISABLE KEYS */;
-INSERT INTO `detalle_reservas` VALUES (348,255,'hotel',1,9500.00,9500.00),(349,255,'tour',2,7000.00,14000.00),(350,255,'transporte',1,15000.00,15000.00),(351,256,'tour',1,7000.00,7000.00),(352,257,'tour',3,7000.00,21000.00),(353,258,'tour',3,7000.00,21000.00),(354,259,'tour',3,7000.00,21000.00),(355,260,'hotel',1,9500.00,19000.00),(356,260,'transporte',1,15000.00,15000.00),(357,260,'tour',3,7000.00,21000.00),(358,261,'hotel',1,9500.00,19000.00),(359,261,'transporte',1,15000.00,15000.00),(360,261,'tour',2,7000.00,14000.00);
+INSERT INTO `detalle_reservas` VALUES (381,280,'hotel',1,9500.00,19000.00,0),(382,280,'transporte',1,15000.00,15000.00,0),(383,280,'tour',1,7000.00,7000.00,0),(384,284,'hotel',1,9500.00,19000.00,0),(385,284,'tour',1,7000.00,7000.00,0),(386,284,'transporte',1,15000.00,15000.00,0),(387,285,'hotel',1,9500.00,9500.00,0),(388,286,'tour',3,7000.00,21000.00,1),(389,287,'tour',3,7000.00,21000.00,1);
 /*!40000 ALTER TABLE `detalle_reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -340,7 +345,7 @@ CREATE TABLE `domicilio` (
   KEY `fk_domicilio_ciudad` (`rela_ciudad`),
   CONSTRAINT `fk_domicilio_ciudad` FOREIGN KEY (`rela_ciudad`) REFERENCES `ciudades` (`id_ciudad`),
   CONSTRAINT `fk_domicilio_personas1` FOREIGN KEY (`rela_personas`) REFERENCES `personas` (`id_personas`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -349,7 +354,7 @@ CREATE TABLE `domicilio` (
 
 LOCK TABLES `domicilio` WRITE;
 /*!40000 ALTER TABLE `domicilio` DISABLE KEYS */;
-INSERT INTO `domicilio` VALUES (5,'Avenida 25 de mayo 0000',366,1),(6,'Puchini 0000',367,1),(7,'prueba',368,1),(8,'Mi casa',369,1),(9,'Barrio san Martin',370,1),(10,'Barrio san Martin',371,1),(11,'Barrio san Martin',372,1),(12,'Avenida 10 de mayo 1111',373,NULL),(13,'Av italia 0000',374,NULL),(14,'Av italia 0000',375,NULL),(15,'Barrio san Martin 2',376,NULL),(16,'Barrio la paz casa 19 manzana 24 sector c',377,NULL);
+INSERT INTO `domicilio` VALUES (5,'Avenida 25 de mayo 0000',366,1),(6,'Puchini 0000',367,1),(7,'prueba',368,1),(8,'Mi casa',369,1),(9,'Barrio san Martin',370,1),(10,'Barrio san Martin',371,1),(11,'Barrio san Martin',372,1),(12,'Avenida 10 de mayo 1111',373,NULL),(13,'Av italia 0000',374,NULL),(14,'Av italia 0000',375,NULL),(15,'Barrio san Martin 2',376,NULL),(16,'Barrio la paz casa 19 manzana 24 sector c',377,NULL),(17,'Barrio san Martin 2',378,NULL);
 /*!40000 ALTER TABLE `domicilio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -421,7 +426,7 @@ CREATE TABLE `ganancias` (
   PRIMARY KEY (`id`),
   KEY `id_reserva` (`id_reserva`),
   CONSTRAINT `ganancias_ibfk_1` FOREIGN KEY (`id_reserva`) REFERENCES `reservas` (`id_reservas`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -430,7 +435,7 @@ CREATE TABLE `ganancias` (
 
 LOCK TABLES `ganancias` WRITE;
 /*!40000 ALTER TABLE `ganancias` DISABLE KEYS */;
-INSERT INTO `ganancias` VALUES (1,259,'reserva',2100.00,'2025-11-27 18:19:30'),(2,260,'reserva',5500.00,'2025-11-27 18:22:32'),(3,261,'reserva',4800.00,'2025-11-27 18:25:18');
+INSERT INTO `ganancias` VALUES (24,280,'hotel',950.00,'2025-11-28 11:25:01'),(25,280,'transporte',1500.00,'2025-11-28 11:25:01'),(26,280,'tour',700.00,'2025-11-28 11:25:01'),(27,284,'hotel',950.00,'2025-11-28 17:41:58'),(28,284,'tour',700.00,'2025-11-28 17:41:58'),(29,284,'transporte',1500.00,'2025-11-28 17:41:58'),(30,284,'transporte',1500.00,'2025-10-28 17:41:58'),(31,285,'hotel',950.00,'2025-11-28 17:51:36'),(32,287,'tour',2100.00,'2025-11-28 18:18:56');
 /*!40000 ALTER TABLE `ganancias` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -536,7 +541,7 @@ CREATE TABLE `hotel_habitaciones_stock` (
 
 LOCK TABLES `hotel_habitaciones_stock` WRITE;
 /*!40000 ALTER TABLE `hotel_habitaciones_stock` DISABLE KEYS */;
-INSERT INTO `hotel_habitaciones_stock` VALUES (175,20,'2025-11-26',2,1),(176,20,'2025-11-27',0,1),(177,20,'2025-11-28',0,1),(178,20,'2025-11-29',2,1),(179,20,'2025-11-30',2,1);
+INSERT INTO `hotel_habitaciones_stock` VALUES (175,20,'2025-11-26',2,1),(176,20,'2025-11-27',2,1),(177,20,'2025-11-28',4,1),(178,20,'2025-11-29',4,1),(179,20,'2025-11-30',2,1);
 /*!40000 ALTER TABLE `hotel_habitaciones_stock` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -672,7 +677,7 @@ CREATE TABLE `motivos_cancelacion` (
   `descripcion` varchar(100) NOT NULL,
   `activo` tinyint DEFAULT '1',
   PRIMARY KEY (`id_motivo_cancelacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -681,7 +686,7 @@ CREATE TABLE `motivos_cancelacion` (
 
 LOCK TABLES `motivos_cancelacion` WRITE;
 /*!40000 ALTER TABLE `motivos_cancelacion` DISABLE KEYS */;
-INSERT INTO `motivos_cancelacion` VALUES (1,'Problemas de salud',1),(2,'Clima adverso',1),(3,'Cambio de fechas',1),(4,'Problemas de transporte',1),(5,'Otros',1),(6,'Pruebaz',0),(7,'Prueba',0),(8,'Pruebas',0);
+INSERT INTO `motivos_cancelacion` VALUES (1,'Problemas de salud',1),(2,'Clima adverso',1),(3,'Cambio de fechas',1),(4,'Problemas de transporte',1),(5,'Cancelación por proveedor',1),(6,'Motivos personales',1),(7,'Problemas financieros',1),(8,'Error en la reserva',1),(9,'Otros',1);
 /*!40000 ALTER TABLE `motivos_cancelacion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -729,7 +734,7 @@ CREATE TABLE `notificaciones` (
   KEY `idx_destinario` (`destinario_usuario`),
   CONSTRAINT `fk_notificaciones_usuario` FOREIGN KEY (`destinario_usuario`) REFERENCES `usuarios` (`id_usuarios`) ON DELETE CASCADE,
   CONSTRAINT `notificaciones_chk_1` CHECK (json_valid(`metadata`))
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -738,7 +743,7 @@ CREATE TABLE `notificaciones` (
 
 LOCK TABLES `notificaciones` WRITE;
 /*!40000 ALTER TABLE `notificaciones` DISABLE KEYS */;
-INSERT INTO `notificaciones` VALUES (98,'Pago aprobado #137','Tu pago por $19000 fue aprobado y la reserva #200 ha sido confirmada.','pago',74,1,'{\"reserva\":\"200\",\"pago\":\"137\",\"tipo_pago\":\"mercadopago\"}','2025-11-26 16:12:08'),(99,'Pago aprobado #138','Tu pago por $21000 fue aprobado y la reserva #201 ha sido confirmada.','pago',74,1,'{\"reserva\":\"201\",\"pago\":\"138\",\"tipo_pago\":\"mercadopago\"}','2025-11-26 21:51:14'),(100,'Pago aprobado #139','Tu pago por $21000 fue aprobado y la reserva #202 ha sido confirmada.','pago',74,1,'{\"reserva\":\"202\",\"pago\":\"139\",\"tipo_pago\":\"mercadopago\"}','2025-11-26 21:56:33'),(101,'Pago aprobado #144','Tu pago por $15000 fue aprobado y la reserva #207 ha sido confirmada.','pago',74,0,'{\"reserva\":\"207\",\"pago\":\"144\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 11:03:08'),(102,'Pago aprobado #145','Tu pago por $15000 fue aprobado y la reserva #213 ha sido confirmada.','pago',74,0,'{\"reserva\":\"213\",\"pago\":\"145\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 11:14:33'),(103,'Pago aprobado #146','Tu pago por $15000 fue aprobado y la reserva #218 ha sido confirmada.','pago',74,0,'{\"reserva\":\"218\",\"pago\":\"146\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 11:39:48'),(104,'Pago aprobado #147','Tu pago por $15000 fue aprobado y la reserva #238 ha sido confirmada.','pago',74,0,'{\"reserva\":\"238\",\"pago\":\"147\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 13:04:36'),(105,'Pago aprobado #154','Tu pago por $15000 fue aprobado y la reserva #245 ha sido confirmada.','pago',74,0,'{\"reserva\":\"245\",\"pago\":\"154\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 13:34:32'),(106,'Pago aprobado #155','Tu pago por $30000 fue aprobado y la reserva #246 ha sido confirmada.','pago',74,0,'{\"reserva\":\"246\",\"pago\":\"155\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 13:38:12'),(107,'Pago aprobado #162','Tu pago por $15000 fue aprobado y la reserva #253 ha sido confirmada.','pago',74,0,'{\"reserva\":\"253\",\"pago\":\"162\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 16:12:17'),(108,'Pago aprobado #163','Tu pago por $15000 fue aprobado y la reserva #254 ha sido confirmada.','pago',74,0,'{\"reserva\":\"254\",\"pago\":\"163\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 16:14:58'),(109,'Pago aprobado #168','Tu pago por $21000 fue aprobado y la reserva #259 ha sido confirmada.','pago',74,0,'{\"reserva\":\"259\",\"pago\":\"168\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 18:19:30'),(110,'Pago aprobado #169','Tu pago por $55000 fue aprobado y la reserva #260 ha sido confirmada.','pago',74,0,'{\"reserva\":\"260\",\"pago\":\"169\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 18:22:32'),(111,'Pago aprobado #170','Tu pago por $48000 fue aprobado y la reserva #261 ha sido confirmada.','pago',74,0,'{\"reserva\":\"261\",\"pago\":\"170\",\"tipo_pago\":\"mercadopago\"}','2025-11-27 18:25:18');
+INSERT INTO `notificaciones` VALUES (134,'Reserva cancelada: #284','El detalle #386 de la reserva #284 fue cancelado por el usuario 74. Motivo: 1','reserva',66,1,'[]','2025-11-28 18:16:13'),(135,'Pago aprobado #193','Tu pago por $21000 fue aprobado y la reserva #287 ha sido confirmada.','pago',74,0,'{\"reserva\":\"287\",\"pago\":\"193\",\"tipo_pago\":\"mercadopago\"}','2025-11-28 18:18:56');
 /*!40000 ALTER TABLE `notificaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -765,7 +770,7 @@ CREATE TABLE `pago` (
   CONSTRAINT `fk_pago_moneda` FOREIGN KEY (`rela_monedas`) REFERENCES `monedas` (`id_moneda`),
   CONSTRAINT `fk_pago_reservas1` FOREIGN KEY (`rela_reservas`) REFERENCES `reservas` (`id_reservas`),
   CONSTRAINT `fk_pago_tipo_pago1` FOREIGN KEY (`rela_tipo_pago`) REFERENCES `tipo_pago` (`id_tipo_pago`)
-) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=194 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -774,7 +779,7 @@ CREATE TABLE `pago` (
 
 LOCK TABLES `pago` WRITE;
 /*!40000 ALTER TABLE `pago` DISABLE KEYS */;
-INSERT INTO `pago` VALUES (164,'2025-11-27',38500,'pendiente',255,8,NULL,3),(165,'2025-11-27',7000,'pendiente',256,8,NULL,3),(166,'2025-11-27',21000,'aprobado',257,8,'134886519213',3),(167,'2025-11-27',21000,'aprobado',258,8,'135502437228',3),(168,'2025-11-27',21000,'aprobado',259,8,'135502828336',3),(169,'2025-11-27',55000,'aprobado',260,8,'134887597925',3),(170,'2025-11-27',48000,'aprobado',261,8,'135503467614',3);
+INSERT INTO `pago` VALUES (189,'2025-11-28',41000,'aprobado',280,8,'135596161574',3),(190,'2025-11-28',41000,'aprobado',284,8,'135036504201',3),(191,'2025-11-28',9500,'aprobado',285,8,'135038133123',3),(192,'2025-11-28',21000,'pendiente',286,8,NULL,3),(193,'2025-11-28',21000,'aprobado',287,8,'135042823165',3);
 /*!40000 ALTER TABLE `pago` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -790,20 +795,18 @@ CREATE TABLE `pasajeros` (
   `rela_usuario` int DEFAULT NULL,
   `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `apellido` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `numero_documento` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `rela_nacionalidad` int NOT NULL,
   `rela_tipo_documento` int NOT NULL,
-  `numero_documento` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `sexo` enum('Masculino','Femenino','Otro') COLLATE utf8mb4_general_ci DEFAULT NULL,
   `fecha_nacimiento` date NOT NULL,
   `creado_en` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_pasajeros`),
-  UNIQUE KEY `idx_pasajeros_documento` (`rela_tipo_documento`,`numero_documento`),
-  UNIQUE KEY `ux_pasajeros_usuario_documento` (`rela_usuario`,`numero_documento`),
-  KEY `rela_nacionalidad` (`rela_nacionalidad`),
-  CONSTRAINT `pasajeros_ibfk_1` FOREIGN KEY (`rela_usuario`) REFERENCES `usuarios` (`id_usuarios`),
-  CONSTRAINT `pasajeros_ibfk_2` FOREIGN KEY (`rela_nacionalidad`) REFERENCES `nacionalidad` (`id_nacionalidad`),
-  CONSTRAINT `pasajeros_ibfk_3` FOREIGN KEY (`rela_tipo_documento`) REFERENCES `tipos_documento` (`id_tipo_documento`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `fk_rela_nacionalidad` (`rela_nacionalidad`),
+  KEY `fk_tipo_documento` (`rela_tipo_documento`),
+  CONSTRAINT `fk_rela_nacionalidad` FOREIGN KEY (`rela_nacionalidad`) REFERENCES `nacionalidad` (`id_nacionalidad`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_tipo_documento` FOREIGN KEY (`rela_tipo_documento`) REFERENCES `tipos_documento` (`id_tipo_documento`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -812,7 +815,7 @@ CREATE TABLE `pasajeros` (
 
 LOCK TABLES `pasajeros` WRITE;
 /*!40000 ALTER TABLE `pasajeros` DISABLE KEYS */;
-INSERT INTO `pasajeros` VALUES (32,74,'Mirco','Aguilar',1,1,'45817260','Masculino','2004-06-06','2025-11-27 01:41:30');
+INSERT INTO `pasajeros` VALUES (1,74,'Mirco','Aguilar','45817260',1,1,'Masculino','2004-06-06','2025-11-28 10:39:18');
 /*!40000 ALTER TABLE `pasajeros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -913,7 +916,7 @@ CREATE TABLE `personas` (
   `activo` tinyint(1) DEFAULT '1',
   `personas_dni` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id_personas`)
-) ENGINE=InnoDB AUTO_INCREMENT=378 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=379 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -922,7 +925,7 @@ CREATE TABLE `personas` (
 
 LOCK TABLES `personas` WRITE;
 /*!40000 ALTER TABLE `personas` DISABLE KEYS */;
-INSERT INTO `personas` VALUES (1,'Juan','Perez','2004-07-07',1,'10000000'),(32,'Mirco','Aguilar','2004-06-06',1,'45817260'),(33,'Miguel','De la Rosa','2004-08-03',1,'1000001'),(34,'Juan','Pérez','1990-05-14',1,'1000002'),(35,'Ana','Gómez','1985-10-20',1,'1000003'),(36,'Carlos','López','1992-08-08',1,'1000004'),(37,'Lucia','Martínez','2000-01-01',1,'1000005'),(38,'Pedro','Ramírez','1998-03-15',1,'1000006'),(39,'María','Díaz','1996-09-12',1,'1000007'),(40,'Martín','Fernández','1987-04-22',1,'1000008'),(41,'Sofía','Alonso','1994-07-09',1,'1000009'),(42,'Nicolás','Silva','1991-02-18',1,'1000010'),(43,'Julieta','Molina','1999-11-30',1,'1000011'),(44,'Diego','Torres','1993-06-21',1,'1000012'),(45,'Valentina','Arias','1990-10-03',1,'1000013'),(46,'Agustín','Cruz','1989-12-25',1,'1000014'),(47,'Camila','Castro','1997-01-17',1,'1000015'),(48,'Bruno','Suárez','1995-08-14',1,'1000016'),(366,'Jose','Lopez','2005-07-01',1,'45800200'),(367,'miguel','perez','0204-07-06',1,'44890250'),(368,'Lucas','Prueba','2004-07-07',1,'45900200'),(369,'Marcos','Gimenez','2000-02-10',1,'40235867'),(370,'Miguel','Ledesma','2004-08-06',1,'45768250'),(371,'Miguel','Mirco Aguilar','2025-08-06',1,'45918720'),(372,'Miguel','De la rosa','2004-08-01',1,'45817260'),(373,'lucas','dominguez','2003-09-05',1,'45817260'),(374,'carlos','ayala','2000-09-02',1,'42346782'),(375,'prueba','prueba','2004-06-06',1,'45817250'),(376,'prueba2','prueba2','2025-10-09',1,'45872012'),(377,'Mirco','Aguilar','2004-06-06',1,'45817260');
+INSERT INTO `personas` VALUES (1,'Juan','Perez','2004-07-07',1,'10000000'),(32,'Mirco','Aguilar','2004-06-06',1,'45817260'),(33,'Miguel','De la Rosa','2004-08-03',1,'1000001'),(34,'Juan','Pérez','1990-05-14',1,'1000002'),(35,'Ana','Gómez','1985-10-20',1,'1000003'),(36,'Carlos','López','1992-08-08',1,'1000004'),(37,'Lucia','Martínez','2000-01-01',1,'1000005'),(38,'Pedro','Ramírez','1998-03-15',1,'1000006'),(39,'María','Díaz','1996-09-12',1,'1000007'),(40,'Martín','Fernández','1987-04-22',1,'1000008'),(41,'Sofía','Alonso','1994-07-09',1,'1000009'),(42,'Nicolás','Silva','1991-02-18',1,'1000010'),(43,'Julieta','Molina','1999-11-30',1,'1000011'),(44,'Diego','Torres','1993-06-21',1,'1000012'),(45,'Valentina','Arias','1990-10-03',1,'1000013'),(46,'Agustín','Cruz','1989-12-25',1,'1000014'),(47,'Camila','Castro','1997-01-17',1,'1000015'),(48,'Bruno','Suárez','1995-08-14',1,'1000016'),(366,'Jose','Lopez','2005-07-01',1,'45800200'),(367,'miguel','perez','0204-07-06',1,'44890250'),(368,'Lucas','Prueba','2004-07-07',1,'45900200'),(369,'Marcos','Gimenez','2000-02-10',1,'40235867'),(370,'Miguel','Ledesma','2004-08-06',1,'45768250'),(371,'Miguel','Mirco Aguilar','2025-08-06',1,'45918720'),(372,'Miguel','De la rosa','2004-08-01',1,'45817260'),(373,'lucas','dominguez','2003-09-05',1,'45817260'),(374,'carlos','ayala','2000-09-02',1,'42346782'),(375,'prueba','prueba','2004-06-06',1,'45817250'),(376,'prueba2','prueba2','2025-10-09',1,'45872012'),(377,'Mirco','Aguilar','2004-06-06',1,'45817260'),(378,'kevin','Perez','2004-11-06',1,'45877222');
 /*!40000 ALTER TABLE `personas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -940,12 +943,16 @@ CREATE TABLE `proveedores` (
   `proveedor_direccion` varchar(255) DEFAULT NULL,
   `proveedor_email` varchar(100) NOT NULL,
   `rela_usuario` int NOT NULL,
+  `rela_tipo_proveedor` int NOT NULL,
   `activo` tinyint DEFAULT '1',
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `estado` enum('pendiente','aprobado','rechazado') NOT NULL DEFAULT 'pendiente',
   PRIMARY KEY (`id_proveedores`),
   KEY `fk_proveedores_usuario` (`rela_usuario`),
+  KEY `fk_proveedor_tipo` (`rela_tipo_proveedor`),
+  CONSTRAINT `fk_proveedor_tipo` FOREIGN KEY (`rela_tipo_proveedor`) REFERENCES `tipo_proveedores` (`id_tipo_proveedor`),
   CONSTRAINT `fk_proveedores_usuario` FOREIGN KEY (`rela_usuario`) REFERENCES `usuarios` (`id_usuarios`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -954,7 +961,7 @@ CREATE TABLE `proveedores` (
 
 LOCK TABLES `proveedores` WRITE;
 /*!40000 ALTER TABLE `proveedores` DISABLE KEYS */;
-INSERT INTO `proveedores` VALUES (1,'prueba','1','prueba','prueba',78,1,'2025-08-11 19:20:44'),(2,'esto es una prueba','23','aca','hola@gmail.com',78,0,'2025-08-22 14:32:30'),(3,'Hotel Howard Johnson','20-12345678-9','Av. Libertad 456, Formosa','contacto@hotelformosa.com',72,1,'2025-08-22 18:48:49'),(4,'Transporte Rápido','30-23456789-0','Calle Turismo 789, Formosa','info@transporte.com',79,1,'2025-08-22 18:48:49'),(5,'Guías Turísticos Formosa','23-34567890-1','Calle 123, Formosa','contacto@guiasformosa.com',80,1,'2025-08-22 18:48:49');
+INSERT INTO `proveedores` VALUES (1,'prueba','1','prueba','prueba',78,1,1,'2025-08-11 19:20:44','aprobado'),(2,'esto es una prueba','23','aca','hola@gmail.com',78,1,0,'2025-08-22 14:32:30','pendiente'),(3,'Hotel Howard Johnson','20-12345678-9','Av. Libertad 456, Formosa','contacto@hotelformosa.com',72,1,1,'2025-08-22 18:48:49','aprobado'),(4,'Transporte Rápido','30-23456789-0','Calle Turismo 789, Formosa','info@transporte.com',79,2,1,'2025-08-22 18:48:49','aprobado'),(5,'Guías Turísticos Formosa','23-34567890-1','Calle 123, Formosa','contacto@guiasformosa.com',80,3,1,'2025-08-22 18:48:49','aprobado'),(9,'esto es una prueba','30-12345678-3','Av. Dr. Luis Gutnisky 3754','juanpe22@gmail.com',91,1,1,'2025-11-28 14:41:04','pendiente');
 /*!40000 ALTER TABLE `proveedores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1028,7 +1035,7 @@ CREATE TABLE `reservas` (
   PRIMARY KEY (`id_reservas`),
   KEY `fk_reservas_usuarios1_idx` (`rela_usuarios`),
   CONSTRAINT `fk_reservas_usuarios1` FOREIGN KEY (`rela_usuarios`) REFERENCES `usuarios` (`id_usuarios`)
-) ENGINE=InnoDB AUTO_INCREMENT=262 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=288 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1037,7 +1044,7 @@ CREATE TABLE `reservas` (
 
 LOCK TABLES `reservas` WRITE;
 /*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
-INSERT INTO `reservas` VALUES (255,'2025-11-27 18:05:27',38500.00,'pendiente',74,1),(256,'2025-11-27 18:09:01',7000.00,'pendiente',74,1),(257,'2025-11-27 18:13:11',21000.00,'confirmada',74,1),(258,'2025-11-27 18:17:07',21000.00,'confirmada',74,1),(259,'2025-11-27 18:18:52',21000.00,'confirmada',74,1),(260,'2025-11-27 18:21:45',55000.00,'confirmada',74,1),(261,'2025-11-27 18:25:00',48000.00,'confirmada',74,1);
+INSERT INTO `reservas` VALUES (280,'2025-11-28 11:24:46',41000.00,'cancelada',74,1),(281,'2024-10-28 11:24:46',41000.00,'confirmado',74,1),(282,'2024-10-28 11:24:46',41000.00,'confirmado',74,1),(283,'2024-11-28 11:24:46',20000.00,'cancelado',74,1),(284,'2025-10-28 17:40:20',41000.00,'cancelada',74,1),(285,'2025-11-28 17:49:47',9500.00,'cancelada',74,1),(286,'2025-11-28 18:17:46',21000.00,'pendiente',74,1),(287,'2025-11-28 18:18:31',21000.00,'confirmada',74,1);
 /*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1069,7 +1076,7 @@ CREATE TABLE `stock_tour` (
 
 LOCK TABLES `stock_tour` WRITE;
 /*!40000 ALTER TABLE `stock_tour` DISABLE KEYS */;
-INSERT INTO `stock_tour` VALUES (33,15,'2025-11-26',10,0,1,'2025-11-26 21:47:23','2025-11-26 21:47:23'),(34,15,'2025-11-27',10,0,1,'2025-11-26 21:47:23','2025-11-26 21:47:23'),(35,15,'2025-11-28',8,2,1,'2025-11-26 21:47:23','2025-11-27 18:25:18'),(36,15,'2025-11-29',7,3,1,'2025-11-26 21:47:23','2025-11-27 18:22:32'),(37,15,'2025-11-30',1,9,1,'2025-11-26 21:47:23','2025-11-27 18:19:30');
+INSERT INTO `stock_tour` VALUES (33,15,'2025-11-26',10,0,1,'2025-11-26 21:47:23','2025-11-28 18:12:57'),(34,15,'2025-11-27',10,0,1,'2025-11-26 21:47:23','2025-11-26 21:47:23'),(35,15,'2025-11-28',10,0,1,'2025-11-26 21:47:23','2025-11-28 00:58:21'),(36,15,'2025-11-29',10,0,1,'2025-11-26 21:47:23','2025-11-28 00:58:21'),(37,15,'2025-11-30',6,4,1,'2025-11-26 21:47:23','2025-11-28 18:18:56');
 /*!40000 ALTER TABLE `stock_tour` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1355,7 +1362,7 @@ CREATE TABLE `transporte_asientos_bloqueados` (
   KEY `fk_bloqueo_usuario` (`id_usuario`),
   CONSTRAINT `fk_bloqueo_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuarios`),
   CONSTRAINT `fk_bloqueo_viaje` FOREIGN KEY (`id_viaje`) REFERENCES `viajes` (`id_viajes`)
-) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=217 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1364,7 +1371,7 @@ CREATE TABLE `transporte_asientos_bloqueados` (
 
 LOCK TABLES `transporte_asientos_bloqueados` WRITE;
 /*!40000 ALTER TABLE `transporte_asientos_bloqueados` DISABLE KEYS */;
-INSERT INTO `transporte_asientos_bloqueados` VALUES (178,10,2,12,74,'2025-11-27 18:21:28','2025-11-27 18:26:28'),(179,10,1,7,74,'2025-11-27 18:24:45','2025-11-27 18:29:45');
+INSERT INTO `transporte_asientos_bloqueados` VALUES (216,10,1,8,74,'2025-11-28 17:40:07','2025-11-28 17:45:07');
 /*!40000 ALTER TABLE `transporte_asientos_bloqueados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1456,7 +1463,7 @@ CREATE TABLE `usuarios` (
   KEY `fk_usuarios_tipo_de_usuarios1_idx` (`rela_perfiles`),
   CONSTRAINT `fk_usuarios_personas` FOREIGN KEY (`rela_personas`) REFERENCES `personas` (`id_personas`),
   CONSTRAINT `fk_usuarios_tipo_de_usuarios1` FOREIGN KEY (`rela_perfiles`) REFERENCES `perfiles` (`id_perfiles`)
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1465,7 +1472,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (66,'jperez','juan@gmail.com','2025-06-27 17:00:20','$2y$10$EP9hGHC3LErzPlsgN7J70e85ER.Hdjx.txhmABH6XsIHNefkfL3OW',1,1,2),(72,'marcosgimenez','hola@gmail.com','2025-07-08 10:59:17','$2y$10$oRZ4l80wAB8A/lzXtKwbq.fa9SxYB9n5acruXxcMQUKe27TpD0O1.',1,369,3),(74,'migueledesma','mircoaguilar02@gmail.com','2025-08-20 20:18:17','$2y$10$BEGQ4j2oTfff6k/WhvRkVe.OXBmwGKLMuxMJqD12biy8in/HWFmXK',1,370,1),(78,'prueba','prueba','2025-08-20 20:18:17','$2y$10$BEGQ4j2oTfff6k/WhvRkVe.OXBmwGKLMuxMJqD12biy8in/HWFmXK',1,1,1),(79,'lucasdominguez','lucas@gmail.com','2025-09-16 20:43:46','$2y$10$mnYo.CXZM7GA6x8tUtN/CeyRDLbrKPGpagUFAmXHYdeqeAv5dU7Ou',1,373,5),(80,'carlosayala','carlos@gmail.com','2025-09-22 14:04:40','$2y$10$GTR8UEy2mIvSKS9wFREbY.1WvdocRCyocYMeWyceyRJwx0iCsDrT.',1,374,14),(83,'maguilar','mircoaguilar@gmail.com','2025-11-05 22:22:35','$2y$10$yLy2lk349tdFT1/ajepIh.eLVmk8/bIjcey0FadEPxvc5yhktLrLu',1,377,1),(86,'poc75','lucia2@gmail.com','2025-11-12 17:41:46','$2y$10$A9MQw9kOHp1/BObq5zWpy.PDRURIz.FhLRjlGnJlCGN9/S6Gpshtm',0,35,1),(87,'poc7','lucia@gmail.com','2025-11-12 19:17:06','$2y$10$/iNRNPOFowoLXPgJMdfV.OXnFgSgGKDaiLc9m4G7.DGB0xm499e7.',1,35,1);
+INSERT INTO `usuarios` VALUES (66,'jperez','mircoaguilar999@gmail.com','2025-06-27 17:00:20','$2y$10$EP9hGHC3LErzPlsgN7J70e85ER.Hdjx.txhmABH6XsIHNefkfL3OW',1,1,2),(72,'marcosgimenez','hola@gmail.com','2025-07-08 10:59:17','$2y$10$oRZ4l80wAB8A/lzXtKwbq.fa9SxYB9n5acruXxcMQUKe27TpD0O1.',1,369,3),(74,'migueledesma','mircoaguilar02@gmail.com','2025-08-20 20:18:17','$2y$10$BEGQ4j2oTfff6k/WhvRkVe.OXBmwGKLMuxMJqD12biy8in/HWFmXK',1,370,1),(78,'prueba','prueba','2025-08-20 20:18:17','$2y$10$BEGQ4j2oTfff6k/WhvRkVe.OXBmwGKLMuxMJqD12biy8in/HWFmXK',1,1,1),(79,'lucasdominguez','lucas@gmail.com','2025-09-16 20:43:46','$2y$10$mnYo.CXZM7GA6x8tUtN/CeyRDLbrKPGpagUFAmXHYdeqeAv5dU7Ou',1,373,5),(80,'carlosayala','carlos@gmail.com','2025-09-22 14:04:40','$2y$10$GTR8UEy2mIvSKS9wFREbY.1WvdocRCyocYMeWyceyRJwx0iCsDrT.',1,374,14),(83,'maguilar','mircoaguilar@gmail.com','2025-11-05 22:22:35','$2y$10$yLy2lk349tdFT1/ajepIh.eLVmk8/bIjcey0FadEPxvc5yhktLrLu',1,377,1),(86,'poc75','lucia2@gmail.com','2025-11-12 17:41:46','$2y$10$A9MQw9kOHp1/BObq5zWpy.PDRURIz.FhLRjlGnJlCGN9/S6Gpshtm',0,35,1),(87,'poc7','lucia@gmail.com','2025-11-12 19:17:06','$2y$10$/iNRNPOFowoLXPgJMdfV.OXnFgSgGKDaiLc9m4G7.DGB0xm499e7.',1,35,1),(88,'kevinperez','kevinperez@gmail.com','2025-11-28 14:19:45','$2y$10$RvlYW/JYRzw8SUZxos.je.GBW9FrzF7sKstrjxM3/YOxCvM7NAfFa',1,378,1),(91,'juanpe22','juanpe22@gmail.com','2025-11-28 14:41:04','$2y$10$LmSk2FfUlH2/ZHTI6KaZbu95LKaJ3e8Xsj.wByi16iRTri2g6cpS2',1,NULL,3);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1516,4 +1523,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-27 18:25:47
+-- Dump completed on 2025-11-28 18:56:10
