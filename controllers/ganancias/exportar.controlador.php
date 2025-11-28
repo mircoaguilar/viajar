@@ -1,8 +1,13 @@
 <?php
-
+session_start();
 require_once __DIR__ . '/../../models/ganancia.php'; 
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 $id_usuario = $_SESSION['id_usuarios'] ?? null;
+if (!$id_usuario) {
+    die("Acceso no autorizado.");
+}
+
 $ganancia_model = new Ganancia();
 $ganancias = $ganancia_model->obtenerTodasLasGanancias(); 
 
@@ -20,7 +25,7 @@ $html .= '<table border="1" cellspacing="0" cellpadding="5">
                 <th>Reserva ID</th>
                 <th>Tipo de Servicio</th>
                 <th>Ganancia Neta</th>
-                <th>Fecha de Cálculo</th>
+                <th>Fecha de la Reserva</th>
             </tr>';
 
 foreach ($ganancias as $ganancia) {
@@ -35,11 +40,8 @@ foreach ($ganancias as $ganancia) {
 $html .= "</table>";
 
 use Dompdf\Dompdf;
-
 $dompdf = new Dompdf();
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'landscape');
 $dompdf->render();
 $dompdf->stream("reporte_ganancias.pdf", ["Attachment" => true]);
-
-?>

@@ -58,11 +58,10 @@ $ganancias_por_servicio = [
                             <td>$<?= number_format(array_sum(array_column($ganancias, 'ganancia_neta')), 2, ',', '.') ?></td>
                             <td>
                                 <?php
-                                // Verificamos si hay ganancias para este servicio
                                 if (count($ganancias) > 0) {
                                     echo "$" . number_format(array_sum(array_column($ganancias, 'ganancia_neta')) / count($ganancias), 2, ',', '.');
                                 } else {
-                                    echo "$0.00";  // Si no hay ganancias, mostramos 0
+                                    echo "$0.00";
                                 }
                                 ?>
                             </td>
@@ -88,8 +87,7 @@ $ganancias_por_servicio = [
                     <th>ID Reserva</th>
                     <th>Tipo de Servicio</th>
                     <th>Ganancia Neta</th>
-                    <th>Fecha de Cálculo</th>
-                    <th>Acciones</th>
+                    <th>Fecha de la Reserva</th>
                 </tr>
             </thead>
             <tbody>
@@ -99,7 +97,6 @@ $ganancias_por_servicio = [
                         <td><?= htmlspecialchars($ganancia['tipo_servicio']) ?></td>
                         <td>$<?= number_format($ganancia['ganancia_neta'], 2, ',', '.') ?></td>
                         <td><?= $ganancia['fecha_calculo'] ?></td>
-                        <td><a href="ganancias.controlador.php?action=verGanancias&id_reserva=<?= $ganancia['id_reserva'] ?>">Ver detalles</a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -107,8 +104,9 @@ $ganancias_por_servicio = [
     </section>
 
     <section class="dashboard-section">
-        <a href="ganancias.controlador.php?action=exportarCSV">Exportar Ganancias a CSV</a>
+        <a href="controllers/ganancias/exportar.controlador.php" class="btn-exportar">Exportar Ganancias a PDF</a>
     </section>
+
 </div>
 
 <link rel="stylesheet" href="assets/css/ganancias_dashboard.css">

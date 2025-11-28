@@ -30,9 +30,6 @@ $gananciaModel = new Ganancia();
 $pagoData = $pagoModel->traerPorId($id_pago);
 if (!$pagoData) die("Error: No se encontró pago asociado a este ID.");
 
-// ==========================
-// Actualizar pago pendiente
-// ==========================
 if ($pagoData['pago_estado'] !== 'aprobado') {
     $pagoModel->setId_pago($id_pago);
     $pagoModel->actualizarComprobante($id_pago_mp, 'aprobado');
@@ -41,34 +38,30 @@ if ($pagoData['pago_estado'] !== 'aprobado') {
     $reservaModel->setReservas_estado('confirmada');
     $reservaModel->setTotal($pagoData['pago_monto']);
     $reservaModel->actualizar();
-
-    // Recargar pagoData actualizado
     $pagoData = $pagoModel->traerPorId($id_pago);
 }
 
-// ==========================
-// Procesar reserva aprobada
-// ==========================
 if ($pagoData['pago_estado'] === 'aprobado') {
     $id_reserva = $pagoData['rela_reservas'];
     $reservaData = $reservaModel->traerPorId($id_reserva);
     $id_usuario = $reservaData['rela_usuarios'];
     $monto_total = $pagoData['pago_monto'];
-
-    // Registrar ganancia
-    $ganancia_neta = $gananciaModel->calcularGanancia($monto_total);
-    $gananciaModel->registrarGanancia($id_reserva, 'reserva', $ganancia_neta);
-
-    // Procesar detalles de la reserva
     $detalles = $reservaModel->traerDetallesPorId($id_reserva);
     foreach ($detalles as $detalle) {
-        if ($detalle['tipo_servicio'] === 'hotel') {
-            $id_detalle = $detalle['id_detalle_reserva'];
+        $id_detalle = $detalle['id_detalle_reserva'];
+        $tipo_servicio = $detalle['tipo_servicio']; 
+        $cantidad = $detalle['cantidad'];
+        $precio_unitario = $detalle['precio_unitario'] ?? 0; 
+        $monto_detalle = $precio_unitario * $cantidad;
+
+        $ganancia_neta = $gananciaModel->calcularGanancia($monto_detalle);
+        $gananciaModel->registrarGanancia($id_reserva, $tipo_servicio, $ganancia_neta);
+
+        if ($tipo_servicio === 'hotel') {
             $infoHotel = $reservaModel->traerDetalleHotel($id_detalle);
             $id_habitacion = $infoHotel['rela_habitacion'];
             $check_in      = $infoHotel['check_in'];
             $check_out     = $infoHotel['check_out'];
-            $cantidad      = $detalle['cantidad'];
             $reservaModel->confirmar_detalle_hotel($id_detalle);
 
             $fecha = new DateTime($check_in);
@@ -79,9 +72,7 @@ if ($pagoData['pago_estado'] === 'aprobado') {
                 $fecha->modify("+1 day");
             }
 
-        } elseif ($detalle['tipo_servicio'] === 'tour') {
-            $id_detalle = $detalle['id_detalle_reserva'];
-            $cantidad = $detalle['cantidad'];
+        } elseif ($tipo_servicio === 'tour') {
             $stock = $reservaModel->traerStockTour($id_detalle);
             $id_stock_tour = $stock['id_stock_tour'] ?? null;
             if ($id_stock_tour) {
@@ -89,8 +80,7 @@ if ($pagoData['pago_estado'] === 'aprobado') {
                 $reservaModel->descontar_stock_tour($id_stock_tour, $cantidad);
             }
 
-        } elseif ($detalle['tipo_servicio'] === 'transporte') {
-            $id_detalle = $detalle['id_detalle_reserva'];
+        } elseif ($tipo_servicio === 'transporte') {
             $asientos_a_confirmar = $reservaModel->traerDetallesAsientosTransporte($id_detalle);
             if (!empty($asientos_a_confirmar)) {
                 $reservaModel->confirmar_detalle_transporte($id_detalle);
@@ -102,7 +92,6 @@ if ($pagoData['pago_estado'] === 'aprobado') {
         }
     }
 
-    // Limpiar carrito
     $carrito_activo = $carritoModel->traer_carrito_activo($id_usuario);
     if ($carrito_activo) {
         $carritoModel->setId_carrito($carrito_activo['id_carrito']);
@@ -110,15 +99,12 @@ if ($pagoData['pago_estado'] === 'aprobado') {
     }
     unset($_SESSION['carrito'], $_SESSION['carrito_total']);
 
-    // Auditoría
     $auditoria = new Auditoria('', $id_usuario, 'Confirmación de pago', "Usuario $id_usuario confirmó pago de reserva #$id_reserva por $$monto_total (MP ID: $id_pago_mp)");
     $auditoria->guardar();
 
-    // Notificación
     $metadata = ['reserva'=>$id_reserva,'pago'=>$id_pago,'tipo_pago'=>'mercadopago'];
     Notificacion::crear($id_usuario,"Pago aprobado #$id_pago","Tu pago por $$monto_total fue aprobado y la reserva #$id_reserva ha sido confirmada.","pago",$metadata);
 
-    // Enviar correo
     $email_usuario = $usuarioModel->traer_usuarios_por_id($id_usuario)[0]['usuarios_email'] ?? null;
     if ($email_usuario) {
         $mail = new PHPMailer(true);

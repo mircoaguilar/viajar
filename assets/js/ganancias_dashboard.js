@@ -1,23 +1,62 @@
-const ctx = document.getElementById('chartGananciasPorMes').getContext('2d');
-const gananciasData = JSON.parse(document.getElementById('chartGananciasPorMes').getAttribute('data-ganancias'));
+document.addEventListener("DOMContentLoaded", () => {
+    const canvas = document.getElementById('chartGananciasPorMes');
+    const gananciasPorMes = JSON.parse(canvas.dataset.ganancias);
 
-const chartGananciasPorMes = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: gananciasData.map(data => data.mes),
-        datasets: [{
-            label: 'Ganancia Neta',
-            data: gananciasData.map(data => data.ganancia_neta),
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
+    const labels = gananciasPorMes.map(g => {
+        const [year, month] = g.mes.split('-'); // separar yyyy y mm
+        const fecha = new Date(year, month - 1); // mes base 0
+        return fecha.toLocaleString('es-AR', { month: 'long', year: 'numeric' }); // "diciembre 2025"
+    });
+
+    const data = gananciasPorMes.map(g => parseFloat(g.ganancia_neta));
+
+    const ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Ganancia Neta ($)',
+                data,
+                backgroundColor: 'rgba(33, 150, 243, 0.6)',
+                borderColor: 'rgba(33, 150, 243, 1)',
+                borderWidth: 1,
+                borderRadius: 6,
+                barPercentage: 0.5,
+                categoryPercentage: 0.6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `$${context.parsed.y.toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
+                        }
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return `$${value.toLocaleString('es-AR', {minimumFractionDigits: 2})}`;
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        maxRotation: 0,
+                        minRotation: 0
+                    }
+                }
             }
         }
-    }
+    });
 });

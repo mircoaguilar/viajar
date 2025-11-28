@@ -65,17 +65,19 @@ class Ganancia {
     }
 
     public function obtenerGananciasPorServicio($tipo_servicio, $inicio = null, $fin = null) {
-    $conexion = new Conexion();
+        $conexion = new Conexion();
         if (!$inicio) $inicio = date('Y-m-01'); 
         if (!$fin) $fin = date('Y-m-t'); 
-        $query = "SELECT g.id_reserva, g.tipo_servicio, g.ganancia_neta, g.fecha_calculo
-              FROM ganancias g
-              JOIN reservas r ON r.id_reservas = g.id_reserva  
-              JOIN detalle_reservas dr ON dr.rela_reservas = r.id_reservas  
-              JOIN detalle_reserva_hotel drh ON drh.rela_detalle_reserva = dr.id_detalle_reserva
-              WHERE g.tipo_servicio = '$tipo_servicio'
-              AND r.reservas_estado = 'confirmada'
-              AND g.fecha_calculo BETWEEN '$inicio' AND '$fin'";
+
+        $query = "
+            SELECT g.id_reserva, g.tipo_servicio, g.ganancia_neta, g.fecha_calculo
+            FROM ganancias g
+            JOIN reservas r ON r.id_reservas = g.id_reserva
+            WHERE g.tipo_servicio = '$tipo_servicio'
+            AND r.reservas_estado = 'confirmada'
+            AND g.fecha_calculo BETWEEN '$inicio' AND '$fin'
+        ";
+
         $resultado = $conexion->consultar($query);
         return $resultado;
     }
@@ -98,18 +100,20 @@ class Ganancia {
 
     public function obtenerGananciasPorMes() {
         $conexion = new Conexion();
-        $query = "SELECT
-                    DATE_FORMAT(g.fecha_calculo, '%Y-%m') AS mes, 
-                    SUM(g.ganancia_neta) AS ganancia_neta
-                FROM ganancias g
-                JOIN reservas r ON r.id_reservas = g.id_reserva
-                WHERE r.reservas_estado = 'confirmada'
-                GROUP BY mes
-                ORDER BY mes DESC"; 
-
+        $query = "
+            SELECT 
+                DATE_FORMAT(g.fecha_calculo, '%Y-%m') AS mes,
+                SUM(g.ganancia_neta) AS ganancia_neta
+            FROM ganancias g
+            JOIN reservas r ON r.id_reservas = g.id_reserva
+            WHERE r.reservas_estado = 'confirmada'
+            GROUP BY mes
+            ORDER BY mes ASC
+        ";
         $resultado = $conexion->consultar($query);
         return $resultado;
     }
+
 
     public function registrarGanancia($id_reserva, $tipo_servicio, $ganancia_neta) {
         $conexion = new Conexion();
