@@ -1,6 +1,6 @@
 <?php
 $page = $_GET['page'] ?? ''; 
-if ($page !== 'login' && $page !== 'registro'): 
+if ($page !== 'login' && $page !== 'registro'  && $page !== 'registro_proveedor'): 
 ?>
 <div class="top-bar">
     <div class="left-links">

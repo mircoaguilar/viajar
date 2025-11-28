@@ -87,7 +87,8 @@ if (isset($_GET['page'])) {
         'detalle_hotel',
         'detalle_tour',
         'detalle_viaje',
-        'pantalla_habitaciones'
+        'pantalla_habitaciones',
+        'registro_proveedor'
     ];
 
     if (in_array($pagina, $paginas_publicas)) {
