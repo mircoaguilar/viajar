@@ -228,6 +228,33 @@ class Tour {
         return $conexion->consultar($query);
     }
 
+    public function liberarCupo($id_detalle_reserva) {
+        $conexion = new Conexion();
+
+        $queryCantidad = "SELECT cantidad FROM detalle_reservas WHERE id_detalle_reserva = $id_detalle_reserva";
+        $resCantidad = $conexion->consultar($queryCantidad);
+        if(empty($resCantidad)) return false;
+        $cantidad = (int)$resCantidad[0]['cantidad'];
+
+        $queryDetallesTour = "SELECT * FROM detalle_reserva_tour WHERE rela_detalle_reserva = $id_detalle_reserva";
+        $detallesTour = $conexion->consultar($queryDetallesTour);
+
+        foreach($detallesTour as $det) {
+            $idTour = $det['rela_tour'];
+            $fecha = $det['fecha'];
+            $conexion->actualizar("UPDATE detalle_reserva_tour 
+                                SET estado = 'cancelada' 
+                                WHERE id_detalle_tour = {$det['id_detalle_tour']}");
+
+            $conexion->actualizar("UPDATE stock_tour 
+                                SET cupos_disponibles = cupos_disponibles + $cantidad,
+                                    cupos_reservados = cupos_reservados - $cantidad
+                                WHERE rela_tour = $idTour AND fecha = '$fecha'");
+        }
+        return true;
+    }
+
+
     public function getId_tour() { return $this->id_tour; }
     public function setId_tour($id) { $this->id_tour = $id; return $this; }
     public function getNombre_tour() { return $this->nombre_tour; }

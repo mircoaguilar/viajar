@@ -206,6 +206,35 @@ class Hotel {
         return $conexion->consultar($query);  
     }
 
+    public function liberarHabitacion($id_detalle_reserva) {
+        $conexion = new Conexion();
+        $queryDetallesHotel = "SELECT * FROM detalle_reserva_hotel WHERE rela_detalle_reserva = $id_detalle_reserva";
+        $detallesHotel = $conexion->consultar($queryDetallesHotel);
+
+        foreach($detallesHotel as $det) {
+            $idHabitacion = $det['rela_habitacion'];
+            $checkIn = $det['check_in'];
+            $checkOut = $det['check_out'];
+
+            $conexion->actualizar("UPDATE detalle_reserva_hotel
+                                SET estado = 'cancelada'
+                                WHERE id_detalle_hotel = {$det['id_detalle_hotel']}");
+
+            $conexion->actualizar("UPDATE hotel_habitaciones_stock
+                                SET cantidad_disponible = cantidad_disponible + 1
+                                WHERE rela_habitacion = $idHabitacion
+                                AND fecha >= '$checkIn'
+                                AND fecha < '$checkOut'
+                                AND activo = 1");
+        }
+        $conexion->actualizar("UPDATE detalle_reservas
+                            SET activo = 0
+                            WHERE id_detalle_reserva = $id_detalle_reserva");
+        return true;
+    }
+
+
+
     public function getId_hotel() { return $this->id_hotel; }
     public function setId_hotel($id) { $this->id_hotel = $id; return $this; }
 

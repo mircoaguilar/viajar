@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const gananciasPorMes = JSON.parse(canvas.dataset.ganancias);
 
     const labels = gananciasPorMes.map(g => {
-        const [year, month] = g.mes.split('-'); // separar yyyy y mm
-        const fecha = new Date(year, month - 1); // mes base 0
-        return fecha.toLocaleString('es-AR', { month: 'long', year: 'numeric' }); // "diciembre 2025"
+        const [year, month] = g.mes.split('-'); 
+        const fecha = new Date(year, month - 1); 
+        return fecha.toLocaleString('es-AR', { month: 'long', year: 'numeric' }); 
     });
 
     const data = gananciasPorMes.map(g => parseFloat(g.ganancia_neta));

@@ -354,6 +354,133 @@ p {
     background: #333;
 }
 
+/* Contenedor (Celda de Acciones) */
+.celda-acciones {
+    display: flex; 
+    flex-direction: row; 
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 100px !important;
+}
+
+/* Botón Ver Ticket (Azul) */
+.btn-ver-ticket {
+    display: inline-block;
+    padding: 3px 14px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    flex-grow: 0;
+    /* ESTO ES LO QUE SOLUCIONA EL SALTO DE LÍNEA */
+    white-space: nowrap; 
+}
+
+/* Botón Cancelar (Rojo) */
+.btn-cancelar {
+    display: inline-block;
+    padding: 6px 14px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    /* Esto evita que se estire */
+    flex-grow: 0;
+}
+
+/* Fondo del modal */
+#modal-cancelar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Contenido del modal */
+.modal-content {
+    background-color: #fff;
+    padding: 25px 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative; /* Para el botón de cerrar */
+}
+
+/* Botón cerrar X */
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    font-weight: bold;
+    color: #555;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: #000;
+}
+
+/* Títulos */
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.4em;
+    text-align: center;
+}
+
+/* Inputs, select y textarea */
+.modal-content select,
+.modal-content textarea {
+    padding: 8px 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+/* Botón de enviar */
+.modal-content button[type="submit"] {
+    background-color: #dc3545;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: #b02a37;
+}
+
+/* Label */
+.modal-content label {
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+
 /* Responsivo */
 @media (max-width: 768px) {
     .tabla-reservas th, .tabla-reservas td {

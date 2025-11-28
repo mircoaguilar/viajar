@@ -186,6 +186,17 @@ class Usuario extends Pagination {
         return $conexion->actualizar($query);
     }
 
+    public function traerEmailPorId($id_usuario) {
+        $conexion = new Conexion();
+        $query = "SELECT usuarios_email FROM usuarios WHERE id_usuarios = $id_usuario";
+        $resultado = $conexion->consultar($query);
+        if (!empty($resultado) && isset($resultado[0]['usuarios_email'])) {
+            return $resultado[0]['usuarios_email'];
+        }
+        return null;
+    }
+
+
 
 
         /**

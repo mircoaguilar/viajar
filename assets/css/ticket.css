@@ -1,0 +1,88 @@
+/* ticket.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.ticket-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.ticket-container h2 {
+    color: #2943b9;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ticket-container h3 {
+    color: #2943b9;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+.detalle {
+    background-color: #f9f9f9;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.detalle p {
+    margin: 5px 0;
+}
+
+.detalle ul {
+    padding-left: 20px;
+    margin: 5px 0;
+}
+
+.resaltar {
+    font-weight: bold;
+}
+
+.btn-print {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 18px;
+    background-color: #2943b9;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-print:hover {
+    background-color: #1f2f8c;
+}
+
+/* Estilos para impresión */
+@media print {
+    body {
+        background-color: #fff;
+        padding: 0;
+    }
+    .ticket-container {
+        box-shadow: none;
+        border: none;
+        margin: 0;
+        width: 100%;
+        border-radius: 0;
+    }
+    .btn-print {
+        display: none;
+    }
+}

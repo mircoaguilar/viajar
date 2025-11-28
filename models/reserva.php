@@ -809,6 +809,174 @@ class Reserva {
         }
     }
 
+    public function traerDetallesCompletos($id_reserva) {
+        $conexion = new Conexion();
+        $id_reserva = (int)$id_reserva;
+        $detalles = $conexion->consultar("SELECT * FROM detalle_reservas WHERE rela_reservas = $id_reserva");
+        $resultado = [];
+
+        foreach ($detalles as $d) {
+            $detalle = $d;
+
+            if ($d['tipo_servicio'] === 'hotel') {
+                $detalle_hotel = $conexion->consultar("
+                    SELECT drh.*, hh.rela_hotel, h.hotel_nombre, th.nombre AS tipo_habitacion, drh.estado
+                    FROM detalle_reserva_hotel drh
+                    INNER JOIN hotel_habitaciones hh ON hh.id_hotel_habitacion = drh.rela_habitacion
+                    INNER JOIN hotel h ON h.id_hotel = hh.rela_hotel
+                    INNER JOIN tipos_habitacion th ON th.id_tipo_habitacion = hh.rela_tipo_habitacion
+                    WHERE drh.rela_detalle_reserva = {$d['id_detalle_reserva']}
+                    LIMIT 1
+                ");
+                $detalle['hotel'] = $detalle_hotel[0] ?? null;
+                if (($detalle['hotel']['estado'] ?? '') === 'cancelada') {
+                    continue;
+                }
+
+            } elseif ($d['tipo_servicio'] === 'tour') {
+                $detalle_tour = $conexion->consultar("
+                    SELECT drt.*, t.nombre_tour AS tour_nombre, drt.estado
+                    FROM detalle_reserva_tour drt
+                    INNER JOIN tours t ON t.id_tour = drt.rela_tour
+                    WHERE drt.rela_detalle_reserva = {$d['id_detalle_reserva']}
+                    LIMIT 1
+                ");
+                $detalle['tour'] = $detalle_tour[0] ?? null;
+
+                if (($detalle['tour']['estado'] ?? '') === 'cancelada') {
+                    continue;
+                }
+
+            } elseif ($d['tipo_servicio'] === 'transporte') {
+                $detalle_transporte = $conexion->consultar("
+                    SELECT drt.id_detalle_transporte, drt.piso, drt.numero_asiento, drt.precio_unitario,
+                        drt.estado,
+                        p.nombre AS pasajero_nombre, p.apellido AS pasajero_apellido,
+                        v.viaje_fecha, v.hora_salida, v.hora_llegada,
+                        t.nombre_servicio, t.transporte_matricula
+                    FROM detalle_reserva_transporte drt
+                    LEFT JOIN pasajeros p ON drt.rela_pasajero = p.id_pasajeros
+                    INNER JOIN viajes v ON drt.id_viaje = v.id_viajes
+                    INNER JOIN transporte_rutas tr ON v.rela_transporte_rutas = tr.id_ruta
+                    INNER JOIN transporte t ON tr.rela_transporte = t.id_transporte
+                    WHERE drt.rela_detalle_reserva = {$d['id_detalle_reserva']}
+                ");
+                $detalle['transporte'] = $detalle_transporte;
+                $asientos_activos = array_filter($detalle_transporte, fn($t) => ($t['estado'] ?? '') !== 'cancelada');
+                if (empty($asientos_activos)) {
+                    continue;
+                }
+            }
+
+            $resultado[] = $detalle;
+        }
+
+        return $resultado;
+    }
+
+    public function registrarCancelacion($id_detalle, $motivo, $comentario = '') {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+        $detalle = $this->traerDetallePorId($id_detalle);
+        $id_reserva = $detalle['rela_reservas'];
+
+        $stmt = $mysqli->prepare("
+            INSERT INTO cancelacion (rela_reservas, rela_motivo_cancelacion, comentario, cancelacion_fecha)
+            VALUES (?, ?, ?, NOW())
+        ");
+        $stmt->bind_param("iis", $id_reserva, $motivo, $comentario);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    public function cancelarDetalle($id_detalle) {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+
+        $stmt = $mysqli->prepare("
+            UPDATE detalle_reservas
+            SET activo = 0
+            WHERE id_detalle_reserva = ?
+        ");
+        $stmt->bind_param("i", $id_detalle);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    public function traerDetallePorId($id_detalle) {
+        $conexion = new Conexion();
+        $id_detalle = (int)$id_detalle; 
+        $query = "
+            SELECT 
+                dr.*,
+                drt.rela_tour AS id_servicio_tour,
+                drh.rela_habitacion AS id_servicio_hotel
+            FROM detalle_reservas dr
+            LEFT JOIN detalle_reserva_tour drt ON dr.id_detalle_reserva = drt.rela_detalle_reserva
+            LEFT JOIN detalle_reserva_hotel drh ON dr.id_detalle_reserva = drh.rela_detalle_reserva
+            WHERE dr.id_detalle_reserva = $id_detalle
+            LIMIT 1
+        ";
+        $resultado = $conexion->consultar($query);
+
+        if (!empty($resultado)) {
+            return $resultado[0];
+        }
+        return null;
+    }
+
+
+    public function liberarAsientoTransporte($id_detalle_reserva) {
+        $conexion = new Conexion();
+        $queryDetalles = "SELECT * FROM detalle_reserva_transporte WHERE rela_detalle_reserva = $id_detalle_reserva";
+        $detalles = $conexion->consultar($queryDetalles);
+
+        foreach ($detalles as $det) {
+            $conexion->actualizar("UPDATE detalle_reserva_transporte
+                                SET estado = 'cancelada'
+                                WHERE id_detalle_transporte = {$det['id_detalle_transporte']}");
+        }
+
+        $conexion->actualizar("UPDATE detalle_reservas
+                            SET activo = 0
+                            WHERE id_detalle_reserva = $id_detalle_reserva");
+
+        return true;
+    }
+
+    public function traerDetallesActivos($reservaId) {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+
+        $stmt = $mysqli->prepare("SELECT * FROM detalle_reservas WHERE rela_reservas = ? AND activo = 1");
+        $stmt->bind_param("i", $reservaId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $detalles = [];
+        while ($row = $result->fetch_assoc()) {
+            $detalles[] = $row;
+        }
+
+        $stmt->close();
+        $mysqli->close();
+        return $detalles;
+    }
+
+    public function actualizarEstado($reservaId, $estado) {
+        $conexion = new Conexion();
+        $mysqli = $conexion->getConexion();
+
+        $stmt = $mysqli->prepare("UPDATE reservas SET reservas_estado = ? WHERE id_reservas = ?");
+        $stmt->bind_param("si", $estado, $reservaId);
+        $resultado = $stmt->execute();
+
+        $stmt->close();
+        $mysqli->close();
+
+        return $resultado; 
+    }
+
 
     public function getId_reservas() { return $this->id_reservas; }
     public function setId_reservas($id) { $this->id_reservas = $id; return $this; }

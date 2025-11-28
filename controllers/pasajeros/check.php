@@ -49,14 +49,6 @@ if ($res->num_rows > 0) {
             'data' => $row
           ]);
           exit;
-        } else {
-             echo json_encode([
-                'status' => 'success',
-                'found' => true,
-                'owner' => false,
-                'message' => 'El pasajero ya está registrado por otro usuario.'
-                ]);
-             exit;
         }
 } 
 

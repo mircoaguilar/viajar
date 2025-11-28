@@ -88,10 +88,16 @@ class Pago {
     public function traerPorReserva($id_reserva) {
         $conexion = new Conexion();
         $id_reserva = (int)$id_reserva;
+        $query = "SELECT * 
+                FROM pago 
+                WHERE rela_reservas = $id_reserva
+                ORDER BY pago_fecha DESC 
+                LIMIT 1";
 
-        $query = "SELECT * FROM pago WHERE rela_reservas=$id_reserva AND activo=1 ORDER BY pago_fecha ASC";
-        return $conexion->consultar($query);
+        $resultado = $conexion->consultar($query);
+        return !empty($resultado) ? $resultado[0] : null;
     }
+
 
     public function eliminarLogico() {
         $conexion = new Conexion();

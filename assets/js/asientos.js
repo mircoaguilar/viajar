@@ -409,14 +409,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 const docNum = event.target.value.trim();
                 const errorSpan = document.querySelector(`.document-error-${i}`);
                 const ownerIdInput = formGroup.querySelector(`[name$="[id_pasajeros]"]`);
-                
+
                 errorSpan.style.display = 'none';
                 ownerIdInput.value = '';
+
                 if (docNum.length < 5) { 
-                    limpiarFormulario(formGroup);
-                    event.target.value = docNum; 
                     return;
                 }
+
                 const result = await buscarPasajero(docNum);
 
                 if (result.status === 'error') {
@@ -426,37 +426,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 if (result.found) {
                     if (result.owner) {
-                        const nombreCompleto = `${result.data.nombre} ${result.data.apellido}`;
-                        
                         Swal.fire({
                             title: 'Pasajero Registrado',
-                            text: `¿El pasaje es para ${nombreCompleto}?`,
+                            text: `¿El pasaje es para ${result.data.nombre} ${result.data.apellido}?`,
                             icon: 'question',
                             showCancelButton: true,
                             confirmButtonText: 'Sí, Cargar Datos',
                             cancelButtonText: 'No, Dejar Manual'
-                        }).then((swalResult) => {
+                        }).then(swalResult => {
                             if (swalResult.isConfirmed) {
                                 llenarFormulario(formGroup, result.data);
                                 ownerIdInput.value = result.data.id_pasajeros; 
-                                errorSpan.style.display = 'none';
-                                Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 2000 })
-                                       .fire({ icon: 'success', title: 'Datos cargados' });
-
-                            } else {
-                                limpiarFormulario(formGroup);
-                                event.target.value = docNum; 
                             }
                         });
                     } else {
-                        limpiarFormulario(formGroup);
-                        event.target.value = docNum; 
+                        limpiarFormulario(formGroup); 
                         errorSpan.textContent = 'Doc. registrado por otro usuario.';
                         errorSpan.style.display = 'block';
                     }
                 } else {
-                    limpiarFormulario(formGroup);
-                    event.target.value = docNum; 
                     errorSpan.style.display = 'none';
                 }
             });

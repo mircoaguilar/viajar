@@ -140,53 +140,53 @@ async function abrirModalCarrito(id_item) {
             }
 
             if (it.tipo_servicio === 'transporte') {
-    let pasajerosHTML = '';
-    let asientoHTML = '';
+                let pasajerosHTML = '';
+                let asientoHTML = '';
 
-    body.innerHTML = `
-        <h3>Datos del Transporte</h3>
-        <p><strong>Nombre del servicio:</strong> ${it.nombre_servicio}</p>
-        <p><strong>Descripción:</strong> ${it.descripcion}</p>
-        <p><strong>Matrícula:</strong> ${it.transporte_matricula}</p>
-        <p><strong>Capacidad:</strong> ${it.transporte_capacidad} asientos</p>
+                body.innerHTML = `
+                    <h3>Datos del Transporte</h3>
+                    <p><strong>Nombre del servicio:</strong> ${it.nombre_servicio}</p>
+                    <p><strong>Descripción:</strong> ${it.descripcion}</p>
+                    <p><strong>Matrícula:</strong> ${it.transporte_matricula}</p>
+                    <p><strong>Capacidad:</strong> ${it.transporte_capacidad} asientos</p>
 
-        <h3>Ruta</h3>
-        <p><strong>Ruta:</strong> ${it.ruta_nombre}</p>
-        <p><strong>Descripción de la ruta:</strong> ${it.ruta_descripcion}</p>
-        <p><strong>Duración:</strong> ${it.ruta_duracion}</p>
-        <p><strong>Precio por persona:</strong> $${formatoPrecio(it.ruta_precio)}</p>
+                    <h3>Ruta</h3>
+                    <p><strong>Ruta:</strong> ${it.ruta_nombre}</p>
+                    <p><strong>Descripción de la ruta:</strong> ${it.ruta_descripcion}</p>
+                    <p><strong>Duración:</strong> ${it.ruta_duracion}</p>
+                    <p><strong>Precio por persona:</strong> $${formatoPrecio(it.ruta_precio)}</p>
 
-        <h3>Fecha y hora del viaje</h3>
-        <p><strong>Fecha de salida:</strong> ${it.viaje_fecha}</p>
-        <p><strong>Hora de salida:</strong> ${it.hora_salida}</p>
-        <p><strong>Hora de llegada:</strong> ${it.hora_llegada}</p>
-    `;
-    
-    if (it.asientos && it.asientos.length > 0) {
-        it.asientos.forEach((asiento, index) => {
-            const pasajero = asiento.pasajero ? `${asiento.pasajero.pasajero_nombre} ${asiento.pasajero.pasajero_apellido} (${asiento.pasajero.pasajero_documento})` : 'No asignado';
-            
-            pasajerosHTML += `
-                <p><strong>Pasajero ${index + 1}:</strong> ${pasajero}</p>
-            `;
-            asientoHTML += `
-                <p><strong>Asiento ${index + 1}:</strong> Piso ${asiento.piso}, Asiento N° ${asiento.numero_asiento}</p>
-            `;
-        });
-    } else {
-        pasajerosHTML = '<p>No se encontraron pasajeros.</p>';
-        asientoHTML = '<p>No se asignaron asientos.</p>';
-    }
+                    <h3>Fecha y hora del viaje</h3>
+                    <p><strong>Fecha de salida:</strong> ${it.viaje_fecha}</p>
+                    <p><strong>Hora de salida:</strong> ${it.hora_salida}</p>
+                    <p><strong>Hora de llegada:</strong> ${it.hora_llegada}</p>
+                `;
+                
+                if (it.asientos && it.asientos.length > 0) {
+                    it.asientos.forEach((asiento, index) => {
+                        const pasajero = asiento.pasajero ? `${asiento.pasajero.pasajero_nombre} ${asiento.pasajero.pasajero_apellido} (${asiento.pasajero.pasajero_documento})` : 'No asignado';
+                        
+                        pasajerosHTML += `
+                            <p><strong>Pasajero ${index + 1}:</strong> ${pasajero}</p>
+                        `;
+                        asientoHTML += `
+                            <p><strong>Asiento ${index + 1}:</strong> Piso ${asiento.piso}, Asiento N° ${asiento.numero_asiento}</p>
+                        `;
+                    });
+                } else {
+                    pasajerosHTML = '<p>No se encontraron pasajeros.</p>';
+                    asientoHTML = '<p>No se asignaron asientos.</p>';
+                }
 
-    body.innerHTML += `
-        <h3>Datos de los Pasajeros</h3>
-        ${pasajerosHTML}
+                body.innerHTML += `
+                    <h3>Datos de los Pasajeros</h3>
+                    ${pasajerosHTML}
 
-        <h3>Asientos asignados</h3>
-        ${asientoHTML}
-    `;
-    return;
-}
+                    <h3>Asientos asignados</h3>
+                    ${asientoHTML}
+                `;
+                return;
+            }
 
 let fechas = it.fecha_servicio ?? '-';
 let htmlDetalle = `
