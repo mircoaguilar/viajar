@@ -56,10 +56,26 @@ function itemMenu($activo, $link, $icono, $texto) {
 
 <div id="main" class="contenido">
     <div class="top-bar">
-        <div class="logo">
-            <a href="index.php?page=pantalla_hoteles">ViajAR</a>
+        <div class="left-links">
+            <div class="logo">
+                <a href="index.php?page=pantalla_hoteles">ViajAR</a>
+            </div>
         </div>
+
         <div class="right-links">
+            <div class="notifications-wrapper">
+                <button id="notifications" aria-label="Ver notificaciones">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="notification-count">0</span>
+                </button>
+                <div id="notifications-dropdown" class="notifications-dropdown">
+                    <ul id="notifications-list">
+                        <li class="empty">No hay notificaciones</li>
+                    </ul>
+                    <button id="mark-all-read" class="btn-mark-all">Marcar todas como leídas</button>
+                </div>
+            </div>
+
             <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menú">
                 <i class="fa-solid fa-bars"></i>
             </button>

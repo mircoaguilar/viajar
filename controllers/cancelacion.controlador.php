@@ -6,6 +6,7 @@ require_once __DIR__ . '/../models/tour.php';
 require_once __DIR__ . '/../models/usuarios.php';
 require_once __DIR__ . '/../models/auditoria.php';
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../models/notificacion.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -37,7 +38,9 @@ if (!$detalle) {
     exit;
 }
 
-$reservaId = $detalle['rela_reservas'];
+// Obtener la referencia a la reserva principal
+$id_reserva = $detalle['rela_reservas']; 
+
 $reservaModel->registrarCancelacion($id_detalle, $motivo, $comentario);
 $reservaModel->cancelarDetalle($id_detalle);
 
@@ -45,7 +48,7 @@ switch($detalle['tipo_servicio']){
     case 'hotel':
         $hotelModel->liberarHabitacion($detalle['id_detalle_reserva']); 
         break;
-   case 'tour':
+    case 'tour':
         if (!empty($id_detalle)) {
             $tourModel->liberarCupo($id_detalle);
         }
@@ -57,14 +60,15 @@ switch($detalle['tipo_servicio']){
         break;
 }
 
-$detallesActivos = $reservaModel->traerDetallesActivos($reservaId);
+$detallesActivos = $reservaModel->traerDetallesActivos($id_reserva);
 if (count($detallesActivos) === 0) {
-    $reservaModel->actualizarEstado($reservaId, 'cancelada');
+    $reservaModel->actualizarEstado($id_reserva, 'cancelada');
 } else {
-    $reservaModel->actualizarEstado($reservaId, 'confirmada'); 
+    $reservaModel->actualizarEstado($id_reserva, 'confirmada'); 
 }
 
 try {
+    // Enviar correo al usuario
     $phpmailer = new PHPMailer(true);
     $phpmailer->isSMTP();
     $phpmailer->Host = 'smtp.gmail.com';
@@ -98,6 +102,12 @@ try {
     $auditoria->guardar();
 
     echo json_encode(['status' => 'ok', 'mensaje' => 'Tu cancelación fue exitosa. Nos contactaremos para la devolución.']);
+
+    $adminId = 66 ; 
+    $titulo_admin = "Reserva cancelada: #$id_reserva";
+    $mensaje_admin = "El detalle #$id_detalle de la reserva #$id_reserva fue cancelado por el usuario $userId. Motivo: $motivo";
+    Notificacion::crear($adminId, $titulo_admin, $mensaje_admin, 'reserva');
+
 } catch (Exception $e) {
     error_log("Error al enviar email de cancelación: " . $phpmailer->ErrorInfo);
     echo json_encode(['status' => 'ok', 'mensaje' => 'Cancelación realizada, pero no se pudo enviar el email.']);

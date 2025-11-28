@@ -4,6 +4,8 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [2])
     exit;
 }
 ?>
+
+<!-- Menú lateral -->
 <div id="menu" class="menu-lateral">
     <ul>
         <li><strong>Menú administrador</strong></li>
@@ -41,15 +43,30 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [2])
     </ul>
 </div>
 
-
 <div id="overlay" class="overlay"></div>
 
 <div id="main" class="contenido">
     <div class="top-bar">
-        <div class="logo">
-            <a href="index.php?page=pantalla_hoteles">ViajAR</a>
+        <div class="left-links">
+            <div class="logo">
+                <a href="index.php?page=pantalla_hoteles">ViajAR</a>
+            </div>
         </div>
+
         <div class="right-links">
+            <div class="notifications-wrapper">
+                <button id="notifications" aria-label="Ver notificaciones">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="notification-count">0</span>
+                </button>
+                <div id="notifications-dropdown" class="notifications-dropdown">
+                    <ul id="notifications-list">
+                        <li class="empty">No hay notificaciones</li>
+                    </ul>
+                    <button id="mark-all-read" class="btn-mark-all">Marcar todas como leídas</button>
+                </div>
+            </div>
+
             <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menú">
                 <i class="fa-solid fa-bars"></i>
             </button>
@@ -58,4 +75,3 @@ if (!isset($_SESSION['id_perfiles']) || !in_array($_SESSION['id_perfiles'], [2])
 </div>
 
 <script src="assets/js/menu-dropdown.js"></script>
-
