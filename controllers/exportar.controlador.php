@@ -3,6 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+require_once __DIR__ . '/proveedores/proveedores.controlador.php';
+
+
 session_start();
 
 $perfiles_permitidos = [3,5,13,14]; 
@@ -72,12 +75,10 @@ try {
 
         case 'hoteles':
             $label = 'hoteles';
-            $hotelModel = new Hotel();
-            if (method_exists($hotelModel, 'traer_hoteles_por_usuario')) {
-                $data = $hotelModel->traer_hoteles_por_usuario($usuario_id);
-            } else {
-                if (method_exists($hotelModel, 'traer_hoteles')) $data = $hotelModel->traer_hoteles();
-            }
+
+            $controlador = new ProveedoresControlador();
+            $data = $controlador->mis_hoteles($usuario_id);
+
             break;
 
         default:

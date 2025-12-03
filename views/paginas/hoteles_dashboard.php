@@ -46,10 +46,6 @@ foreach ($ocupacionPorTipoRaw as $h) {
             <p><?= $habitaciones_total ?></p>
         </div>
         <div class="card">
-            <h2>Ocupación actual</h2>
-            <p><?= $ocupacion_actual ?> habitaciones ocupadas</p>
-        </div>
-        <div class="card">
             <h2>Reservas del mes</h2>
             <p><?= $reservas_mes ?></p>
         </div>

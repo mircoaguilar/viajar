@@ -37,7 +37,7 @@ function itemMenu($activo, $link, $icono, $texto) {
 
             case 14:
                 echo itemMenu(!$pendiente, "index.php?page=tours_mis_tours", "fa-solid fa-map-location-dot", "Mis tours");
-                echo itemMenu(!$pendiente, "index.php?page=reservas_tours", "fa-solid fa-users", "Reservas de tours");
+                echo itemMenu(!$pendiente, "index.php?page=tours_reservas", "fa-solid fa-users", "Reservas de tours");
                 echo itemMenu(!$pendiente, "index.php?page=tours_carga", "fa-solid fa-plus", "Crear nuevo tour");
                 echo itemMenu(!$pendiente, "index.php?page=tours_dashboard", "fa fa-chart-line", "Dashboard");
                 break;

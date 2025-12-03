@@ -163,10 +163,11 @@ class Hotel_Habitaciones {
         $id_hotel = (int)$id_hotel;
 
         $query = "SELECT hh.*, th.nombre AS tipo_nombre
-                  FROM hotel_habitaciones hh
-                  INNER JOIN tipos_habitacion th 
+                FROM hotel_habitaciones hh
+                INNER JOIN tipos_habitacion th 
                         ON hh.rela_tipo_habitacion = th.id_tipo_habitacion
-                  ORDER BY hh.fecha_creacion ASC";
+                WHERE hh.rela_hotel = $id_hotel
+                ORDER BY hh.fecha_creacion ASC";
 
         $habitaciones = $conexion->consultar($query);
 
