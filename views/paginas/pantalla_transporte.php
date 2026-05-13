@@ -29,6 +29,7 @@ if ($origen || $destino || $desde || $hasta) {
   <title>Transporte | ViajAR</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="assets/css/pantalla_transporte1.css">
+  <link rel="stylesheet" href="assets/css/footer.css">
   <script src="https://kit.fontawesome.com/yourkit.js" crossorigin="anonymous"></script>
 </head>
 <body>

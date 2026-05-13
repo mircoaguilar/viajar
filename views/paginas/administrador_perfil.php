@@ -1,87 +1,108 @@
 <?php
-if (!isset($_SESSION['id_usuarios']) || (isset($_SESSION['perfiles_nombre']) && $_SESSION['perfiles_nombre'] !== 'Administrador')) {
-    header('Location: index.php?page=login&message=Acceso no autorizado. Inicie sesión como administrador.&status=danger');
+if (!isset($_SESSION['usuario'])) {
+    header("Location: index.php?page=login");
     exit;
 }
 
-$nombre_admin = $_SESSION['usuarios_nombre_usuario'] ?? 'Administrador';
-$email_admin = $_SESSION['usuarios_email'] ?? 'N/A';
-$perfil_admin = $_SESSION['perfiles_nombre'] ?? 'N/A';
+$usuario  = $_SESSION['usuario'];
+$rol      = $_SESSION['rol'];
+$sucursal = $_SESSION['sucursal'] ?? 'Sucursal no asignada';
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Perfil - Administrador</title>
-    <link rel="stylesheet" href="assets/css/mi_perfil_admin.css">
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
-</head>
-<body>
+<div class="container mt-4">
 
-<div class="container">
-
-    <div class="perfil-header">
-        <h1>Bienvenido, <?php echo htmlspecialchars($nombre_admin); ?></h1>
-        <p>Este es tu panel de control como Administrador de ViajAR. Desde aca podes gestionar y acceder a todas las funciones del sistema.</p>
-        <p>Fecha y hora actual: <?php echo date('d/m/Y H:i'); ?></p>
+    <!-- HEADER PERFIL -->
+    <div class="bg-light p-4 rounded shadow-sm mb-4">
+        <h2 class="mb-1">Bienvenido, <?= htmlspecialchars($usuario) ?></h2>
+        <p class="text-muted mb-1">
+            Cuenta operativa de la sucursal <strong><?= htmlspecialchars($sucursal) ?></strong>
+        </p>
+        <p class="text-muted">
+            Fecha y hora actual: <?= date('d/m/Y H:i') ?>
+        </p>
     </div>
 
-    <div class="tarjetas-principales"> 
+    <!-- TARJETAS -->
+    <div class="row g-4">
 
-        <div class="perfil-card">
-            <div class="perfil-header-info">
-                <i class="fa-solid fa-user"></i>
-                <h2>Información de tu Perfil</h2>
+        <!-- INFO PERFIL -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fa-solid fa-user me-2"></i>
+                        Información de la cuenta
+                    </h5>
+                    <hr>
+                    <p><strong>Usuario:</strong> <?= htmlspecialchars($usuario) ?></p>
+                    <p><strong>Rol:</strong> <?= ucfirst($rol) ?></p>
+                    <p><strong>Sucursal:</strong> <?= htmlspecialchars($sucursal) ?></p>
+
+                    <a href="index.php?page=cambiar_password" class="btn btn-outline-secondary btn-sm mt-2">
+                        Cambiar contraseña
+                    </a>
+                </div>
             </div>
-            <p><strong>Nombre de Usuario:</strong> <?php echo htmlspecialchars($nombre_admin); ?></p>
-            <p><strong>Correo Electrónico:</strong> <?php echo htmlspecialchars($email_admin); ?></p>
-            <p><strong>Rol Asignado:</strong> <span class="perfil-rol"><?php echo htmlspecialchars($perfil_admin); ?></span></p>
-            <a class="btn-editar" href="index.php?page=usuarios&id=<?php echo $_SESSION['id_usuarios']; ?>">Editar mis datos</a>
         </div>
 
-        <div class="acceso-card">
-            <i class="fa fa-chart-line"></i>
-            <h3>Dashboard</h3>
-            <p>Accede al resumen general de estadísticas del sistema.</p>
-            <a href="index.php?page=dashboard_admin" class="btn-acceso">Ver Dashboard</a>
-        </div>
+        <!-- ACCESOS -->
+        <div class="col-md-8">
+            <div class="row g-4">
 
-        <div class="acceso-card">
-            <i class="fa-solid fa-check-square"></i>
-            <h3>Revisión de Servicios</h3>
-            <p>Gestiona los servicios pendientes de revisión y apruébalos.</p>
-            <a href="index.php?page=revision_servicios" class="btn-acceso">Revisar Servicios</a>
-        </div>
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="fa-solid fa-truck fa-2x mb-2 text-primary"></i>
+                            <h5>Envíos</h5>
+                            <p>Gestión y seguimiento de envíos.</p>
+                            <a href="index.php?page=envios" class="btn btn-primary btn-sm">
+                                Ir a Envíos
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="acceso-card">
-            <i class="fa-solid fa-clipboard-list"></i>
-            <h3>Auditorías</h3>
-            <p>Consulta las auditorías realizadas en el sistema.</p>
-            <a href="index.php?page=listado_auditorias" class="btn-acceso">Ver Auditorías</a>
-        </div>   
-        
-        <div class="acceso-card">
-            <i class="fa-solid fa-wallet"></i>
-            <h3>Ganancias</h3>
-            <p>Consulta el resumen de las ganancias del sistema y los detalles por servicio.</p>
-            <a href="index.php?page=ganancias_dashboard" class="btn-acceso">Ver Ganancias</a>
-        </div>
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="fa-solid fa-route fa-2x mb-2 text-success"></i>
+                            <h5>Hojas de Ruta</h5>
+                            <p>Planificación y control de recorridos.</p>
+                            <a href="index.php?page=hojas_ruta" class="btn btn-success btn-sm">
+                                Ver Hojas de Ruta
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-        <div class="acceso-card">
-            <i class="fa-solid fa-user-check"></i>
-            <h3>Revisión de Proveedores</h3>
-            <p>Aprueba o rechaza los proveedores que se han registrado en el sistema.</p>
-            <a href="index.php?page=revision_proveedores" class="btn-acceso">Ver Proveedores</a>
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="fa-solid fa-warehouse fa-2x mb-2 text-warning"></i>
+                            <h5>Vehículos</h5>
+                            <p>Administración de la flota.</p>
+                            <a href="index.php?page=vehiculos" class="btn btn-warning btn-sm">
+                                Gestionar Vehículos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <i class="fa-solid fa-cash-register fa-2x mb-2 text-danger"></i>
+                            <h5>Caja</h5>
+                            <p>Control de movimientos de caja.</p>
+                            <a href="index.php?page=caja" class="btn btn-danger btn-sm">
+                                Ir a Caja
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     </div>
-    </div>
-
-</body>
-</html>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="assets/js/toast.js"></script>
+</div>
